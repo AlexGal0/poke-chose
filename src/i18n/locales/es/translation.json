@@ -419,6 +419,14 @@
       "headbutt": { "label": "Golpe Cabeza", "description": "Golpear un árbol usando Golpe Cabeza." }
     }
   },
+  "encounterSeasons": {
+    "list": {
+      "season-spring": "Primavera",
+      "season-summer": "Verano",
+      "season-autumn": "Otoño",
+      "season-winter": "Invierno"
+    }
+  },
   "genderIcon": {
     "unconfirmed": "Sexo de la especie sin confirmar. Pulsa para reintentar.",
     "loading": "Consultando los sexos posibles de la especie…"

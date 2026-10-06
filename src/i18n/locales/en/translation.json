@@ -419,6 +419,14 @@
       "headbutt": { "label": "Headbutt", "description": "Hit a tree using Headbutt." }
     }
   },
+  "encounterSeasons": {
+    "list": {
+      "season-spring": "Spring",
+      "season-summer": "Summer",
+      "season-autumn": "Autumn",
+      "season-winter": "Winter"
+    }
+  },
   "genderIcon": {
     "unconfirmed": "Species' sex not confirmed. Tap to retry.",
     "loading": "Checking the species' possible sexes…"
