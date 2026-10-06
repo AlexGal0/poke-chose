@@ -17,6 +17,12 @@
     },
     "saveFailed": "No se pudo guardar el idioma en este navegador."
   },
+  "common": {
+    "wikiSearchAria": "Buscar {{name}} en WikiDex (nueva pestaña)",
+    "wikiTitle": "Consultar en WikiDex",
+    "retry": "Reintentar",
+    "speciesCount": "{{count}} especies"
+  },
   "app": {
     "battleWaitingMessage": "Esperando el lector de combate.",
     "gameGeneration": "GENERACIÓN V",
@@ -127,12 +133,40 @@
     "loadingEncounters": "Cargando encuentros de Black…",
     "noEncountersWithAccess": "No hay encuentros con tus recursos actuales en esta zona. Habilita Surf o Supercaña si los tienes.",
     "noEncountersRegistered": "PokéAPI no registra encuentros para Pokémon Black en esta zona.",
-    "speciesCount": "{{count}} especies",
-    "wikiSearchAria": "Buscar {{name}} en WikiDex (nueva pestaña)",
-    "wikiTitle": "Consultar en WikiDex",
     "minLevel": "· Nv. mín. {{level}}",
     "encountersSummary": "Encuentros en Black",
     "levelRange": "Nv. {{min}}–{{max}}",
     "footerHint": "Incluye los encuentros de PokéAPI para Black y los cinco intercambios con personajes del juego original. No es una lista de todas las especies obtenibles por evolución, eventos o intercambio con otros jugadores. Los porcentajes corresponden a cada tabla/condición; no se aplican a los intercambios con personajes."
+  },
+  "catalog": {
+    "eyebrow": "01 / EXPLORA",
+    "heading": "Encuentra tus Pokémon",
+    "searchAriaLabel": "Buscar Pokémon por nombre",
+    "searchPlaceholder": "Buscar por nombre, ej. oshawott",
+    "scopeAriaLabel": "Catálogo de Pokémon",
+    "scopeUnova": "Teselia · Gen V",
+    "scopeAll": "Todas · Gen I–V",
+    "hintReadOnly": "Verde: Pokémon en tu equipo/cajas o capturados alguna vez según la Pokédex, aunque los hayas evolucionado o liberado. Cambia a Manual para gestionar tu colección manual.",
+    "hintManual": "Verde: Pokémon de tu colección manual. Añade los que tienes disponibles en tu partida. Una entrada por especie.",
+    "hint2ReadOnly": "Las imágenes se revelan al ver o capturar una especie según tu Pokédex. Pasa el cursor, toca o enfoca los iconos para consultar sus formas de obtención en Black. Pueden existir varias vías; ❔ indica información sin confirmar.",
+    "hint2Manual": "Las imágenes se revelan al ver o capturar una especie al añadirla a tu colección manual. Pasa el cursor, toca o enfoca los iconos para consultar sus formas de obtención en Black. Pueden existir varias vías; ❔ indica información sin confirmar.",
+    "loadError": "No se pudo cargar el catálogo. Comprueba tu conexión.",
+    "loadingCatalog": "Cargando catálogo de PokéAPI…",
+    "noMatches": "No hay coincidencias. Prueba otro nombre o el catálogo de todas las generaciones.",
+    "paginationAriaLabel": "Páginas del catálogo",
+    "previousPage": "← Anterior",
+    "nextPage": "Siguiente →",
+    "card": {
+      "status": {
+        "inTeamOrBoxes": "✓ En equipo/cajas",
+        "inCollection": "✓ En colección",
+        "everCaught": "✓ Capturado alguna vez",
+        "noPokedexData": "— Pokédex sin datos",
+        "notCaught": "○ No capturado"
+      },
+      "addButton": "+ Colección",
+      "loadError": "No se pudo cargar.",
+      "loading": "Cargando…"
+    }
   }
 }

@@ -17,6 +17,12 @@
     },
     "saveFailed": "Couldn't save the language in this browser."
   },
+  "common": {
+    "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
+    "wikiTitle": "Look up on WikiDex",
+    "retry": "Retry",
+    "speciesCount": "{{count}} species"
+  },
   "app": {
     "battleWaitingMessage": "Waiting for the battle reader.",
     "gameGeneration": "GENERATION V",
@@ -127,12 +133,40 @@
     "loadingEncounters": "Loading Black's encounters…",
     "noEncountersWithAccess": "No encounters with your current resources in this zone. Enable Surf or the Super Rod if you have them.",
     "noEncountersRegistered": "PokéAPI has no registered encounters for Pokémon Black in this zone.",
-    "speciesCount": "{{count}} species",
-    "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
-    "wikiTitle": "Look up on WikiDex",
     "minLevel": "· Min. lvl. {{level}}",
     "encountersSummary": "Encounters in Black",
     "levelRange": "Lv. {{min}}–{{max}}",
     "footerHint": "Includes PokéAPI's encounters for Black and the five trades with in-game characters. It's not a list of every species obtainable by evolution, events, or trading with other players. Percentages correspond to each table/condition; they don't apply to trades with characters."
+  },
+  "catalog": {
+    "eyebrow": "01 / EXPLORE",
+    "heading": "Find your Pokémon",
+    "searchAriaLabel": "Search Pokémon by name",
+    "searchPlaceholder": "Search by name, e.g. oshawott",
+    "scopeAriaLabel": "Pokémon catalog",
+    "scopeUnova": "Unova · Gen V",
+    "scopeAll": "All · Gen I–V",
+    "hintReadOnly": "Green: Pokémon in your team/boxes or ever caught according to the Pokédex, even if you've evolved or released them. Switch to Manual to manage your manual collection.",
+    "hintManual": "Green: Pokémon in your manual collection. Add the ones available in your save. One entry per species.",
+    "hint2ReadOnly": "Images reveal once you see or catch a species according to your Pokédex. Hover, tap or focus the icons to check its ways to obtain it in Black. There may be several routes; ❔ marks unconfirmed information.",
+    "hint2Manual": "Images reveal once you see or catch a species by adding it to your manual collection. Hover, tap or focus the icons to check its ways to obtain it in Black. There may be several routes; ❔ marks unconfirmed information.",
+    "loadError": "Couldn't load the catalog. Check your connection.",
+    "loadingCatalog": "Loading PokéAPI's catalog…",
+    "noMatches": "No matches. Try another name or the all-generations catalog.",
+    "paginationAriaLabel": "Catalog pages",
+    "previousPage": "← Previous",
+    "nextPage": "Next →",
+    "card": {
+      "status": {
+        "inTeamOrBoxes": "✓ In team/boxes",
+        "inCollection": "✓ In collection",
+        "everCaught": "✓ Caught at some point",
+        "noPokedexData": "— No Pokédex data",
+        "notCaught": "○ Not caught"
+      },
+      "addButton": "+ Collection",
+      "loadError": "Couldn't load.",
+      "loading": "Loading…"
+    }
   }
 }
