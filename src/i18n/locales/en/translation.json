@@ -273,5 +273,14 @@
     "readingHint": "Read the tree from left to right. Each relation shows how it evolves into the next species in Black/White. Alternative branches are shown one below the other.",
     "scrollAria": "Evolution family; scroll horizontally to see every stage",
     "noEvolutionsHint": "This species has no evolutions or pre-evolutions in Generation V."
+  },
+  "encounterChances": {
+    "describeBase": "{{method}}: {{chance}}% · {{area}}",
+    "describeConditionsSuffix": " · {{conditions}}",
+    "ariaLabel": "Appearance percentages: {{summary}}",
+    "label": "Appearance",
+    "seasonalTitle": "These encounters depend on the season. Check the season shown next to each percentage.",
+    "seasonalBadge": "By season",
+    "valuesTitle": "By method and conditions: {{summary}}. See details in {{detailsLabel}}."
   }
 }

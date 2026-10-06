@@ -273,5 +273,14 @@
     "readingHint": "Lee el árbol de izquierda a derecha. Cada relación muestra cómo evoluciona a la especie siguiente en Black/White. Las ramas alternativas se muestran una debajo de otra.",
     "scrollAria": "Familia evolutiva; desplaza horizontalmente para ver todas las etapas",
     "noEvolutionsHint": "Esta especie no tiene evoluciones ni preevoluciones en Generación V."
+  },
+  "encounterChances": {
+    "describeBase": "{{method}}: {{chance}}% · {{area}}",
+    "describeConditionsSuffix": " · {{conditions}}",
+    "ariaLabel": "Porcentajes de aparición: {{summary}}",
+    "label": "Aparición",
+    "seasonalTitle": "Estos encuentros dependen de la estación. Consulta la estación indicada junto a cada porcentaje.",
+    "seasonalBadge": "Según estación",
+    "valuesTitle": "Según método y condiciones: {{summary}}. Consulta los detalles en {{detailsLabel}}."
   }
 }
