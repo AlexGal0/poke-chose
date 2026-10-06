@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { TeamSourceState } from '../sources/team'
 import type { BattleConnection } from './EnemyPrototype'
+import { noticeText } from '../i18n/notice.ts'
 import './ConnectionIndicator.css'
 
 export function ConnectionIndicator({ source, state, battle }: { source: 'manual' | 'save' | 'live'; state: TeamSourceState; battle: BattleConnection }) {
@@ -21,7 +22,7 @@ export function ConnectionIndicator({ source, state, battle }: { source: 'manual
       <strong id="connection-floating-title">{label}</strong>
       {manual ? <p>{t('connectionIndicator.manualHint')}</p> : <>
         <p><b>{t('connectionIndicator.sourceStatus', { source: source === 'live' ? t('connectionIndicator.sourceLive') : t('connectionIndicator.sourceSave'), status: connected ? t('connectionIndicator.connected') : t('connectionIndicator.noActiveReading') })}</b></p>
-        <p>{state.message}</p>
+        <p>{noticeText(t, state.message)}</p>
         {source === 'live' && <><p><b>{t('connectionIndicator.sourceStatus', { source: t('connectionIndicator.battleLabel'), status: battleConnected ? t('connectionIndicator.connected') : battle.status === 'error' ? t('connectionIndicator.battleDisconnected') : t('connectionIndicator.battleWaiting') })}</b></p><p>{battle.message}</p></>}
         {state.updatedAt && <small>{t('connectionIndicator.lastReading', { time: new Date(state.updatedAt).toLocaleTimeString(i18n.language) })}</small>}
       </>}

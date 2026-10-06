@@ -20,7 +20,7 @@ test('independent datasource supports party-only snapshots without inventing col
   let listener: (event: DataSourceEvent) => void = () => {}
   let unsubscribed = false
   const source: PokemonDataSource = {
-    id: 'test-live', label: 'Test live', capabilities: { party: true, boxes: false, pokedex: false },
+    id: 'test-live', labelKey: 'Test live', capabilities: { party: true, boxes: false, pokedex: false },
     subscribe(notify) { listener = notify; return () => { unsubscribed = true } },
   }
   const states: TeamSourceState[] = []
@@ -28,18 +28,18 @@ test('independent datasource supports party-only snapshots without inventing col
   const snapshot: SaveSnapshot = { status: 'ready', message: 'live', party: parseSave(saveFixture()).party, boxes: null, pokedex: null, updatedAt: '2026-10-04T00:00:00Z', backup: false }
   try {
     listener({ type: 'snapshot', snapshot })
-    listener({ type: 'connection', connected: false, message: 'Disconnected during hydration' })
+    listener({ type: 'connection', connected: false, message: { raw: 'Disconnected during hydration' } })
     await delay(15)
     assert.equal(states.at(-1)!.team.length, 1)
     assert.equal(states.at(-1)!.collection, null)
     assert.equal(states.at(-1)!.pokedex, null)
     assert.equal(states.at(-1)!.connected, false)
     assert.equal(states.at(-1)!.error, true)
-    assert.equal(states.at(-1)!.message, 'Disconnected during hydration')
+    assert.deepEqual(states.at(-1)!.message, { raw: 'Disconnected during hydration' })
     listener({ type: 'snapshot', snapshot: { ...snapshot, status: 'waiting', message: 'Reader stopped' }, connected: false })
     assert.equal(states.at(-1)!.connected, false)
     assert.equal(states.at(-1)!.error, true)
-    listener({ type: 'connection', connected: false, message: 'Reconnect manually' })
+    listener({ type: 'connection', connected: false, message: { raw: 'Reconnect manually' } })
     assert.equal(states.at(-1)!.connected, false)
     assert.equal(states.at(-1)!.team.length, 1)
     stop()
@@ -49,7 +49,7 @@ test('independent datasource supports party-only snapshots without inventing col
     assert.equal(unsubscribed, true)
     const isolated: TeamSourceState[] = []
     const stopOther = subscribeTeamSource(source, state => isolated.push(state), initialSaveTeam)
-    listener({ type: 'connection', connected: true, message: 'New source' })
+    listener({ type: 'connection', connected: true, message: { raw: 'New source' } })
     assert.equal(isolated.at(-1)!.team.length, 0)
     stopOther()
   } finally { stop(); globalThis.fetch = original }

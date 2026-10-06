@@ -329,5 +329,45 @@
       "attack": "Ataque ↓"
     },
     "cellTitle": "{{attacker}} → {{defender}}: {{multiplier}}"
+  },
+  "acquisitionIcons": {
+    "retryError": "No se pudo consultar la obtención. Reintentar",
+    "groupAria": "Formas de obtención en Pokémon Black",
+    "loadingLabel": "Consultando formas de obtención…"
+  },
+  "saveSync": {
+    "sourceLabel": "Origen del equipo",
+    "sourceManual": "Manual",
+    "sourceSave": "Save de melonDS",
+    "sourceLive": "melonDS en vivo (experimental)",
+    "lastValidReading": "Última lectura válida: {{time}}",
+    "staleDataHint": "Datos desactualizados. Conecta el lector para actualizarlos.",
+    "button": {
+      "requesting": "Solicitando…",
+      "reconnect": "Reconectar lector",
+      "connect": "Conectar lector",
+      "pause": "Pausar lectura"
+    },
+    "connectError": "No se pudo conectar.",
+    "liveHint": "Lee el equipo, cajas y Pokédex sin guardar. Tras Reset o reabrir melonDS, pulsa Reconectar lector. La sincronización puede tardar varios segundos.",
+    "saveHint": "Configura <configFile>save.config.local.json</configFile> y ejecuta <bridgeCommand>npm run bridge</bridgeCommand>. Se sincroniza cuando el juego guarda en el .sav. El equipo manual se conserva."
+  },
+  "sources": {
+    "connectingBridge": "Conectando con el bridge local…",
+    "invalidResponseSave": "Respuesta inválida de Save de melonDS.",
+    "invalidResponseLive": "Respuesta inválida de melonDS en vivo.",
+    "partyResolveFailed": "Party leído; no se pudo resolver PokéAPI. Reintentando automáticamente; se conserva el último equipo.",
+    "loadingSpeciesData": "Party leído · cargando datos de especies…",
+    "save": {
+      "label": "Save de melonDS",
+      "connectedWaiting": "melonDS: conectado · esperando el save…",
+      "bridgeDisconnected": "Bridge desconectado. Reconexión automática; se conserva el último equipo."
+    },
+    "live": {
+      "label": "melonDS en vivo",
+      "controlFailed": "No se pudo contactar con el servicio de lectura en vivo.",
+      "disconnected": "Servicio en vivo desconectado. Se conservan los últimos datos.",
+      "refreshFailed": "No se pudieron actualizar las cajas. Comprueba el lector en vivo."
+    }
   }
 }

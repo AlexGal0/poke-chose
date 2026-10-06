@@ -6,6 +6,7 @@ import { saveDataSource } from './save.ts'
 import type { PokemonDataSource } from './data-source.ts'
 import { deserializePokedex } from '../models/pokedex.ts'
 import type { PokedexState } from '../models/pokedex.ts'
+import type { Notice } from '../i18n/notice.ts'
 
 export interface TeamSourceState {
   team: PartyPokemon[]
@@ -14,7 +15,7 @@ export interface TeamSourceState {
   collectionError: boolean
   pokedex: PokedexState | null
   connected: boolean
-  message: string
+  message: Notice
   updatedAt: string | null
   error: boolean
 }
@@ -24,7 +25,7 @@ export function manualTeam(state: CollectionState): Pokemon[] {
 }
 
 export const initialSaveTeam: TeamSourceState = {
-  team: [], collection: null, collectionLoading: false, collectionError: false, pokedex: null, connected: false, message: 'Conectando con el bridge local…', updatedAt: null, error: false,
+  team: [], collection: null, collectionLoading: false, collectionError: false, pokedex: null, connected: false, message: { key: 'sources.connectingBridge' }, updatedAt: null, error: false,
 }
 
 // Adapts raw party identities to the same static Pokémon model consumed by the UI/domain.
@@ -90,10 +91,10 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
       const data: unknown = event.snapshot
       if (!isSaveSnapshot(data)) throw new Error('Invalid snapshot')
       next = data
-    } catch { publish({ error: true, message: `Respuesta inválida de ${source.label}.` }); return }
+    } catch { publish({ error: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
     snapshot = next
     snapshotError = next.status === 'error' || next.status === 'missing' || next.backup || event.connected === false
-    publish({ connected: event.connected ?? true, message: next.message, error: snapshotError,
+    publish({ connected: event.connected ?? true, message: { raw: next.message }, error: snapshotError,
       ...(next.pokedex !== null ? { pokedex: deserializePokedex(next.pokedex), updatedAt: next.updatedAt } : {}) })
     if (next.party !== null && next.boxes !== null &&
       (!collectionTarget || !partiesEqual(collectionTarget.party, next.party) || !boxesEqual(collectionTarget.boxes, next.boxes))) {
@@ -128,14 +129,14 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
       try {
         const team = await resolveParty(party, signal)
         if (closed || signal.aborted) return
-          publish({ team, updatedAt: snapshot?.updatedAt ?? next.updatedAt, ...(snapshotError ? {} : { message: snapshot?.message ?? next.message }), error: snapshotError })
+          publish({ team, updatedAt: snapshot?.updatedAt ?? next.updatedAt, ...(snapshotError ? {} : { message: { raw: snapshot?.message ?? next.message } }), error: snapshotError })
       } catch {
         if (closed || signal.aborted) return
-        publish({ error: true, message: 'Party leído; no se pudo resolver PokéAPI. Reintentando automáticamente; se conserva el último equipo.' })
+        publish({ error: true, message: { key: 'sources.partyResolveFailed' } })
         retry = setTimeout(() => { void hydrate() }, 5000)
       }
     }
-    publish({ message: 'Party leído · cargando datos de especies…' })
+    publish({ message: { key: 'sources.loadingSpeciesData' } })
     void hydrate()
   })
   return () => { closed = true; controller.abort(); collectionController.abort(); clearTimeout(retry); clearTimeout(collectionRetry); unsubscribe() }

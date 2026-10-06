@@ -6,6 +6,8 @@ import { CollectionSearch } from './CollectionSearch'
 import { matchesCollectionLocation, matchesCollectionTags } from '../domain/collection-search'
 import type { CollectionLocationFilter } from '../domain/collection-search'
 import { refreshLiveBoxes } from '../sources/live'
+import { noticeText, toNotice } from '../i18n/notice.ts'
+import type { Notice } from '../i18n/notice.ts'
 import './SaveCollection.css'
 
 const PAGE_SIZE = 12
@@ -16,18 +18,18 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
   const [location, setLocation] = useState<CollectionLocationFilter>('all')
   const [page, setPage] = useState(0)
   const [refreshing, setRefreshing] = useState(false)
-  const [refreshMessage, setRefreshMessage] = useState('')
+  const [refreshMessage, setRefreshMessage] = useState<Notice>(null)
   const [refreshError, setRefreshError] = useState(false)
   async function refreshCollection() {
     setRefreshing(true)
-    setRefreshMessage('')
+    setRefreshMessage(null)
     setRefreshError(false)
     try {
       await refreshLiveBoxes()
-      setRefreshMessage(t('saveCollection.refresh.success'))
+      setRefreshMessage({ key: 'saveCollection.refresh.success' })
     } catch (cause) {
       setRefreshError(true)
-      setRefreshMessage(cause instanceof Error ? cause.message : t('saveCollection.refresh.genericError'))
+      setRefreshMessage(toNotice(cause, 'saveCollection.refresh.genericError'))
     } finally { setRefreshing(false) }
   }
   const collection = state.collection
@@ -41,7 +43,7 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
     <div className="section-heading"><div><span className="eyebrow">{t('saveCollection.eyebrow')}</span><h2 id="collection-title">{t('app.collection.heading')}</h2></div>{collection !== null && <span className="count">{t('saveCollection.header.count', { count: collection.length })}</span>}</div>
     <p className="hint">{live ? t('saveCollection.hintLive') : t('saveCollection.hintSave')}</p>
     {live && <div className="collection-refresh"><button className="primary" disabled={refreshing || !state.connected} onClick={() => { void refreshCollection() }}>{refreshing ? t('saveCollection.refresh.updating') : t('saveCollection.refresh.button')}</button>{!state.connected && <span className="hint">{t('saveCollection.refresh.connectHint')}</span>}</div>}
-    {live && refreshMessage && <p className={refreshError ? 'notice' : 'hint'} role={refreshError ? 'alert' : 'status'}>{refreshMessage}</p>}
+    {live && refreshMessage && <p className={refreshError ? 'notice' : 'hint'} role={refreshError ? 'alert' : 'status'}>{noticeText(t, refreshMessage)}</p>}
     {state.collectionLoading && <p className="hint" role="status">{t('saveCollection.syncingNotice')}</p>}
     {state.collectionError && <p className="notice" role="alert">{t('saveCollection.resolveErrorNotice')}</p>}
     {(state.error || !state.connected) && collection !== null && <p className="notice">{t('saveCollection.staleNotice')}</p>}

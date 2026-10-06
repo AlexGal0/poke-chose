@@ -329,5 +329,45 @@
       "attack": "Attack ↓"
     },
     "cellTitle": "{{attacker}} → {{defender}}: {{multiplier}}"
+  },
+  "acquisitionIcons": {
+    "retryError": "Couldn't check how to obtain it. Retry",
+    "groupAria": "Ways to obtain it in Pokémon Black",
+    "loadingLabel": "Checking ways to obtain it…"
+  },
+  "saveSync": {
+    "sourceLabel": "Team source",
+    "sourceManual": "Manual",
+    "sourceSave": "melonDS Save",
+    "sourceLive": "melonDS live (experimental)",
+    "lastValidReading": "Last valid reading: {{time}}",
+    "staleDataHint": "Data out of date. Connect the reader to refresh it.",
+    "button": {
+      "requesting": "Requesting…",
+      "reconnect": "Reconnect reader",
+      "connect": "Connect reader",
+      "pause": "Pause reading"
+    },
+    "connectError": "Couldn't connect.",
+    "liveHint": "Reads the team, boxes, and Pokédex without saving. After a Reset or reopening melonDS, press Reconnect reader. Syncing can take several seconds.",
+    "saveHint": "Set up <configFile>save.config.local.json</configFile> and run <bridgeCommand>npm run bridge</bridgeCommand>. It syncs when the game saves to the .sav file. The manual team is kept."
+  },
+  "sources": {
+    "connectingBridge": "Connecting to the local bridge…",
+    "invalidResponseSave": "Invalid response from melonDS Save.",
+    "invalidResponseLive": "Invalid response from melonDS live.",
+    "partyResolveFailed": "Party read; couldn't resolve PokéAPI. Retrying automatically; the last team is kept.",
+    "loadingSpeciesData": "Party read · loading species data…",
+    "save": {
+      "label": "melonDS Save",
+      "connectedWaiting": "melonDS: connected · waiting for the save…",
+      "bridgeDisconnected": "Bridge disconnected. Automatic reconnection; the last team is kept."
+    },
+    "live": {
+      "label": "melonDS live",
+      "controlFailed": "Couldn't contact the live reading service.",
+      "disconnected": "Live service disconnected. The last data is kept.",
+      "refreshFailed": "Couldn't refresh the boxes. Check the live reader."
+    }
   }
 }

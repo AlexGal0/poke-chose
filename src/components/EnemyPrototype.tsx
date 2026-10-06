@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { KeyedError, noticeText, toNotice } from '../i18n/notice.ts'
+import type { Notice } from '../i18n/notice.ts'
 import { consistentBattleHealth } from '../domain/enemy-prototype'
 import type { EnemyCandidate, ActivePokemonCandidate, BattleTeamMember } from '../domain/enemy-prototype'
 import { BattlePokemon } from './BattlePokemon'
@@ -21,34 +23,17 @@ interface EnemySnapshot {
   battleActive?: boolean | null
 }
 
-type Notice = { key: string } | { raw: string } | null
-
-class KeyedError extends Error {
-  key: string
-  constructor(key: string) {
-    super(key)
-    this.key = key
-  }
-}
-
-function toNotice(cause: unknown, fallbackKey: string): Notice {
-  if (cause instanceof KeyedError) return { key: cause.key }
-  if (cause instanceof Error) return { raw: cause.message }
-  return { key: fallbackKey }
-}
-
 export interface BattleConnection { status: string; message: string; inBattle: boolean }
 
 export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (connection: BattleConnection) => void }) {
   const { t } = useTranslation()
-  const noticeText = (notice: Notice): string | null => notice && (('key' in notice) ? t(notice.key) : notice.raw)
   const [snapshot, setSnapshot] = useState<EnemySnapshot | null>(null)
   const [error, setError] = useState<Notice>(null)
   const [reconnecting, setReconnecting] = useState(false)
   const [connectionError, setConnectionError] = useState<Notice>(null)
   const [session, setSession] = useState(emptyBattleSession)
   const connectionStatus = error ? 'error' : snapshot?.status ?? 'waiting'
-  const connectionMessage = noticeText(error) || snapshot?.message || t('app.battleWaitingMessage')
+  const connectionMessage = noticeText(t, error) || snapshot?.message || t('app.battleWaitingMessage')
   async function reconnect() {
     setReconnecting(true)
     setConnectionError(null)
@@ -103,10 +88,10 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
     <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
     <div role="status" className={`enemy-prototype-status ${candidate ? 'detected' : ''}`}>
       <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : snapshot?.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
-      <span>{noticeText(error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshot?.message || t('enemyPrototype.detail.connecting'))}</span>
+      <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshot?.message || t('enemyPrototype.detail.connecting'))}</span>
     </div>
     {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button className="primary" disabled={reconnecting} onClick={() => { void reconnect() }}>{reconnecting ? t('enemyPrototype.button.connecting') : disconnected ? t('enemyPrototype.button.reconnect') : t('enemyPrototype.button.connect')}</button></div>}
-    {connectionError && <p className="notice" role="alert">{noticeText(connectionError)}</p>}
+    {connectionError && <p className="notice" role="alert">{noticeText(t, connectionError)}</p>}
     {candidate && <div className="battle-participants">
       {activeCandidate ? <BattlePokemon candidate={activeCandidate} pokemon={ownData.pokemon} error={ownData.error} health={ownHealth} stages={ownStages} own /> : <div className="battle-participant own-participant"><h3 className="battle-participant-title">{t('enemyPrototype.ownTitle')}</h3><div className="battle-participant-empty"><strong>{t('enemyPrototype.toBeConfirmed')}</strong><p className="hint">{snapshot?.activeMessage || t('enemyPrototype.noActiveReading')}</p></div></div>}
       <BattlePokemon candidate={candidate} pokemon={enemyData.pokemon} error={enemyData.error} health={enemyHealth} stages={enemyStages} />
