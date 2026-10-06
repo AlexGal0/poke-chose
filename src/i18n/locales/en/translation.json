@@ -512,6 +512,15 @@
     "deliver": "Hand over: {{requested}}",
     "receiveNote": "You receive this Pokémon at level {{level}}. One-time trade with a character."
   },
+  "npcTrades": {
+    "instructions": {
+      "petilil": "Talk to the girl on the upper floor of the two-story house next to the Pokémon Center.",
+      "basculin": "Trade in a house in Driftveil City. You receive a red-striped Basculin.",
+      "emolga": "Talk to the character offering the trade in the house on Route 7.",
+      "munchlax": "Trade in Undella Town, summer only.",
+      "rotom": "Talk to the scientist in the trailer on Route 15."
+    }
+  },
   "ownedEvolutionIcon": {
     "label": "{{name}} evolves from {{ancestors}}, which you have in your team or boxes. May require intermediate stages and evolution conditions. Tap to see the tree."
   },

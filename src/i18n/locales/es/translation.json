@@ -512,6 +512,15 @@
     "deliver": "Entrega: {{requested}}",
     "receiveNote": "Recibes este Pokémon a nivel {{level}}. Intercambio único con un personaje."
   },
+  "npcTrades": {
+    "instructions": {
+      "petilil": "Habla con la chica en la planta superior de la casa de dos pisos junto al Centro Pokémon.",
+      "basculin": "Intercambio en una casa de Ciudad Fayenza. Recibes un Basculin de raya roja.",
+      "emolga": "Habla con el personaje que ofrece el intercambio en la casa de la Ruta 7.",
+      "munchlax": "Intercambio en Pueblo Arenisca, solo durante el verano.",
+      "rotom": "Habla con la científica en la caravana de la Ruta 15."
+    }
+  },
   "ownedEvolutionIcon": {
     "label": "{{name}} evoluciona de {{ancestors}}, que tienes en el equipo o las cajas. Puede requerir etapas intermedias y condiciones de evolución. Pulsa para ver el árbol."
   },

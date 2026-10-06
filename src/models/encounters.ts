@@ -6,7 +6,7 @@ export interface BlackEncounterDetail {
   maxLevel: number
   chance: number | null
   conditions: string[]
-  trade?: { requested: string; instructions: string }
+  trade?: { requested: string; instructionsKey: string }
 }
 export interface EncounterSpecies {
   speciesId: number
