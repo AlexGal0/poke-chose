@@ -21,7 +21,9 @@
     "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
     "wikiTitle": "Look up on WikiDex",
     "retry": "Retry",
-    "speciesCount": "{{count}} species"
+    "speciesCount": "{{count}} species",
+    "previousPage": "← Previous",
+    "nextPage": "Next →"
   },
   "app": {
     "battleWaitingMessage": "Waiting for the battle reader.",
@@ -154,8 +156,6 @@
     "loadingCatalog": "Loading PokéAPI's catalog…",
     "noMatches": "No matches. Try another name or the all-generations catalog.",
     "paginationAriaLabel": "Catalog pages",
-    "previousPage": "← Previous",
-    "nextPage": "Next →",
     "card": {
       "status": {
         "inTeamOrBoxes": "✓ In team/boxes",
@@ -168,5 +168,39 @@
       "loadError": "Couldn't load.",
       "loading": "Loading…"
     }
+  },
+  "saveCollection": {
+    "eyebrow": "03 / TEAM + BOXES",
+    "header": {
+      "count": "{{count}} specimens"
+    },
+    "hintLive": "Pokémon in the team and boxes. Duplicates are shown separately. Boxes refresh every 2 minutes or when you press Refresh collection. PC changes can take a while to appear; the read can take several seconds. This view is read-only.",
+    "hintSave": "Pokémon in the team and boxes. Duplicates are shown separately. It updates when you save in the game. This view is read-only.",
+    "refresh": {
+      "success": "Box read completed.",
+      "genericError": "Couldn't refresh the collection.",
+      "updating": "Refreshing boxes…",
+      "button": "Refresh collection",
+      "connectHint": "Connect the live reader to refresh."
+    },
+    "syncingNotice": "Syncing collection and species data…",
+    "resolveErrorNotice": "Couldn't resolve the collection with PokéAPI. Retrying automatically; the last valid collection is kept.",
+    "staleNotice": "Showing the last valid collection. Check melonDS's status.",
+    "waitingNotice": "Waiting for a valid collection from the save…",
+    "locationLabel": "Location",
+    "locationAll": "Team and all boxes ({{count}})",
+    "locationParty": "Team ({{count}})",
+    "locationBox": "Box {{number}} ({{count}})",
+    "boxFilter": {
+      "filteredCount": "{{filtered}} / {{total}} specimens"
+    },
+    "emptyCollection": "No Pokémon in the team or boxes.",
+    "emptyParty": "No Pokémon in the team.",
+    "emptyBox": "This box is empty.",
+    "noMatches": "No matches with the current filters.",
+    "memberPartySlot": "Team · Slot {{slot}}",
+    "memberBoxSlot": "Box {{box}} · Position {{slot}}",
+    "memberLevel": "Lv. {{level}}",
+    "paginationAriaLabel": "Synced collection pages"
   }
 }

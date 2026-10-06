@@ -21,7 +21,9 @@
     "wikiSearchAria": "Buscar {{name}} en WikiDex (nueva pestaña)",
     "wikiTitle": "Consultar en WikiDex",
     "retry": "Reintentar",
-    "speciesCount": "{{count}} especies"
+    "speciesCount": "{{count}} especies",
+    "previousPage": "← Anterior",
+    "nextPage": "Siguiente →"
   },
   "app": {
     "battleWaitingMessage": "Esperando el lector de combate.",
@@ -154,8 +156,6 @@
     "loadingCatalog": "Cargando catálogo de PokéAPI…",
     "noMatches": "No hay coincidencias. Prueba otro nombre o el catálogo de todas las generaciones.",
     "paginationAriaLabel": "Páginas del catálogo",
-    "previousPage": "← Anterior",
-    "nextPage": "Siguiente →",
     "card": {
       "status": {
         "inTeamOrBoxes": "✓ En equipo/cajas",
@@ -168,5 +168,39 @@
       "loadError": "No se pudo cargar.",
       "loading": "Cargando…"
     }
+  },
+  "saveCollection": {
+    "eyebrow": "03 / EQUIPO + CAJAS",
+    "header": {
+      "count": "{{count}} ejemplares"
+    },
+    "hintLive": "Pokémon del equipo y las cajas. Los duplicados se muestran por separado. Las cajas se actualizan cada 2 minutos o al pulsar Actualizar colección. Los cambios del PC pueden tardar en aparecer; la lectura puede durar varios segundos. Esta vista es de solo lectura.",
+    "hintSave": "Pokémon del equipo y las cajas. Los duplicados se muestran por separado. Se actualiza al guardar en el juego. Esta vista es de solo lectura.",
+    "refresh": {
+      "success": "Lectura de cajas completada.",
+      "genericError": "No se pudo actualizar la colección.",
+      "updating": "Actualizando cajas…",
+      "button": "Actualizar colección",
+      "connectHint": "Conecta el lector en vivo para actualizar."
+    },
+    "syncingNotice": "Sincronizando colección y datos de especies…",
+    "resolveErrorNotice": "No se pudo resolver la colección con PokéAPI. Reintentando automáticamente; se conserva la última colección válida.",
+    "staleNotice": "Mostrando la última colección válida. Comprueba el estado de melonDS.",
+    "waitingNotice": "Esperando una colección válida de la partida…",
+    "locationLabel": "Ubicación",
+    "locationAll": "Equipo y todas las cajas ({{count}})",
+    "locationParty": "Equipo ({{count}})",
+    "locationBox": "Caja {{number}} ({{count}})",
+    "boxFilter": {
+      "filteredCount": "{{filtered}} / {{total}} ejemplares"
+    },
+    "emptyCollection": "No hay Pokémon en el equipo ni en las cajas.",
+    "emptyParty": "No hay Pokémon en el equipo.",
+    "emptyBox": "Esta caja está vacía.",
+    "noMatches": "Sin coincidencias con los filtros actuales.",
+    "memberPartySlot": "Equipo · Espacio {{slot}}",
+    "memberBoxSlot": "Caja {{box}} · Posición {{slot}}",
+    "memberLevel": "Nv. {{level}}",
+    "paginationAriaLabel": "Páginas de colección sincronizada"
   }
 }

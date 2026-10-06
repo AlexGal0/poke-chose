@@ -91,7 +91,7 @@ export function Catalog({ collection, onAdd, readOnly = false, pokedex = null }:
     <p className="hint">{readOnly ? t('catalog.hint2ReadOnly') : t('catalog.hint2Manual')}</p>
     {error ? <div role="alert" className="empty">{t(error)} <button onClick={() => { setError(''); setAttempt(a => a + 1) }}>{t('common.retry')}</button></div> : catalog.length === 0 ? <p className="empty" role="status">{t('catalog.loadingCatalog')}</p> : filtered.length === 0 ? <p className="empty">{t('catalog.noMatches')}</p> : <>
       <div className="pokemon-grid">{filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(entry => <CatalogCard key={entry.id} entry={entry} collected={collection.some(p => p.id === entry.id)} caught={readOnly && pokedex ? pokedex.caughtSpeciesIds.has(entry.id) : null} onAdd={onAdd} readOnly={readOnly} acquisition={acquisition[entry.id]} onRetryAcquisition={() => setAcquisitionAttempt(value => value + 1)} />)}</div>
-      <nav className="pagination" aria-label={t('catalog.paginationAriaLabel')}><button disabled={page === 0} onClick={() => setPage(p => p - 1)}>{t('catalog.previousPage')}</button><span>{page + 1} / {pages}</span><button disabled={page + 1 >= pages} onClick={() => setPage(p => p + 1)}>{t('catalog.nextPage')}</button></nav>
+      <nav className="pagination" aria-label={t('catalog.paginationAriaLabel')}><button disabled={page === 0} onClick={() => setPage(p => p - 1)}>{t('common.previousPage')}</button><span>{page + 1} / {pages}</span><button disabled={page + 1 >= pages} onClick={() => setPage(p => p + 1)}>{t('common.nextPage')}</button></nav>
     </>}
   </section>
 }
