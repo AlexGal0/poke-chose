@@ -251,7 +251,8 @@
       "ownIdentified": "Your Pokémon is identified by the specimen on the field.",
       "waitingMatch": "Waiting for a matching reading of your active Pokémon.",
       "outOfBattle": "Out of battle or no matching reading. The previous rival isn't shown.",
-      "connecting": "Connecting to the prototype…"
+      "connecting": "Connecting to the prototype…",
+      "activeReadFailed": "Couldn't confirm a valid reading of your active Pokémon."
     },
     "button": {
       "connecting": "Connecting…",

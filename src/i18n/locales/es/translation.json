@@ -251,7 +251,8 @@
       "ownIdentified": "Tu Pokémon se identifica por el ejemplar que está en el campo.",
       "waitingMatch": "Esperando una lectura coincidente de tu Pokémon activo.",
       "outOfBattle": "Fuera de combate o sin una lectura coincidente. No se muestra el rival anterior.",
-      "connecting": "Conectando al prototipo…"
+      "connecting": "Conectando al prototipo…",
+      "activeReadFailed": "No se pudo confirmar una lectura válida de tu Pokémon activo."
     },
     "button": {
       "connecting": "Conectando…",
