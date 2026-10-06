@@ -282,5 +282,34 @@
     "seasonalTitle": "These encounters depend on the season. Check the season shown next to each percentage.",
     "seasonalBadge": "By season",
     "valuesTitle": "By method and conditions: {{summary}}. See details in {{detailsLabel}}."
+  },
+  "analysis": {
+    "eyebrow": "04 / KNOW YOUR TEAM",
+    "genVBadge": "Gen V",
+    "onlyTypesHint": "Types only: doesn't include abilities, items, or move effects.",
+    "emptyHint": "Add your first member to see the team analysis.",
+    "insight": {
+      "sharedWeaknesses": "Shared weaknesses",
+      "noSharedWeaknesses": "No shared weaknesses",
+      "noneSuperEffective": "No attacking type is super-effective against two or more members."
+    },
+    "defenseHeading": "Defense",
+    "defenseSubnote": "by attacking type",
+    "multiplierLegend": "Weak: 2× / 4× · Neutral: 1× · Resists: ½× / ¼× · Immune: 0×",
+    "tableCaption": "Defensive effectiveness and multipliers for each member",
+    "table": {
+      "attack": "Attack",
+      "weak": "Weak",
+      "neutral": "Neutral",
+      "resist": "Resists",
+      "immune": "Immune"
+    },
+    "coverageHeading": "Offensive coverage",
+    "coverageCount": "{{count}} / 17 types",
+    "coverageHint": "Individual rival types you can hit super-effectively with your own types. Doesn't guarantee you know a move of that type.",
+    "coverage": {
+      "superEffective": "✓ Super-effective",
+      "noCoverage": "No coverage"
+    }
   }
 }

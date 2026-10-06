@@ -282,5 +282,34 @@
     "seasonalTitle": "Estos encuentros dependen de la estación. Consulta la estación indicada junto a cada porcentaje.",
     "seasonalBadge": "Según estación",
     "valuesTitle": "Según método y condiciones: {{summary}}. Consulta los detalles en {{detailsLabel}}."
+  },
+  "analysis": {
+    "eyebrow": "04 / CONOCE TU EQUIPO",
+    "genVBadge": "Gen V",
+    "onlyTypesHint": "Solo tipos: no incluye habilidades, objetos ni efectos de movimientos.",
+    "emptyHint": "Añade tu primer miembro para ver el análisis del equipo.",
+    "insight": {
+      "sharedWeaknesses": "Debilidades compartidas",
+      "noSharedWeaknesses": "Sin debilidades compartidas",
+      "noneSuperEffective": "Ningún tipo de ataque es supereficaz contra dos o más miembros."
+    },
+    "defenseHeading": "Defensa",
+    "defenseSubnote": "según el tipo de ataque",
+    "multiplierLegend": "Débil: 2× / 4× · Neutral: 1× · Resiste: ½× / ¼× · Inmune: 0×",
+    "tableCaption": "Efectividad defensiva y multiplicadores de cada miembro",
+    "table": {
+      "attack": "Ataque",
+      "weak": "Débil",
+      "neutral": "Neutral",
+      "resist": "Resiste",
+      "immune": "Inmune"
+    },
+    "coverageHeading": "Cobertura ofensiva",
+    "coverageCount": "{{count}} / 17 tipos",
+    "coverageHint": "Tipos rivales individuales que puedes golpear de forma supereficaz con tus tipos propios. No garantiza que conozcas un movimiento de ese tipo.",
+    "coverage": {
+      "superEffective": "✓ Supereficaz",
+      "noCoverage": "Sin cobertura"
+    }
   }
 }
