@@ -21,3 +21,13 @@ test('excludes trades and unavailable or invalid percentages', () => {
   assert.deepEqual(encounterChances([detail(100, 'npc-trade'), detail(null), detail(NaN), detail(Infinity), detail(-1), detail(101)]), [])
   assert.equal(encounterChances([detail(0)])[0].chance, 0)
 })
+
+test('caps grouped percentages at 100 including multiple static map encounters', () => {
+  const encounters = [detail(100, 'static'), detail(100, 'static'), detail(60), detail(50), detail(5)]
+  const groups = encounterChances(encounters)
+  assert.equal(groups.length, 2)
+  assert.equal(groups.find(group => group.method === 'static')?.chance, 100)
+  assert.equal(groups.find(group => group.method === 'walk')?.chance, 100)
+  assert.equal(encounters[1].chance, 100)
+  assert.equal(encounters[3].chance, 50)
+})

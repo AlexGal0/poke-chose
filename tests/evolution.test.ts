@@ -1,12 +1,22 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { blackWhiteEvolutionTree, blackWhiteMethods, evolutionMethodLabel } from '../src/domain/evolution.ts'
+import { blackWhiteEvolutionTree, blackWhiteMethods, evolutionMethodLabel, ownedPreevolutions } from '../src/domain/evolution.ts'
 import { getEvolutionTree } from '../src/api/evolution.ts'
 import type { EvolutionDetail, EvolutionLink } from '../src/models/evolution.ts'
 
 const resource = (kind: string, id: number, name: string) => ({ name, url: `https://pokeapi.co/api/v2/${kind}/${id}/` })
 const method = (overrides: Partial<EvolutionDetail> = {}): EvolutionDetail => ({ trigger: resource('evolution-trigger', 1, 'level-up'), version_group: resource('version-group', 1, 'red-blue'), ...overrides })
 const node = (id: number, name: string, methods: EvolutionDetail[] = [], children: EvolutionLink[] = []): EvolutionLink => ({ species: resource('pokemon-species', id, name), evolution_details: methods, evolves_to: children })
+
+test('owned preevolutions include intermediate ancestors but exclude siblings, descendants and the target itself', () => {
+  const root = blackWhiteEvolutionTree(node(60, 'poliwag', [], [node(61, 'poliwhirl', [method()], [node(62, 'poliwrath', [method()]), node(186, 'politoed', [method()])])]))!
+  assert.deepEqual(ownedPreevolutions(root, 62, new Set([60, 61, 62, 186])).map(node => node.speciesId), [60, 61])
+  assert.deepEqual(ownedPreevolutions(root, 62, new Set([60])).map(node => node.speciesId), [60])
+  assert.deepEqual(ownedPreevolutions(root, 62, new Set([186])), [])
+  assert.deepEqual(ownedPreevolutions(root, 60, new Set([61, 62])), [])
+  assert.deepEqual(ownedPreevolutions(root, 999, new Set([60])), [])
+  assert.deepEqual(ownedPreevolutions(root, 62, new Set()), [])
+})
 
 test('family starts from base even when opening an evolved species; level requirements are attached to children', () => {
   const root = blackWhiteEvolutionTree(node(498, 'tepig', [], [node(499, 'pignite', [method({ min_level: 17 })], [node(500, 'emboar', [method({ min_level: 36 })])])]))!

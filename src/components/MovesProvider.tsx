@@ -1,3 +1,4 @@
+import { pokemonDisplayName } from '../domain/pokemon-names'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Pokemon } from '../models/pokemon'
@@ -30,7 +31,7 @@ function MovesDialog({ pokemon, onClose }: { pokemon: Pokemon; onClose: () => vo
     return event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom
   }
   return <dialog ref={dialog} className="moves-dialog" aria-labelledby="moves-title" onCancel={onClose} onPointerDown={event => { outsideStart.current = outside(event) }} onClick={event => { if (outsideStart.current && outside(event)) onClose(); outsideStart.current = false }}>
-    <div className="moves-heading"><div><span className="eyebrow">BLACK / WHITE · POR NIVEL</span><h2 id="moves-title">Movimientos de <span className="moves-pokemon-name">{pokemon.nickname || pokemon.name}</span></h2>{pokemon.nickname && <p className="hint moves-pokemon-name">{pokemon.name}</p>}</div><button type="button" onClick={onClose} autoFocus aria-label="Cerrar movimientos">✕</button></div>
+    <div className="moves-heading"><div><span className="eyebrow">BLACK / WHITE · POR NIVEL</span><h2 id="moves-title">Movimientos de <span className="moves-pokemon-name">{pokemon.nickname || pokemonDisplayName(pokemon.name)}</span></h2>{pokemon.nickname && <p className="hint moves-pokemon-name">{pokemonDisplayName(pokemon.name)}</p>}</div><button type="button" onClick={onClose} autoFocus aria-label="Cerrar movimientos">✕</button></div>
     <p className="hint">Aprendizaje por nivel de esta especie y forma en Negro/Blanco. PP base, sin aumentos. No incluye MT, MO, tutores ni crianza.</p>
     {!moves && !error && <p role="status" className="empty">Cargando movimientos…</p>}
     {error && <p role="alert" className="notice">No se pudieron cargar los movimientos. <button onClick={() => { setError(false); setAttempt(value => value + 1) }}>Reintentar</button></p>}

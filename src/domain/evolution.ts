@@ -3,6 +3,18 @@ import { zoneLabel } from './black-zones.ts'
 
 export const evolutionResourceId = (url: string) => Number(url.split('/').filter(Boolean).at(-1))
 
+export function ownedPreevolutions(root: EvolutionNode, speciesId: number, ownedSpeciesIds: ReadonlySet<number>): EvolutionNode[] {
+  function find(node: EvolutionNode, ancestors: EvolutionNode[]): EvolutionNode[] | null {
+    if (node.speciesId === speciesId) return ancestors.filter(ancestor => ownedSpeciesIds.has(ancestor.speciesId))
+    for (const child of node.children) {
+      const result = find(child, [...ancestors, node])
+      if (result) return result
+    }
+    return null
+  }
+  return find(root, []) ?? []
+}
+
 export function blackWhiteMethods(details: EvolutionDetail[]): EvolutionDetail[] {
   return details.filter(detail => {
     // version_group denotes introduction, not exclusive availability.

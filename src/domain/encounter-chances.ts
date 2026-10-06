@@ -7,7 +7,7 @@ export function encounterChances(details: readonly BlackEncounterDetail[]) {
     const conditions = [...detail.conditions].sort()
     const key = JSON.stringify([detail.area, detail.method, conditions])
     const group = groups.get(key)
-    if (group) group.chance += detail.chance
+    if (group) group.chance = Math.min(100, group.chance + detail.chance)
     else groups.set(key, { key, area: detail.area, method: detail.method, conditions, chance: detail.chance })
   }
   return [...groups.values()].sort((a, b) => b.chance - a.chance)

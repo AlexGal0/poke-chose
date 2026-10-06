@@ -1,3 +1,4 @@
+import { pokemonDisplayName } from '../domain/pokemon-names'
 import { useState } from 'react'
 import type { ActivePokemonCandidate, BattleTeamMember } from '../domain/enemy-prototype'
 import { consistentBattleHealth } from '../domain/enemy-prototype'
@@ -16,14 +17,14 @@ function BattleTeamCard({ member, active, enemy }: { member: BattleTeamMember; a
   const next = updateBattleHealthDisplay(display, identity, health)
   if (next !== display) setDisplay(next)
   const fainted = next.health?.currentHp === 0 && !member.isEgg
-  const name = member.nickname || pokemon?.name || `Especie #${member.speciesId}`
+  const name = member.nickname || (pokemon ? pokemonDisplayName(pokemon.name) : null) || `Especie #${member.speciesId}`
   const matchup = pokemon && enemy && !member.isEgg ? battleTypeAdvantage(pokemon.types, enemy.types) : null
   const matchupLabel = matchup ? { advantage: 'Ventaja por tipos', disadvantage: 'Desventaja por tipos', neutral: 'Encuentro neutral por tipos', mutual: 'Ambos tienen ataques supereficaces por tipo' }[matchup.status] : 'Esperando tipos'
   const matchupDetail = matchup ? `${matchupLabel}. Mejor multiplicador propio: ${matchup.outgoing}×; del rival: ${matchup.incoming}×. Sin movimientos, habilidades ni objetos.` : matchupLabel
   return <article className={`battle-team-member ${active ? 'active' : ''} ${fainted ? 'fainted' : ''}`} aria-label={`Espacio ${member.slot + 1}: ${name}`}>
     <div className="battle-team-member-heading"><span>#{member.slot + 1}</span><strong>{member.isEgg ? 'Huevo' : fainted ? 'Debilitado' : active ? 'En combate' : 'Reserva'}</strong></div>
-    <div className="battle-team-sprite">{member.isEgg ? <span aria-label="Huevo">○</span> : pokemon?.sprite ? <img src={pokemon.sprite} width="72" height="72" alt={pokemon.name} /> : <span aria-hidden="true">?</span>}</div>
-    <div className="battle-team-identity"><h4 className={!member.nickname ? 'battle-team-species' : undefined}>{name}</h4><small className={member.nickname && pokemon ? 'battle-team-species' : undefined}>{member.nickname && pokemon ? pokemon.name : error ? 'Especie no disponible' : '\u00a0'}</small></div>
+    <div className="battle-team-sprite">{member.isEgg ? <span aria-label="Huevo">○</span> : pokemon?.sprite ? <img src={pokemon.sprite} width="72" height="72" alt={pokemonDisplayName(pokemon.name)} /> : <span aria-hidden="true">?</span>}</div>
+    <div className="battle-team-identity"><h4 className={!member.nickname ? 'battle-team-species' : undefined}>{name}</h4><small className={member.nickname && pokemon ? 'battle-team-species' : undefined}>{member.nickname && pokemon ? pokemonDisplayName(pokemon.name) : error ? 'Especie no disponible' : '\u00a0'}</small></div>
     <p className="hint battle-team-level">{member.isEgg ? 'No participa en combate' : <><span>Lv. {member.level}</span><span className={`battle-team-matchup ${matchup?.status ?? 'pending'}`} role="img" tabIndex={0} title={matchupDetail} aria-label={matchupDetail}>
       {matchup ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d={matchup.status === 'mutual' ? 'M7 20V4m-4 4 4-4 4 4M17 4v16m-4-4 4 4 4-4' : matchup.status === 'neutral' ? 'M5 9h14M5 15h14' : 'M12 20V4m-6 6 6-6 6 6'} />

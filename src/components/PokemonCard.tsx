@@ -1,3 +1,4 @@
+import { pokemonDisplayName } from '../domain/pokemon-names'
 import type { Pokemon } from '../models/pokemon'
 import { useContext } from 'react'
 import { DiscoveryContext } from './discovery-context'
@@ -24,14 +25,14 @@ export function PokemonCard({ pokemon, children, footer, selected = false, captu
     <span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span>
     {showGender && <GenderIcon speciesId={pokemon.id} />}
     {selected && <span className="in-team">En equipo</span>}
-    <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemon.name} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? 'Sprite no disponible' : 'Pokémon aún no descubierto'}>?</span>}</div>
+    <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? 'Sprite no disponible' : 'Pokémon aún no descubierto'}>?</span>}</div>
     <div className="pokemon-identity">
-      <h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemon.name}</h3>
-      {pokemon.nickname && <p className="pokemon-species-name">{pokemon.name}</p>}
+      <h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>
+      {pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}
     </div>
     <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
     {fainted && <span className="fainted-status">Debilitado</span>}
-    <div className="card-actions">{children}{showMoves && <button type="button" className="moves-button" onClick={() => openMoves(pokemon)} aria-label={`Ver movimientos por nivel de ${pokemon.nickname || pokemon.name}`}>☷ Movimientos</button>}{showEvolution && <EvolutionButton speciesId={pokemon.id} name={pokemon.name} />}</div>
+    <div className="card-actions">{children}{showMoves && <button type="button" className="moves-button" onClick={() => openMoves(pokemon)} aria-label={`Ver movimientos por nivel de ${pokemon.nickname || pokemonDisplayName(pokemon.name)}`}>☷ Movimientos</button>}{showEvolution && <EvolutionButton speciesId={pokemon.id} name={pokemonDisplayName(pokemon.name)} />}</div>
     {footer}
   </article>
 }

@@ -1,3 +1,4 @@
+import { pokemonDisplayName, pokemonWikiUrl } from '../domain/pokemon-names'
 import { useEffect, useState } from 'react'
 import { getBlackEncounters, getBlackLocations } from '../api/encounters'
 import { getCatalog } from '../api/pokeapi'
@@ -18,6 +19,8 @@ import { encounterMethod } from '../domain/encounter-methods'
 import { CapturedPokemonIcon } from './CapturedPokemonIcon'
 import { EvolutionButton } from './EvolutionButton'
 import { GenderIcon } from './GenderIcon'
+import { OwnedEvolutionIcon } from './OwnedEvolutionIcon'
+import type { CollectionPokemon, PartyPokemon } from '../models/party'
 import { areaLabel, orderBlackZones, searchBlackZones, zoneLabel, zoneStage, ZONE_STAGES } from '../domain/black-zones'
 import './CaptureChecklist.css'
 
@@ -38,12 +41,13 @@ function PokedexLookup({ pokedex }: { pokedex: PokedexState }) {
     <p className="hint">Registro global de tu partida, incluidas especies obtenidas por evolución o intercambio. Esta consulta no indica encuentros salvajes en Black.</p>
     <input type="search" value={query} onChange={event => setQuery(event.target.value)} aria-label="Consultar especie en la Pokédex" placeholder="Nombre o número, ej. minccino o 572" />
     {error && <p className="notice">No se pudo cargar el catálogo. <button onClick={() => { setError(false); setAttempt(value => value + 1) }}>Reintentar catálogo</button></p>}
-    <ul>{matches.map(row => <li key={row.id} data-dex-species-id={row.id}><strong className="species-name">{row.name}</strong> · {pokedex.caughtSpeciesIds.has(row.id) ? '✓ Capturado' : '○ No capturado'} <small>({pokedex.seenSpeciesIds.has(row.id) ? 'Visto' : 'No visto'})</small></li>)}</ul>
+    <ul>{matches.map(row => <li key={row.id} data-dex-species-id={row.id}><strong className="species-name">{pokemonDisplayName(row.name)}</strong> · {pokedex.caughtSpeciesIds.has(row.id) ? '✓ Capturado' : '○ No capturado'} <small>({pokedex.seenSpeciesIds.has(row.id) ? 'Visto' : 'No visto'})</small></li>)}</ul>
     {query && !matches.length && catalog.length > 0 && <p className="hint">Sin coincidencias.</p>}
   </details>
 }
 
-export function CaptureChecklist({ pokedex, enabled, stale }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean }) {
+export function CaptureChecklist({ pokedex, enabled, stale, collection, team }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean; collection: readonly CollectionPokemon[] | null; team: readonly PartyPokemon[] }) {
+  const ownedSpeciesIds = new Set([...(collection ?? []), ...team].filter(pokemon => !pokemon.isEgg).map(pokemon => pokemon.speciesId))
   const [access, setAccess] = useState(loadEncounterAccess)
   const [accessSaved, setAccessSaved] = useState(true)
   const [locations, setLocations] = useState<EncounterLocation[]>([{ id: 358, name: 'unova-route-3' }])
@@ -121,7 +125,7 @@ export function CaptureChecklist({ pokedex, enabled, stale }: { pokedex: Pokedex
         <div className="capture-subzone-heading"><h3 id={`capture-subzone-${index}`}>{areaLabel(subzone.area)}</h3><span className="count">{subzone.rows.length} especies</span></div>
         <ul className="capture-list">{subzone.rows.map(row => {
         const caught = pokedex?.caughtSpeciesIds.has(row.speciesId)
-        return <li key={row.speciesId} className={caught ? 'captured' : ''} data-species-id={row.speciesId}><a className="pokemon-wiki" href={`https://www.wikidex.net/wiki/${encodeURIComponent(row.name.charAt(0).toUpperCase() + row.name.slice(1))}`} target="_blank" rel="noopener noreferrer" aria-label={`Buscar ${row.name} en WikiDex (nueva pestaña)`} title="Consultar en WikiDex"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a><div className="capture-identity">{caught && <CapturedPokemonIcon speciesId={row.speciesId} />}<div><strong className="species-name">{row.name}</strong><GenderIcon speciesId={row.speciesId} /><span className="capture-state">{!pokedex ? '— Sin datos de la partida' : caught ? '✓ Capturado' : '○ No capturado'}<span className="capture-level"> · Nv. mín. {minimumEncounterLevel(row) ?? "?"}</span></span></div></div><EncounterMethods details={row.details} /><NpcTradeDetails details={row.details} /><div className="capture-chance-summary"><EncounterChances details={row.details} /><EncounterOpportunity speciesId={row.speciesId} locationId={selected} details={row.details} /></div><EvolutionButton speciesId={row.speciesId} name={row.name} compact /><details><summary>Encuentros en Black</summary>{row.details.map((detail, index) => <p key={index}>{areaLabel(detail.area)} · {encounterMethod(detail.method).label} · Nv. {detail.minLevel}–{detail.maxLevel}{detail.method !== "npc-trade" && detail.chance !== null ? ` · ${detail.chance}%` : ""}{detail.conditions.length ? ` · ${detail.conditions.join(', ')}` : ''}</p>)}</details></li>
+        return <li key={row.speciesId} className={caught ? 'captured' : ''} data-species-id={row.speciesId}><a className="pokemon-wiki" href={pokemonWikiUrl(row.name)} target="_blank" rel="noopener noreferrer" aria-label={`Buscar ${pokemonDisplayName(row.name)} en WikiDex (nueva pestaña)`} title="Consultar en WikiDex"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a><div className="capture-identity">{(caught || pokedex?.seenSpeciesIds.has(row.speciesId)) && <CapturedPokemonIcon speciesId={row.speciesId} />}<div><strong className="species-name">{pokemonDisplayName(row.name)}</strong><GenderIcon speciesId={row.speciesId} /><span className="capture-state">{!pokedex ? '— Sin datos de la partida' : caught ? '✓ Capturado' : '○ No capturado'}<span className="capture-level"> · Nv. mín. {minimumEncounterLevel(row) ?? "?"}</span></span></div></div><EncounterMethods details={row.details} /><NpcTradeDetails details={row.details} /><div className="capture-chance-summary"><EncounterChances details={row.details} /><EncounterOpportunity speciesId={row.speciesId} locationId={selected} details={row.details} />{pokedex && !caught && ownedSpeciesIds.size > 0 && <OwnedEvolutionIcon speciesId={row.speciesId} name={row.name} ownedSpeciesIds={ownedSpeciesIds} />}</div><EvolutionButton speciesId={row.speciesId} name={row.name} compact /><details><summary>Encuentros en Black</summary>{row.details.map((detail, index) => <p key={index}>{areaLabel(detail.area)} · {encounterMethod(detail.method).label} · Nv. {detail.minLevel}–{detail.maxLevel}{detail.method !== "npc-trade" && detail.chance !== null ? ` · ${detail.chance}%` : ""}{detail.conditions.length ? ` · ${detail.conditions.join(', ')}` : ''}</p>)}</details></li>
       })}</ul></section>)}
       <p className="hint">Incluye los encuentros de PokéAPI para Black y los cinco intercambios con personajes del juego original. No es una lista de todas las especies obtenibles por evolución, eventos o intercambio con otros jugadores. Los porcentajes corresponden a cada tabla/condición; no se aplican a los intercambios con personajes.</p>
     </>}

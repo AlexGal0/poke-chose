@@ -5,6 +5,13 @@ import { getCatalog, getPokemon, pokemonFromResponse } from '../src/api/pokeapi.
 
 const varieties = ['frillish-male', 'frillish-female', 'jellicent-male', 'jellicent-female', 'basculin-red-striped', 'darmanitan-standard', 'deoxys-normal', 'wormadam-plant', 'giratina-altered', 'shaymin-land', 'tornadus-incarnate', 'thundurus-incarnate', 'landorus-incarnate', 'keldeo-ordinary', 'meloetta-aria']
 
+test('display names start sentences with a capital letter without changing stored species slugs', () => {
+  for (const [slug, expected] of [['pikachu', 'Pikachu'], ['cinccino', 'Cinccino'], ['porygon-z', 'Porygon-Z'], ['mr-mime', 'Mr. Mime'], ['frillish-female', 'Frillish']]) {
+    assert.equal(`${pokemonDisplayName(slug)} evoluciona de otra especie.`, `${expected} evoluciona de otra especie.`)
+    assert.equal(pokemonDisplayName(pokemonDisplayName(slug)), expected)
+  }
+})
+
 test('variety names resolve to species titles and WikiDex pages without dropping meaningful hyphens', () => {
   for (const variety of varieties) {
     const species = variety.split('-')[0]
