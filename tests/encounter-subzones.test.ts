@@ -2,15 +2,18 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { encounterSubzones } from '../src/domain/encounter-subzones.ts'
 import { encounterChances } from '../src/domain/encounter-chances.ts'
-import { areaLabel } from '../src/domain/black-zones.ts'
 import { captureChecklist } from '../src/domain/checklist.ts'
 import type { EncounterSpecies } from '../src/models/encounters.ts'
+import i18n from '../src/i18n/index.ts'
+import { areaLabel } from '../src/i18n/zones.ts'
+
+const t = i18n.getFixedT('es')
 
 test('Desert Resort sections isolate Sandile percentages without duplicating the zone count', () => {
   const rows: EncounterSpecies[] = [{ speciesId: 551, name: 'sandile', details: ['desert-resort-entrance', 'desert-resort-area'].flatMap(area => [20, 10, 5, 4, 1].map(chance => ({ area, chance, method: 'walk', conditions: [], minLevel: 19, maxLevel: 22 }))) }]
   const sections = encounterSubzones(rows)
   assert.equal(sections.length, 2)
-  assert.deepEqual(sections.map(section => areaLabel(section.area)), ['Zona Desierto · Entrada', 'Zona Desierto · Zona principal'])
+  assert.deepEqual(sections.map(section => areaLabel(t, section.area)), ['Zona Desierto · Entrada', 'Zona Desierto · Zona principal'])
   for (const section of sections) {
     assert.equal(section.rows.length, 1)
     assert.equal(section.rows[0].details.length, 5)

@@ -50,11 +50,15 @@ lerna-debug.log*
 *.bak
 *.orig
 
+# Personal, not-shared project instructions (CLAUDE.md stays tracked/shared)
+CLAUDE.local.md
+
 # Editor, agent and operating system files
 .vscode/*
 !.vscode/extensions.json
 .idea/
 .agents/
+.claude/
 .codex/
 .DS_Store
 Thumbs.db

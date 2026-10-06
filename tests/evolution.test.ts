@@ -1,12 +1,17 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { blackWhiteEvolutionTree, blackWhiteMethods, evolutionMethodLabel, ownedPreevolutions } from '../src/domain/evolution.ts'
+import { blackWhiteEvolutionTree, blackWhiteMethods, evolutionMethodFacts, ownedPreevolutions } from '../src/domain/evolution.ts'
 import { getEvolutionTree } from '../src/api/evolution.ts'
 import type { EvolutionDetail, EvolutionLink } from '../src/models/evolution.ts'
+import i18n from '../src/i18n/index.ts'
+import { evolutionMethodLabel as composeEvolutionMethodLabel } from '../src/i18n/evolution.ts'
 
+const t = i18n.getFixedT('es')
 const resource = (kind: string, id: number, name: string) => ({ name, url: `https://pokeapi.co/api/v2/${kind}/${id}/` })
 const method = (overrides: Partial<EvolutionDetail> = {}): EvolutionDetail => ({ trigger: resource('evolution-trigger', 1, 'level-up'), version_group: resource('version-group', 1, 'red-blue'), ...overrides })
 const node = (id: number, name: string, methods: EvolutionDetail[] = [], children: EvolutionLink[] = []): EvolutionLink => ({ species: resource('pokemon-species', id, name), evolution_details: methods, evolves_to: children })
+const evolutionMethodLabel = (detail: EvolutionDetail, targetId: number, labels: Record<string, string> = {}) =>
+  composeEvolutionMethodLabel(t, evolutionMethodFacts(detail, targetId, labels))
 
 test('owned preevolutions include intermediate ancestors but exclude siblings, descendants and the target itself', () => {
   const root = blackWhiteEvolutionTree(node(60, 'poliwag', [], [node(61, 'poliwhirl', [method()], [node(62, 'poliwrath', [method()]), node(186, 'politoed', [method()])])]))!
@@ -83,7 +88,7 @@ test('API resolves complete family, reuses Pokémon service, localizes items and
     return new Response(JSON.stringify(body))
   }
   try {
-    const tree = await getEvolutionTree(573)
+    const tree = await getEvolutionTree(573, 'es')
     assert.equal(tree.root.speciesId, 572)
     assert.deepEqual(Object.keys(tree.pokemon), ['572', '573'])
     assert.equal(tree.labels[stone.url], 'Piedra Día')
@@ -94,5 +99,5 @@ test('API resolves complete family, reuses Pokémon service, localizes items and
 test('API errors propagate so the dialog can show retry without affecting the team', async () => {
   const original = globalThis.fetch
   globalThis.fetch = async () => new Response('', { status: 503 })
-  try { await assert.rejects(getEvolutionTree(498), /PokéAPI/) } finally { globalThis.fetch = original }
+  try { await assert.rejects(getEvolutionTree(498, 'es'), /PokéAPI/) } finally { globalThis.fetch = original }
 })

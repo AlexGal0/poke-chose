@@ -2,7 +2,12 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { matchesCollectionLocation, matchesCollectionTags } from '../src/domain/collection-search.ts'
 import type { Pokemon } from '../src/models/pokemon.ts'
+import i18n from '../src/i18n/index.ts'
+import { typeLabel } from '../src/i18n/types.ts'
 
+const t = i18n.getFixedT('es')
+const label = (type: Parameters<typeof typeLabel>[1]) => typeLabel(t, type)
+const tags = (pokemon: Pokemon, query: string) => matchesCollectionTags(pokemon, query, label)
 const pokemon: Pokemon = { id: 1, name: 'bulbasaur', sprite: null, types: ['grass', 'poison'] }
 
 test('collection location filters separate party and all 24 boxes using zero-based box IDs', () => {
@@ -26,7 +31,7 @@ test('box selection combines with existing name and type tags without losing dup
     { ...pokemon, location: 'box' as const, box: 1 },
     { ...pokemon, location: 'party' as const, box: null },
   ]
-  const filter = (box: number, query: string) => collection.filter(member => matchesCollectionLocation(member, box) && matchesCollectionTags(member, query))
+  const filter = (box: number, query: string) => collection.filter(member => matchesCollectionLocation(member, box) && tags(member, query))
   assert.equal(filter(0, 'bulba planta').length, 2)
   assert.equal(filter(1, 'bulba planta').length, 1)
   assert.equal(filter(0, 'fuego').length, 0)
@@ -35,19 +40,19 @@ test('box selection combines with existing name and type tags without losing dup
 })
 
 test('collection tags combine partial names, exact IDs and both types with AND', () => {
-  assert.equal(matchesCollectionTags(pokemon, ''), true)
-  assert.equal(matchesCollectionTags(pokemon, ' BULBA, #1 planta veneno '), true)
-  assert.equal(matchesCollectionTags(pokemon, 'grass poison'), true)
-  assert.equal(matchesCollectionTags(pokemon, 'planta fuego'), false)
-  assert.equal(matchesCollectionTags(pokemon, '10'), false)
-  assert.equal(matchesCollectionTags(pokemon, 'pla'), false)
-  assert.equal(matchesCollectionTags(pokemon, '#'), false)
+  assert.equal(tags(pokemon, ''), true)
+  assert.equal(tags(pokemon, ' BULBA, #1 planta veneno '), true)
+  assert.equal(tags(pokemon, 'grass poison'), true)
+  assert.equal(tags(pokemon, 'planta fuego'), false)
+  assert.equal(tags(pokemon, '10'), false)
+  assert.equal(tags(pokemon, 'pla'), false)
+  assert.equal(tags(pokemon, '#'), false)
 })
 
 test('collection type tags ignore case and accents, using exact Spanish or English type names', () => {
   const electric: Pokemon = { id: 25, name: 'pikachu', sprite: null, types: ['electric'] }
-  assert.equal(matchesCollectionTags(electric, 'ELÉCTRICO'), true)
-  assert.equal(matchesCollectionTags(electric, '#electrico, electric pika'), true)
-  assert.equal(matchesCollectionTags(electric, 'elect'), false)
-  assert.equal(matchesCollectionTags(electric, 'agua'), false)
+  assert.equal(tags(electric, 'ELÉCTRICO'), true)
+  assert.equal(tags(electric, '#electrico, electric pika'), true)
+  assert.equal(tags(electric, 'elect'), false)
+  assert.equal(tags(electric, 'agua'), false)
 })

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { loadTheme } from './storage/theme'
 import './themes.css'
+import './i18n/index.ts'
 
 document.documentElement.dataset.theme = loadTheme()
 

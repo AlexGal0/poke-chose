@@ -10,7 +10,7 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
   }
   if (addresses.length) validateAddresses()
   let reader = null
-  let snapshot = { status: 'waiting', message: 'Conecta el lector de combate.', candidates: [], updatedAt: null }
+  let snapshot = { status: 'waiting', message: 'waitingConnect', candidates: [], updatedAt: null }
   let timer
   let sampling = Promise.resolve()
   let connecting = null
@@ -80,14 +80,14 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
         enemyVitalsCandidates = []
       }
       if (closed || token !== generation) return
-      snapshot = { status: 'ready', message: 'Lectura experimental del combate activa.', candidates, activeCandidates, activeMessage, battleTeam, enemyVitalsCandidates, enemyVitalsMessage, battleActive, updatedAt: new Date().toISOString() }
+      snapshot = { status: 'ready', message: 'active', candidates, activeCandidates, activeMessage, battleTeam, enemyVitalsCandidates, enemyVitalsMessage, battleActive, updatedAt: new Date().toISOString() }
       await config.onSample?.(snapshot)
       if (!closed && token === generation) timer = setTimeout(() => { sampling = sample(token) }, config.pollMs ?? 2000)
     } catch (error) {
       if (closed || token !== generation) return
       current?.close()
       reader = null
-      snapshot = { status: 'error', message: `Lectura de combate desconectada: ${error.message}. Pulsa Reconectar combate.`, candidates: [], updatedAt: new Date().toISOString() }
+      snapshot = { status: 'error', message: 'disconnected', candidates: [], updatedAt: new Date().toISOString() }
       await config.onSample?.(snapshot)
     }
   }
@@ -97,7 +97,7 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
     await sampling
     clearTimeout(timer)
     if (closed) throw new Error('El servicio de combate está cerrado.')
-    snapshot = { status: 'waiting', message: 'Conectando con melonDS…', candidates: [], updatedAt: null }
+    snapshot = { status: 'waiting', message: 'connecting', candidates: [], updatedAt: null }
     try {
       if (!reader || reader.socket?.destroyed) {
         reader?.close()
@@ -115,7 +115,7 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
       if (!closed && token === generation) {
         reader?.close()
         reader = null
-        snapshot = { status: 'error', message: error.message, candidates: [], updatedAt: new Date().toISOString() }
+        snapshot = { status: 'error', message: 'disconnected', candidates: [], updatedAt: new Date().toISOString() }
       }
       throw error
     }
@@ -162,11 +162,14 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
       try { if (req.headers.origin) originAllowed = ['127.0.0.1', 'localhost'].includes(new URL(req.headers.origin).hostname) } catch { originAllowed = false }
       if (!originAllowed || req.headers['content-type'] !== 'application/json') { res.writeHead(403).end(); return }
       req.resume()
-      const action = req.url === '/enemy-api/research' ? research() : connect()
+      const isResearch = req.url === '/enemy-api/research'
+      const action = isResearch ? research() : connect()
       action.then(result => {
-        res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(result ?? { message: 'Lectura de combate conectada.' }))
+        res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify(result ?? { message: 'connected' }))
       }, error => {
-        res.writeHead(503, { 'Content-Type': 'application/json' }).end(JSON.stringify({ message: error.message }))
+        // The research endpoint is a dev-only tool never reached by the app UI, so its
+        // error detail doesn't need a translation code the way /connect's does.
+        res.writeHead(503, { 'Content-Type': 'application/json' }).end(JSON.stringify({ message: isResearch ? error.message : 'connectFailed' }))
       })
       return
     }

@@ -1,22 +1,12 @@
 import type { EnemyCandidate } from './enemy-prototype.ts'
 
-export const BATTLE_STAT_LABELS = {
-  attack: 'Ataque',
-  defense: 'Defensa',
-  specialAttack: 'Ataque esp.',
-  specialDefense: 'Defensa esp.',
-  speed: 'Velocidad',
-  accuracy: 'Precisión',
-  evasion: 'Evasión',
+export const BATTLE_STAT_SHORT_LABELS = {
+  attack: 'ATK', defense: 'DEF', specialAttack: 'SPA', specialDefense: 'SPD', speed: 'SPE', accuracy: 'ACC', evasion: 'EVA',
 } as const
 
-export type BattleStat = keyof typeof BATTLE_STAT_LABELS
+export type BattleStat = keyof typeof BATTLE_STAT_SHORT_LABELS
 export type BattleStatStages = Record<BattleStat, number>
-export const BATTLE_STATS = Object.keys(BATTLE_STAT_LABELS) as BattleStat[]
-
-export const BATTLE_STAT_SHORT_LABELS: Record<BattleStat, string> = {
-  attack: 'ATK', defense: 'DEF', specialAttack: 'SPA', specialDefense: 'SPD', speed: 'SPE', accuracy: 'ACC', evasion: 'EVA',
-}
+export const BATTLE_STATS = Object.keys(BATTLE_STAT_SHORT_LABELS) as BattleStat[]
 
 export interface StatStagesDisplay { identity: string; stages: BattleStatStages | null }
 

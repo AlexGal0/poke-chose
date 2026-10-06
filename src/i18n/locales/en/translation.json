@@ -1,0 +1,789 @@
+{
+  "theme": {
+    "label": "Theme",
+    "options": {
+      "base": "Original",
+      "pokemon": "Pokémon",
+      "pokemonDark": "Pokémon (dark)",
+      "fiesta": "Fiesta 🎉"
+    },
+    "saveFailed": "Couldn't save the theme in this browser."
+  },
+  "locale": {
+    "label": "Language",
+    "options": {
+      "es": "Spanish",
+      "en": "English"
+    },
+    "saveFailed": "Couldn't save the language in this browser."
+  },
+  "types": {
+    "normal": "Normal",
+    "fire": "Fire",
+    "water": "Water",
+    "electric": "Electric",
+    "grass": "Grass",
+    "ice": "Ice",
+    "fighting": "Fighting",
+    "poison": "Poison",
+    "ground": "Ground",
+    "flying": "Flying",
+    "psychic": "Psychic",
+    "bug": "Bug",
+    "rock": "Rock",
+    "ghost": "Ghost",
+    "dragon": "Dragon",
+    "dark": "Dark",
+    "steel": "Steel"
+  },
+  "common": {
+    "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
+    "wikiTitle": "Look up on WikiDex",
+    "retry": "Retry",
+    "speciesCount": "{{count}} species",
+    "previousPage": "← Previous",
+    "nextPage": "Next →",
+    "hpAbbr": "HP",
+    "hpAria": "Hit points"
+  },
+  "app": {
+    "battleWaitingMessage": "Waiting for the battle reader.",
+    "gameGeneration": "GENERATION V",
+    "intro": {
+      "eyebrow": "YOUR GAME. YOUR STRATEGY.",
+      "heading": "A team with <balance>balance.</balance>",
+      "description": "Organize your collection and find the right combination for your next battle."
+    },
+    "saveStatus": {
+      "failed": "⚠ Couldn't save",
+      "ok": "● Saved locally"
+    },
+    "storageNotice": "The browser can't save, or storage is full. Changes made this session could be lost on reload.",
+    "connectionSettingsSummary": "Connection source and controls",
+    "team": {
+      "eyebrow": "READY FOR BATTLE",
+      "heading": "Your team",
+      "eggLabel": "Egg",
+      "level": "Lv. {{level}}",
+      "removeButton": "Remove from team",
+      "chooseAria": "Choose a Pokémon from the collection",
+      "emptySlotLabel": "Slot {{number}}",
+      "readOnlyMemberHint": "No member in this save",
+      "chooseFromCollection": "Choose from your collection",
+      "hint": {
+        "readOnly": "Read-only team. Eggs don't take part in the analysis. Coverage still uses STAB.",
+        "full": "Team full. Remove a member to swap it for another.",
+        "editable": "Choose up to 6 Pokémon from your collection. Swap them anytime."
+      }
+    },
+    "tabs": {
+      "ariaLabel": "PokéChose sections",
+      "captures": "Captures by zone",
+      "catalog": "Browse catalog",
+      "collection": "My collection",
+      "analysis": "Type balance",
+      "types": "Type chart",
+      "battle": "Battle"
+    },
+    "collection": {
+      "eyebrow": "03 / YOUR COMPANIONS",
+      "heading": "My collection",
+      "count": "{{count}} Pokémon",
+      "emptyIntro": "Your adventure starts with your first Pokémon.",
+      "exploreCatalogButton": "Browse catalog",
+      "noMatches": "No matches in your collection.",
+      "removeFromTeam": "− Remove from manual team",
+      "teamFull": "Manual team full",
+      "addToTeam": "+ Add to manual team",
+      "removeFromCollection": "Remove from collection"
+    },
+    "footer": {
+      "credits": "Data and sprites from <pokeapiLink>PokéAPI</pokeapiLink> · Collection saved in this browser"
+    }
+  },
+  "captureChecklist": {
+    "pokedexLookup": {
+      "summary": "Look up a species in the Pokédex · {{caught}} caught / {{seen}} seen",
+      "hint": "Global record for this save, including species obtained by evolution or trade. This lookup doesn't indicate wild encounters in Black.",
+      "inputAriaLabel": "Look up a species in the Pokédex",
+      "placeholder": "Name or number, e.g. minccino or 572",
+      "loadError": "Couldn't load the catalog.",
+      "retryButton": "Retry catalog",
+      "noMatches": "No matches.",
+      "seenLabel": "Seen",
+      "notSeenLabel": "Not seen"
+    },
+    "status": {
+      "caught": "✓ Caught",
+      "notCaught": "○ Not caught",
+      "noData": "— No save data"
+    },
+    "header": {
+      "count": "Caught: {{caught}} / {{total}}",
+      "hint1": "Caught at any point in this save according to the Pokédex. Seeing a species doesn't complete the checklist; evolving or releasing it doesn't erase its capture.",
+      "hint2": "↗ Higher chance in a later zone · 📍 Only natural zone registered in PokéAPI for Black. Hover or tap the icon to see the comparison. No icon: there's no comparable upgrade or unique registered zone."
+    },
+    "disabledNotice": "Select melonDS Save to check your save's Pokédex.",
+    "zoneSearchLabel": "Search zone",
+    "zoneSearchPlaceholder": "E.g. Mistralton, cave or route 6",
+    "zoneLabel": "Zone",
+    "previousZoneAria": "Previous zone",
+    "previousZoneTitle": "Previous zone: {{zone}}",
+    "firstZoneTitle": "First zone in the list",
+    "currentZoneGroupLabel": "Current zone",
+    "nextZoneAria": "Next zone",
+    "nextZoneTitle": "Next zone: {{zone}}",
+    "lastZoneTitle": "Last zone in the list",
+    "zoneSaveFailed": "The zone changed, but couldn't be saved for next session.",
+    "zonesFoundCount": "{{count}} zones found.",
+    "noZoneMatches": "No matches. The current zone is kept; change or clear the search.",
+    "zoneOrderHint": "Suggested first-visit order in Pokémon Black. Optional detours are grouped separately; you can go back to earlier zones.",
+    "equipment": {
+      "legend": "My items and abilities",
+      "surf": "I can use Surf (HM03)",
+      "superRod": "I have the Super Rod",
+      "hint": "Mark your resources manually; they're remembered in this browser. Surf requires a Pokémon that can use it. The filter affects encounter methods, it doesn't check obstacles or progress to reach the zone.",
+      "hiddenCount": "Hidden: {{count}} species with no enabled methods.",
+      "filterSaveFailed": "The filter works, but couldn't be saved for next session."
+    },
+    "errors": {
+      "loadZones": "Couldn't load the zone list from PokéAPI.",
+      "loadEncounters": "Couldn't load Black's encounters. Check your connection."
+    },
+    "retryEncountersButton": "Retry encounters",
+    "waitingForPokedex": "Waiting for a valid Pokédex from the save. Capture status is still unknown.",
+    "staleNotice": "Showing the last valid Pokédex; check the sync status.",
+    "loadingEncounters": "Loading Black's encounters…",
+    "noEncountersWithAccess": "No encounters with your current resources in this zone. Enable Surf or the Super Rod if you have them.",
+    "noEncountersRegistered": "PokéAPI has no registered encounters for Pokémon Black in this zone.",
+    "minLevel": "· Min. lvl. {{level}}",
+    "encountersSummary": "Encounters in Black",
+    "levelRange": "Lv. {{min}}–{{max}}",
+    "footerHint": "Includes PokéAPI's encounters for Black and the five trades with in-game characters. It's not a list of every species obtainable by evolution, events, or trading with other players. Percentages correspond to each table/condition; they don't apply to trades with characters."
+  },
+  "catalog": {
+    "eyebrow": "01 / EXPLORE",
+    "heading": "Find your Pokémon",
+    "searchAriaLabel": "Search Pokémon by name",
+    "searchPlaceholder": "Search by name, e.g. oshawott",
+    "scopeAriaLabel": "Pokémon catalog",
+    "scopeUnova": "Unova · Gen V",
+    "scopeAll": "All · Gen I–V",
+    "hintReadOnly": "Green: Pokémon in your team/boxes or ever caught according to the Pokédex, even if you've evolved or released them. Switch to Manual to manage your manual collection.",
+    "hintManual": "Green: Pokémon in your manual collection. Add the ones available in your save. One entry per species.",
+    "hint2ReadOnly": "Images reveal once you see or catch a species according to your Pokédex. Hover, tap or focus the icons to check its ways to obtain it in Black. There may be several routes; ❔ marks unconfirmed information.",
+    "hint2Manual": "Images reveal once you see or catch a species by adding it to your manual collection. Hover, tap or focus the icons to check its ways to obtain it in Black. There may be several routes; ❔ marks unconfirmed information.",
+    "loadError": "Couldn't load the catalog. Check your connection.",
+    "loadingCatalog": "Loading PokéAPI's catalog…",
+    "noMatches": "No matches. Try another name or the all-generations catalog.",
+    "paginationAriaLabel": "Catalog pages",
+    "card": {
+      "status": {
+        "inTeamOrBoxes": "✓ In team/boxes",
+        "inCollection": "✓ In collection",
+        "everCaught": "✓ Caught at some point",
+        "noPokedexData": "— No Pokédex data",
+        "notCaught": "○ Not caught"
+      },
+      "addButton": "+ Collection",
+      "loadError": "Couldn't load.",
+      "loading": "Loading…"
+    }
+  },
+  "saveCollection": {
+    "eyebrow": "03 / TEAM + BOXES",
+    "header": {
+      "count": "{{count}} specimens"
+    },
+    "hintLive": "Pokémon in the team and boxes. Duplicates are shown separately. Boxes refresh every 2 minutes or when you press Refresh collection. PC changes can take a while to appear; the read can take several seconds. This view is read-only.",
+    "hintSave": "Pokémon in the team and boxes. Duplicates are shown separately. It updates when you save in the game. This view is read-only.",
+    "refresh": {
+      "success": "Box read completed.",
+      "genericError": "Couldn't refresh the collection.",
+      "updating": "Refreshing boxes…",
+      "button": "Refresh collection",
+      "connectHint": "Connect the live reader to refresh."
+    },
+    "syncingNotice": "Syncing collection and species data…",
+    "resolveErrorNotice": "Couldn't resolve the collection with PokéAPI. Retrying automatically; the last valid collection is kept.",
+    "staleNotice": "Showing the last valid collection. Check melonDS's status.",
+    "waitingNotice": "Waiting for a valid collection from the save…",
+    "locationLabel": "Location",
+    "locationAll": "Team and all boxes ({{count}})",
+    "locationParty": "Team ({{count}})",
+    "locationBox": "Box {{number}} ({{count}})",
+    "boxFilter": {
+      "filteredCount": "{{filtered}} / {{total}} specimens"
+    },
+    "emptyCollection": "No Pokémon in the team or boxes.",
+    "emptyParty": "No Pokémon in the team.",
+    "emptyBox": "This box is empty.",
+    "noMatches": "No matches with the current filters.",
+    "memberPartySlot": "Team · Slot {{slot}}",
+    "memberBoxSlot": "Box {{box}} · Position {{slot}}",
+    "memberLevel": "Lv. {{level}}",
+    "paginationAriaLabel": "Synced collection pages"
+  },
+  "enemyPrototype": {
+    "eyebrow": "BATTLE / PROTOTYPE 5",
+    "heading": "Pokémon in battle",
+    "experimentalBadge": "Experimental",
+    "errors": {
+      "reconnectFailed": "Couldn't reconnect the battle reader.",
+      "prototypeUnavailable": "The enemy-reading prototype is unavailable.",
+      "invalidResponse": "Invalid prototype response.",
+      "readFailed": "Couldn't read the prototype."
+    },
+    "messages": {
+      "waitingConnect": "Connect the battle reader.",
+      "connecting": "Connecting to melonDS…",
+      "active": "Experimental battle reading active.",
+      "disconnected": "Battle reading disconnected. Press Reconnect battle."
+    },
+    "status": {
+      "disconnected": "Battle reader disconnected",
+      "bothDetected": "Both Pokémon detected",
+      "rivalDetected": "Rival detected",
+      "noRivalConfirmed": "No rival confirmed",
+      "waitingRead": "Waiting for a reading"
+    },
+    "detail": {
+      "ownIdentified": "Your Pokémon is identified by the specimen on the field.",
+      "waitingMatch": "Waiting for a matching reading of your active Pokémon.",
+      "outOfBattle": "Out of battle or no matching reading. The previous rival isn't shown.",
+      "connecting": "Connecting to the prototype…",
+      "activeReadFailed": "Couldn't confirm a valid reading of your active Pokémon."
+    },
+    "button": {
+      "connecting": "Connecting…",
+      "reconnect": "Reconnect battle",
+      "connect": "Connect battle"
+    },
+    "ownTitle": "Your active Pokémon",
+    "toBeConfirmed": "To be confirmed",
+    "noActiveReading": "No valid reading yet of the Pokémon on the field.",
+    "detailsSummary": "Reading and multiplier information",
+    "hints": {
+      "overview": "Your active Pokémon, the rival, and your team's health in single battles. Experimental melonDS reading.",
+      "multiplier": "Each multiplier corresponds to an attack of that type against the defender's types. Doesn't include STAB, moves, abilities, or items.",
+      "weaknesses": "Weaknesses show every type that deals super-effective damage to that Pokémon in Generation V, even if the opponent doesn't have that type.",
+      "strengths": "Strengths show resistances (0.5× or 0.25×) and immunities (0×) by type. Stat changes are kept during transient readings and update once a new reading is confirmed."
+    }
+  },
+  "connectionIndicator": {
+    "label": {
+      "manual": "Manual mode",
+      "connected": "Readers connected",
+      "partial": "Partial connection",
+      "disconnected": "No active connection",
+      "waiting": "Waiting for connection"
+    },
+    "statusAria": "Connection status: {{label}}. View details",
+    "manualHint": "Your team and collection are saved in this browser. Select melonDS to connect a reader.",
+    "sourceLive": "Team and collection",
+    "sourceSave": "melonDS Save",
+    "sourceStatus": "{{source}}: {{status}}",
+    "connected": "connected",
+    "noActiveReading": "no active reading",
+    "battleLabel": "Battle",
+    "battleDisconnected": "disconnected",
+    "battleWaiting": "waiting for connection",
+    "lastReading": "Last team reading: {{time}}",
+    "goToControlsButton": "Go to connection controls"
+  },
+  "evolutionDialog": {
+    "orBranch": "Or: ",
+    "queriedSpecies": "Queried species",
+    "heading": "Evolution tree",
+    "closeAria": "Close evolution tree",
+    "loading": "Loading evolution family…",
+    "loadError": "Couldn't load the evolution. Check your connection to PokéAPI.",
+    "readingHint": "Read the tree from left to right. Each relation shows how it evolves into the next species in Black/White. Alternative branches are shown one below the other.",
+    "scrollAria": "Evolution family; scroll horizontally to see every stage",
+    "noEvolutionsHint": "This species has no evolutions or pre-evolutions in Generation V."
+  },
+  "encounterChances": {
+    "describeBase": "{{method}}: {{chance}}% · {{area}}",
+    "describeConditionsSuffix": " · {{conditions}}",
+    "ariaLabel": "Appearance percentages: {{summary}}",
+    "label": "Appearance",
+    "seasonalTitle": "These encounters depend on the season. Check the season shown next to each percentage.",
+    "seasonalBadge": "By season",
+    "valuesTitle": "By method and conditions: {{summary}}. See details in {{detailsLabel}}."
+  },
+  "analysis": {
+    "eyebrow": "04 / KNOW YOUR TEAM",
+    "genVBadge": "Gen V",
+    "onlyTypesHint": "Types only: doesn't include abilities, items, or move effects.",
+    "emptyHint": "Add your first member to see the team analysis.",
+    "insight": {
+      "sharedWeaknesses": "Shared weaknesses",
+      "noSharedWeaknesses": "No shared weaknesses",
+      "noneSuperEffective": "No attacking type is super-effective against two or more members."
+    },
+    "defenseHeading": "Defense",
+    "defenseSubnote": "by attacking type",
+    "multiplierLegend": "Weak: 2× / 4× · Neutral: 1× · Resists: ½× / ¼× · Immune: 0×",
+    "tableCaption": "Defensive effectiveness and multipliers for each member",
+    "table": {
+      "attack": "Attack",
+      "weak": "Weak",
+      "neutral": "Neutral",
+      "resist": "Resists",
+      "immune": "Immune"
+    },
+    "coverageHeading": "Offensive coverage",
+    "coverageCount": "{{count}} / 17 types",
+    "coverageHint": "Individual rival types you can hit super-effectively with your own types. Doesn't guarantee you know a move of that type.",
+    "coverage": {
+      "superEffective": "✓ Super-effective",
+      "noCoverage": "No coverage"
+    }
+  },
+  "typeChart": {
+    "eyebrow": "REFERENCE / GENERATION V",
+    "typesCount": "17 types",
+    "hint": "Rows: attacking type. Columns: defending type. Each cell shows damage against a single type. In Pokémon Black, Steel resists Ghost and Dark.",
+    "legend": {
+      "superEffective": "Super-effective",
+      "neutral": "Neutral",
+      "notVeryEffective": "Not very effective",
+      "immune": "Immune"
+    },
+    "matrixAria": "Type matrix, scrollable horizontally",
+    "tableCaption": "Damage multipliers in Generation V: attacking rows and defending columns",
+    "axis": {
+      "defense": "Defense →",
+      "attack": "Attack ↓"
+    },
+    "cellTitle": "{{attacker}} → {{defender}}: {{multiplier}}"
+  },
+  "acquisitionIcons": {
+    "retryError": "Couldn't check how to obtain it. Retry",
+    "groupAria": "Ways to obtain it in Pokémon Black",
+    "loadingLabel": "Checking ways to obtain it…"
+  },
+  "acquisition": {
+    "label": {
+      "capture": "Catchable in Pokémon Black. Check the zones and encounter conditions.",
+      "static": "Fixed encounter in Pokémon Black; may require progress or special conditions.",
+      "gift": "Gift in Pokémon Black; may depend on a choice or special conditions.",
+      "egg": "Gift egg in Pokémon Black.",
+      "fossil": "Revive a fossil at the museum in Nacrene City. Your choice and progress may limit its availability.",
+      "npc-trade": "Trade with a character in Pokémon Black; requires the requested Pokémon.",
+      "evolution": "Generation V evolution. You need its pre-evolution; check the tree for the requirements.",
+      "trade-evolution": "Trade evolution. May require holding an item or trading for a specific species.",
+      "breed": "Breeding: get an egg from compatible parents. Some species require Incense; you need to obtain the parents.",
+      "external": "No direct way to obtain it in the normal Black game: bring the species or its family from another game via trade or transfer.",
+      "event": "Event or special distribution; not guaranteed to still be available. Can also be received from another player.",
+      "unknown": "Unconfirmed way to obtain it: no direct route is on record. This doesn't prove it's only obtainable by evolving or trading."
+    }
+  },
+  "saveSync": {
+    "sourceLabel": "Team source",
+    "sourceManual": "Manual",
+    "sourceSave": "melonDS Save",
+    "sourceLive": "melonDS live (experimental)",
+    "lastValidReading": "Last valid reading: {{time}}",
+    "staleDataHint": "Data out of date. Connect the reader to refresh it.",
+    "button": {
+      "requesting": "Requesting…",
+      "reconnect": "Reconnect reader",
+      "connect": "Connect reader",
+      "pause": "Pause reading"
+    },
+    "connectError": "Couldn't connect.",
+    "liveHint": "Reads the team, boxes, and Pokédex without saving. After a Reset or reopening melonDS, press Reconnect reader. Syncing can take several seconds.",
+    "saveHint": "Set up <configFile>save.config.local.json</configFile> and run <bridgeCommand>npm run bridge</bridgeCommand>. It syncs when the game saves to the .sav file. The manual team is kept."
+  },
+  "sources": {
+    "connectingBridge": "Connecting to the local bridge…",
+    "invalidResponseSave": "Invalid response from melonDS Save.",
+    "invalidResponseLive": "Invalid response from melonDS live.",
+    "partyResolveFailed": "Party read; couldn't resolve PokéAPI. Retrying automatically; the last team is kept.",
+    "loadingSpeciesData": "Party read · loading species data…",
+    "save": {
+      "label": "melonDS Save",
+      "connectedWaiting": "melonDS: connected · waiting for the save…",
+      "bridgeDisconnected": "Bridge disconnected. Automatic reconnection; the last team is kept.",
+      "messages": {
+        "waiting": "Waiting for the save file…",
+        "missing": "Save file not found. Waiting for it to appear…",
+        "readError": "Couldn't read the save file; retrying…",
+        "readyBackup": "Primary copy invalid. Showing the valid BW backup; waiting for recovery.",
+        "readyUpdated": "Save updated · watching for changes…",
+        "unconfigured": "Set up save.config.local.json or MELONDS_SAVE_PATH and restart the bridge."
+      }
+    },
+    "live": {
+      "label": "melonDS live",
+      "controlFailed": "Couldn't contact the live reading service.",
+      "disconnected": "Live service disconnected. The last data is kept.",
+      "refreshFailed": "Couldn't refresh the boxes. Check the live reader.",
+      "notConnected": "Connect the live reader before refreshing the collection.",
+      "inactive": "The live reader is no longer active.",
+      "messages": {
+        "pressConnect": "Press Connect to read melonDS.",
+        "connecting": "Connecting to melonDS…",
+        "readyActive": "Live reading active · boxes refresh every 2 minutes or when you update the collection.",
+        "readyBoxesFailed": "Team and Pokédex updated. Couldn't refresh the boxes; retry from My Collection.",
+        "connectionLost": "Connection to melonDS lost. Press Reconnect; the last data is kept.",
+        "waitingUnstable": "Waiting for a stable read; previous data hasn't changed.",
+        "missingConfig": "Memory addresses in live.config.local.json aren't configured.",
+        "connectFailed": "Couldn't connect. Check GDB and press Reconnect.",
+        "stopping": "Stopping the reader; the last data is kept.",
+        "paused": "Reading paused. Press Reconnect to resume; the last data is kept."
+      }
+    }
+  },
+  "encounterOpportunity": {
+    "uniqueLabel": "Only zone with natural encounters registered for this species in Black. Doesn't include gifts, evolution, or trades.",
+    "laterLabel": "Higher chance in later zones of the suggested order, with the same method and conditions: {{alternatives}}. Percentages are per individual table; they don't add up. Current Surf/Super Rod filters apply to the compared method.",
+    "failedLabel": "Couldn't compare every zone. Tap to retry.",
+    "pendingLabel": "Checking encounters in Black's other zones…",
+    "alternativeBase": "{{zone}} ({{stage}}): {{current}}% → {{chance}}% · {{method}}"
+  },
+  "evolutionButton": {
+    "viewTreeAria": "View {{name}}'s evolution tree",
+    "viewTreeTitle": "View evolution tree",
+    "label": "↗ Evolutions"
+  },
+  "collectionSearch": {
+    "searchAria": "Search My collection by tags",
+    "placeholder": "Species, nickname, number, or types",
+    "hint": "Combine tags with spaces or commas. All must match. Tap a type to add it.",
+    "activeTagsAria": "Active tags",
+    "removeTagAria": "Remove tag {{tag}}",
+    "clear": "Clear",
+    "filterByTypeAria": "Filter by type"
+  },
+  "encounterMethods": {
+    "groupAria": "Encounter methods",
+    "unknownLabel": "{{method}}",
+    "unknownDescription": "Method registered by PokéAPI: {{method}}.",
+    "list": {
+      "walk": { "label": "Walk · grass / ground", "description": "Walk through normal grass or across a cave or indoor floor." },
+      "dark-grass": { "label": "Dark grass", "description": "Walk through dark grass; two Pokémon can appear at once." },
+      "grass-spots": { "label": "Moving grass patch", "description": "Step into a patch of grass that's moving." },
+      "cave-spots": { "label": "Dust cloud", "description": "Step into a dust cloud in a cave." },
+      "bridge-spots": { "label": "Shadow on a bridge", "description": "Approach a shadow that appears on a bridge." },
+      "surf": { "label": "Surf", "description": "Move across water using Surf." },
+      "surf-spots": { "label": "Surf · moving water", "description": "Use Surf on a patch of water that's moving." },
+      "old-rod": { "label": "Fishing · Old Rod", "description": "Fish with the Old Rod." },
+      "good-rod": { "label": "Fishing · Good Rod", "description": "Fish with the Good Rod." },
+      "super-rod": { "label": "Fishing · Super Rod", "description": "Fish with the Super Rod in normal water." },
+      "super-rod-spots": { "label": "Fishing · moving water", "description": "Fish with the Super Rod on a patch of water that's moving." },
+      "gift": { "label": "Gift", "description": "Receive a Pokémon as a gift." },
+      "gift-egg": { "label": "Gift egg", "description": "Receive an egg as a gift." },
+      "static": { "label": "Static encounter", "description": "A Pokémon placed at a specific spot, instead of a random encounter." },
+      "npc-trade": { "label": "Trade with a character", "description": "Get a Pokémon by trading with an in-game character." },
+      "roaming-grass": { "label": "Roamer · grass", "description": "Find a Pokémon that roams between zones, in grass." },
+      "roaming-water": { "label": "Roamer · water", "description": "Find a Pokémon that roams between zones, in water." },
+      "rock-smash": { "label": "Rock Smash", "description": "Break a rock using Rock Smash." },
+      "headbutt": { "label": "Headbutt", "description": "Hit a tree using Headbutt." }
+    }
+  },
+  "encounterSeasons": {
+    "list": {
+      "season-spring": "Spring",
+      "season-summer": "Summer",
+      "season-autumn": "Autumn",
+      "season-winter": "Winter"
+    }
+  },
+  "gender": {
+    "genderless": "Genderless species",
+    "male": "Male-only species",
+    "female": "Female-only species",
+    "both": "The species can be male or female"
+  },
+  "moves": {
+    "category": {
+      "physical": "Physical",
+      "special": "Special",
+      "status": "Status",
+      "unconfirmed": "Unconfirmed"
+    },
+    "noDescription": "Description not available.",
+    "descriptionSource": "Text from {{version}}",
+    "versionGroup": {
+      "black-2-white-2": "Black 2/White 2",
+      "heartgold-soulsilver": "HeartGold/SoulSilver",
+      "platinum": "Platinum",
+      "diamond-pearl": "Diamond/Pearl",
+      "x-y": "X/Y",
+      "omega-ruby-alpha-sapphire": "Omega Ruby/Alpha Sapphire",
+      "emerald": "Emerald",
+      "firered-leafgreen": "FireRed/LeafGreen",
+      "ruby-sapphire": "Ruby/Sapphire",
+      "sun-moon": "Sun/Moon",
+      "ultra-sun-ultra-moon": "Ultra Sun/Ultra Moon",
+      "sword-shield": "Sword/Shield",
+      "brilliant-diamond-shining-pearl": "Brilliant Diamond/Shining Pearl",
+      "scarlet-violet": "Scarlet/Violet"
+    }
+  },
+  "genderIcon": {
+    "unconfirmed": "Species' sex not confirmed. Tap to retry.",
+    "loading": "Checking the species' possible sexes…"
+  },
+  "heldItem": {
+    "none": "No item",
+    "retryTitle": "Retry the item lookup",
+    "retryLabel": "Item unavailable · Retry",
+    "loading": "Checking item…"
+  },
+  "movesDialog": {
+    "eyebrow": "BLACK / WHITE · BY LEVEL",
+    "heading": "{{name}}'s moves",
+    "closeAria": "Close moves",
+    "hint": "Level-up learnset for this species and form in Black/White. Base PP, no boosts. Doesn't include TMs, HMs, tutors, or breeding.",
+    "loading": "Loading moves…",
+    "loadError": "Couldn't load the moves.",
+    "tableCaption": "Black/White moves sorted by level",
+    "table": {
+      "level": "Level",
+      "move": "Move",
+      "type": "Type",
+      "category": "Category",
+      "pp": "PP",
+      "description": "Description"
+    },
+    "initialLevel": "Start",
+    "typeUnconfirmed": "Unconfirmed",
+    "noMoves": "No level-up moves registered for this form in Black/White."
+  },
+  "npcTradeDetails": {
+    "deliver": "Hand over: {{requested}}",
+    "receiveNote": "You receive this Pokémon at level {{level}}. One-time trade with a character."
+  },
+  "npcTrades": {
+    "instructions": {
+      "petilil": "Talk to the girl on the upper floor of the two-story house next to the Pokémon Center.",
+      "basculin": "Trade in a house in Driftveil City. You receive a red-striped Basculin.",
+      "emolga": "Talk to the character offering the trade in the house on Route 7.",
+      "munchlax": "Trade in Undella Town, summer only.",
+      "rotom": "Talk to the scientist in the trailer on Route 15."
+    }
+  },
+  "ownedEvolutionIcon": {
+    "label": "{{name}} evolves from {{ancestors}}, which you have in your team or boxes. May require intermediate stages and evolution conditions. Tap to see the tree."
+  },
+  "teamVitals": {
+    "noData": "No data",
+    "noHpData": "No HP data",
+    "valueOfMax": "{{current}} of {{max}}",
+    "expAria": "Experience toward the next level",
+    "maxLevel": "Max level",
+    "remainingToLevelUp": "{{count}} to level up",
+    "noExpData": "No experience data"
+  },
+  "battleHealthBar": {
+    "unconfirmed": "HP to be confirmed"
+  },
+  "battlePokemon": {
+    "enemyTitle": "Enemy Pokémon",
+    "speciesPlaceholder": "Species #{{id}} · Lv. {{level}}",
+    "loadError": "Couldn't load the species' information.",
+    "loading": "Loading species information…"
+  },
+  "battleTeam": {
+    "speciesPlaceholder": "Species #{{id}}",
+    "inBattle": "In battle",
+    "reserve": "Reserve",
+    "speciesUnavailable": "Species unavailable",
+    "notInBattle": "Not taking part in battle",
+    "memberAria": "Slot {{slot}}: {{name}}",
+    "healthAria": "{{name}}'s hit points",
+    "heading": "Your team's health",
+    "waitingReading": "Waiting for a reading of the battle team…",
+    "legend": "↑ Advantage · ↓ Disadvantage · ↕ Both super-effective · = Neutral · Types only, Gen V",
+    "matchup": {
+      "advantage": "Type advantage",
+      "disadvantage": "Type disadvantage",
+      "neutral": "Neutral type matchup",
+      "mutual": "Both have super-effective attacks by type",
+      "waiting": "Waiting for types"
+    },
+    "matchupDetail": "{{label}}. Best own multiplier: {{outgoing}}×; rival's: {{incoming}}×. No moves, abilities, or items."
+  },
+  "battleTypeMatchup": {
+    "matchesRival": "Matches one of the rival's types",
+    "matchesOwn": "Matches one of your Pokémon's types",
+    "immune": "Immune by type",
+    "waitingTypes": "Waiting for types…",
+    "ownAria": "Your weaknesses and strengths",
+    "rivalAria": "Rival's weaknesses and strengths",
+    "ownWeaknessesHeading": "Your weaknesses",
+    "rivalWeaknessesHeading": "Rival's weaknesses",
+    "noWeaknesses": "No weaknesses by type",
+    "strengthsHeading": "Strengths",
+    "strengthsSubnote": "· Resistances and immunities",
+    "noStrengths": "No resistances or immunities by type",
+    "matchLegend": "★ Matches a type {{target}}",
+    "targetRival": "of the rival",
+    "targetOwn": "of your Pokémon"
+  },
+  "battleStatStages": {
+    "caption": "Stat changes",
+    "unconfirmed": "No confirmed data",
+    "unchanged": "No changes",
+    "raised_one": "Raised {{count}} level",
+    "raised_other": "Raised {{count}} levels",
+    "lowered_one": "Lowered {{count}} level",
+    "lowered_other": "Lowered {{count}} levels",
+    "hint": "Changes to be confirmed",
+    "stat": {
+      "attack": "Attack",
+      "defense": "Defense",
+      "specialAttack": "Sp. Atk.",
+      "specialDefense": "Sp. Def.",
+      "speed": "Speed",
+      "accuracy": "Accuracy",
+      "evasion": "Evasion"
+    }
+  },
+  "zones": {
+    "noNameVerified": "Zone with no verified name",
+    "stage": {
+      "story": "Story",
+      "optional": "Optional",
+      "postLeague": "After the League",
+      "other": "Other places"
+    },
+    "area": {
+      "main": "{{zone}} · Main area",
+      "entrance": "{{zone}} · Entrance",
+      "basement": "{{zone}} · Basement {{level}}",
+      "floor": "{{zone}} · Floor {{level}}",
+      "outside": "{{zone}} · Outside",
+      "inside": "{{zone}} · Inside",
+      "suffix": "{{zone}} · {{suffix}}",
+      "unknown": "Subarea · {{raw}}"
+    },
+    "list": {
+      "nuvema-town": "Nuvema Town",
+      "unova-route-1": "Route 1",
+      "accumula-town": "Accumula Town",
+      "unova-route-2": "Route 2",
+      "striaton-city": "Striaton City",
+      "dreamyard": "Dreamyard",
+      "unova-route-3": "Route 3",
+      "wellspring-cave": "Wellspring Cave",
+      "nacrene-city": "Nacrene City",
+      "pinwheel-forest": "Pinwheel Forest",
+      "skyarrow-bridge": "Skyarrow Bridge",
+      "castelia-city": "Castelia City",
+      "unova-route-4": "Route 4",
+      "desert-resort": "Desert Resort",
+      "relic-castle": "Relic Castle",
+      "nimbasa-city": "Nimbasa City",
+      "unova-route-5": "Route 5",
+      "driftveil-drawbridge": "Driftveil Drawbridge",
+      "driftveil-city": "Driftveil City",
+      "cold-storage": "Cold Storage",
+      "unova-route-6": "Route 6",
+      "chargestone-cave": "Chargestone Cave",
+      "mistralton-city": "Mistralton City",
+      "unova-route-7": "Route 7",
+      "celestial-tower": "Celestial Tower",
+      "twist-mountain": "Twist Mountain",
+      "icirrus-city": "Icirrus City",
+      "dragonspiral-tower": "Dragonspiral Tower",
+      "unova-route-8": "Route 8",
+      "moor-of-icirrus": "Moor of Icirrus",
+      "tubeline-bridge": "Tubeline Bridge",
+      "unova-route-9": "Route 9",
+      "unova-shopping-mall": "Shopping Mall Nine",
+      "opelucid-city": "Opelucid City",
+      "unova-route-10": "Route 10",
+      "unova-victory-road": "Victory Road",
+      "trial-chamber": "Trial Chamber",
+      "unova-pokemon-league": "Pokémon League",
+      "ns-castle": "N's Castle",
+      "liberty-garden": "Liberty Garden",
+      "unity-tower": "Unity Tower",
+      "unova-route-16": "Route 16",
+      "lostlorn-forest": "Lostlorn Forest",
+      "mistralton-cave": "Mistralton Cave",
+      "guidance-chamber": "Guidance Chamber",
+      "rumination-field": "Rumination Field",
+      "unova-route-17": "Route 17",
+      "unova-route-18": "Route 18",
+      "p2-laboratory": "P2 Laboratory",
+      "challengers-cave": "Challenger's Cave",
+      "unova-route-11": "Route 11",
+      "village-bridge": "Village Bridge",
+      "unova-route-12": "Route 12",
+      "lacunosa-town": "Lacunosa Town",
+      "unova-route-13": "Route 13",
+      "giant-chasm": "Giant Chasm",
+      "undella-town": "Undella Town",
+      "undella-bay": "Undella Bay",
+      "abyssal-ruins": "Abyssal Ruins",
+      "unova-route-14": "Route 14",
+      "abundant-shrine": "Abundant Shrine",
+      "black-city": "Black City",
+      "unova-route-15": "Route 15",
+      "poke-transfer-lab": "PokéTransfer Lab",
+      "marvelous-bridge": "Marvelous Bridge",
+      "anville-town": "Anville Town",
+      "royal-unova": "Royal Unova",
+      "gear-station": "Gear Station",
+      "battle-subway": "Battle Subway",
+      "musical-theater": "Musical Theater",
+      "entralink": "Entralink",
+      "entree-forest": "Entree Forest",
+      "accumula-gate": "Access: Accumula Town",
+      "undella-gate": "Access: Undella Town",
+      "nacrene-gate": "Access: Nacrene City",
+      "castelia-gate": "Access: Castelia City",
+      "nimbasa-gate": "Access: Nimbasa City",
+      "opelucid-gate": "Access: Opelucid City",
+      "black-gate": "Access: Black City",
+      "bridge-gate": "Access to a bridge",
+      "route-gate": "Access to a route"
+    }
+  },
+  "evolutionMethod": {
+    "nincadaSpecial": "When Nincada evolves at level 20: a free team slot and a Poké Ball in the bag",
+    "trade": "Trade",
+    "useItem": "Use {{item}}",
+    "useRequiredItem": "Use the required item",
+    "level": "Level {{level}}",
+    "levelUp": "Level up",
+    "heldItem": "holding {{item}}",
+    "highFriendship": "high friendship (220 or more in Gen V)",
+    "minBeauty": "beauty ≥ {{beauty}} (kept when transferred from Gen IV)",
+    "genderFemale": "female",
+    "genderMale": "male",
+    "timeDay": "during the day",
+    "timeNight": "at night",
+    "timeOther": "{{time}}",
+    "knownMove": "knowing {{move}}",
+    "tradeFor": "for {{species}}",
+    "partySpecies": "with {{species}} in the team",
+    "statsAttackLess": "Attack < Defense",
+    "statsAttackEqual": "Attack = Defense",
+    "statsAttackGreater": "Attack > Defense",
+    "location": "at {{zone}}",
+    "mossRock": "next to the Moss Rock",
+    "iceRockBasement": "next to the basement's Ice Rock",
+    "wurmpleRandom": "branch determined by Wurmple's personality; can't be chosen"
+  },
+  "battleShortcut": {
+    "returnToPrevious": "Return to the previous screen",
+    "goTo": "Go to {{destination}}",
+    "detected": "Battle detected",
+    "notConfirmed": "No battle confirmed",
+    "combined": "{{action}} · {{status}}"
+  },
+  "pokemonCard": {
+    "inTeam": "In team",
+    "spriteUnavailable": "Sprite unavailable",
+    "notDiscovered": "Pokémon not yet discovered",
+    "fainted": "Fainted",
+    "movesAria": "View {{name}}'s moves by level",
+    "movesButton": "☷ Moves"
+  }
+}

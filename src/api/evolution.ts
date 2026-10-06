@@ -1,4 +1,4 @@
-import { getPokemon, request } from './pokeapi.ts'
+import { getPokemon, localizedName, request } from './pokeapi.ts'
 import { readCache, writeCache } from '../storage/local.ts'
 import { blackWhiteEvolutionTree, evolutionResourceId } from '../domain/evolution.ts'
 import type { EvolutionLink, EvolutionNode, EvolutionResource, EvolutionTree } from '../models/evolution.ts'
@@ -31,7 +31,7 @@ export async function getEvolutionFamily(species: EvolutionSpecies, signal?: Abo
   return root
 }
 
-export async function getEvolutionTree(speciesId: number, signal?: AbortSignal): Promise<EvolutionTree> {
+export async function getEvolutionTree(speciesId: number, locale: string, signal?: AbortSignal): Promise<EvolutionTree> {
   const species = await getEvolutionSpecies(speciesId, signal)
   const root = await getEvolutionFamily(species, signal)
   const nodes: EvolutionNode[] = []
@@ -47,7 +47,7 @@ export async function getEvolutionTree(speciesId: number, signal?: AbortSignal):
       const path = resource.url.split('/api/v2/')[1]?.replace(/\/$/, '')
       if (!path || !/^(item|move)\/\d+$/.test(path)) throw new Error('Referencia de evolución inválida.')
       const data = await cachedRequest<{ names: { name: string; language: { name: string } }[] }>(path, signal)
-      return [resource.url, data.names.find(name => name.language.name === 'es')?.name ?? resource.name] as const
+      return [resource.url, localizedName(data.names, locale) ?? resource.name] as const
     })),
   ])
   return { root, pokemon: Object.fromEntries(pokemon.map(member => [member.id, member])), labels: Object.fromEntries(localized) }

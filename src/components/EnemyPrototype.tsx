@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { KeyedError, noticeText, toNotice } from '../i18n/notice.ts'
+import type { Notice } from '../i18n/notice.ts'
 import { consistentBattleHealth } from '../domain/enemy-prototype'
 import type { EnemyCandidate, ActivePokemonCandidate, BattleTeamMember } from '../domain/enemy-prototype'
 import { BattlePokemon } from './BattlePokemon'
@@ -23,24 +26,26 @@ interface EnemySnapshot {
 export interface BattleConnection { status: string; message: string; inBattle: boolean }
 
 export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (connection: BattleConnection) => void }) {
+  const { t } = useTranslation()
   const [snapshot, setSnapshot] = useState<EnemySnapshot | null>(null)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<Notice>(null)
   const [reconnecting, setReconnecting] = useState(false)
-  const [connectionError, setConnectionError] = useState('')
+  const [connectionError, setConnectionError] = useState<Notice>(null)
   const [session, setSession] = useState(emptyBattleSession)
   const connectionStatus = error ? 'error' : snapshot?.status ?? 'waiting'
-  const connectionMessage = error || snapshot?.message || 'Esperando el lector de combate.'
+  const snapshotMessage = snapshot ? t(`enemyPrototype.messages.${snapshot.message}`, { defaultValue: snapshot.message }) : null
+  const connectionMessage = noticeText(t, error) || snapshotMessage || t('app.battleWaitingMessage')
   async function reconnect() {
     setReconnecting(true)
-    setConnectionError('')
+    setConnectionError(null)
     try {
       const response = await fetch('/enemy-api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
-      const result = await response.json().catch(() => null) as { message?: string } | null
-      if (!response.ok) throw new Error(result?.message || 'No se pudo reconectar el lector de combate.')
-      setError('')
+      await response.json().catch(() => null)
+      if (!response.ok) throw new KeyedError('enemyPrototype.errors.reconnectFailed')
+      setError(null)
       setSnapshot(null)
     } catch (cause) {
-      setConnectionError(cause instanceof Error ? cause.message : 'No se pudo reconectar el lector de combate.')
+      setConnectionError(toNotice(cause, 'enemyPrototype.errors.reconnectFailed'))
     } finally { setReconnecting(false) }
   }
   useEffect(() => {
@@ -49,16 +54,16 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
     async function poll() {
       try {
         const response = await fetch('/enemy-api/snapshot', { signal: controller.signal })
-        if (!response.ok) throw new Error('El prototipo de lectura del enemigo no está disponible.')
+        if (!response.ok) throw new KeyedError('enemyPrototype.errors.prototypeUnavailable')
         const next = await response.json() as EnemySnapshot
-        if (!Array.isArray(next.candidates) || typeof next.message !== 'string') throw new Error('Respuesta del prototipo inválida.')
+        if (!Array.isArray(next.candidates) || typeof next.message !== 'string') throw new KeyedError('enemyPrototype.errors.invalidResponse')
         if (!controller.signal.aborted) {
           setSnapshot(next)
           setSession(previous => updateBattleSession(previous, next))
-          setError('')
+          setError(null)
         }
       } catch (cause) {
-        if (!controller.signal.aborted) { setSnapshot(null); setError(cause instanceof Error ? cause.message : 'No se pudo leer el prototipo.') }
+        if (!controller.signal.aborted) { setSnapshot(null); setError(toNotice(cause, 'enemyPrototype.errors.readFailed')) }
       }
       if (!controller.signal.aborted) timer = setTimeout(poll, 2000)
     }
@@ -81,25 +86,25 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
   const enemyStages = consistentStatStages(candidate, candidates)
   const disconnected = Boolean(error) || snapshot?.status === 'error'
   return <section className="panel battle-panel" aria-labelledby="enemy-prototype-title">
-    <div className="section-heading"><div><span className="eyebrow">COMBATE / PROTOTIPO 5</span><h2 id="enemy-prototype-title">Pokémon en combate</h2></div><span className="count">Experimental</span></div>
+    <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
     <div role="status" className={`enemy-prototype-status ${candidate ? 'detected' : ''}`}>
-      <strong>{disconnected ? 'Lector de combate desconectado' : activeCandidate ? 'Ambos Pokémon detectados' : candidate ? 'Rival detectado' : snapshot?.status === 'ready' ? 'Sin rival confirmado' : 'Esperando lectura'}</strong>
-      <span>{error || (activeCandidate ? 'Tu Pokémon se identifica por el ejemplar que está en el campo.' : candidate ? 'Esperando una lectura coincidente de tu Pokémon activo.' : snapshot?.status === 'ready' ? 'Fuera de combate o sin una lectura coincidente. No se muestra el rival anterior.' : snapshot?.message || 'Conectando al prototipo…')}</span>
+      <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : snapshot?.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
+      <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshotMessage || t('enemyPrototype.detail.connecting'))}</span>
     </div>
-    {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button className="primary" disabled={reconnecting} onClick={() => { void reconnect() }}>{reconnecting ? 'Conectando…' : disconnected ? 'Reconectar combate' : 'Conectar combate'}</button></div>}
-    {connectionError && <p className="notice" role="alert">{connectionError}</p>}
+    {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button className="primary" disabled={reconnecting} onClick={() => { void reconnect() }}>{reconnecting ? t('enemyPrototype.button.connecting') : disconnected ? t('enemyPrototype.button.reconnect') : t('enemyPrototype.button.connect')}</button></div>}
+    {connectionError && <p className="notice" role="alert">{noticeText(t, connectionError)}</p>}
     {candidate && <div className="battle-participants">
-      {activeCandidate ? <BattlePokemon candidate={activeCandidate} pokemon={ownData.pokemon} error={ownData.error} health={ownHealth} stages={ownStages} own /> : <div className="battle-participant own-participant"><h3 className="battle-participant-title">Tu Pokémon activo</h3><div className="battle-participant-empty"><strong>Por confirmar</strong><p className="hint">{snapshot?.activeMessage || 'Aún no hay una lectura válida del Pokémon en el campo.'}</p></div></div>}
+      {activeCandidate ? <BattlePokemon candidate={activeCandidate} pokemon={ownData.pokemon} error={ownData.error} health={ownHealth} stages={ownStages} own /> : <div className="battle-participant own-participant"><h3 className="battle-participant-title">{t('enemyPrototype.ownTitle')}</h3><div className="battle-participant-empty"><strong>{t('enemyPrototype.toBeConfirmed')}</strong><p className="hint">{snapshot?.activeMessage ? t('enemyPrototype.detail.activeReadFailed') : t('enemyPrototype.noActiveReading')}</p></div></div>}
       <BattlePokemon candidate={candidate} pokemon={enemyData.pokemon} error={enemyData.error} health={enemyHealth} stages={enemyStages} />
       <BattleTypeMatchup own={ownData.pokemon} enemy={enemyData.pokemon} direction="outgoing" />
       <BattleTypeMatchup own={ownData.pokemon} enemy={enemyData.pokemon} direction="incoming" />
     </div>}
     {candidate && <BattleTeam key={enemyIdentity} members={session.team} active={activeCandidate} enemy={enemyData.pokemon} />}
-    <details className="battle-reading-details"><summary>Información de la lectura y los multiplicadores</summary>
-      <p className="hint">Tu Pokémon activo, el rival y la salud de tu equipo en combates individuales. Lectura experimental de melonDS.</p>
-      <p className="hint">Cada multiplicador corresponde a un ataque de ese tipo contra los tipos del defensor. No incluye STAB, movimientos, habilidades ni objetos.</p>
-      <p className="hint">Las debilidades muestran todos los tipos que hacen daño supereficaz a ese Pokémon en Generación V, aunque el oponente no tenga ese tipo.</p>
-      <p className="hint">Las fortalezas muestran resistencias (0.5× o 0.25×) e inmunidades (0×) por tipo. Los cambios de estadísticas se conservan durante lecturas transitorias y se actualizan al confirmarse una nueva lectura.</p>
+    <details className="battle-reading-details"><summary>{t('enemyPrototype.detailsSummary')}</summary>
+      <p className="hint">{t('enemyPrototype.hints.overview')}</p>
+      <p className="hint">{t('enemyPrototype.hints.multiplier')}</p>
+      <p className="hint">{t('enemyPrototype.hints.weaknesses')}</p>
+      <p className="hint">{t('enemyPrototype.hints.strengths')}</p>
     </details>
   </section>
 }

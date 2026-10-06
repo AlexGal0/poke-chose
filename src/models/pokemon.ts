@@ -11,8 +11,3 @@ export interface Pokemon {
 }
 export interface CatalogEntry { id: number; name: string }
 export interface CollectionState { collection: Pokemon[]; teamIds: number[] }
-export const TYPE_LABELS: Record<PokemonType, string> = {
-  normal: 'Normal', fire: 'Fuego', water: 'Agua', electric: 'Eléctrico', grass: 'Planta',
-  ice: 'Hielo', fighting: 'Lucha', poison: 'Veneno', ground: 'Tierra', flying: 'Volador',
-  psychic: 'Psíquico', bug: 'Bicho', rock: 'Roca', ghost: 'Fantasma', dragon: 'Dragón', dark: 'Siniestro', steel: 'Acero',
-}

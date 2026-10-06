@@ -5,7 +5,7 @@ import type { SaveSnapshot } from '../src/models/party.ts'
 
 export function createSaveBridge(savePath: string | null, options: ConstructorParameters<typeof SaveWatcher>[2] = {}) {
   const clients = new Set<ServerResponse>()
-  const unconfigured: SaveSnapshot = { status: 'waiting', message: 'Configura save.config.local.json o MELONDS_SAVE_PATH y reinicia el bridge.', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
+  const unconfigured: SaveSnapshot = { status: 'waiting', message: 'unconfigured', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
   const emit = (snapshot: SaveSnapshot) => {
     const frame = `data: ${JSON.stringify(snapshot)}\n\n`
     for (const client of clients) {

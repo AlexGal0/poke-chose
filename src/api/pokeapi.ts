@@ -14,6 +14,10 @@ export interface PokemonResponse {
   sprites: { versions: { 'generation-v': { 'black-white': { front_default: string | null } } } }
 }
 
+export function localizedName(names: { name: string; language: { name: string } }[], locale: string): string | undefined {
+  return names.find(entry => entry.language.name === locale)?.name ?? names.find(entry => entry.language.name === 'en')?.name
+}
+
 export async function request<T>(path: string, signal?: AbortSignal): Promise<T> {
   const timeout = AbortSignal.timeout(15000)
   const response = await fetch(`${BASE}/${path}`, { signal: signal ? AbortSignal.any([signal, timeout]) : timeout })

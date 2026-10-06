@@ -1,4 +1,4 @@
-import { TYPE_LABELS, type Pokemon } from '../models/pokemon.ts'
+import type { Pokemon, PokemonType } from '../models/pokemon.ts'
 import type { CollectionPokemon } from '../models/party.ts'
 
 export type CollectionLocationFilter = 'all' | 'party' | number
@@ -15,8 +15,8 @@ export function collectionTags(query: string) {
   return query.split(/[\s,]+/).filter(Boolean)
 }
 
-export function matchesCollectionTags(pokemon: Pokemon, query: string) {
-  const types = pokemon.types.flatMap(type => [type, normalizeTag(TYPE_LABELS[type])])
+export function matchesCollectionTags(pokemon: Pokemon, query: string, typeLabel: (type: PokemonType) => string) {
+  const types = pokemon.types.flatMap(type => [type, normalizeTag(typeLabel(type))])
   return collectionTags(query).every(tag => {
     const normalized = normalizeTag(tag)
     return normalized !== '' && (normalizeTag(pokemon.name).includes(normalized) || normalizeTag(pokemon.nickname ?? '').includes(normalized) || String(pokemon.id) === normalized || types.includes(normalized))

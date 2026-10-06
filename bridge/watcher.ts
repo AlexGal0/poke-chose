@@ -16,7 +16,7 @@ interface WatchOptions {
 }
 
 export class SaveWatcher {
-  snapshot: SaveSnapshot = { status: 'waiting', message: 'Esperando el save…', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
+  snapshot: SaveSnapshot = { status: 'waiting', message: 'waiting', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
   private fileWatcher: FSWatcher | null = null
   private timer: ReturnType<typeof setTimeout> | undefined
   private generation = 0
@@ -108,9 +108,9 @@ export class SaveWatcher {
         } catch { /* Both copies invalid. */ }
       }
       const missing = error instanceof Error && 'code' in error && error.code === 'ENOENT'
-      const message = missing ? 'Save no encontrado. Esperando a que aparezca…' : `Error leyendo save: ${error instanceof Error ? error.message : 'error desconocido'}`
-      this.options.log(message)
-      this.publish({ ...this.snapshot, status: missing ? 'missing' : 'error', message })
+      const logMessage = missing ? 'Save no encontrado. Esperando a que aparezca…' : `Error leyendo save: ${error instanceof Error ? error.message : 'error desconocido'}`
+      this.options.log(logMessage)
+      this.publish({ ...this.snapshot, status: missing ? 'missing' : 'error', message: missing ? 'missing' : 'readError' })
       this.schedule(this.options.recoveryMs)
     } finally {
       this.reading = false
@@ -126,7 +126,7 @@ export class SaveWatcher {
     if (boxesChanged) this.options.log(`Cajas actualizadas: ${result.boxes.length} ejemplares almacenados.`)
     if (dexChanged) this.options.log(`Pokédex actualizada: ${pokedex.caughtSpeciesIds.length} capturados / ${pokedex.seenSpeciesIds.length} vistos.`)
     this.publish({
-      status: 'ready', message: result.backup ? 'Copia principal inválida. Mostrando respaldo BW válido; esperando recuperación.' : 'Save actualizado · esperando cambios…',
+      status: 'ready', message: result.backup ? 'readyBackup' : 'readyUpdated',
       party: changed ? result.party : this.snapshot.party,
       boxes: boxesChanged ? result.boxes : this.snapshot.boxes,
       pokedex: dexChanged ? pokedex : this.snapshot.pokedex,

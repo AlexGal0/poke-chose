@@ -2,24 +2,24 @@ import type { EvolutionNode } from '../models/evolution.ts'
 import { blackNpcTrades } from './npc-trades.ts'
 
 export type AcquisitionKind = 'capture' | 'static' | 'gift' | 'egg' | 'fossil' | 'npc-trade' | 'evolution' | 'trade-evolution' | 'breed' | 'external' | 'event' | 'unknown'
-export interface AcquisitionTag { kind: AcquisitionKind; icon: string; label: string }
+export interface AcquisitionTag { kind: AcquisitionKind; icon: string }
 export interface PokemonEncounter {
   version_details: { version: { name: string }; encounter_details: { method: { name: string } }[] }[]
 }
 
-const tags: Record<AcquisitionKind, { icon: string; label: string }> = {
-  capture: { icon: '🌿', label: 'Capturable en Pokémon Black. Consulta las zonas y condiciones de encuentro.' },
-  static: { icon: '📍', label: 'Encuentro fijo en Pokémon Black; puede requerir progreso o condiciones especiales.' },
-  gift: { icon: '🎁', label: 'Regalo en Pokémon Black; puede depender de una elección o de condiciones especiales.' },
-  egg: { icon: '🥚', label: 'Huevo de regalo en Pokémon Black.' },
-  fossil: { icon: '🦴', label: 'Revivir un fósil en el museo de Ciudad Esmalte. La elección y el progreso pueden limitar su disponibilidad.' },
-  'npc-trade': { icon: '🤝', label: 'Intercambio con un personaje de Pokémon Black; requiere el Pokémon solicitado.' },
-  evolution: { icon: '🧬', label: 'Evolución en Generación V. Necesitas su preevolución; consulta el árbol para ver los requisitos.' },
-  'trade-evolution': { icon: '🔄', label: 'Evolución por intercambio. Puede requerir un objeto o intercambiar por una especie concreta.' },
-  breed: { icon: '🐣', label: 'Cría: obtener un huevo con padres compatibles. Algunas especies requieren incienso; necesitas conseguir los padres.' },
-  external: { icon: '📥', label: 'Sin obtención directa en el juego normal de Black: traer la especie o su familia de otro juego mediante intercambio o transferencia.' },
-  event: { icon: '✨', label: 'Evento o distribución especial; no se garantiza que siga disponible. También puede recibirse de otro jugador.' },
-  unknown: { icon: '❔', label: 'Obtención sin confirmar: no hay una vía directa registrada. Esto no demuestra que solo se consiga evolucionando o intercambiando.' },
+const tags: Record<AcquisitionKind, { icon: string }> = {
+  capture: { icon: '🌿' },
+  static: { icon: '📍' },
+  gift: { icon: '🎁' },
+  egg: { icon: '🥚' },
+  fossil: { icon: '🦴' },
+  'npc-trade': { icon: '🤝' },
+  evolution: { icon: '🧬' },
+  'trade-evolution': { icon: '🔄' },
+  breed: { icon: '🐣' },
+  external: { icon: '📥' },
+  event: { icon: '✨' },
+  unknown: { icon: '❔' },
 }
 
 // Verified BW fossil revivals, separate from PokéAPI's generic gift method.

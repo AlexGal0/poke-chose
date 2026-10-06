@@ -3,8 +3,8 @@ import { readCache, writeCache } from '../storage/local.ts'
 import { blackWhiteLearnset, blackWhiteMove } from '../domain/moves.ts'
 import type { LearnedMove, LearnsetResponse, MoveResponse } from '../domain/moves.ts'
 
-export async function getLevelMoves(pokemonName: string, signal?: AbortSignal): Promise<LearnedMove[]> {
-  const key = `learnset-bw-es-v2-${pokemonName}`
+export async function getLevelMoves(pokemonName: string, locale: string, signal?: AbortSignal): Promise<LearnedMove[]> {
+  const key = `learnset-bw-${locale}-v2-${pokemonName}`
   const cached = readCache<LearnedMove[]>(key)
   if (Array.isArray(cached)) return cached
   const data = await request<LearnsetResponse>(`pokemon/${encodeURIComponent(pokemonName)}`, signal)
@@ -16,9 +16,9 @@ export async function getLevelMoves(pokemonName: string, signal?: AbortSignal): 
       signal?.throwIfAborted()
       const index = next++
       const row = learnset[index]
-      const moveKey = `move-bw-es-v2-${row.slug}`
+      const moveKey = `move-bw-${locale}-v2-${row.slug}`
       const saved = readCache<ReturnType<typeof blackWhiteMove>>(moveKey)
-      const move = saved ?? blackWhiteMove(await request<MoveResponse>(`move/${row.slug}`, signal))
+      const move = saved ?? blackWhiteMove(await request<MoveResponse>(`move/${row.slug}`, signal), locale)
       if (!saved) writeCache(moveKey, move)
       result[index] = { ...move, ...row }
     }
