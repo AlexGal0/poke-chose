@@ -433,6 +433,32 @@
     "female": "Especie solo hembra",
     "both": "La especie puede ser macho o hembra"
   },
+  "moves": {
+    "category": {
+      "physical": "Físico",
+      "special": "Especial",
+      "status": "Estado",
+      "unconfirmed": "Sin confirmar"
+    },
+    "noDescription": "Descripción no disponible en español.",
+    "descriptionSource": "Texto de {{version}}",
+    "versionGroup": {
+      "black-2-white-2": "Negro 2/Blanco 2",
+      "heartgold-soulsilver": "HeartGold/SoulSilver",
+      "platinum": "Platino",
+      "diamond-pearl": "Diamante/Perla",
+      "x-y": "X/Y",
+      "omega-ruby-alpha-sapphire": "Rubí Omega/Zafiro Alfa",
+      "emerald": "Esmeralda",
+      "firered-leafgreen": "Rojo Fuego/Verde Hoja",
+      "ruby-sapphire": "Rubí/Zafiro",
+      "sun-moon": "Sol/Luna",
+      "ultra-sun-ultra-moon": "Ultrasol/Ultraluna",
+      "sword-shield": "Espada/Escudo",
+      "brilliant-diamond-shining-pearl": "Diamante Brillante/Perla Reluciente",
+      "scarlet-violet": "Escarlata/Púrpura"
+    }
+  },
   "genderIcon": {
     "unconfirmed": "Sexo de la especie sin confirmar. Pulsa para reintentar.",
     "loading": "Consultando los sexos posibles de la especie…"

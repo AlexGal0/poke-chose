@@ -27,16 +27,16 @@ async function getIndices() {
   return indices
 }
 
-export function getHeldItemName(gameIndex: number): Promise<string> {
-  if (gameIndex === 0) return Promise.resolve('Sin objeto')
-  const key = `held-item-bw-es-v1-${gameIndex}`
+export function getHeldItemName(gameIndex: number, locale: string): Promise<string> {
+  if (gameIndex === 0) return Promise.resolve('')
+  const key = `held-item-bw-${locale}-v1-${gameIndex}`
   const cached = readCache<string>(key)
   if (typeof cached === 'string' && cached.trim()) return Promise.resolve(cached)
   if (!pending.has(gameIndex)) pending.set(gameIndex, (async () => {
     const itemId = (await getIndices())[gameIndex]
     if (!itemId) throw new Error('Objeto no reconocido en Black/White.')
     const item = await request<{ name: string; names: { name: string; language: { name: string } }[] }>(`item/${itemId}`)
-    const name = item.names.find(entry => entry.language.name === 'es')?.name ?? item.name
+    const name = item.names.find(entry => entry.language.name === locale)?.name ?? item.name
     writeCache(key, name)
     return name
   })().finally(() => pending.delete(gameIndex)))

@@ -20,7 +20,7 @@ function EvolutionBranch({ node, tree, currentId }: { node: EvolutionNode; tree:
 }
 
 function EvolutionDialog({ speciesId, onClose }: { speciesId: number; onClose: () => void }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const dialog = useRef<HTMLDialogElement>(null)
   const pointerStartedOutside = useRef(false)
   const [tree, setTree] = useState<EvolutionTree | null>(null)
@@ -34,13 +34,13 @@ function EvolutionDialog({ speciesId, onClose }: { speciesId: number; onClose: (
   }, [])
   useEffect(() => {
     const controller = new AbortController()
-    getEvolutionTree(speciesId, controller.signal).then(result => {
+    getEvolutionTree(speciesId, i18n.language, controller.signal).then(result => {
       if (!controller.signal.aborted) setTree(result)
     }).catch(() => {
       if (!controller.signal.aborted) setError('evolutionDialog.loadError')
     })
     return () => controller.abort()
-  }, [speciesId, attempt])
+  }, [speciesId, i18n.language, attempt])
   return <dialog className="evolution-dialog" ref={dialog} aria-labelledby="evolution-title" onCancel={onClose}
     onPointerDown={event => {
       const bounds = event.currentTarget.getBoundingClientRect()

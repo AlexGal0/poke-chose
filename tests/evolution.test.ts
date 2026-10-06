@@ -88,7 +88,7 @@ test('API resolves complete family, reuses Pokémon service, localizes items and
     return new Response(JSON.stringify(body))
   }
   try {
-    const tree = await getEvolutionTree(573)
+    const tree = await getEvolutionTree(573, 'es')
     assert.equal(tree.root.speciesId, 572)
     assert.deepEqual(Object.keys(tree.pokemon), ['572', '573'])
     assert.equal(tree.labels[stone.url], 'Piedra Día')
@@ -99,5 +99,5 @@ test('API resolves complete family, reuses Pokémon service, localizes items and
 test('API errors propagate so the dialog can show retry without affecting the team', async () => {
   const original = globalThis.fetch
   globalThis.fetch = async () => new Response('', { status: 503 })
-  try { await assert.rejects(getEvolutionTree(498), /PokéAPI/) } finally { globalThis.fetch = original }
+  try { await assert.rejects(getEvolutionTree(498, 'es'), /PokéAPI/) } finally { globalThis.fetch = original }
 })

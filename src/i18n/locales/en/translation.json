@@ -433,6 +433,32 @@
     "female": "Female-only species",
     "both": "The species can be male or female"
   },
+  "moves": {
+    "category": {
+      "physical": "Physical",
+      "special": "Special",
+      "status": "Status",
+      "unconfirmed": "Unconfirmed"
+    },
+    "noDescription": "Description not available.",
+    "descriptionSource": "Text from {{version}}",
+    "versionGroup": {
+      "black-2-white-2": "Black 2/White 2",
+      "heartgold-soulsilver": "HeartGold/SoulSilver",
+      "platinum": "Platinum",
+      "diamond-pearl": "Diamond/Pearl",
+      "x-y": "X/Y",
+      "omega-ruby-alpha-sapphire": "Omega Ruby/Alpha Sapphire",
+      "emerald": "Emerald",
+      "firered-leafgreen": "FireRed/LeafGreen",
+      "ruby-sapphire": "Ruby/Sapphire",
+      "sun-moon": "Sun/Moon",
+      "ultra-sun-ultra-moon": "Ultra Sun/Ultra Moon",
+      "sword-shield": "Sword/Shield",
+      "brilliant-diamond-shining-pearl": "Brilliant Diamond/Shining Pearl",
+      "scarlet-violet": "Scarlet/Violet"
+    }
+  },
   "genderIcon": {
     "unconfirmed": "Species' sex not confirmed. Tap to retry.",
     "loading": "Checking the species' possible sexes…"
