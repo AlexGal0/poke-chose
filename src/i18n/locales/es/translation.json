@@ -241,5 +241,26 @@
       "weaknesses": "Las debilidades muestran todos los tipos que hacen daño supereficaz a ese Pokémon en Generación V, aunque el oponente no tenga ese tipo.",
       "strengths": "Las fortalezas muestran resistencias (0.5× o 0.25×) e inmunidades (0×) por tipo. Los cambios de estadísticas se conservan durante lecturas transitorias y se actualizan al confirmarse una nueva lectura."
     }
+  },
+  "connectionIndicator": {
+    "label": {
+      "manual": "Modo manual",
+      "connected": "Lectores conectados",
+      "partial": "Conexión parcial",
+      "disconnected": "Sin conexión activa",
+      "waiting": "Esperando conexión"
+    },
+    "statusAria": "Estado de conexión: {{label}}. Ver detalles",
+    "manualHint": "Tu equipo y colección se guardan en este navegador. Selecciona melonDS para conectar un lector.",
+    "sourceLive": "Equipo y colección",
+    "sourceSave": "Save de melonDS",
+    "sourceStatus": "{{source}}: {{status}}",
+    "connected": "conectado",
+    "noActiveReading": "sin lectura activa",
+    "battleLabel": "Combate",
+    "battleDisconnected": "desconectado",
+    "battleWaiting": "esperando conexión",
+    "lastReading": "Última lectura del equipo: {{time}}",
+    "goToControlsButton": "Ir a controles de conexión"
   }
 }

@@ -241,5 +241,26 @@
       "weaknesses": "Weaknesses show every type that deals super-effective damage to that Pokémon in Generation V, even if the opponent doesn't have that type.",
       "strengths": "Strengths show resistances (0.5× or 0.25×) and immunities (0×) by type. Stat changes are kept during transient readings and update once a new reading is confirmed."
     }
+  },
+  "connectionIndicator": {
+    "label": {
+      "manual": "Manual mode",
+      "connected": "Readers connected",
+      "partial": "Partial connection",
+      "disconnected": "No active connection",
+      "waiting": "Waiting for connection"
+    },
+    "statusAria": "Connection status: {{label}}. View details",
+    "manualHint": "Your team and collection are saved in this browser. Select melonDS to connect a reader.",
+    "sourceLive": "Team and collection",
+    "sourceSave": "melonDS Save",
+    "sourceStatus": "{{source}}: {{status}}",
+    "connected": "connected",
+    "noActiveReading": "no active reading",
+    "battleLabel": "Battle",
+    "battleDisconnected": "disconnected",
+    "battleWaiting": "waiting for connection",
+    "lastReading": "Last team reading: {{time}}",
+    "goToControlsButton": "Go to connection controls"
   }
 }
