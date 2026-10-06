@@ -39,7 +39,7 @@ import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
 
 function App() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [battleConnection, setBattleConnection] = useState<BattleConnection>({ status: 'waiting', message: t('app.battleWaitingMessage'), inBattle: false })
   const returnPoint = useRef<{ tab: Exclude<ActiveTab, 'battle'>; scrollY: number } | null>(null)
   const lastConfirmedBattle = useRef(false)
@@ -146,7 +146,7 @@ function App() {
           <div>
             <span className="eyebrow">{t('app.intro.eyebrow')}</span>
             <h1>
-              <Trans i18nKey="app.intro.heading" components={{ balance: <span /> }} />
+              <Trans key={i18n.language} i18nKey="app.intro.heading" components={{ balance: <span /> }} />
             </h1>
             <p>
               {t('app.intro.description')}
@@ -377,6 +377,7 @@ function App() {
         PokéChose · Pokémon Black{" "}
         <span>
           <Trans
+            key={i18n.language}
             i18nKey="app.footer.credits"
             components={{ pokeapiLink: <a href="https://pokeapi.co/" target="_blank" rel="noreferrer" /> }}
           />

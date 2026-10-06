@@ -23,6 +23,6 @@ export function SaveSync({ source, onChange, state }: { source: 'manual' | 'save
     {source === 'live' && <div className="live-controls"><button className="primary" disabled={busy} onClick={() => { void control() }}>{busy ? t('saveSync.button.requesting') : state.updatedAt ? t('saveSync.button.reconnect') : t('saveSync.button.connect')}</button><button disabled={busy} onClick={() => { void control(true) }}>{t('saveSync.button.pause')}</button></div>}
     {error && source === 'live' && <p className="notice" role="alert">{noticeText(t, error)}</p>}
     {source === 'live' && <p className="hint">{t('saveSync.liveHint')}</p>}
-    {source === 'save' && <p className="hint"><Trans i18nKey="saveSync.saveHint" components={{ configFile: <code />, bridgeCommand: <code /> }} /></p>}
+    {source === 'save' && <p className="hint"><Trans key={i18n.language} i18nKey="saveSync.saveHint" components={{ configFile: <code />, bridgeCommand: <code /> }} /></p>}
   </section>
 }
