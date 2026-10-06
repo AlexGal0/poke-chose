@@ -234,6 +234,12 @@
       "invalidResponse": "Respuesta del prototipo inválida.",
       "readFailed": "No se pudo leer el prototipo."
     },
+    "messages": {
+      "waitingConnect": "Conecta el lector de combate.",
+      "connecting": "Conectando con melonDS…",
+      "active": "Lectura experimental del combate activa.",
+      "disconnected": "Lectura de combate desconectada. Pulsa Reconectar combate."
+    },
     "status": {
       "disconnected": "Lector de combate desconectado",
       "bothDetected": "Ambos Pokémon detectados",

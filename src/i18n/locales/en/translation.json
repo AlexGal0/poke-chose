@@ -234,6 +234,12 @@
       "invalidResponse": "Invalid prototype response.",
       "readFailed": "Couldn't read the prototype."
     },
+    "messages": {
+      "waitingConnect": "Connect the battle reader.",
+      "connecting": "Connecting to melonDS…",
+      "active": "Experimental battle reading active.",
+      "disconnected": "Battle reading disconnected. Press Reconnect battle."
+    },
     "status": {
       "disconnected": "Battle reader disconnected",
       "bothDetected": "Both Pokémon detected",

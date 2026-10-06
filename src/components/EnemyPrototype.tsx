@@ -33,14 +33,15 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
   const [connectionError, setConnectionError] = useState<Notice>(null)
   const [session, setSession] = useState(emptyBattleSession)
   const connectionStatus = error ? 'error' : snapshot?.status ?? 'waiting'
-  const connectionMessage = noticeText(t, error) || snapshot?.message || t('app.battleWaitingMessage')
+  const snapshotMessage = snapshot ? t(`enemyPrototype.messages.${snapshot.message}`, { defaultValue: snapshot.message }) : null
+  const connectionMessage = noticeText(t, error) || snapshotMessage || t('app.battleWaitingMessage')
   async function reconnect() {
     setReconnecting(true)
     setConnectionError(null)
     try {
       const response = await fetch('/enemy-api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
-      const result = await response.json().catch(() => null) as { message?: string } | null
-      if (!response.ok) throw result?.message ? new Error(result.message) : new KeyedError('enemyPrototype.errors.reconnectFailed')
+      await response.json().catch(() => null)
+      if (!response.ok) throw new KeyedError('enemyPrototype.errors.reconnectFailed')
       setError(null)
       setSnapshot(null)
     } catch (cause) {
@@ -88,7 +89,7 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
     <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
     <div role="status" className={`enemy-prototype-status ${candidate ? 'detected' : ''}`}>
       <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : snapshot?.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
-      <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshot?.message || t('enemyPrototype.detail.connecting'))}</span>
+      <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshotMessage || t('enemyPrototype.detail.connecting'))}</span>
     </div>
     {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button className="primary" disabled={reconnecting} onClick={() => { void reconnect() }}>{reconnecting ? t('enemyPrototype.button.connecting') : disconnected ? t('enemyPrototype.button.reconnect') : t('enemyPrototype.button.connect')}</button></div>}
     {connectionError && <p className="notice" role="alert">{noticeText(t, connectionError)}</p>}

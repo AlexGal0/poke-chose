@@ -46,7 +46,7 @@ test('enemy reader clears disconnected data, reconnects explicitly and distingui
   loseConnection = true
   const lost = await until('error')
   assert.deepEqual(lost.candidates, [])
-  assert.match(lost.message, /Reconectar combate/)
+  assert.equal(lost.message, 'disconnected')
   loseConnection = false
   const reconnected = await Promise.all([connect(), connect()])
   assert.deepEqual(reconnected.map(response => response.status), [200, 200])
