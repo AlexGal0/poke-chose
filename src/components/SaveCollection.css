@@ -1,1 +1,5 @@
 .collection-refresh { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0; }
+.collection-box-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 18px 0; font-size: 13px; }
+.collection-box-filter select { max-width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--border, #34404e); border-radius: 7px; background: var(--surface-inset, #111923); color: var(--text, #edf4f8); }
+.collection-box-filter .hint { margin: 0; }
+@media (max-width: 640px) { .collection-box-filter { align-items: stretch; flex-direction: column; } .collection-box-filter select { width: 100%; } }

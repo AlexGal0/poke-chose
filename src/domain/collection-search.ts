@@ -1,4 +1,11 @@
 import { TYPE_LABELS, type Pokemon } from '../models/pokemon.ts'
+import type { CollectionPokemon } from '../models/party.ts'
+
+export type CollectionLocationFilter = 'all' | 'party' | number
+
+export function matchesCollectionLocation(pokemon: Pick<CollectionPokemon, 'location' | 'box'>, filter: CollectionLocationFilter): boolean {
+  return filter === 'all' || (filter === 'party' ? pokemon.location === 'party' : pokemon.location === 'box' && pokemon.box === filter)
+}
 
 export function normalizeTag(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^#/, '')
