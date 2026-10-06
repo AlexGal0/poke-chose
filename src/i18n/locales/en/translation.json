@@ -311,5 +311,23 @@
       "superEffective": "✓ Super-effective",
       "noCoverage": "No coverage"
     }
+  },
+  "typeChart": {
+    "eyebrow": "REFERENCE / GENERATION V",
+    "typesCount": "17 types",
+    "hint": "Rows: attacking type. Columns: defending type. Each cell shows damage against a single type. In Pokémon Black, Steel resists Ghost and Dark.",
+    "legend": {
+      "superEffective": "Super-effective",
+      "neutral": "Neutral",
+      "notVeryEffective": "Not very effective",
+      "immune": "Immune"
+    },
+    "matrixAria": "Type matrix, scrollable horizontally",
+    "tableCaption": "Damage multipliers in Generation V: attacking rows and defending columns",
+    "axis": {
+      "defense": "Defense →",
+      "attack": "Attack ↓"
+    },
+    "cellTitle": "{{attacker}} → {{defender}}: {{multiplier}}"
   }
 }

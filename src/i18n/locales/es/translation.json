@@ -311,5 +311,23 @@
       "superEffective": "✓ Supereficaz",
       "noCoverage": "Sin cobertura"
     }
+  },
+  "typeChart": {
+    "eyebrow": "REFERENCIA / GENERACIÓN V",
+    "typesCount": "17 tipos",
+    "hint": "Filas: tipo atacante. Columnas: tipo defensor. Cada cruce indica el daño contra un solo tipo. En Pokémon Negro, Acero resiste Fantasma y Siniestro.",
+    "legend": {
+      "superEffective": "Supereficaz",
+      "neutral": "Neutral",
+      "notVeryEffective": "Poco eficaz",
+      "immune": "Inmune"
+    },
+    "matrixAria": "Matriz de tipos, desplazable horizontalmente",
+    "tableCaption": "Multiplicadores de daño en Generación V: filas atacantes y columnas defensoras",
+    "axis": {
+      "defense": "Defensa →",
+      "attack": "Ataque ↓"
+    },
+    "cellTitle": "{{attacker}} → {{defender}}: {{multiplier}}"
   }
 }
