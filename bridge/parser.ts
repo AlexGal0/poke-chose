@@ -1,6 +1,8 @@
 import type { SavedBoxPokemon, SavedPartyMember, SavedPokemonData } from '../src/models/party.ts'
 import type { PokedexState } from '../src/models/pokedex.ts'
 import { parsePokedexBlock, POKEDEX_LENGTH, POKEDEX_OFFSET } from './pokedex.ts'
+import type { PlayerPosition } from '../src/models/player-position.ts'
+import { parsePlayerPositionBlock, POSITION_LENGTH, POSITION_OFFSET } from './player-position.ts'
 
 export const SAVE_SIZE = 0x80000
 const PARTY_OFFSET = 0x18e00
@@ -103,7 +105,7 @@ export function parseStoredPk5(encrypted: Uint8Array): SavedPokemonData | null {
   return parsePokemonData(data)
 }
 
-function parseEntry(save: Uint8Array, base: number): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState } {
+function parseEntry(save: Uint8Array, base: number): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState; position: PlayerPosition | null } {
   const fields = view(save)
   const checksum = (offset: number, length: number, stored: number, mirror?: number) => {
     const actual = crc16(save.subarray(base + offset, base + offset + length))
@@ -133,10 +135,16 @@ function parseEntry(save: Uint8Array, base: number): { party: SavedPartyMember[]
       if (member) boxes.push({ ...member, box, slot })
     }
   }
-  return { party, boxes, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
+  // Optional position failure must not discard valid Pokémon or mix save entries.
+  let position: PlayerPosition | null = null
+  try {
+    checksum(POSITION_OFFSET, POSITION_LENGTH, 0x1959e, 0x23f38)
+    position = parsePlayerPositionBlock(save.subarray(base + POSITION_OFFSET, base + POSITION_OFFSET + POSITION_LENGTH))
+  } catch { /* Location unavailable; retain the valid core entry. */ }
+  return { party, boxes, position, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
 }
 
-export function parseSave(save: Uint8Array, allowBackup = true): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState; backup: boolean } {
+export function parseSave(save: Uint8Array, allowBackup = true): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState; position: PlayerPosition | null; backup: boolean } {
   if (save.length !== SAVE_SIZE) throw new Error('Save inválido: se necesita un .sav RAW de 512 KiB (524288 bytes).')
   try { return { ...parseEntry(save, 0), backup: false } } catch (primaryError) {
     if (allowBackup) {

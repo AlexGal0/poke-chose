@@ -61,7 +61,7 @@ export function refreshFixtureChecksums(save: Buffer, base = 0) {
     save.writeUInt16LE(value, start + 0xff2)
     save.writeUInt16LE(value, base + 0x23f02 + box * 2)
   }
-  for (const [offset, length, checksum, mirror] of [[0x18e00, 0x534, 0x19336, 0x23f34], [0x19400, 0x68, 0x1946a, 0x23f36], [0x21600, 0x4d4, 0x21ad6, 0x23f6e]]) {
+  for (const [offset, length, checksum, mirror] of [[0x18e00, 0x534, 0x19336, 0x23f34], [0x19400, 0x68, 0x1946a, 0x23f36], [0x19500, 0x9c, 0x1959e, 0x23f38], [0x21600, 0x4d4, 0x21ad6, 0x23f6e]]) {
     const value = referenceCrc(save.subarray(base + offset, base + offset + length))
     save.writeUInt16LE(value, base + checksum)
     save.writeUInt16LE(value, base + mirror)

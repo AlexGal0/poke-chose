@@ -1,0 +1,31 @@
+# Detección de ubicación — primera entrega
+
+Trabajo del issue #5 en `codex/5-detect-player-location`.
+
+El parser devuelve `position` con el identificador interno de mapa y coordenadas
+del último guardado. No representa una ubicación de PokéAPI ni una lectura en vivo.
+No se publica todavía mediante SSE ni cambia el selector de capturas.
+
+La implementación propia usa el bloque BW `0x19500`, longitud `0x9c`, CRC local
+`0x1959e` y espejo `0x23f38`. Lee mapa como uint32 LE en `+0x80` y coordenadas
+uint16 LE: X en `+0x86`, Z en `+0x8a`, Y en `+0x8e`. La referencia lee mapa
+como int32 y lo escribe como uint16: se conservan los cuatro bytes sin interpretar
+ni asignar rangos de mapas hasta contrastar datos reales.
+
+Referencias consultadas:
+- https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Access/SaveBlockAccessor5BW.cs
+- https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Substructures/Gen5/PlayerPosition5.cs
+
+Si falla el CRC de posición, devuelve `null` y conserva los datos principales
+válidos. Nunca busca una posición alternativa en el respaldo. Si el parser usa
+el respaldo por fallo de los datos principales, también lee posición de ese respaldo.
+La validación global de la tabla de checksums sigue siendo obligatoria.
+
+Las pruebas usan exclusivamente fixtures sintéticos. No se ha comprobado todavía
+la semántica del mapa o las coordenadas en una partida real ni una dirección RAM.
+
+Próximo paso: observar mapas en ubicaciones conocidas, documentar versión/región
+y construir correspondencias verificadas con las zonas existentes. Después extender
+el contrato de snapshots, SSE y seguimiento opcional en la interfaz. La búsqueda
+de dirección RAM se hará por separado: no se presupone que el offset del archivo
+corresponda a una dirección estable del emulador.
