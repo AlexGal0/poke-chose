@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { loadTheme, saveTheme } from '../storage/theme'
 import type { Theme } from '../storage/theme'
 import './ThemeSelector.css'
 
 export function ThemeSelector() {
+  const { t } = useTranslation()
   const [theme, setTheme] = useState(loadTheme)
   const [saveFailed, setSaveFailed] = useState(false)
 
@@ -16,15 +18,15 @@ export function ThemeSelector() {
   return (
     <div className="theme-control">
       <label className="theme-selector">
-        <span>Tema</span>
+        <span>{t('theme.label')}</span>
         <select value={theme} onChange={event => changeTheme(event.target.value as Theme)}>
-          <option value="base">Original</option>
-          <option value="pokemon">Pokémon</option>
-          <option value="pokemon-dark">Pokémon oscuro</option>
-          <option value="fiesta">Fiesta 🎉</option>
+          <option value="base">{t('theme.options.base')}</option>
+          <option value="pokemon">{t('theme.options.pokemon')}</option>
+          <option value="pokemon-dark">{t('theme.options.pokemonDark')}</option>
+          <option value="fiesta">{t('theme.options.fiesta')}</option>
         </select>
       </label>
-      {saveFailed && <small role="status">No se pudo guardar el tema en este navegador.</small>}
+      {saveFailed && <small role="status">{t('theme.saveFailed')}</small>}
     </div>
   )
 }

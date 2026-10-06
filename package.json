@@ -16,8 +16,10 @@
     "bridge:battle": "node --experimental-strip-types experiments/melonds-live/watch-enemy.mjs --battle --wait"
   },
   "dependencies": {
+    "i18next": "^26.4.2",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.15"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -34,6 +34,7 @@ import { discoveredSpecies } from "./domain/discovery";
 import { EvolutionProvider } from "./components/EvolutionProvider";
 import { MovesProvider } from "./components/MovesProvider";
 import { ThemeSelector } from './components/ThemeSelector'
+import { LocaleSelector } from './components/LocaleSelector'
 
 function App() {
   const [battleConnection, setBattleConnection] = useState<BattleConnection>({ status: 'waiting', message: 'Esperando el lector de combate.', inBattle: false })
@@ -130,6 +131,7 @@ function App() {
           Poké<span>Chose</span>
         </a>
         <div className="header-controls">
+          <LocaleSelector />
           <ThemeSelector />
           <div className="game-label">
           POKÉMON BLACK <span>GENERACIÓN V</span>

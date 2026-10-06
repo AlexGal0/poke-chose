@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "label": "Theme",
+    "options": {
+      "base": "Original",
+      "pokemon": "Pokémon",
+      "pokemonDark": "Pokémon (dark)",
+      "fiesta": "Fiesta 🎉"
+    },
+    "saveFailed": "Couldn't save the theme in this browser."
+  },
+  "locale": {
+    "label": "Language",
+    "options": {
+      "es": "Spanish",
+      "en": "English"
+    },
+    "saveFailed": "Couldn't save the language in this browser."
+  }
+}

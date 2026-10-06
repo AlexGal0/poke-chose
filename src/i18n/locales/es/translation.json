@@ -1,0 +1,20 @@
+{
+  "theme": {
+    "label": "Tema",
+    "options": {
+      "base": "Original",
+      "pokemon": "Pokémon",
+      "pokemonDark": "Pokémon oscuro",
+      "fiesta": "Fiesta 🎉"
+    },
+    "saveFailed": "No se pudo guardar el tema en este navegador."
+  },
+  "locale": {
+    "label": "Idioma",
+    "options": {
+      "es": "Español",
+      "en": "Inglés"
+    },
+    "saveFailed": "No se pudo guardar el idioma en este navegador."
+  }
+}
