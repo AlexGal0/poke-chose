@@ -202,5 +202,44 @@
     "memberBoxSlot": "Caja {{box}} · Posición {{slot}}",
     "memberLevel": "Nv. {{level}}",
     "paginationAriaLabel": "Páginas de colección sincronizada"
+  },
+  "enemyPrototype": {
+    "eyebrow": "COMBATE / PROTOTIPO 5",
+    "heading": "Pokémon en combate",
+    "experimentalBadge": "Experimental",
+    "errors": {
+      "reconnectFailed": "No se pudo reconectar el lector de combate.",
+      "prototypeUnavailable": "El prototipo de lectura del enemigo no está disponible.",
+      "invalidResponse": "Respuesta del prototipo inválida.",
+      "readFailed": "No se pudo leer el prototipo."
+    },
+    "status": {
+      "disconnected": "Lector de combate desconectado",
+      "bothDetected": "Ambos Pokémon detectados",
+      "rivalDetected": "Rival detectado",
+      "noRivalConfirmed": "Sin rival confirmado",
+      "waitingRead": "Esperando lectura"
+    },
+    "detail": {
+      "ownIdentified": "Tu Pokémon se identifica por el ejemplar que está en el campo.",
+      "waitingMatch": "Esperando una lectura coincidente de tu Pokémon activo.",
+      "outOfBattle": "Fuera de combate o sin una lectura coincidente. No se muestra el rival anterior.",
+      "connecting": "Conectando al prototipo…"
+    },
+    "button": {
+      "connecting": "Conectando…",
+      "reconnect": "Reconectar combate",
+      "connect": "Conectar combate"
+    },
+    "ownTitle": "Tu Pokémon activo",
+    "toBeConfirmed": "Por confirmar",
+    "noActiveReading": "Aún no hay una lectura válida del Pokémon en el campo.",
+    "detailsSummary": "Información de la lectura y los multiplicadores",
+    "hints": {
+      "overview": "Tu Pokémon activo, el rival y la salud de tu equipo en combates individuales. Lectura experimental de melonDS.",
+      "multiplier": "Cada multiplicador corresponde a un ataque de ese tipo contra los tipos del defensor. No incluye STAB, movimientos, habilidades ni objetos.",
+      "weaknesses": "Las debilidades muestran todos los tipos que hacen daño supereficaz a ese Pokémon en Generación V, aunque el oponente no tenga ese tipo.",
+      "strengths": "Las fortalezas muestran resistencias (0.5× o 0.25×) e inmunidades (0×) por tipo. Los cambios de estadísticas se conservan durante lecturas transitorias y se actualizan al confirmarse una nueva lectura."
+    }
   }
 }

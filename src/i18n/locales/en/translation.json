@@ -202,5 +202,44 @@
     "memberBoxSlot": "Box {{box}} · Position {{slot}}",
     "memberLevel": "Lv. {{level}}",
     "paginationAriaLabel": "Synced collection pages"
+  },
+  "enemyPrototype": {
+    "eyebrow": "BATTLE / PROTOTYPE 5",
+    "heading": "Pokémon in battle",
+    "experimentalBadge": "Experimental",
+    "errors": {
+      "reconnectFailed": "Couldn't reconnect the battle reader.",
+      "prototypeUnavailable": "The enemy-reading prototype is unavailable.",
+      "invalidResponse": "Invalid prototype response.",
+      "readFailed": "Couldn't read the prototype."
+    },
+    "status": {
+      "disconnected": "Battle reader disconnected",
+      "bothDetected": "Both Pokémon detected",
+      "rivalDetected": "Rival detected",
+      "noRivalConfirmed": "No rival confirmed",
+      "waitingRead": "Waiting for a reading"
+    },
+    "detail": {
+      "ownIdentified": "Your Pokémon is identified by the specimen on the field.",
+      "waitingMatch": "Waiting for a matching reading of your active Pokémon.",
+      "outOfBattle": "Out of battle or no matching reading. The previous rival isn't shown.",
+      "connecting": "Connecting to the prototype…"
+    },
+    "button": {
+      "connecting": "Connecting…",
+      "reconnect": "Reconnect battle",
+      "connect": "Connect battle"
+    },
+    "ownTitle": "Your active Pokémon",
+    "toBeConfirmed": "To be confirmed",
+    "noActiveReading": "No valid reading yet of the Pokémon on the field.",
+    "detailsSummary": "Reading and multiplier information",
+    "hints": {
+      "overview": "Your active Pokémon, the rival, and your team's health in single battles. Experimental melonDS reading.",
+      "multiplier": "Each multiplier corresponds to an attack of that type against the defender's types. Doesn't include STAB, moves, abilities, or items.",
+      "weaknesses": "Weaknesses show every type that deals super-effective damage to that Pokémon in Generation V, even if the opponent doesn't have that type.",
+      "strengths": "Strengths show resistances (0.5× or 0.25×) and immunities (0×) by type. Stat changes are kept during transient readings and update once a new reading is confirmed."
+    }
   }
 }
