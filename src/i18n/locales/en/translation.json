@@ -17,6 +17,25 @@
     },
     "saveFailed": "Couldn't save the language in this browser."
   },
+  "types": {
+    "normal": "Normal",
+    "fire": "Fire",
+    "water": "Water",
+    "electric": "Electric",
+    "grass": "Grass",
+    "ice": "Ice",
+    "fighting": "Fighting",
+    "poison": "Poison",
+    "ground": "Ground",
+    "flying": "Flying",
+    "psychic": "Psychic",
+    "bug": "Bug",
+    "rock": "Rock",
+    "ghost": "Ghost",
+    "dragon": "Dragon",
+    "dark": "Dark",
+    "steel": "Steel"
+  },
   "common": {
     "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
     "wikiTitle": "Look up on WikiDex",

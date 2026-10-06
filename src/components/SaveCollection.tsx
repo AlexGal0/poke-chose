@@ -4,6 +4,7 @@ import type { TeamSourceState } from '../sources/team'
 import { PokemonCard } from './PokemonCard'
 import { CollectionSearch } from './CollectionSearch'
 import { matchesCollectionLocation, matchesCollectionTags } from '../domain/collection-search'
+import { typeLabel } from '../i18n/types.ts'
 import type { CollectionLocationFilter } from '../domain/collection-search'
 import { refreshLiveBoxes } from '../sources/live'
 import { noticeText, toNotice } from '../i18n/notice.ts'
@@ -34,7 +35,7 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
   }
   const collection = state.collection
   const locationCollection = collection?.filter(pokemon => matchesCollectionLocation(pokemon, location)) ?? []
-  const filtered = locationCollection.filter(pokemon => matchesCollectionTags(pokemon, query))
+  const filtered = locationCollection.filter(pokemon => matchesCollectionTags(pokemon, query, type => typeLabel(t, type)))
   const boxCounts = Array.from({ length: 24 }, (_, box) => collection?.filter(pokemon => matchesCollectionLocation(pokemon, box)).length ?? 0)
   const partyCount = collection?.filter(pokemon => pokemon.location === 'party').length ?? 0
   const pages = Math.ceil(filtered.length / PAGE_SIZE)

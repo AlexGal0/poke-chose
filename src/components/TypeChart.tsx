@@ -2,8 +2,9 @@ import { effectiveness } from '../domain/effectiveness'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { PokemonType } from '../models/pokemon'
-import { TYPES, TYPE_LABELS } from '../models/pokemon'
+import { TYPES } from '../models/pokemon'
 import { TypeBadge } from './TypeBadge'
+import { typeLabel } from '../i18n/types.ts'
 import './TypeChart.css'
 
 export function TypeChart() {
@@ -29,7 +30,7 @@ export function TypeChart() {
         {TYPES.map(defender => {
           const multiplier = effectiveness(attack, [defender])
           const label = multiplier === 0.5 ? '½×' : `${multiplier}×`
-          return <td key={defender} data-defender={defender} className={hoveredColumn === defender ? 'column-hover' : undefined} title={t('typeChart.cellTitle', { attacker: TYPE_LABELS[attack], defender: TYPE_LABELS[defender], multiplier: label })}><span className={`multiplier ${multiplier === 0 ? 'immune' : multiplier === 2 ? 'weak' : multiplier === 0.5 ? 'resist' : ''}`}>{label}</span></td>
+          return <td key={defender} data-defender={defender} className={hoveredColumn === defender ? 'column-hover' : undefined} title={t('typeChart.cellTitle', { attacker: typeLabel(t, attack), defender: typeLabel(t, defender), multiplier: label })}><span className={`multiplier ${multiplier === 0 ? 'immune' : multiplier === 2 ? 'weak' : multiplier === 0.5 ? 'resist' : ''}`}>{label}</span></td>
         })}
       </tr>)}</tbody>
     </table></div>

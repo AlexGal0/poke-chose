@@ -29,6 +29,7 @@ import { CaptureChecklist } from "./components/CaptureChecklist";
 import { SaveCollection } from "./components/SaveCollection";
 import { CollectionSearch } from "./components/CollectionSearch";
 import { matchesCollectionTags } from "./domain/collection-search";
+import { typeLabel } from "./i18n/types.ts";
 import "./App.css";
 import { DiscoveryContext } from "./components/discovery-context";
 import { discoveredSpecies } from "./domain/discovery";
@@ -64,7 +65,7 @@ function App() {
     ? discoveredSpecies(saveTeam.pokedex)
     : new Set(state.collection.map(pokemon => pokemon.id));
   const filteredManualCollection = state.collection.filter((pokemon) =>
-    matchesCollectionTags(pokemon, collectionQuery),
+    matchesCollectionTags(pokemon, collectionQuery, type => typeLabel(t, type)),
   );
   function updateState(next: CollectionState) {
     setState(next);

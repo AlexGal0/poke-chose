@@ -17,6 +17,25 @@
     },
     "saveFailed": "No se pudo guardar el idioma en este navegador."
   },
+  "types": {
+    "normal": "Normal",
+    "fire": "Fuego",
+    "water": "Agua",
+    "electric": "Eléctrico",
+    "grass": "Planta",
+    "ice": "Hielo",
+    "fighting": "Lucha",
+    "poison": "Veneno",
+    "ground": "Tierra",
+    "flying": "Volador",
+    "psychic": "Psíquico",
+    "bug": "Bicho",
+    "rock": "Roca",
+    "ghost": "Fantasma",
+    "dragon": "Dragón",
+    "dark": "Siniestro",
+    "steel": "Acero"
+  },
   "common": {
     "wikiSearchAria": "Buscar {{name}} en WikiDex (nueva pestaña)",
     "wikiTitle": "Consultar en WikiDex",

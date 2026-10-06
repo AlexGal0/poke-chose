@@ -1,6 +1,8 @@
-import { TYPE_LABELS } from '../models/pokemon'
+import { useTranslation } from 'react-i18next'
 import type { PokemonType } from '../models/pokemon'
+import { typeLabel } from '../i18n/types.ts'
 
 export function TypeBadge({ type }: { type: PokemonType }) {
-  return <span className={`type type-${type}`}>{TYPE_LABELS[type]}</span>
+  const { t } = useTranslation()
+  return <span className={`type type-${type}`}>{typeLabel(t, type)}</span>
 }

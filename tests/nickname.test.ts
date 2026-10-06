@@ -4,6 +4,10 @@ import { parsePk5, parseStoredPk5, parseSave } from '../bridge/parser.ts'
 import { pk5Fixture, saveFixture, refreshFixtureChecksums } from './helpers/save-fixture.ts'
 import { partiesEqual, boxesEqual, isSaveSnapshot } from '../src/models/party.ts'
 import { matchesCollectionTags } from '../src/domain/collection-search.ts'
+import i18n from '../src/i18n/index.ts'
+import { typeLabel } from '../src/i18n/types.ts'
+
+const t = i18n.getFixedT('es')
 
 test('custom PK5 names survive all shuffle values in party and stored records without changing input', () => {
   for (let shuffle = 0; shuffle < 32; shuffle++) {
@@ -42,7 +46,7 @@ test('rename-only save changes are retained in party and boxes and affect SSE co
 })
 test('collection search combines nickname, species and types while preserving exact nickname case', () => {
   const pokemon = { id: 502, name: 'dewott', nickname: 'aZúl', types: ['water' as const], sprite: null }
-  assert.equal(matchesCollectionTags(pokemon, 'AZUL dew agua'), true)
-  assert.equal(matchesCollectionTags(pokemon, 'azul fuego'), false)
+  assert.equal(matchesCollectionTags(pokemon, 'AZUL dew agua', type => typeLabel(t, type)), true)
+  assert.equal(matchesCollectionTags(pokemon, 'azul fuego', type => typeLabel(t, type)), false)
   assert.equal(pokemon.nickname, 'aZúl')
 })
