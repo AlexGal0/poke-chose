@@ -5,5 +5,6 @@
 .theme-control small { display: block; margin-top: 6px; font-size: 11px; color: var(--text-muted, #9caabb); }
 @media (max-width: 640px) {
   .site-header { flex-wrap: wrap; gap: 16px; }
-  .header-controls { flex: 1 1 100%; justify-content: space-between; gap: 12px; }
+  .header-controls { flex: 1 1 100%; flex-wrap: wrap; justify-content: flex-start; row-gap: 12px; column-gap: 20px; }
+  .locale-control, .theme-control { max-width: none; }
 }

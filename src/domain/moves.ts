@@ -41,7 +41,7 @@ export function blackWhiteMove(data: MoveResponse, locale: string): Omit<Learned
     ?? preferred[0]
     ?? (locale === 'en' ? undefined : data.flavor_text_entries.find(entry => entry.language.name === 'en' && entry.version_group.name === 'black-white'))
   return {
-    name: data.names.find(entry => entry.language.name === locale)?.name ?? data.name,
+    name: data.names.find(entry => entry.language.name === locale)?.name ?? data.names.find(entry => entry.language.name === 'en')?.name ?? data.name,
     type: TYPES.includes(type as PokemonType) ? type as PokemonType : null,
     pp,
     categoryId: ({ physical: 'physical', special: 'special', status: 'status' } as Record<string, MoveCategory>)[data.damage_class.name] ?? 'unconfirmed',

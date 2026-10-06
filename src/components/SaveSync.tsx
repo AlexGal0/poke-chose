@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { liveDataSource, disconnectLive } from '../sources/live'
 import type { TeamSourceState } from '../sources/team'
-import { noticeText } from '../i18n/notice.ts'
+import { noticeText, toNotice } from '../i18n/notice.ts'
 import type { Notice } from '../i18n/notice.ts'
 import './SaveSync.css'
 
@@ -14,7 +14,7 @@ export function SaveSync({ source, onChange, state }: { source: 'manual' | 'save
     setBusy(true)
     setError(null)
     try { if (disconnect) await disconnectLive(); else await liveDataSource.reconnect!() }
-    catch (cause) { setError(cause instanceof Error ? { raw: cause.message } : { key: 'saveSync.connectError' }) }
+    catch (cause) { setError(toNotice(cause, 'saveSync.connectError')) }
     finally { setBusy(false) }
   }
   return <section id="connection-settings" className="panel save-sync" aria-label={t('saveSync.sourceLabel')}>
