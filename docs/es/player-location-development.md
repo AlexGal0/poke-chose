@@ -23,8 +23,24 @@ válidos. Nunca busca una posición alternativa en el respaldo. Si el parser usa
 el respaldo por fallo de los datos principales, también lee posición de ese respaldo.
 La validación global de la tabla de checksums sigue siendo obligatoria.
 
-Las pruebas usan exclusivamente fixtures sintéticos. No se ha comprobado todavía
-la semántica del mapa o las coordenadas en una partida real ni una dirección RAM.
+Las pruebas automáticas usan exclusivamente fixtures sintéticos. La observación
+manual siguiente utiliza una partida real, leída sin escritura. No se ha comprobado
+todavía la interpretación de las coordenadas ni una dirección RAM.
+
+## Correspondencias observadas
+
+| Fecha | Mapa interno | Zona PokéAPI | Evidencia |
+| --- | --- | --- | --- |
+| 2026-10-06 | 331 | 361, unova-route-6 | Dos lecturas estables del guardado principal; el usuario confirmó haber guardado en el exterior de Ruta 6. |
+
+El archivo observado tenía fecha de modificación 2026-10-06T23:52:23.044Z.
+La primera lectura comprobó que su mtime no cambió. Los checksums de posición y
+los bloques principales pasaron en ambas lecturas. No se almacena el save ni su
+ruta personal en el repositorio. Región/revisión del juego pendientes de identificar:
+esta observación no demuestra compatibilidad universal entre versiones o ROM hacks.
+
+`resolveBlackMapLocation` resuelve únicamente el mapa verificado y devuelve `null`
+para los demás. No se extrapolan mapas adyacentes, interiores o plantas.
 
 Un cambio exclusivo de posición actualiza el snapshot y su fecha sin volver a
 resolver los Pokémon. Una posición corrupta se publica como `null`; la desconexión
