@@ -356,6 +356,22 @@
     "groupAria": "Formas de obtención en Pokémon Black",
     "loadingLabel": "Consultando formas de obtención…"
   },
+  "acquisition": {
+    "label": {
+      "capture": "Capturable en Pokémon Black. Consulta las zonas y condiciones de encuentro.",
+      "static": "Encuentro fijo en Pokémon Black; puede requerir progreso o condiciones especiales.",
+      "gift": "Regalo en Pokémon Black; puede depender de una elección o de condiciones especiales.",
+      "egg": "Huevo de regalo en Pokémon Black.",
+      "fossil": "Revivir un fósil en el museo de Ciudad Esmalte. La elección y el progreso pueden limitar su disponibilidad.",
+      "npc-trade": "Intercambio con un personaje de Pokémon Black; requiere el Pokémon solicitado.",
+      "evolution": "Evolución en Generación V. Necesitas su preevolución; consulta el árbol para ver los requisitos.",
+      "trade-evolution": "Evolución por intercambio. Puede requerir un objeto o intercambiar por una especie concreta.",
+      "breed": "Cría: obtener un huevo con padres compatibles. Algunas especies requieren incienso; necesitas conseguir los padres.",
+      "external": "Sin obtención directa en el juego normal de Black: traer la especie o su familia de otro juego mediante intercambio o transferencia.",
+      "event": "Evento o distribución especial; no se garantiza que siga disponible. También puede recibirse de otro jugador.",
+      "unknown": "Obtención sin confirmar: no hay una vía directa registrada. Esto no demuestra que solo se consiga evolucionando o intercambiando."
+    }
+  },
   "saveSync": {
     "sourceLabel": "Origen del equipo",
     "sourceManual": "Manual",
@@ -382,13 +398,35 @@
     "save": {
       "label": "Save de melonDS",
       "connectedWaiting": "melonDS: conectado · esperando el save…",
-      "bridgeDisconnected": "Bridge desconectado. Reconexión automática; se conserva el último equipo."
+      "bridgeDisconnected": "Bridge desconectado. Reconexión automática; se conserva el último equipo.",
+      "messages": {
+        "waiting": "Esperando el save…",
+        "missing": "Save no encontrado. Esperando a que aparezca…",
+        "readError": "No se pudo leer el save; reintentando…",
+        "readyBackup": "Copia principal inválida. Mostrando respaldo BW válido; esperando recuperación.",
+        "readyUpdated": "Save actualizado · esperando cambios…",
+        "unconfigured": "Configura save.config.local.json o MELONDS_SAVE_PATH y reinicia el bridge."
+      }
     },
     "live": {
       "label": "melonDS en vivo",
       "controlFailed": "No se pudo contactar con el servicio de lectura en vivo.",
       "disconnected": "Servicio en vivo desconectado. Se conservan los últimos datos.",
-      "refreshFailed": "No se pudieron actualizar las cajas. Comprueba el lector en vivo."
+      "refreshFailed": "No se pudieron actualizar las cajas. Comprueba el lector en vivo.",
+      "notConnected": "Conecta el lector en vivo antes de actualizar la colección.",
+      "inactive": "El lector en vivo dejó de estar activo.",
+      "messages": {
+        "pressConnect": "Pulsa Conectar para leer melonDS.",
+        "connecting": "Conectando con melonDS…",
+        "readyActive": "Lectura en vivo activa · cajas cada 2 minutos o al actualizar la colección.",
+        "readyBoxesFailed": "Equipo y Pokédex actualizados. No se pudieron actualizar las cajas; reintenta desde Mi colección.",
+        "connectionLost": "Conexión con melonDS perdida. Pulsa Reconectar; se conservan los últimos datos.",
+        "waitingUnstable": "Esperando una lectura estable; los datos anteriores no han cambiado.",
+        "missingConfig": "Faltan direcciones de memoria por configurar en live.config.local.json.",
+        "connectFailed": "No se pudo conectar. Comprueba GDB y pulsa Reconectar.",
+        "stopping": "Deteniendo el lector; se conservan los últimos datos.",
+        "paused": "Lectura en pausa. Pulsa Reconectar para reanudar; se conservan los últimos datos."
+      }
     }
   },
   "encounterOpportunity": {
@@ -587,7 +625,16 @@
     "raised_other": "Aumentó {{count}} niveles",
     "lowered_one": "Disminuyó {{count}} nivel",
     "lowered_other": "Disminuyó {{count}} niveles",
-    "hint": "Cambios por confirmar"
+    "hint": "Cambios por confirmar",
+    "stat": {
+      "attack": "Ataque",
+      "defense": "Defensa",
+      "specialAttack": "Ataque esp.",
+      "specialDefense": "Defensa esp.",
+      "speed": "Velocidad",
+      "accuracy": "Precisión",
+      "evasion": "Evasión"
+    }
   },
   "zones": {
     "noNameVerified": "Zona sin nombre verificado",

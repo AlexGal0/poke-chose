@@ -356,6 +356,22 @@
     "groupAria": "Ways to obtain it in Pokémon Black",
     "loadingLabel": "Checking ways to obtain it…"
   },
+  "acquisition": {
+    "label": {
+      "capture": "Catchable in Pokémon Black. Check the zones and encounter conditions.",
+      "static": "Fixed encounter in Pokémon Black; may require progress or special conditions.",
+      "gift": "Gift in Pokémon Black; may depend on a choice or special conditions.",
+      "egg": "Gift egg in Pokémon Black.",
+      "fossil": "Revive a fossil at the museum in Nacrene City. Your choice and progress may limit its availability.",
+      "npc-trade": "Trade with a character in Pokémon Black; requires the requested Pokémon.",
+      "evolution": "Generation V evolution. You need its pre-evolution; check the tree for the requirements.",
+      "trade-evolution": "Trade evolution. May require holding an item or trading for a specific species.",
+      "breed": "Breeding: get an egg from compatible parents. Some species require Incense; you need to obtain the parents.",
+      "external": "No direct way to obtain it in the normal Black game: bring the species or its family from another game via trade or transfer.",
+      "event": "Event or special distribution; not guaranteed to still be available. Can also be received from another player.",
+      "unknown": "Unconfirmed way to obtain it: no direct route is on record. This doesn't prove it's only obtainable by evolving or trading."
+    }
+  },
   "saveSync": {
     "sourceLabel": "Team source",
     "sourceManual": "Manual",
@@ -382,13 +398,35 @@
     "save": {
       "label": "melonDS Save",
       "connectedWaiting": "melonDS: connected · waiting for the save…",
-      "bridgeDisconnected": "Bridge disconnected. Automatic reconnection; the last team is kept."
+      "bridgeDisconnected": "Bridge disconnected. Automatic reconnection; the last team is kept.",
+      "messages": {
+        "waiting": "Waiting for the save file…",
+        "missing": "Save file not found. Waiting for it to appear…",
+        "readError": "Couldn't read the save file; retrying…",
+        "readyBackup": "Primary copy invalid. Showing the valid BW backup; waiting for recovery.",
+        "readyUpdated": "Save updated · watching for changes…",
+        "unconfigured": "Set up save.config.local.json or MELONDS_SAVE_PATH and restart the bridge."
+      }
     },
     "live": {
       "label": "melonDS live",
       "controlFailed": "Couldn't contact the live reading service.",
       "disconnected": "Live service disconnected. The last data is kept.",
-      "refreshFailed": "Couldn't refresh the boxes. Check the live reader."
+      "refreshFailed": "Couldn't refresh the boxes. Check the live reader.",
+      "notConnected": "Connect the live reader before refreshing the collection.",
+      "inactive": "The live reader is no longer active.",
+      "messages": {
+        "pressConnect": "Press Connect to read melonDS.",
+        "connecting": "Connecting to melonDS…",
+        "readyActive": "Live reading active · boxes refresh every 2 minutes or when you update the collection.",
+        "readyBoxesFailed": "Team and Pokédex updated. Couldn't refresh the boxes; retry from My Collection.",
+        "connectionLost": "Connection to melonDS lost. Press Reconnect; the last data is kept.",
+        "waitingUnstable": "Waiting for a stable read; previous data hasn't changed.",
+        "missingConfig": "Memory addresses in live.config.local.json aren't configured.",
+        "connectFailed": "Couldn't connect. Check GDB and press Reconnect.",
+        "stopping": "Stopping the reader; the last data is kept.",
+        "paused": "Reading paused. Press Reconnect to resume; the last data is kept."
+      }
     }
   },
   "encounterOpportunity": {
@@ -587,7 +625,16 @@
     "raised_other": "Raised {{count}} levels",
     "lowered_one": "Lowered {{count}} level",
     "lowered_other": "Lowered {{count}} levels",
-    "hint": "Changes to be confirmed"
+    "hint": "Changes to be confirmed",
+    "stat": {
+      "attack": "Attack",
+      "defense": "Defense",
+      "specialAttack": "Sp. Atk.",
+      "specialDefense": "Sp. Def.",
+      "speed": "Speed",
+      "accuracy": "Accuracy",
+      "evasion": "Evasion"
+    }
   },
   "zones": {
     "noNameVerified": "Zone with no verified name",

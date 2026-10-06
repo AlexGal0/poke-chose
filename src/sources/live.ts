@@ -28,5 +28,5 @@ export const disconnectLive = () => control('disconnect')
 export async function refreshLiveBoxes() {
   const response = await fetch('/live-api/refresh-boxes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}', signal: AbortSignal.timeout(60000) })
   const result = await response.json().catch(() => null) as { message?: string } | null
-  if (!response.ok) throw result?.message ? new Error(result.message) : new KeyedError('sources.live.refreshFailed')
+  if (!response.ok) throw new KeyedError(result?.message ? `sources.live.${result.message}` : 'sources.live.refreshFailed')
 }

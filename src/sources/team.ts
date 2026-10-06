@@ -7,6 +7,7 @@ import type { PokemonDataSource } from './data-source.ts'
 import { deserializePokedex } from '../models/pokedex.ts'
 import type { PokedexState } from '../models/pokedex.ts'
 import type { Notice } from '../i18n/notice.ts'
+import { bridgeSnapshotMessageKey } from '../i18n/bridge-messages.ts'
 
 export interface TeamSourceState {
   team: PartyPokemon[]
@@ -94,7 +95,7 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
     } catch { publish({ error: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
     snapshot = next
     snapshotError = next.status === 'error' || next.status === 'missing' || next.backup || event.connected === false
-    publish({ connected: event.connected ?? true, message: { raw: next.message }, error: snapshotError,
+    publish({ connected: event.connected ?? true, message: { key: bridgeSnapshotMessageKey(source.id, next.message) }, error: snapshotError,
       ...(next.pokedex !== null ? { pokedex: deserializePokedex(next.pokedex), updatedAt: next.updatedAt } : {}) })
     if (next.party !== null && next.boxes !== null &&
       (!collectionTarget || !partiesEqual(collectionTarget.party, next.party) || !boxesEqual(collectionTarget.boxes, next.boxes))) {
@@ -129,7 +130,7 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
       try {
         const team = await resolveParty(party, signal)
         if (closed || signal.aborted) return
-          publish({ team, updatedAt: snapshot?.updatedAt ?? next.updatedAt, ...(snapshotError ? {} : { message: { raw: snapshot?.message ?? next.message } }), error: snapshotError })
+          publish({ team, updatedAt: snapshot?.updatedAt ?? next.updatedAt, ...(snapshotError ? {} : { message: { key: bridgeSnapshotMessageKey(source.id, snapshot?.message ?? next.message) } }), error: snapshotError })
       } catch {
         if (closed || signal.aborted) return
         publish({ error: true, message: { key: 'sources.partyResolveFailed' } })

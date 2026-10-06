@@ -20,7 +20,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   let refreshRequest = null
   let boxesError = null
   const identity = p => `${p.personality}-${p.trainerId}-${p.speciesId}`
-  let snapshot = { status: 'waiting', message: 'Pulsa Conectar para leer melonDS.', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
+  let snapshot = { status: 'waiting', message: 'pressConnect', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
   function publish(next) {
     snapshot = { ...snapshot, ...next }
     for (const client of clients) client.write(`data: ${JSON.stringify(snapshot)}\n\n`)
@@ -67,7 +67,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       // Old PC locations may overlap a newly withdrawn party member. Keep the team
       // fresh without rereading PC or publishing the same individual twice.
       const visibleBoxes = boxes?.filter(member => !partyIdentities.has(identity(member))) ?? null
-      const next = { status: 'ready', message: boxesError ? `Equipo y Pokédex actualizados. No se pudieron actualizar las cajas: ${boxesError}. Reintenta desde Mi colección.` : 'Lectura en vivo activa · cajas cada 2 minutos o al actualizar la colección.', party, boxes: visibleBoxes, pokedex, updatedAt: new Date().toISOString(), backup: false }
+      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, updatedAt: new Date().toISOString(), backup: false }
       if (!isSaveSnapshot(next)) throw new Error('La memoria no contiene una partida compatible.')
       if (token === generation) {
         if (refreshBoxes && !boxesError) cachedBoxes = boxes
@@ -77,10 +77,10 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       if (token !== generation || closed) return
       if (current.socket?.destroyed) {
         stop()
-        publish({ status: 'error', message: `Lectura desconectada: ${error.message}. Pulsa Reconectar; se conservan los últimos datos.` })
+        publish({ status: 'error', message: 'connectionLost' })
         return
       }
-      publish({ status: 'waiting', message: `Esperando una partida estable: ${error.message}. Los datos anteriores no se han actualizado.` })
+      publish({ status: 'waiting', message: 'waitingUnstable' })
     }
     if (!closed && token === generation) timer = setTimeout(() => { schedule(token) }, fastPollMs)
   }
@@ -88,9 +88,13 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
     await pause()
     boxesAttemptAt = null
     const token = generation
-    publish({ status: 'waiting', message: 'Conectando con melonDS…' })
+    publish({ status: 'waiting', message: 'connecting' })
+    if (!config.partyAddress || !config.partyCountAddress || !config.boxesAddress || !config.pokedexAddress) {
+      stop()
+      publish({ status: 'error', message: 'missingConfig' })
+      return
+    }
     try {
-      if (!config.partyAddress || !config.partyCountAddress || !config.boxesAddress || !config.pokedexAddress) throw new Error('Falta live.config.local.json con las direcciones validadas de tu ROM.')
       if (!reader || reader.socket?.destroyed) {
         reader = makeReader(config)
         const connection = reader
@@ -98,29 +102,29 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
         connection.socket?.once?.('close', () => {
           if (!closed && reader === connection) {
             stop()
-            publish({ status: 'error', message: 'Conexión con melonDS cerrada. Pulsa Reconectar; se conservan los últimos datos.' })
+            publish({ status: 'error', message: 'connectionLost' })
           }
         })
       }
       if (closed || token !== generation) return
       active = true
       schedule(token)
-    } catch (error) {
+    } catch {
       if (token !== generation) return
       stop()
-      publish({ status: 'error', message: `No se pudo conectar: ${error.message}. Comprueba GDB y pulsa Reconectar.` })
+      publish({ status: 'error', message: 'connectFailed' })
     }
   }
   async function refreshBoxesNow() {
-    if (!active || !reader || closed) throw new Error('Conecta el lector en vivo antes de actualizar la colección.')
+    if (!active || !reader || closed) throw new Error('notConnected')
     clearTimeout(timer)
     await sampling
     clearTimeout(timer)
-    if (!active || !reader || closed) throw new Error('El lector en vivo dejó de estar activo.')
+    if (!active || !reader || closed) throw new Error('inactive')
     boxesAttemptAt = null
     schedule(generation)
     await sampling
-    if (snapshot.status !== 'ready' || boxesError) throw new Error(boxesError || snapshot.message)
+    if (snapshot.status !== 'ready' || boxesError) throw new Error('refreshFailed')
   }
   const server = createServer((req, res) => {
     const host = req.headers.host?.split(':')[0]
@@ -148,7 +152,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
           void refreshRequest.finally(() => { refreshRequest = null }).catch(() => {})
         }
         refreshRequest.then(() => {
-          res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ message: 'Cajas actualizadas.' }))
+          res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({}))
         }, error => {
           res.writeHead(503, { 'Content-Type': 'application/json' }).end(JSON.stringify({ message: error.message }))
         })
@@ -158,9 +162,9 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
         if (closed) return
         if (req.url === '/live-api/connect') await connect()
         else {
-          publish({ status: 'waiting', message: 'Deteniendo el lector; se conservan los últimos datos.' })
+          publish({ status: 'waiting', message: 'stopping' })
           await pause()
-          publish({ status: 'waiting', message: 'Lectura en pausa. Pulsa Reconectar para reanudar; se conservan los últimos datos.' })
+          publish({ status: 'waiting', message: 'paused' })
         }
       })
       res.writeHead(202).end()
