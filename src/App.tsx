@@ -1,4 +1,5 @@
 import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import type { CollectionState, Pokemon } from "./models/pokemon";
 import {
   addToCollection,
@@ -37,7 +38,8 @@ import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
 
 function App() {
-  const [battleConnection, setBattleConnection] = useState<BattleConnection>({ status: 'waiting', message: 'Esperando el lector de combate.', inBattle: false })
+  const { t } = useTranslation();
+  const [battleConnection, setBattleConnection] = useState<BattleConnection>({ status: 'waiting', message: t('app.battleWaitingMessage'), inBattle: false })
   const returnPoint = useRef<{ tab: Exclude<ActiveTab, 'battle'>; scrollY: number } | null>(null)
   const lastConfirmedBattle = useRef(false)
   const [canReturnFromBattle, setCanReturnFromBattle] = useState(false)
@@ -134,34 +136,32 @@ function App() {
           <LocaleSelector />
           <ThemeSelector />
           <div className="game-label">
-          POKÉMON BLACK <span>GENERACIÓN V</span>
+          POKÉMON BLACK <span>{t('app.gameGeneration')}</span>
           </div>
         </div>
       </header>
       <main className={battleView ? 'battle-layout' : undefined}>
         <div className="intro" hidden={battleView}>
           <div>
-            <span className="eyebrow">TU PARTIDA. TU ESTRATEGIA.</span>
+            <span className="eyebrow">{t('app.intro.eyebrow')}</span>
             <h1>
-              Un equipo con <span>equilibrio.</span>
+              <Trans i18nKey="app.intro.heading" components={{ balance: <span /> }} />
             </h1>
             <p>
-              Organiza tu colección y encuentra la combinación para tu próxima
-              batalla.
+              {t('app.intro.description')}
             </p>
           </div>
           <span className="save-status" role="status">
-            {saveFailed || tabSaveFailed ? "⚠ No se pudo guardar" : "● Guardado local"}
+            {saveFailed || tabSaveFailed ? t('app.saveStatus.failed') : t('app.saveStatus.ok')}
           </span>
         </div>
         {(saveFailed || tabSaveFailed) && (
           <p className="notice" role="alert">
-            El navegador no permite guardar o el almacenamiento está lleno. Los
-            cambios de esta sesión podrían perderse al recargar.
+            {t('app.storageNotice')}
           </p>
         )}
         <details className={`connection-settings ${battleView ? 'compact' : ''}`} open={!battleView}>
-          <summary>Origen y controles de conexión</summary>
+          <summary>{t('app.connectionSettingsSummary')}</summary>
         <SaveSync
           source={source}
           onChange={(next) => {
@@ -177,8 +177,8 @@ function App() {
         <section className="panel team-panel" aria-labelledby="team-title" hidden={battleView}>
           <div className="section-heading">
             <div>
-              <span className="eyebrow">LISTOS PARA LA BATALLA</span>
-              <h2 id="team-title">Tu equipo</h2>
+              <span className="eyebrow">{t('app.team.eyebrow')}</span>
+              <h2 id="team-title">{t('app.team.heading')}</h2>
             </div>
             <span className="count">{team.length} / 6</span>
           </div>
@@ -193,13 +193,13 @@ function App() {
                 {source !== "manual" ? (
                   <div className="save-member-info">
                     {saveTeam.team[index].isEgg
-                      ? "Huevo"
-                      : `Lv. ${saveTeam.team[index].level}`}
+                      ? t('app.team.eggLabel')
+                      : t('app.team.level', { level: saveTeam.team[index].level })}
                     <HeldItem itemId={saveTeam.team[index].heldItemId} />
                   </div>
                 ) : (
                   <button onClick={() => toggleTeam(pokemon.id)}>
-                    Quitar del equipo
+                    {t('app.team.removeButton')}
                   </button>
                 )}
               </PokemonCard>
@@ -215,31 +215,31 @@ function App() {
                     .getElementById("workspace")
                     ?.scrollIntoView({ behavior: "smooth" });
                 }}
-                aria-label="Elegir Pokémon de la colección"
+                aria-label={t('app.team.chooseAria')}
               >
                 <span>+</span>
-                <strong>Espacio {team.length + index + 1}</strong>
+                <strong>{t('app.team.emptySlotLabel', { number: team.length + index + 1 })}</strong>
                 <small>
                   {source !== "manual"
-                    ? "Sin miembro en la partida"
-                    : "Elegir de tu colección"}
+                    ? t('app.team.readOnlyMemberHint')
+                    : t('app.team.chooseFromCollection')}
                 </small>
               </button>
             ))}
           </div>
           <p className="hint">
             {source !== "manual"
-              ? "Equipo de solo lectura. Los huevos no participan en el análisis. La cobertura sigue usando STAB."
+              ? t('app.team.hint.readOnly')
               : team.length === 6
-                ? "Equipo completo. Quita un miembro para cambiarlo por otro."
-                : "Elige hasta 6 Pokémon de tu colección. Puedes cambiarlos cuando quieras."}
+                ? t('app.team.hint.full')
+                : t('app.team.hint.editable')}
           </p>
         </section>
         <div
           id="workspace"
           className="tabs"
           role="tablist"
-          aria-label="Secciones de PokéChose"
+          aria-label={t('app.tabs.ariaLabel')}
           onKeyDown={event => {
             const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
             const current = buttons.indexOf(document.activeElement as HTMLButtonElement);
@@ -251,7 +251,7 @@ function App() {
           }}
         >
           <button id="captures-tab" role="tab" aria-selected={tab === "captures"} aria-controls="workspace-panel" onClick={() => setTab("captures")}>
-            Capturas por zona
+            {t('app.tabs.captures')}
           </button>
           <button
             id="catalog-tab"
@@ -260,7 +260,7 @@ function App() {
             aria-controls="workspace-panel"
             onClick={() => setTab("catalog")}
           >
-            Explorar catálogo
+            {t('app.tabs.catalog')}
           </button>
           <button
             id="collection-tab"
@@ -269,7 +269,7 @@ function App() {
             aria-controls="workspace-panel"
             onClick={() => setTab("collection")}
           >
-            Mi colección{" "}
+            {t('app.tabs.collection')}{" "}
             <span>
               {source !== "manual" && saveTeam.collection === null
                 ? "…"
@@ -277,13 +277,13 @@ function App() {
             </span>
           </button>
           <button id="analysis-tab" role="tab" aria-selected={tab === "analysis"} aria-controls="workspace-panel" onClick={() => setTab("analysis")}>
-            Balance de tipos
+            {t('app.tabs.analysis')}
           </button>
           <button id="types-tab" role="tab" aria-selected={tab === "types"} aria-controls="workspace-panel" onClick={() => setTab("types")}>
-            Tabla de tipos
+            {t('app.tabs.types')}
           </button>
           {source === 'live' && <button id="battle-tab" role="tab" aria-selected={tab === 'battle'} aria-controls="workspace-panel" onClick={() => setTab('battle')}>
-            Combate
+            {t('app.tabs.battle')}
           </button>}
         </div>
         <div
@@ -309,10 +309,10 @@ function App() {
             <section className="panel collection-panel" aria-labelledby="collection-title">
               <div className="section-heading">
                 <div>
-                  <span className="eyebrow">03 / TUS COMPAÑEROS</span>
-                  <h2 id="collection-title">Mi colección</h2>
+                  <span className="eyebrow">{t('app.collection.eyebrow')}</span>
+                  <h2 id="collection-title">{t('app.collection.heading')}</h2>
                 </div>
-                <span className="count">{state.collection.length} Pokémon</span>
+                <span className="count">{t('app.collection.count', { count: state.collection.length })}</span>
               </div>
 
               <CollectionSearch
@@ -322,13 +322,13 @@ function App() {
               />
               {state.collection.length === 0 ? (
                 <div className="empty">
-                  <p>Tu aventura empieza con el primer Pokémon.</p>
+                  <p>{t('app.collection.emptyIntro')}</p>
                   <button className="primary" onClick={() => setTab("catalog")}>
-                    Explorar catálogo
+                    {t('app.collection.exploreCatalogButton')}
                   </button>
                 </div>
               ) : filteredManualCollection.length === 0 ? (
-                <p className="empty">Sin coincidencias en tu colección.</p>
+                <p className="empty">{t('app.collection.noMatches')}</p>
               ) : (
                 <div className="pokemon-grid">
                   {filteredManualCollection.map((pokemon) => (
@@ -347,16 +347,16 @@ function App() {
                         onClick={() => toggleTeam(pokemon.id)}
                       >
                         {state.teamIds.includes(pokemon.id)
-                          ? "− Quitar del equipo manual"
+                          ? t('app.collection.removeFromTeam')
                           : manual.length === 6
-                            ? "Equipo manual completo"
-                            : "+ Al equipo manual"}
+                            ? t('app.collection.teamFull')
+                            : t('app.collection.addToTeam')}
                       </button>
                       <button
                         className="remove"
                         onClick={() => removePokemon(pokemon.id)}
                       >
-                        Eliminar de colección
+                        {t('app.collection.removeFromCollection')}
                       </button>
                     </PokemonCard>
                   ))}
@@ -375,11 +375,10 @@ function App() {
       <footer hidden={battleView}>
         PokéChose · Pokémon Black{" "}
         <span>
-          Datos y sprites de{" "}
-          <a href="https://pokeapi.co/" target="_blank" rel="noreferrer">
-            PokéAPI
-          </a>{" "}
-          · Colección guardada en este navegador
+          <Trans
+            i18nKey="app.footer.credits"
+            components={{ pokeapiLink: <a href="https://pokeapi.co/" target="_blank" rel="noreferrer" /> }}
+          />
         </span>
       </footer>
       <ConnectionIndicator source={source} state={saveTeam} battle={battleConnection} />

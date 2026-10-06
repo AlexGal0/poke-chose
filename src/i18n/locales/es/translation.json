@@ -16,5 +16,60 @@
       "en": "Inglés"
     },
     "saveFailed": "No se pudo guardar el idioma en este navegador."
+  },
+  "app": {
+    "battleWaitingMessage": "Esperando el lector de combate.",
+    "gameGeneration": "GENERACIÓN V",
+    "intro": {
+      "eyebrow": "TU PARTIDA. TU ESTRATEGIA.",
+      "heading": "Un equipo con <balance>equilibrio.</balance>",
+      "description": "Organiza tu colección y encuentra la combinación para tu próxima batalla."
+    },
+    "saveStatus": {
+      "failed": "⚠ No se pudo guardar",
+      "ok": "● Guardado local"
+    },
+    "storageNotice": "El navegador no permite guardar o el almacenamiento está lleno. Los cambios de esta sesión podrían perderse al recargar.",
+    "connectionSettingsSummary": "Origen y controles de conexión",
+    "team": {
+      "eyebrow": "LISTOS PARA LA BATALLA",
+      "heading": "Tu equipo",
+      "eggLabel": "Huevo",
+      "level": "Lv. {{level}}",
+      "removeButton": "Quitar del equipo",
+      "chooseAria": "Elegir Pokémon de la colección",
+      "emptySlotLabel": "Espacio {{number}}",
+      "readOnlyMemberHint": "Sin miembro en la partida",
+      "chooseFromCollection": "Elegir de tu colección",
+      "hint": {
+        "readOnly": "Equipo de solo lectura. Los huevos no participan en el análisis. La cobertura sigue usando STAB.",
+        "full": "Equipo completo. Quita un miembro para cambiarlo por otro.",
+        "editable": "Elige hasta 6 Pokémon de tu colección. Puedes cambiarlos cuando quieras."
+      }
+    },
+    "tabs": {
+      "ariaLabel": "Secciones de PokéChose",
+      "captures": "Capturas por zona",
+      "catalog": "Explorar catálogo",
+      "collection": "Mi colección",
+      "analysis": "Balance de tipos",
+      "types": "Tabla de tipos",
+      "battle": "Combate"
+    },
+    "collection": {
+      "eyebrow": "03 / TUS COMPAÑEROS",
+      "heading": "Mi colección",
+      "count": "{{count}} Pokémon",
+      "emptyIntro": "Tu aventura empieza con el primer Pokémon.",
+      "exploreCatalogButton": "Explorar catálogo",
+      "noMatches": "Sin coincidencias en tu colección.",
+      "removeFromTeam": "− Quitar del equipo manual",
+      "teamFull": "Equipo manual completo",
+      "addToTeam": "+ Al equipo manual",
+      "removeFromCollection": "Eliminar de colección"
+    },
+    "footer": {
+      "credits": "Datos y sprites de <pokeapiLink>PokéAPI</pokeapiLink> · Colección guardada en este navegador"
+    }
   }
 }

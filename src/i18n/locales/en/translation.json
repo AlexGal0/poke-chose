@@ -16,5 +16,60 @@
       "en": "English"
     },
     "saveFailed": "Couldn't save the language in this browser."
+  },
+  "app": {
+    "battleWaitingMessage": "Waiting for the battle reader.",
+    "gameGeneration": "GENERATION V",
+    "intro": {
+      "eyebrow": "YOUR GAME. YOUR STRATEGY.",
+      "heading": "A team with <balance>balance.</balance>",
+      "description": "Organize your collection and find the right combination for your next battle."
+    },
+    "saveStatus": {
+      "failed": "⚠ Couldn't save",
+      "ok": "● Saved locally"
+    },
+    "storageNotice": "The browser can't save, or storage is full. Changes made this session could be lost on reload.",
+    "connectionSettingsSummary": "Connection source and controls",
+    "team": {
+      "eyebrow": "READY FOR BATTLE",
+      "heading": "Your team",
+      "eggLabel": "Egg",
+      "level": "Lv. {{level}}",
+      "removeButton": "Remove from team",
+      "chooseAria": "Choose a Pokémon from the collection",
+      "emptySlotLabel": "Slot {{number}}",
+      "readOnlyMemberHint": "No member in this save",
+      "chooseFromCollection": "Choose from your collection",
+      "hint": {
+        "readOnly": "Read-only team. Eggs don't take part in the analysis. Coverage still uses STAB.",
+        "full": "Team full. Remove a member to swap it for another.",
+        "editable": "Choose up to 6 Pokémon from your collection. Swap them anytime."
+      }
+    },
+    "tabs": {
+      "ariaLabel": "PokéChose sections",
+      "captures": "Captures by zone",
+      "catalog": "Browse catalog",
+      "collection": "My collection",
+      "analysis": "Type balance",
+      "types": "Type chart",
+      "battle": "Battle"
+    },
+    "collection": {
+      "eyebrow": "03 / YOUR COMPANIONS",
+      "heading": "My collection",
+      "count": "{{count}} Pokémon",
+      "emptyIntro": "Your adventure starts with your first Pokémon.",
+      "exploreCatalogButton": "Browse catalog",
+      "noMatches": "No matches in your collection.",
+      "removeFromTeam": "− Remove from manual team",
+      "teamFull": "Manual team full",
+      "addToTeam": "+ Add to manual team",
+      "removeFromCollection": "Remove from collection"
+    },
+    "footer": {
+      "credits": "Data and sprites from <pokeapiLink>PokéAPI</pokeapiLink> · Collection saved in this browser"
+    }
   }
 }
