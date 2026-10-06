@@ -71,5 +71,68 @@
     "footer": {
       "credits": "Data and sprites from <pokeapiLink>PokéAPI</pokeapiLink> · Collection saved in this browser"
     }
+  },
+  "captureChecklist": {
+    "pokedexLookup": {
+      "summary": "Look up a species in the Pokédex · {{caught}} caught / {{seen}} seen",
+      "hint": "Global record for this save, including species obtained by evolution or trade. This lookup doesn't indicate wild encounters in Black.",
+      "inputAriaLabel": "Look up a species in the Pokédex",
+      "placeholder": "Name or number, e.g. minccino or 572",
+      "loadError": "Couldn't load the catalog.",
+      "retryButton": "Retry catalog",
+      "noMatches": "No matches.",
+      "seenLabel": "Seen",
+      "notSeenLabel": "Not seen"
+    },
+    "status": {
+      "caught": "✓ Caught",
+      "notCaught": "○ Not caught",
+      "noData": "— No save data"
+    },
+    "header": {
+      "count": "Caught: {{caught}} / {{total}}",
+      "hint1": "Caught at any point in this save according to the Pokédex. Seeing a species doesn't complete the checklist; evolving or releasing it doesn't erase its capture.",
+      "hint2": "↗ Higher chance in a later zone · 📍 Only natural zone registered in PokéAPI for Black. Hover or tap the icon to see the comparison. No icon: there's no comparable upgrade or unique registered zone."
+    },
+    "disabledNotice": "Select melonDS Save to check your save's Pokédex.",
+    "zoneSearchLabel": "Search zone",
+    "zoneSearchPlaceholder": "E.g. Mistralton, cave or route 6",
+    "zoneLabel": "Zone",
+    "previousZoneAria": "Previous zone",
+    "previousZoneTitle": "Previous zone: {{zone}}",
+    "firstZoneTitle": "First zone in the list",
+    "currentZoneGroupLabel": "Current zone",
+    "nextZoneAria": "Next zone",
+    "nextZoneTitle": "Next zone: {{zone}}",
+    "lastZoneTitle": "Last zone in the list",
+    "zoneSaveFailed": "The zone changed, but couldn't be saved for next session.",
+    "zonesFoundCount": "{{count}} zones found.",
+    "noZoneMatches": "No matches. The current zone is kept; change or clear the search.",
+    "zoneOrderHint": "Suggested first-visit order in Pokémon Black. Optional detours are grouped separately; you can go back to earlier zones.",
+    "equipment": {
+      "legend": "My items and abilities",
+      "surf": "I can use Surf (HM03)",
+      "superRod": "I have the Super Rod",
+      "hint": "Mark your resources manually; they're remembered in this browser. Surf requires a Pokémon that can use it. The filter affects encounter methods, it doesn't check obstacles or progress to reach the zone.",
+      "hiddenCount": "Hidden: {{count}} species with no enabled methods.",
+      "filterSaveFailed": "The filter works, but couldn't be saved for next session."
+    },
+    "errors": {
+      "loadZones": "Couldn't load the zone list from PokéAPI.",
+      "loadEncounters": "Couldn't load Black's encounters. Check your connection."
+    },
+    "retryEncountersButton": "Retry encounters",
+    "waitingForPokedex": "Waiting for a valid Pokédex from the save. Capture status is still unknown.",
+    "staleNotice": "Showing the last valid Pokédex; check the sync status.",
+    "loadingEncounters": "Loading Black's encounters…",
+    "noEncountersWithAccess": "No encounters with your current resources in this zone. Enable Surf or the Super Rod if you have them.",
+    "noEncountersRegistered": "PokéAPI has no registered encounters for Pokémon Black in this zone.",
+    "speciesCount": "{{count}} species",
+    "wikiSearchAria": "Search {{name}} on WikiDex (new tab)",
+    "wikiTitle": "Look up on WikiDex",
+    "minLevel": "· Min. lvl. {{level}}",
+    "encountersSummary": "Encounters in Black",
+    "levelRange": "Lv. {{min}}–{{max}}",
+    "footerHint": "Includes PokéAPI's encounters for Black and the five trades with in-game characters. It's not a list of every species obtainable by evolution, events, or trading with other players. Percentages correspond to each table/condition; they don't apply to trades with characters."
   }
 }

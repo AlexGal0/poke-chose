@@ -71,5 +71,68 @@
     "footer": {
       "credits": "Datos y sprites de <pokeapiLink>PokéAPI</pokeapiLink> · Colección guardada en este navegador"
     }
+  },
+  "captureChecklist": {
+    "pokedexLookup": {
+      "summary": "Consultar especie en la Pokédex · {{caught}} capturadas / {{seen}} vistas",
+      "hint": "Registro global de tu partida, incluidas especies obtenidas por evolución o intercambio. Esta consulta no indica encuentros salvajes en Black.",
+      "inputAriaLabel": "Consultar especie en la Pokédex",
+      "placeholder": "Nombre o número, ej. minccino o 572",
+      "loadError": "No se pudo cargar el catálogo.",
+      "retryButton": "Reintentar catálogo",
+      "noMatches": "Sin coincidencias.",
+      "seenLabel": "Visto",
+      "notSeenLabel": "No visto"
+    },
+    "status": {
+      "caught": "✓ Capturado",
+      "notCaught": "○ No capturado",
+      "noData": "— Sin datos de la partida"
+    },
+    "header": {
+      "count": "Capturados: {{caught}} / {{total}}",
+      "hint1": "Capturada alguna vez en esta partida según la Pokédex. Ver una especie no completa la checklist; evolucionarla o liberarla no borra su captura.",
+      "hint2": "↗ Mayor probabilidad en una zona posterior · 📍 Única zona natural registrada en PokéAPI para Black. Pasa el cursor o toca el icono para consultar la comparación. Sin icono: no hay una mejora comparable ni una zona única registrada."
+    },
+    "disabledNotice": "Selecciona Save de melonDS para consultar la Pokédex de tu partida de Black.",
+    "zoneSearchLabel": "Buscar zona",
+    "zoneSearchPlaceholder": "Ej. Mayólica, cueva o ruta 6",
+    "zoneLabel": "Zona",
+    "previousZoneAria": "Zona anterior",
+    "previousZoneTitle": "Zona anterior: {{zone}}",
+    "firstZoneTitle": "Primera zona de la lista",
+    "currentZoneGroupLabel": "Zona actual",
+    "nextZoneAria": "Zona siguiente",
+    "nextZoneTitle": "Zona siguiente: {{zone}}",
+    "lastZoneTitle": "Última zona de la lista",
+    "zoneSaveFailed": "La zona cambió, pero no se pudo guardar para la próxima sesión.",
+    "zonesFoundCount": "{{count}} zonas encontradas.",
+    "noZoneMatches": "Sin coincidencias. La zona actual se conserva; cambia o borra la búsqueda.",
+    "zoneOrderHint": "Orden orientativo de primera visita en Pokémon Negro. Los desvíos opcionales se agrupan aparte; puedes volver a zonas anteriores.",
+    "equipment": {
+      "legend": "Mis objetos y habilidades",
+      "surf": "Puedo usar Surf (MO03)",
+      "superRod": "Tengo Supercaña",
+      "hint": "Marca tus recursos manualmente; se recuerdan en este navegador. Surf requiere un Pokémon que lo pueda usar. El filtro afecta a los métodos de encuentro, no verifica obstáculos ni progreso para llegar a la zona.",
+      "hiddenCount": "Ocultas: {{count}} especies sin métodos habilitados.",
+      "filterSaveFailed": "El filtro funciona, pero no se pudo guardar para la próxima sesión."
+    },
+    "errors": {
+      "loadZones": "No se pudo cargar la lista de zonas de PokéAPI.",
+      "loadEncounters": "No se pudieron cargar los encuentros de Black. Comprueba tu conexión."
+    },
+    "retryEncountersButton": "Reintentar encuentros",
+    "waitingForPokedex": "Esperando una Pokédex válida de la partida. El estado de captura todavía es desconocido.",
+    "staleNotice": "Mostrando la última Pokédex válida; comprueba el estado de sincronización.",
+    "loadingEncounters": "Cargando encuentros de Black…",
+    "noEncountersWithAccess": "No hay encuentros con tus recursos actuales en esta zona. Habilita Surf o Supercaña si los tienes.",
+    "noEncountersRegistered": "PokéAPI no registra encuentros para Pokémon Black en esta zona.",
+    "speciesCount": "{{count}} especies",
+    "wikiSearchAria": "Buscar {{name}} en WikiDex (nueva pestaña)",
+    "wikiTitle": "Consultar en WikiDex",
+    "minLevel": "· Nv. mín. {{level}}",
+    "encountersSummary": "Encuentros en Black",
+    "levelRange": "Nv. {{min}}–{{max}}",
+    "footerHint": "Incluye los encuentros de PokéAPI para Black y los cinco intercambios con personajes del juego original. No es una lista de todas las especies obtenibles por evolución, eventos o intercambio con otros jugadores. Los porcentajes corresponden a cada tabla/condición; no se aplican a los intercambios con personajes."
   }
 }
