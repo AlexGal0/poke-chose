@@ -1,0 +1,8 @@
+.gender-icon { position: relative; display: inline-grid; place-items: center; vertical-align: middle; min-width: 30px; height: 26px; margin-left: 6px; padding: 2px 5px; border: 1px solid var(--border-strong, #465468); border-radius: 5px; background: var(--surface-inset, #141d27); color: var(--text, #c5d3e2); font-size: 15px; line-height: 1; cursor: help; }
+.gender-male { color: var(--gender-male, #a5c9ff); }.gender-female { color: var(--gender-female, #f5b5d5); }.gender-both { color: var(--gender-both, #d8c3ef); }
+.gender-icon:focus-visible { outline: 2px solid var(--accent, #83dcb8); outline-offset: 2px; }
+.gender-tooltip { display: none; position: absolute; z-index: 5; top: calc(100% + 7px); right: 0; width: 145px; max-width: 60vw; padding: 8px; border: 1px solid var(--border-strong, #526779); border-radius: 6px; background: var(--surface-inset, #101820); color: var(--text, #e1eaf2); font-size: 11px; line-height: 1.5; text-align: left; box-shadow: 0 5px 16px #0006; pointer-events: none; }
+.gender-icon:hover .gender-tooltip, .gender-icon:focus .gender-tooltip { display: block; }
+.pokemon-card > .gender-icon { position: absolute; top: 9px; right: 9px; }
+.capture-identity { position: relative; }
+.capture-identity .gender-icon { position: static; margin-left: 6px; }

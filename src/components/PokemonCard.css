@@ -1,0 +1,6 @@
+.pokemon-card.fainted, .pokemon-card.fainted.selected, .pokemon-card.fainted.captured { border-color: var(--danger-border, #a65b63); background: var(--danger-surface, #29242c); }
+.pokemon-card.fainted .sprite { filter: grayscale(1); opacity: 0.65; }
+.pokemon-card.fainted h3 { color: var(--text-muted, #b6b8c1); }
+.fainted-status { align-self: center; margin-top: 8px; padding: 4px 10px; border-radius: 4px; background: var(--danger-surface, #58313b); color: var(--danger-text, #ffc1c7); font-size: 11px; font-weight: 700; }
+.collection-panel .card-actions .moves-button { margin-top: auto; }
+.collection-panel .card-actions .evolution-button { margin-top: 0; }

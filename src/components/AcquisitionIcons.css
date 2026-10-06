@@ -1,0 +1,7 @@
+.acquisition-icons { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 10px; }
+.acquisition-icon { display: inline-grid; place-items: center; width: 29px; height: 29px; padding: 0; border: 1px solid var(--border-strong, #465468); border-radius: 6px; background: var(--surface-inset, #141d27); font-size: 16px; cursor: help; }
+.card-actions button.acquisition-icon { width: 29px; height: 29px; padding: 0; font-size: 16px; cursor: pointer; }
+.acquisition-icon:hover, .acquisition-icon:focus { border-color: var(--accent, #83dcb8); outline: 2px solid var(--accent, #83dcb8); outline-offset: 2px; z-index: 3; }
+.acquisition-tooltip { display: none; position: absolute; z-index: 4; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%); width: min(180px, calc(100% - 8px)); padding: 9px; border: 1px solid var(--border-strong, #526779); border-radius: 7px; background: var(--surface-inset, #101820); color: var(--text, #e1eaf2); font-size: 11px; font-weight: 400; line-height: 1.5; text-align: left; box-shadow: 0 5px 16px #0006; pointer-events: none; }
+.acquisition-icon:hover .acquisition-tooltip, .acquisition-icon:focus .acquisition-tooltip { display: block; }
+.sprite.undiscovered > span { display: grid; place-items: center; width: 68px; height: 68px; border: 1px dashed var(--border-strong, #526173); border-radius: 50%; color: var(--text-muted, #91a3b9); background: var(--surface-inset, #121b25); }

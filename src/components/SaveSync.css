@@ -1,0 +1,13 @@
+.save-sync { display: flex; flex-wrap: wrap; align-items: center; gap: 15px 25px; }
+.save-sync label { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+.save-sync .hint { flex-basis: 100%; }
+.live-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 540px) {
+  .save-sync label { flex-wrap: wrap; width: 100%; }
+  .save-sync select { max-width: 100%; }
+  .live-controls { width: 100%; }
+}
+.sync-status, .sync-error { font-size: 12px; line-height: 1.6; }
+.sync-status { color: var(--success-text, #a4dfbd); }.sync-error { color: var(--warning-text, #e9bc96); }
+.save-member-info { font-size: 12px; color: var(--accent-text, #bcebd9); }
+.save-member-info small { display: block; color: var(--text-muted, #a1adbc); font-size: 10px; margin-top: 6px; line-height: 1.6; }

@@ -1,0 +1,84 @@
+.panel.battle-panel { padding: 18px; }
+.battle-panel .section-heading { margin-bottom: 10px; }
+.battle-panel h2 { font-size: 20px; margin-top: 3px; }
+.enemy-prototype-card { width: 100%; margin-top: 6px; }
+.battle-participants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'own enemy' 'own-effect enemy-effect'; gap: 10px 12px; margin-top: 12px; align-items: stretch; }
+.own-participant { grid-area: own; }
+.enemy-participant { grid-area: enemy; }
+.battle-type-matchup.outgoing { grid-area: own-effect; }
+.battle-type-matchup.incoming { grid-area: enemy-effect; }
+.battle-participant { display: flex; flex-direction: column; min-width: 0; }
+.battle-participant-title { color: var(--text-muted, #b5c2d0); font-size: 12px; }
+.battle-participant-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 200px; padding: 16px; margin-top: 6px; border: 1px dashed var(--border-strong, #526174); border-radius: 9px; background: var(--surface-raised, #1d2631); text-align: center; overflow-wrap: anywhere; }
+.enemy-prototype-card .battle-participant-empty { margin-top: 0; }
+.battle-participant .enemy-prototype-card { display: flex; flex: 1; }
+.enemy-prototype-card .pokemon-card { display: grid; grid-template-columns: 128px minmax(0, 1fr); grid-template-rows: auto auto auto; gap: 6px 12px; width: 100%; min-height: 200px; padding: 28px 14px 14px; align-items: center; }
+.enemy-prototype-card .dex-number { position: absolute; top: 8px; left: 10px; font-size: 10px; }
+.enemy-prototype-card .sprite { grid-column: 1; grid-row: 2 / 4; height: 128px; }
+.enemy-prototype-card .sprite img { width: 128px; height: 128px; }
+.enemy-prototype-card .pokemon-identity { grid-column: 2; grid-row: 1; display: grid; grid-template-rows: 42px 18px; align-items: center; width: 100%; height: 60px; min-height: 60px; }
+.enemy-prototype-card .pokemon-identity h3, .enemy-prototype-card .pokemon-identity h3.pokemon-nickname { margin: 0; font-size: 22px; line-height: 1.15; }
+.enemy-prototype-card .pokemon-species-name { margin: 0; }
+.enemy-prototype-card .types { grid-column: 2; grid-row: 2; min-height: 24px; align-items: center; }
+.enemy-prototype-card .type { font-size: 11px; padding: 4px 7px; }
+.enemy-prototype-card .card-actions { grid-column: 2; grid-row: 3; flex: 0; width: 100%; margin-top: 0; gap: 4px; }
+.enemy-prototype-card .card-actions > .hint { font-size: 11px; }
+.enemy-prototype-card .fainted-status { position: absolute; top: 6px; right: 8px; margin: 0; padding: 3px 8px; font-size: 10px; line-height: 1.4; }
+.battle-health { width: 100%; min-height: 44px; margin-top: 12px; }
+.battle-health-label { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 8px; }
+.battle-health-label span { color: var(--text-muted, #b5c2d0); }
+.battle-health-bar { --hp-color: #83dcb8; display: block; appearance: none; width: 100%; height: 10px; border: 0; border-radius: 8px; overflow: hidden; background: #121a24; }
+.battle-health-bar.medium { --hp-color: #eac56a; }
+.battle-health-bar.low { --hp-color: #ef7a83; }
+.battle-health-fill { display: block; height: 100%; background: var(--hp-color); border-radius: 8px; transition: width 420ms ease-out, background-color 420ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-health-fill { transition: none; }
+}
+.enemy-prototype-status { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; padding: 8px 12px; border: 1px solid var(--border-strong, #526174); border-left: 4px solid var(--text-muted, #a5b5c7); border-radius: 7px; background: var(--surface-raised, #202a36); }
+.enemy-prototype-status strong { color: var(--text, #edf4f8); font-size: 13px; }
+.enemy-prototype-status span { color: var(--text-muted, #a5b5c7); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.enemy-prototype-status.detected { border-color: var(--accent-border, #416854); border-left-color: var(--accent, #83dcb8); background: var(--accent-surface, #203129); }
+.enemy-prototype-status.detected strong { color: var(--success-text, #a4dfbd); }
+.enemy-prototype-status.detected span { display: none; }
+.enemy-prototype-controls { margin-top: 16px; }
+.battle-type-matchup { display: grid; grid-template-rows: repeat(5, auto); align-self: start; gap: 8px; min-width: 0; padding: 10px 12px; border: 1px solid var(--border, #364352); border-radius: 9px; background: var(--surface-raised, #202a36); }
+.battle-strength-description { color: var(--text-muted, #9caabb); font-size: 10px; font-weight: 400; }
+.battle-resistances .multiplier { color: var(--success-text, #a4dfbd); }
+.battle-resistances .battle-damage-type.matched { border-color: var(--accent, #83dcb8); background: var(--success-surface, #264a3d); }
+.battle-resistances .battle-weakness-match { color: var(--success-text, #a4dfbd); }
+.incoming .battle-resistances .battle-damage-type.matched { border-color: var(--danger-border, #efb6a8); background: var(--danger-surface, #4c3030); }
+.incoming .battle-resistances .battle-weakness-match { color: var(--danger-text, #ffc1b2); }
+.battle-weakness-types { display: flex; align-content: flex-start; align-items: flex-start; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+.battle-damage-type { display: flex; align-items: center; gap: 4px; padding: 3px; border: 1px solid transparent; border-radius: 6px; }
+.battle-damage-type.matched { border-color: var(--accent, #83dcb8); background: var(--success-surface, #264a3d); }
+.outgoing .battle-damage-type.matched { border-color: var(--danger-border, #efb6a8); background: var(--danger-surface, #4c3030); }
+.battle-weakness-match { color: var(--success-text, #a4dfbd); font-size: 12px; }
+.outgoing .battle-weakness-match { color: var(--danger-text, #ffc1b2); }
+.battle-damage-type .multiplier { min-width: 28px; padding: 3px; text-align: center; font-size: 11px; font-weight: 700; }
+.battle-weakness-heading { font-size: 12px; color: var(--text-muted, #b5c2d0); }
+.battle-type-matchup small { color: var(--text-muted, #a5b5c7); font-size: 10px; line-height: 1.3; }
+.battle-type-matchup .hint { font-size: 11px; }
+.battle-reading-details { margin-top: 12px; color: var(--text-muted, #9caabb); font-size: 11px; }
+.battle-reading-details summary { cursor: pointer; }
+.battle-reading-details p { margin-top: 8px; }
+@media (max-width: 1050px) {
+  .enemy-prototype-card .pokemon-card { display: flex; gap: 0; padding: 24px 12px 12px; min-height: 280px; }
+  .enemy-prototype-card .sprite { height: 112px; }
+  .enemy-prototype-card .sprite img { width: 112px; height: 112px; }
+  .enemy-prototype-card .pokemon-identity h3 { font-size: 20px; }
+  .enemy-prototype-card .card-actions { margin-top: 8px; }
+}
+@media (max-width: 700px) {
+  .panel.battle-panel { padding: 12px; }
+  .battle-participants { gap: 8px; }
+  .battle-type-matchup { padding: 8px; gap: 6px; }
+  .battle-weakness-types { gap: 4px; }
+  .enemy-prototype-card .pokemon-card { padding: 22px 8px 8px; min-height: 260px; }
+  .enemy-prototype-card .sprite { height: 96px; }
+  .enemy-prototype-card .sprite img { width: 96px; height: 96px; }
+  .enemy-prototype-card .pokemon-identity h3, .enemy-prototype-card .pokemon-identity h3.pokemon-nickname { font-size: 17px; }
+  .enemy-prototype-card .pokemon-species-name { font-size: 10px; }
+  .enemy-prototype-card .card-actions > .hint { font-size: 10px; }
+  .enemy-prototype-card .battle-health-label { font-size: 12px; }
+  .battle-participant-empty { min-height: 260px; padding: 8px; }
+}

@@ -1,0 +1,19 @@
+.battle-stat-stages { width: 100%; grid-column: 1 / -1; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border, #364352); }
+.battle-stat-stages table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+.battle-stat-stages caption { margin-bottom: 8px; color: var(--text, #edf4f8); text-align: left; font-weight: 700; }
+.battle-stat-stages th, .battle-stat-stages td { padding: 6px 1px; border-bottom: 1px solid var(--border, #364352); text-align: center; }
+.battle-stat-stages th { color: var(--text-muted, #b5c2d0); font-weight: 500; }
+.battle-stat-stages abbr { text-decoration: none; cursor: help; }
+.battle-stat-stages thead th { font-size: 10px; color: var(--text-muted, #9caabb); }
+.battle-stat-stages td { font-variant-numeric: tabular-nums; }
+.battle-stat-stages td { font-weight: 700; }
+.battle-stat-stages .raised { color: var(--success-text, #a4dfbd); }
+.battle-stat-stages .lowered { color: var(--danger-text, #ffc1b2); }
+.battle-stat-stages .neutral, .battle-stat-stages .unknown { color: var(--text-muted, #9caabb); }
+.battle-stat-stages .hint { margin-top: 8px; font-size: 11px; }
+@media (max-width: 700px) {
+  .battle-stat-stages table { font-size: 11px; }
+  .battle-stat-stages th, .battle-stat-stages td { padding: 5px 0; }
+  .battle-stat-stages thead th { font-size: 9px; }
+  .battle-stat-stages caption { font-size: 11px; }
+}

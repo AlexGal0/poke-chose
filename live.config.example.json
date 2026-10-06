@@ -1,0 +1,19 @@
+{
+  "host": "127.0.0.1",
+  "port": 3334,
+  "timeoutMs": 5000,
+  "chunkSize": 256,
+  "fastPollMs": 3000,
+  "boxesPollMs": 120000,
+  "partyAddress": "0x02234974",
+  "partyCountAddress": "0x02234970",
+  "partyStride": 220,
+  "activeBattleAddresses": ["0x0226d670", "0x0226e56c"],
+  "activeSlotAddress": "0x02272488",
+  "battlePointerTables": ["0x022697f8", "0x022698e0"],
+  "battleStatStagesOffset": 252,
+  "enemyBattleAddresses": ["0x0226e348", "0x0226f244"],
+  "boxesAddress": "0x0221bf6c",
+  "boxStride": 4096,
+  "pokedexAddress": "0x0223d16c"
+}

@@ -1,0 +1,4 @@
+.catalog-wiki { position: absolute; z-index: 1; top: 8px; right: 8px; display: grid; place-items: center; width: 32px; height: 32px; color: var(--text-muted, #aab6c5); border-radius: 6px; }
+.pokemon-card:has(.catalog-wiki) > .gender-icon { right: 46px; }
+.catalog-wiki:hover { color: var(--success-text, #a4dfbd); background: var(--border, #34404e); }
+.catalog-wiki:focus-visible { outline: 2px solid var(--success-text, #a4dfbd); outline-offset: 2px; }

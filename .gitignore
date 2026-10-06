@@ -1,0 +1,66 @@
+# Dependencies and generated builds
+node_modules/
+/dist/
+/dist-ssr/
+coverage/
+*.tsbuildinfo
+.vite/
+.cache/
+
+# Personal configuration and credentials (keep the example templates)
+*.local
+*.local.json
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+.aws/
+
+# Games, saves, savestates and memory dumps
+*.nds
+*.srl
+*.gba
+*.gb
+*.gbc
+*.sav
+*.sav.*
+*.dsv
+*.state
+*.state.*
+*.ml[0-9]*
+*.bin
+
+# Local research output and browser profiles.
+# Keep the top-level screenshots, HTML fixtures and browser check scripts.
+/experiments/melonds-live/artifacts/
+/artifacts/*/
+
+# Logs and temporary files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Editor, agent and operating system files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.agents/
+.codex/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

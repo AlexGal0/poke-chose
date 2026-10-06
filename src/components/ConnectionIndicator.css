@@ -1,0 +1,12 @@
+.connection-floating-button { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 30; display: grid; place-items: center; width: 54px; height: 54px; padding: 0; border-radius: 50%; border: 2px solid var(--success-text, #a4dfbd); background: #286c4c; color: #edfff5; box-shadow: 0 4px 20px rgb(0 0 0 / 35%); }
+.connection-floating-button:hover { filter: brightness(1.15); }
+.connection-floating-button:focus-visible { outline: 3px solid var(--text, #edf4f8); outline-offset: 4px; }
+.connection-floating-button.partial, .connection-floating-button.waiting { background: #795d25; border-color: #eac56a; }
+.connection-floating-button.disconnected { background: #803a44; border-color: #ef7a83; }
+.connection-floating-button.manual { background: var(--surface-hover, #384657); border-color: var(--border-strong, #9aabba); }
+.connection-floating-panel { position: fixed; inset: auto max(20px, env(safe-area-inset-right)) max(86px, calc(env(safe-area-inset-bottom) + 66px)) auto; margin: 0; width: min(340px, calc(100vw - 40px)); max-height: calc(100dvh - 120px); overflow: auto; padding: 20px; border: 1px solid var(--border-strong, #526174); border-radius: 12px; background: var(--surface-raised, #1d2631); color: var(--text, #edf4f8); box-shadow: 0 8px 32px rgb(0 0 0 / 45%); }
+.connection-floating-panel > strong { font-size: 17px; }
+.connection-floating-panel p { margin-top: 12px; color: var(--text-muted, #b5c2d0); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.connection-floating-panel small { display: block; margin-top: 12px; color: var(--text-muted, #a5b5c7); }
+.connection-floating-panel button { width: 100%; margin-top: 16px; font-size: 12px; }
+body:has(dialog[open]) .connection-floating-button, body:has(dialog[open]) .connection-floating-panel { display: none; }

@@ -1,0 +1,58 @@
+.zone-select { display: flex; align-items: center; gap: 12px; margin: 18px 0; font-size: 13px; }
+.zone-select select { min-width: 220px; max-width: 100%; text-transform: capitalize; }
+.zone-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 24px; margin: 18px 0; }
+.zone-controls .zone-select { margin: 0; flex: 1; }
+.zone-navigation { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; width: 100%; }
+.zone-navigation button { flex-shrink: 0; padding: 9px 10px; }
+.zone-controls .zone-select select { flex: 1; width: 100%; min-width: 0; text-transform: none; }
+.zone-search { display: flex; flex: 1; flex-direction: column; gap: 8px; min-width: 200px; font-size: 13px; }
+.zone-search input { min-width: 0; width: 100%; padding: 10px; border-radius: 7px; border: 1px solid var(--border, #394655); background: var(--surface-inset, #111923); color: inherit; }
+.capture-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; list-style: none; padding: 0; margin: 18px 0; }
+.capture-subzone { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border, #34404e); }
+.capture-subzone-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.capture-subzone-heading h3 { margin: 0; color: var(--text, #d2dce8); font-size: 16px; overflow-wrap: anywhere; }
+.capture-list li { position: relative; padding: 14px; border: 1px solid var(--border, #34404e); border-radius: 8px; min-width: 0; }
+.capture-list li > div { padding-right: 30px; }
+/* The positioned identity block is rendered later and overlaps this hit area. */
+.pokemon-wiki { position: absolute; z-index: 1; top: 8px; right: 8px; display: grid; place-items: center; width: 32px; height: 32px; color: var(--text-muted, #aab6c5); border-radius: 6px; }
+.pokemon-wiki:hover { color: var(--success-text, #a4dfbd); background: var(--border, #34404e); }
+.pokemon-wiki:focus-visible { outline: 2px solid var(--success-text, #a4dfbd); outline-offset: 2px; }
+.capture-list .evolution-button-icon { position: absolute; top: 8px; right: 44px; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; margin: 0; border: 0; background: transparent; color: var(--text-muted, #aab6c5); border-radius: 6px; }
+.capture-list .evolution-button-icon:hover { color: var(--success-text, #a4dfbd); background: var(--border, #34404e); }
+.capture-list .capture-identity { padding-right: 66px; }
+.encounter-equipment { display: flex; flex-wrap: wrap; gap: 12px 24px; margin: 12px 0; padding: 12px; border: 1px solid var(--border, #34404e); border-radius: 8px; font-size: 13px; }
+.encounter-equipment legend { padding: 0 6px; }
+.encounter-equipment label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.encounter-equipment input { accent-color: var(--success-text, #a4dfbd); }
+.capture-list li.captured { border-color: var(--accent-border, #416854); background: var(--accent-surface, #203129); }
+.species-name { text-transform: capitalize; font-size: 14px; }
+.capture-state { display: block; font-size: 12px; color: var(--text-muted, #aab6c5); margin-top: 6px; }
+.capture-level { color: var(--text, #d4deeb); white-space: nowrap; }
+.npc-trade-details { margin-top: 12px; color: var(--text-muted, #b4c1d0); font-size: 12px; line-height: 1.6; }
+.npc-trade-details strong, .npc-trade-details span, .npc-trade-details small { display: block; }
+.npc-trade-details strong { color: var(--text, #c4dfed); }
+.npc-trade-details small { margin-top: 5px; color: var(--text-muted, #96a6b8); }
+.captured .capture-state { color: var(--success-text, #a4dfbd); }
+.capture-identity { display: flex; align-items: center; gap: 8px; }
+.capture-identity > div { min-width: 0; }
+.captured-pokemon-icon { flex: 0 0 48px; object-fit: contain; image-rendering: pixelated; }
+.encounter-chances { margin-top: 12px; }
+.capture-list .encounter-methods { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; padding-right: 0; }
+.encounter-method-tag { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 5px 8px; border: 1px solid var(--border-strong, #465468); border-radius: 6px; background: var(--surface-raised, #182330); color: var(--text, #d2dce8); font-size: 11px; line-height: 1.5; }
+.encounter-method-tag > span:first-child { flex-shrink: 0; }
+.encounter-method-tag > span:last-child { overflow-wrap: anywhere; }
+.encounter-method-tag[data-method="walk"] { border-color: var(--grass-border, #54744e); background: var(--grass-surface, #233326); color: var(--grass-text, #cce8bf); }
+.encounter-method-tag[data-method="dark-grass"] { border-color: var(--encounter-border, #6676a2); background: var(--encounter-surface, #252d43); color: var(--encounter-text, #d1d7f4); }
+.encounter-method-tag[data-method="grass-spots"] { border-color: var(--warning-border, #94804d); background: var(--warning-surface, #39311e); color: var(--warning-text, #f3dfa0); }
+.encounter-chances-label { display: block; color: var(--text-muted, #9caabb); font-size: 10px; margin-bottom: 5px; }
+.encounter-chances-values { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.encounter-chance { display: inline-flex; align-items: center; gap: 5px; padding: 4px 6px; border-radius: 5px; background: var(--surface-inset, #111923); color: var(--text, #c8d4e2); font-size: 11px; font-variant-numeric: tabular-nums; }
+.encounter-chance-bar { width: 24px; height: 4px; overflow: hidden; border-radius: 4px; background: var(--border, #34404e); }
+.encounter-chance-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--success-text, #a4dfbd); }
+.encounter-chances-more { color: var(--text-muted, #9caabb); font-size: 11px; }
+.capture-list details { font-size: 11px; line-height: 1.6; color: var(--text-muted, #9caabb); margin-top: 12px; overflow-wrap: anywhere; }
+.capture-list summary { cursor: pointer; }.capture-list details p { margin: 8px 0; }
+.dex-lookup { margin: 18px 0; font-size: 13px; line-height: 1.8; }.dex-lookup summary { cursor: pointer; color: var(--success-text, #a4dfbd); }
+.dex-lookup input { width: 100%; max-width: 430px; padding: 10px; margin-top: 10px; border-radius: 7px; border: 1px solid var(--border, #394655); background: var(--surface-inset, #111923); }
+.dex-lookup ul { padding-left: 20px; }.dex-lookup small { color: var(--text-muted, #9caabb); }
+@media(max-width: 640px) { .capture-list { grid-template-columns: 1fr; }.zone-select { align-items: flex-start; flex-direction: column; }.zone-select select { width: 100%; } }

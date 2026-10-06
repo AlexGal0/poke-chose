@@ -1,0 +1,7 @@
+.capture-chance-summary { position: relative; }
+.capture-list .capture-chance-summary { padding-right: 38px; }
+.encounter-opportunity { position: absolute; top: 0; right: 0; display: inline-grid; place-items: center; width: 28px; height: 26px; padding: 2px; margin: 0; font-size: 15px; cursor: help; }
+.encounter-opportunity.later { color: var(--accent-text, #a1e1c7); background: var(--accent-surface, #243b32); border-color: var(--accent-border, #487b63); }
+.encounter-opportunity.unique { border-color: var(--warning-border, #a48a55); background: var(--warning-surface, #39321e); }
+.opportunity-tooltip { display: none; position: absolute; top: calc(100% + 6px); right: 0; z-index: 8; width: 240px; max-width: 65vw; padding: 10px; border: 1px solid var(--border-strong, #526779); border-radius: 6px; background: var(--surface-inset, #101820); color: var(--text, #e1eaf2); font-size: 11px; line-height: 1.6; text-align: left; pointer-events: none; box-shadow: 0 5px 16px #0006; }
+.encounter-opportunity:hover .opportunity-tooltip, .encounter-opportunity:focus .opportunity-tooltip { display: block; }

@@ -1,0 +1,12 @@
+.moves-dialog { width: min(960px, calc(100vw - 28px)); max-height: 85vh; padding: 24px; overflow: auto; border: 1px solid var(--accent-border, #416854); border-radius: 12px; background: var(--surface, #171e27); color: var(--text, #edf4f8); }
+.moves-dialog::backdrop { background: rgb(0 0 0 / 70%); }
+.moves-heading { display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 12px; }
+.moves-heading button { flex-shrink: 0; }
+.moves-pokemon-name { text-transform: capitalize; }
+.moves-table { width: 100%; min-width: 620px; border-collapse: collapse; text-align: left; font-size: 12px; }
+.moves-table th, .moves-table td { padding: 12px 8px; border-bottom: 1px solid var(--border, #303c49); vertical-align: top; line-height: 1.5; }
+.moves-table thead th { color: var(--text-muted, #a5b5c7); font-size: 11px; white-space: nowrap; }
+.moves-table td:last-child { width: 44%; min-width: 230px; color: var(--text-muted, #b4c1d0); }
+.moves-table th[scope="row"] { min-width: 100px; }
+.moves-description-source { display: block; margin-top: 5px; font-size: 10px; color: var(--text-muted, #92a3b7); }
+@media (max-width: 640px) { .moves-dialog { padding: 16px; } }

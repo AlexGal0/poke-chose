@@ -1,0 +1,7 @@
+.battle-floating-button { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(86px, calc(env(safe-area-inset-bottom) + 66px)); z-index: 30; display: grid; place-items: center; width: 54px; height: 54px; padding: 0; border-radius: 50%; border: 2px solid var(--border-strong, #9aabba); background: var(--surface-hover, #384657); color: var(--text, #d6e0e8); box-shadow: 0 4px 20px rgb(0 0 0 / 35%); }
+.battle-floating-button.active { border-color: var(--success-text, #a4dfbd); background: #286c4c; color: #edfff5; }
+.battle-floating-button:hover { filter: brightness(1.15); }
+.battle-floating-button:focus-visible { outline: 3px solid var(--text, #edf4f8); outline-offset: 4px; }
+.battle-floating-button[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--page, #10151c), 0 0 0 5px var(--text-muted, #a5b5c7); }
+.battle-shortcut-return { position: absolute; right: -3px; bottom: -3px; display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--border-strong, #9aabba); border-radius: 50%; background: var(--surface-raised, #202a36); color: var(--text, #edf4f8); font-size: 15px; line-height: 1; }
+body:has(dialog[open]) .battle-floating-button { display: none; }

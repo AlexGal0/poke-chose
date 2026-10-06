@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body><div id="root"></div><script type="module">
+import React, { useEffect, useState } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BattlePokemon } from '/src/components/BattlePokemon.tsx'
+import { BattleTypeMatchup } from '/src/components/BattleTypeMatchup.tsx'
+import '/src/index.css'
+import '/src/App.css'
+import '/src/components/EnemyPrototype.css'
+const own = { address: '', speciesId: 507, form: 0, level: 27, personality: 1, trainerId: 2 }
+const enemy = { ...own, speciesId: 513, personality: 3, level: 23 }
+const stages = { attack: 2, defense: -1, specialAttack: 0, specialDefense: -2, speed: 1, accuracy: -1, evasion: 0 }
+const unknown = new URLSearchParams(location.search).has('unknown')
+const ownPokemon = { id: 507, name: 'Herdier', sprite: null, types: ['normal'] }
+const enemyPokemon = { id: 513, name: 'Pansear', sprite: null, types: ['fire'] }
+function Fixture() {
+const [fixture, setFixture] = useState({ own, stages: unknown ? null : stages })
+useEffect(() => { window.setBattleFixture = setFixture }, [])
+return React.createElement('main', null,
+  React.createElement('section', { className: 'panel battle-panel' },
+    React.createElement('div', { className: 'battle-participants' },
+      React.createElement(BattlePokemon, { candidate: fixture.own, pokemon: ownPokemon, own: true, health: { currentHp: 73, maxHp: 73 }, stages: fixture.stages }),
+      React.createElement(BattlePokemon, { candidate: enemy, pokemon: enemyPokemon, health: { currentHp: 51, maxHp: 58 }, stages: unknown ? null : { ...stages, attack: -6, defense: 6 } }),
+      React.createElement(BattleTypeMatchup, { own: ownPokemon, enemy: enemyPokemon, direction: 'outgoing' }),
+      React.createElement(BattleTypeMatchup, { own: ownPokemon, enemy: enemyPokemon, direction: 'incoming' })
+    )
+  )
+)
+}
+createRoot(document.getElementById('root')).render(React.createElement(Fixture))
+setTimeout(() => {
+  const result = document.createElement('pre')
+  result.id = 'layout-check'
+  result.hidden = true
+  result.textContent = JSON.stringify({ width: innerWidth, overflow: document.documentElement.scrollWidth > innerWidth, tables: document.querySelectorAll('table').length, rows: document.querySelectorAll('tbody tr').length, changes: [...document.querySelectorAll('tbody td')].map(element => element.textContent), unknown: document.querySelectorAll('.battle-stat-stages .hint').length })
+  document.body.append(result)
+}, 1000)
+</script></body></html>

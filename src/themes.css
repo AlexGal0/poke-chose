@@ -1,0 +1,130 @@
+/* Original colors remain as fallbacks in each component. */
+:root[data-theme='fiesta'] {
+  color-scheme: dark;
+  --page: #180b2e;
+  --surface: #251340;
+  --surface-raised: #321950;
+  --surface-inset: #1d1035;
+  --surface-hover: #492664;
+  --border: #68408b;
+  --border-strong: #b37be6;
+  --text: #fff6ff;
+  --text-muted: #d4bce9;
+  --text-faint: #b69ad1;
+  --accent: #5af8ef;
+  --accent-text: #ffd861;
+  --accent-surface: #4c204f;
+  --accent-border: #ff78d0;
+  --primary-surface: #f5c84c;
+  --primary-border: #ffdf85;
+  --primary-hover: #ffe38a;
+  --success-text: #94f4c4;
+  --success-surface: #183e39;
+  --success-border: #479e87;
+  background-image:
+    radial-gradient(ellipse at 0% 0%, #ff3eb52b, transparent 45%),
+    radial-gradient(ellipse at 100% 30%, #39e6ef24, transparent 45%),
+    radial-gradient(circle, #ffd86155 1px, transparent 2px),
+    radial-gradient(circle, #ff78d044 1px, transparent 2px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 72px 72px;
+  background-position: 0 0, 0 0, 0 0, 24px 24px;
+}
+
+:root[data-theme='fiesta'] .site-header { border-bottom-color: #ff78d0; }
+:root[data-theme='fiesta'] .brand > span:last-child { color: #ff8fd7; }
+:root[data-theme='fiesta'] h1 span {
+  color: #ff8fd7;
+  background: linear-gradient(100deg, #ff8fd7, #ffd861, #5af8ef);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+:root[data-theme='fiesta'] .panel {
+  border-top: 3px solid #ff78d0;
+  box-shadow: 0 8px 32px #09021755, 0 0 18px #ff3eb510;
+}
+:root[data-theme='fiesta'] .pokemon-card:nth-child(3n + 1) { border-top: 3px solid #ff78d0; }
+:root[data-theme='fiesta'] .pokemon-card:nth-child(3n + 2) { border-top: 3px solid #5af8ef; }
+:root[data-theme='fiesta'] .pokemon-card:nth-child(3n) { border-top: 3px solid #ffd861; }
+:root[data-theme='fiesta'] .primary { color: #281132; font-weight: 700; }
+:root[data-theme='fiesta'] .tabs button[aria-selected=true] { box-shadow: 0 0 14px #ff78d033; }
+:root[data-theme='fiesta'] .pokeball {
+  border-color: #5af8ef;
+  background: linear-gradient(#ff78d0 43%, #5af8ef 43%, #5af8ef 55%, #ffd861 55%);
+  box-shadow: 0 0 14px #5af8ef55;
+}
+:root[data-theme='fiesta'] .pokeball::after { border-color: #281132; background: #fff6ff; }
+
+:root[data-theme='pokemon'], :root[data-theme='pokemon-dark'] {
+  --accent: #c5162e;
+  --primary-surface: #b51229;
+  --primary-border: #981023;
+  --primary-hover: #940e22;
+}
+
+:root[data-theme='pokemon'] {
+  color-scheme: light;
+  --page: #f4f4f5;
+  --surface: #ffffff;
+  --surface-raised: #f8f8f9;
+  --surface-inset: #eeeeef;
+  --surface-hover: #e3e3e6;
+  --border: #d0d0d5;
+  --border-strong: #9999a3;
+  --text: #18181b;
+  --text-muted: #54545e;
+  --text-faint: #71717a;
+  --accent-text: #9e1026;
+  --accent-surface: #fff0f2;
+  --accent-border: #cc6575;
+  --success-text: #256443;
+  --success-surface: #e7f3eb;
+  --success-border: #7da98c;
+  --warning-text: #805218;
+  --warning-surface: #fff3da;
+  --warning-border: #b99757;
+  --danger-text: #9f2137;
+  --danger-surface: #fbe8ec;
+  --danger-border: #c87686;
+  --immune-text: #514398;
+  --immune-surface: #ece9fc;
+  --gender-male: #285f9d;
+  --gender-female: #a52d65;
+  --gender-both: #6e4190;
+  --grass-text: #385f28;
+  --grass-surface: #ecf4e6;
+  --grass-border: #87a376;
+  --encounter-text: #414e85;
+  --encounter-surface: #eceefa;
+  --encounter-border: #959fc5;
+}
+
+:root[data-theme='pokemon-dark'] {
+  color-scheme: dark;
+  --page: #111113;
+  --surface: #1b1b1f;
+  --surface-raised: #242429;
+  --surface-inset: #151518;
+  --surface-hover: #35353c;
+  --border: #3c3c44;
+  --border-strong: #686873;
+  --text: #f5f5f6;
+  --text-muted: #b0b0bc;
+  --text-faint: #8d8d9b;
+  --accent: #ff7185;
+  --accent-text: #ffb3be;
+  --accent-surface: #352026;
+  --accent-border: #a54b5b;
+}
+
+:root[data-theme='pokemon'] .primary,
+:root[data-theme='pokemon-dark'] .primary { color: #fff; }
+
+:root[data-theme='pokemon'] .connection-floating-button.manual { color: var(--text); }
+
+:root[data-theme='pokemon'] .pokeball,
+:root[data-theme='pokemon-dark'] .pokeball {
+  border-color: var(--text);
+  background: linear-gradient(#d51c36 43%, var(--text) 43%, var(--text) 55%, #fff 55%);
+}
+:root[data-theme='pokemon'] .pokeball::after,
+:root[data-theme='pokemon-dark'] .pokeball::after { border-color: #18181b; background: #fff; }

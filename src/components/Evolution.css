@@ -1,0 +1,15 @@
+.evolution-button { font-size: 11px; margin-top: 10px; }
+.evolution-dialog { width: min(850px, calc(100vw - 32px)); max-height: 85vh; box-sizing: border-box; overflow: auto; padding: 24px; border: 1px solid var(--accent-border, #416854); border-radius: 12px; background: var(--surface, #171e27); color: var(--text, #edf4f8); }
+.evolution-dialog::backdrop { background: rgb(0 0 0 / 70%); }
+.evolution-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.evolution-heading h2 { margin-bottom: 8px; }
+.evolution-tree-scroll { overflow-x: auto; padding: 12px 2px; }
+.evolution-tree-scroll:focus-visible { outline: 2px solid var(--accent, #83dcb8); outline-offset: 2px; }
+.evolution-branch { display: flex; flex: 0 0 auto; width: max-content; flex-direction: row; align-items: center; gap: 12px; }
+.evolution-card { width: 165px; flex: 0 0 165px; }
+.evolution-card.current .pokemon-card { border-color: var(--accent, #83dcb8); }
+.evolution-card small { color: var(--success-text, #a4dfbd); }
+.evolution-children { display: flex; flex-direction: column; align-items: start; gap: 16px; }
+.evolution-relation { width: 110px; flex: 0 0 110px; text-align: center; color: var(--accent-text, #bcebd9); font-size: 12px; line-height: 1.5; padding: 8px 0; }
+.evolution-relation > span { font-size: 24px; }.evolution-relation p { margin: 4px 0; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .evolution-dialog { padding: 16px; }.evolution-card { width: 145px; flex-basis: 145px; } }

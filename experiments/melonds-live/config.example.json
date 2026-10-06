@@ -1,0 +1,13 @@
+{
+  "host": "127.0.0.1",
+  "port": 3333,
+  "timeoutMs": 5000,
+  "chunkSize": 256,
+  "pollMs": 1000,
+  "ramStart": "0x02000000",
+  "ramSize": "0x00400000",
+  "savePath": null,
+  "partyAddress": null,
+  "partyCountAddress": null,
+  "partyStride": 220
+}

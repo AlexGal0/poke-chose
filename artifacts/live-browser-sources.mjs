@@ -1,0 +1,21 @@
+﻿import {writeFile} from 'node:fs/promises'
+import {setTimeout as delay} from 'node:timers/promises'
+const tabs=await(await fetch('http://127.0.0.1:9227/json')).json()
+const tab=tabs.find(t=>t.url.startsWith('http://127.0.0.1:5173'))
+const ws=new WebSocket(tab.webSocketDebuggerUrl);await new Promise(r=>ws.addEventListener('open',r,{once:true}))
+let id=0;const p=new Map();ws.addEventListener('message',e=>{const v=JSON.parse(e.data);if(v.id){const f=p.get(v.id);p.delete(v.id);v.error?f.reject(v.error):f.resolve(v.result)}})
+const call=(method,params={})=>new Promise((resolve,reject)=>{const key=++id;p.set(key,{resolve,reject});ws.send(JSON.stringify({id:key,method,params}))})
+const evaluate=async expression=>(await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true})).result.value
+const select=async value=>evaluate(`(()=>{const s=document.querySelector('.save-sync select');s.value='${value}';s.dispatchEvent(new Event('change',{bubbles:true}))})()`)
+await evaluate("localStorage.setItem('poke-chose:bw:v1',JSON.stringify({collection:[{id:25,name:'pikachu',types:['electric'],sprite:null}],teamIds:[25]}))")
+await call('Page.navigate',{url:'http://127.0.0.1:5173/'})
+await delay(2000)
+await select('save');await delay(12000)
+console.log('save',await evaluate("({status:document.querySelector('.save-sync')?.innerText,team:document.querySelector('.team-panel .count')?.innerText})"))
+await select('manual');await delay(300)
+console.log('manual',await evaluate("({source:document.querySelector('.save-sync select')?.value,team:document.querySelector('.team-panel .count')?.innerText,readonly:document.querySelector('.empty-slot')?.disabled})"))
+await select('live');await delay(500)
+console.log('live',await evaluate("({source:document.querySelector('.save-sync select')?.value,team:document.querySelector('.team-panel .count')?.innerText,readonly:document.querySelector('.empty-slot')?.disabled})"))
+await call('Page.navigate',{url:'http://127.0.0.1:5173/'});await delay(2000)
+console.log('reload',await evaluate("document.querySelector('.save-sync select')?.value"))
+ws.close()

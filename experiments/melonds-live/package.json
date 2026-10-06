@@ -1,0 +1,14 @@
+{
+  "name": "poke-chose-melonds-live-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "probe": "node --experimental-strip-types cli.mjs probe",
+    "dump": "node --experimental-strip-types cli.mjs dump",
+    "locate": "node --experimental-strip-types cli.mjs locate",
+    "track": "node --experimental-strip-types cli.mjs track",
+    "watch": "node --experimental-strip-types cli.mjs watch",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+  },
+  "engines": { "node": ">=22.15.0" }
+}
