@@ -1,46 +1,48 @@
-# Lectura en vivo: configuración y funcionamiento
+*Versión en español: [es/live-reading.md](es/live-reading.md)*
 
-## Estado implementado
+# Live reading: configuration and behavior
 
-Manual, Save y melonDS en vivo mantienen datos separados. El servicio live usa GDB de solo lectura, publica snapshots por SSE y no modifica RAM ni saves. Se validaron direcciones con melonDS 1.1, Pokémon Negro español IRBS revisión 0, usando ARM7 en el puerto 3334. Otra ROM requiere localizar y validar sus direcciones.
+## Implemented state
 
-`live.config.local.json` contiene la configuración privada; `live.config.example.json` sirve de plantilla. El servicio escucha en `127.0.0.1:3002` y Vite hace proxy de `/live-api`. `LIVE_BRIDGE_PORT` debe coincidir en ambos procesos. La conexión GDB se inicia desde el botón de la aplicación.
+Manual, Save, and melonDS live keep separate data. The live service uses read-only GDB, publishes snapshots over SSE, and never modifies RAM or saves. Addresses were validated with melonDS 1.1, Pokémon Black (Spanish), IRBS code, revision 0, using ARM7 on port 3334. A different ROM requires locating and validating its own addresses.
 
-## Intervalos y consistencia
+`live.config.local.json` holds the private configuration; `live.config.example.json` serves as the template. The service listens on `127.0.0.1:3002` and Vite proxies `/live-api`. `LIVE_BRIDGE_PORT` must match in both processes. The GDB connection is started from the app's button.
 
-| Datos | Configuración | Valor por defecto |
+## Intervals and consistency
+
+| Data | Setting | Default value |
 | --- | --- | --- |
-| Equipo, PS, experiencia y Pokédex | `fastPollMs` | 3000 ms |
-| Las 24 cajas | `boxesPollMs` | 120000 ms (2 minutos) |
+| Team, HP, experience, and Pokédex | `fastPollMs` | 3000 ms |
+| The 24 boxes | `boxesPollMs` | 120000 ms (2 minutes) |
 
-`fastPollMs` y el antiguo `pollMs` admiten enteros entre 1000 y 60000 ms. `boxesPollMs` admite entre 1000 y 600000 ms. `pollMs` solo sirve como alternativa al intervalo rápido; no reduce el intervalo de cajas. Cambiar el JSON requiere reiniciar el servicio; no hay recarga automática de configuración.
+`fastPollMs` and the legacy `pollMs` accept integers between 1000 and 60000 ms. `boxesPollMs` accepts between 1000 and 600000 ms. `pollMs` only serves as a fallback for the fast interval; it does not shorten the box interval. Changing the JSON requires restarting the service; there is no automatic config reload.
 
-El primer ciclo y cada reanudación revisan las cajas. Después se leen cada dos minutos o al pulsar «Actualizar colección» en Mi colección, en modo en vivo. Los cambios de integrantes, capturas, orden, PS y experiencia no adelantan la lectura del PC. Depósitos, liberaciones y cambios entre cajas pueden tardar hasta la siguiente revisión en aparecer.
+The first cycle and every resume check the boxes. After that they are read every two minutes, or when pressing "Update collection" in My Collection, in live mode. Changes to team members, captures, order, HP, and experience do not advance the PC read. Deposits, releases, and moves between boxes can take up to the next check to appear.
 
-Entre revisiones, cada snapshot incluye las últimas cajas válidas. `updatedAt` fecha la muestra publicada; no representa una nueva lectura de todos los datos del PC. El adaptador exige equipo y cajas disponibles para resolver la colección y conserva su último resultado válido ante errores.
+Between checks, every snapshot includes the last valid boxes. `updatedAt` timestamps the published sample; it does not represent a fresh read of all PC data. The adapter requires team and boxes to be available to resolve the collection and keeps its last valid result on errors.
 
-Las regiones se leen repetidamente para comprobar estabilidad. Tras leer cajas se vuelve a comprobar el equipo; si cambia o un individuo aparece simultáneamente en una lectura nueva de equipo y PC, la muestra se descarta y se conserva la anterior. Entre revisiones, las ubicaciones antiguas del PC de integrantes que ahora están en el equipo se omiten del snapshot, evitando duplicados sin releer cajas ni bloquear la salud del equipo. Esto no convierte las lecturas en una instantánea atómica de toda la RAM.
+Regions are read repeatedly to check stability. After reading boxes, the team is checked again; if it changes, or if an individual appears simultaneously in a fresh team read and in the PC, the sample is discarded and the previous one is kept. Between checks, old PC locations of members who are now on the team are omitted from the snapshot, avoiding duplicates without re-reading boxes or blocking team-health updates. This does not turn reads into an atomic snapshot of all of RAM.
 
-Si falla una lectura de cajas, se conservan las últimas válidas y el equipo y la Pokédex pueden seguir actualizándose. El siguiente intento automático espera el intervalo de cajas; el botón permite reintentar antes. GET/SSE siguen siendo de solo lectura. POST `/live-api/refresh-boxes` solicita la lectura en la conexión existente, espera a que termine y devuelve éxito o error; no reanuda un lector pausado. Solicitudes manuales simultáneas comparten una lectura y reinician el plazo de dos minutos. El botón muestra «Actualizando cajas…» mientras espera; los metadatos de PokéAPI pueden seguir cargándose después.
+If a box read fails, the last valid ones are kept and the team and Pokédex can keep updating. The next automatic attempt waits for the box interval; the button allows retrying sooner. GET/SSE remain read-only. POST `/live-api/refresh-boxes` requests a read on the existing connection, waits for it to finish, and returns success or error; it does not resume a paused reader. Simultaneous manual requests share one read and reset the two-minute window. The button shows "Updating boxes…" while waiting; PokéAPI metadata may keep loading afterward.
 
-## Retardo y rendimiento
+## Latency and performance
 
-Las peticiones GDB son secuenciales. El intervalo rápido empieza tras terminar la muestra: la duración de lectura se suma a los 3 segundos, y una revisión de cajas puede retrasar ese ciclo. La revisión periódica del PC ocurre en el primer ciclo que encuentra vencidos sus dos minutos desde el final del último intento; no garantiza una actualización exacta a los 120 segundos.
+GDB requests are sequential. The fast interval begins after a sample finishes: the read duration adds to the 3 seconds, and a box check can delay that cycle. The periodic PC check happens on the first cycle that finds its two minutes elapsed since the end of the last attempt; it does not guarantee an update at exactly 120 seconds.
 
-Las cajas representan aproximadamente 192 KiB de memoria por revisión con la separación actual y las dos lecturas de estabilidad, antes del transporte hexadecimal GDB. Reutilizarlas evita ese trabajo en la mayoría de los ciclos rápidos. La reducción de lecturas se comprobó con RAM sintética; no se midieron CPU, FPS, latencia real con estos intervalos ni impacto durante sesiones largas. Fast forward y las animaciones pueden alterar el tiempo disponible y la estabilidad: su efecto no está cuantificado.
+Boxes represent roughly 192 KiB of memory per check with the current split and the two stability reads, before GDB's hex transport. Reusing them avoids that work on most fast cycles. The read reduction was checked with synthetic RAM; CPU, FPS, real latency with these intervals, and impact during long sessions were not measured. Fast-forward and animations can alter the available time and stability: their effect is not quantified.
 
-## Pausa, reconexión y puertos ocupados
+## Pause, reconnect, and busy ports
 
-**Pausar lectura** cancela los ciclos y espera la lectura en curso, manteniendo TCP abierto. **Reconectar lector** reutiliza esa conexión si continúa disponible y vuelve a revisar cajas. No es necesario reiniciar el lector por cada cambio del juego. Después de Reset, reapertura o pérdida de conexión puede ser necesario reconectar manualmente.
+**Pause reading** cancels the cycles and waits for the in-progress read, keeping TCP open. **Reconnect reader** reuses that connection if it's still available and re-checks the boxes. There is no need to restart the reader for every in-game change. After a Reset, reopening the emulator, or a dropped connection, manual reconnection may be required.
 
-Cerrar o reiniciar el servicio sí cierra TCP. Se observó que melonDS puede aceptar la nueva conexión y dejar de responder a GDB; en ese caso conserva el progreso deseado, haz Reset, entra a la partida y pulsa Reconectar. No ejecutar dos lectores en el mismo puerto GDB.
+Closing or restarting the service does close TCP. melonDS has been observed to accept the new connection and then stop responding to GDB; in that case, keep the progress you want, do a Reset, enter the save, and press Reconnect. Do not run two readers on the same GDB port.
 
-El lanzador reutiliza bridges compatibles ya activos y solo detiene los procesos que creó. `/live-api/health` y `/save-api/health` identifican aplicación, servicio y carpeta; para bridges antiguos se admite una comprobación de su snapshot SSE inicial. Si otro programa ocupa el puerto, se informa del conflicto sin cerrarlo. Un servicio reutilizado conserva el código con el que se inició: reinícialo para cargar cambios del lector.
+The launcher reuses compatible bridges that are already running and only stops the processes it created. `/live-api/health` and `/save-api/health` identify the app, service, and folder; older bridges are supported via a check of their initial SSE snapshot. If another program is using the port, the conflict is reported without closing it. A reused service keeps the code it was started with: restart it to load reader changes.
 
-## Verificación y límites
+## Verification and limits
 
-Las pruebas automatizadas cubren conexión explícita, pausa/reanudación sin cerrar TCP, pérdida y recuperación, rechazo de muestras incoherentes, reutilización de cajas, ausencia de revisión anticipada por traslados/capturas, actualización manual, solicitudes concurrentes, omisión de ubicaciones antiguas al retirar del PC y recuperación manual tras fallos sin relectura continua. La integración y los depósitos/capturas originales se comprobaron con melonDS real; las reglas nuevas de actualización se comprobaron con RAM sintética.
+Automated tests cover explicit connection, pause/resume without closing TCP, loss and recovery, rejection of inconsistent samples, box reuse, absence of early checks from transfers/captures, manual refresh, concurrent requests, omission of old locations when removed from the PC, and manual recovery after failures without continuous re-reading. Integration and the original deposits/captures were checked with real melonDS; the new update rules were checked with synthetic RAM.
 
-La modificación del intervalo a dos minutos y el botón pasó 119 pruebas, lint y build. Las pruebas de periodicidad usan intervalos reducidos y RAM sintética, no una espera real de dos minutos. Un render de React mediante Vite verificó el botón visible en modo en vivo, deshabilitado sin conexión y ausente en modo Save. No se comprobó el clic ni el diseño responsive en navegador en esta sesión. El servicio real anterior no pudo reiniciarse desde el entorno por acceso denegado; debe reiniciarse para cargar el código nuevo.
+The change to a two-minute interval and the button passed 119 tests, lint, and build. Periodicity tests use shortened intervals and synthetic RAM, not an actual two-minute wait. A React render through Vite verified the button is visible in live mode, disabled without a connection, and absent in Save mode. Clicking and the responsive layout were not checked in a browser in that session. The real previous service could not be restarted from the environment due to access being denied; it must be restarted to load the new code.
 
-Los PS y la experiencia del save real se extrajeron mediante acceso de solo lectura. Su actualización durante cada turno de un combate real sigue pendiente. La caja 24 real no estuvo disponible para validación. Consulta los registros en [validación de integración](live-integration-validation.md), [barras y objetos](team-vitals-validation.md) y [validación del experimento](../experiments/melonds-live/VALIDATION.md).
+HP and experience from the real save were extracted through read-only access. Their update during each turn of a real battle is still pending. Real box 24 was not available for validation. See the records in [integration validation](es/live-integration-validation.md) *(Spanish, historical record)*, [bars and items](es/team-vitals-validation.md) *(Spanish, historical record)*, and [experiment validation](../experiments/melonds-live/VALIDATION.md) *(Spanish, historical record)*.

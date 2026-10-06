@@ -1,79 +1,82 @@
-# Lectura de saves Black/White
+*Versión en español: [es/save-format.md](es/save-format.md)*
 
-Implementación propia, de solo lectura, del formato binario documentado. No se integra ni se copia código de PKHeX (GPL-3.0); se consultó para contrastar offsets y algoritmos. Los fixtures son sintéticos, creados en este proyecto, sin saves personales ni binarios de juegos.
+# Black/White save reading
 
-## Referencias
+An in-house, read-only implementation of the documented binary format. No PKHeX code (GPL-3.0) is integrated or copied; it was consulted to cross-check offsets and algorithms. Fixtures are synthetic, created within this project, with no personal saves or game binaries.
 
-- [Project Pokémon: estructura del save BW](https://projectpokemon.org/home/docs/gen-5/bw-save-structure-r73/): entrada principal en `0`, respaldo en `0x24000` y disposición de bloques.
-- [Project Pokémon: PK5](https://projectpokemon.org/docs/gen-5/bw-save-structure-r60/) y [estructura/cifrado NDS](https://projectpokemon.org/docs/gen-4/pkm-structure-r65/): campos, checksum, permutaciones y PRNG.
-- PKHeX.Core: [SAV5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/SAV5.cs), [bloques BW](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Access/SaveBlockAccessor5BW.cs), [detección de formato](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Util/SaveUtil.cs), [validación de bloques](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Blocks/BlockInfoNDS.cs), [PK5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs), [cifrado](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Util/PokeCrypto.cs) y [licencia](https://github.com/kwsch/PKHeX/blob/master/LICENSE).
-- [PokéAPI: variedades y species IDs](https://github.com/PokeAPI/pokeapi/blob/master/data/v2/csv/pokemon.csv): resolución de formas a través del servicio existente.
+## References
 
-## Validación y lectura
+- [Project Pokémon: BW save structure](https://projectpokemon.org/home/docs/gen-5/bw-save-structure-r73/): main entry at `0`, backup at `0x24000`, and block layout.
+- [Project Pokémon: PK5](https://projectpokemon.org/docs/gen-5/bw-save-structure-r60/) and [NDS structure/encryption](https://projectpokemon.org/docs/gen-4/pkm-structure-r65/): fields, checksum, shuffling, and PRNG.
+- PKHeX.Core: [SAV5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/SAV5.cs), [BW blocks](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Access/SaveBlockAccessor5BW.cs), [format detection](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Util/SaveUtil.cs), [block validation](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Blocks/BlockInfoNDS.cs), [PK5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs), [encryption](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Util/PokeCrypto.cs), and [license](https://github.com/kwsch/PKHeX/blob/master/LICENSE).
+- [PokéAPI: varieties and species IDs](https://github.com/PokeAPI/pokeapi/blob/master/data/v2/csv/pokemon.csv): form resolution through the existing service.
 
-Se admite exclusivamente un save RAW de **524288 bytes**. No se admite savestate de melonDS, `.dsv`, contenedores, Black 2/White 2 ni ROM hacks con estructuras modificadas.
+## Validation and reading
 
-El parser comprueba CRC16-CCITT (polinomio `0x1021`, inicio `0xffff`) de:
+Only a RAW save of **524288 bytes** is supported. melonDS savestates, `.dsv`, containers, Black 2/White 2, and ROM hacks with modified structures are not supported.
 
-| Datos | Inicio | Longitud | CRC local | CRC espejo |
+The parser checks CRC16-CCITT (polynomial `0x1021`, start `0xffff`) of:
+
+| Data | Start | Length | Local CRC | Mirror CRC |
 | --- | --- | --- | --- | --- |
-| Tabla de checksums BW | `0x23f00` | `0x8c` | `0x23f9a` | — |
+| BW checksum table | `0x23f00` | `0x8c` | `0x23f9a` | — |
 | Party | `0x18e00` | `0x534` | `0x19336` | `0x23f34` |
-| Entrenador | `0x19400` | `0x68` | `0x1946a` | `0x23f36` |
+| Trainer | `0x19400` | `0x68` | `0x1946a` | `0x23f36` |
 | Pokédex | `0x21600` | `0x4d4` | `0x21ad6` | `0x23f6e` |
-| Caja `i` (0–23) | `0x400 + i * 0x1000` | `0xff0` | Inicio + `0xff2` | `0x23f02 + i * 2` |
+| Box `i` (0–23) | `0x400 + i * 0x1000` | `0xff0` | Start + `0xff2` | `0x23f02 + i * 2` |
 
-Se valida que el juego del entrenador sea Black (21); White (20) se rechaza. Los offsets también se aplican relativos a la base del respaldo. Se validan las 24 cajas, pero no todos los demás bloques: no es un validador completo del save.
+It validates that the trainer's game is Black (21); White (20) is rejected. The offsets are also applied relative to the backup's base. All 24 boxes are validated, but not every other block: this is not a full save validator.
 
-El número de miembros está en `0x18e04` (máximo 6). Los PK5 comienzan en `0x18e08`, con stride de 220 bytes. Se usa el contador, no una búsqueda de especies aparentemente válidas en slots vacíos.
+The member count is at `0x18e04` (max 6). The PK5 entries start at `0x18e08`, with a 220-byte stride. The counter is used, not a search for apparently valid species in empty slots.
 
-Se prefiere la entrada principal documentada. El watcher reintenta una principal inválida. Solo permite el respaldo en la carga inicial, después de agotar los reintentos, y lo anuncia en pantalla. Con un equipo ya cargado conserva ese equipo y espera recuperar la principal, evitando retroceder a un respaldo antiguo.
+The documented main entry is preferred. The watcher retries an invalid main entry. The backup is only allowed on the initial load, after retries are exhausted, and this is announced on screen. With a team already loaded, that team is kept and the watcher waits to recover the main entry, avoiding falling back to a stale backup.
 
-## Pokédex: capturado alguna vez
+## Pokédex: ever caught
 
-La disposición se contrastó con [Zukan5 de PKHeX.Core](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Substructures/PokeDex/Zukan5.cs) y su tabla de bloques BW. El bloque no utiliza el cifrado de los PK5. Los offsets siguientes son relativos al inicio `0x21600`:
+The layout was cross-checked against [PKHeX.Core's Zukan5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Saves/Substructures/PokeDex/Zukan5.cs) and its BW block table. The block does not use PK5 encryption. The following offsets are relative to the `0x21600` start:
 
-- Caught/owned: bitset en `0x08`, de `0x54` bytes.
-- Seen: cuatro bitsets en `0x5c + región * 0x54`, para las variantes de sexo/shiny. Se calcula la unión de esos cuatro; los flags de visualización posteriores no cuentan como seen.
-- Para species ID nacional `id`, el índice es `id - 1`: byte `índice >>> 3`, máscara `1 << (índice & 7)`. Solo se extraen IDs 1–649; los bits sobrantes se ignoran.
+- Caught/owned: bitset at `0x08`, `0x54` bytes long.
+- Seen: four bitsets at `0x5c + region * 0x54`, for the gender/shiny variants. The union of those four is computed; later display-only flags don't count as seen.
+- For national species ID `id`, the index is `id - 1`: byte `index >>> 3`, mask `1 << (index & 7)`. Only IDs 1–649 are extracted; extra bits are ignored.
 
-`parseSave` valida el CRC de Pokédex junto al entrenador y party, y devuelve `PokedexState` con dos `Set<number>` independientes. Nunca deriva caught de seen, del party, de cajas o de Day Care. Tampoco añade flags automáticamente ni escribe el save. El transporte SSE serializa los conjuntos como arrays; el adaptador de frontend los restaura como Sets antes de resolver datos estáticos del equipo con PokéAPI.
+`parseSave` validates the Pokédex CRC alongside the trainer and party, and returns `PokedexState` with two independent `Set<number>`s. It never derives caught from seen, from the party, from boxes, or from Day Care. It also never adds flags automatically or writes to the save. The SSE transport serializes the sets as arrays; the frontend adapter restores them as Sets before resolving static team data with PokéAPI.
 
 ## PK5
 
-Los motes se leen del buffer de 22 bytes en `0x48`, como UTF-16LE, solo cuando está activo el bit 31 de `0x38` (nombre personalizado). Se conserva un máximo de diez caracteres y se detiene en `0xffff` o cero; se normalizan los símbolos de sexo de Gen V (`0x246d`/`0x246e`) a ♂/♀. Si no hay mote, el frontend usa la especie. La comparación de equipo y cajas incluye el mote, por lo que un cambio de nombre se sincroniza al guardar. Los offsets y la codificación se contrastaron con [PK5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs), [StringConverter5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Strings/StringConverter5.cs) y [StringConverter4Util](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Strings/StringConverter4Util.cs); la implementación es propia y de solo lectura.
+Nicknames are read from the 22-byte buffer at `0x48`, as UTF-16LE, only when bit 31 of `0x38` (custom name) is set. Up to ten characters are kept, stopping at `0xffff` or zero; Gen V gender symbols (`0x246d`/`0x246e`) are normalized to ♂/♀. If there is no nickname, the frontend uses the species name. Team and box comparisons include the nickname, so a name change syncs on save. Offsets and encoding were cross-checked against [PK5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs), [StringConverter5](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Strings/StringConverter5.cs), and [StringConverter4Util](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/Strings/StringConverter4Util.cs); the implementation itself is original and read-only.
 
-Todos los campos numéricos son little-endian. La cabecera contiene PID y checksum. El cuerpo de 128 bytes se descifra por palabras de 16 bits usando el checksum como semilla del LCG (`0x41c64e6d`, `0x6073`) y XOR con los 16 bits altos de cada avance. Se valida la suma de palabras módulo 65536. Se deshacen las cuatro permutaciones de bloques de 32 bytes determinadas por `((PID >>> 13) & 31) % 24`. Los 84 bytes adicionales se descifran por separado, reiniciando el LCG con el PID, sin permutarlos.
+All numeric fields are little-endian. The header holds the PID and checksum. The 128-byte body is decrypted in 16-bit words using the checksum as the LCG seed (`0x41c64e6d`, `0x6073`) and XORed with the upper 16 bits of each advance. The word sum modulo 65536 is validated. The four 32-byte block permutations determined by `((PID >>> 13) & 31) % 24` are undone. The additional 84 bytes are decrypted separately, restarting the LCG with the PID, without permuting them.
 
-Se extraen especie (`0x08`), objeto (`0x0a`), ID del entrenador (`0x0c`), habilidad (`0x15`), movimientos (`0x28`–`0x2e`), huevo (`0x38`, bit 30), forma (`0x40`, bits 3–7) y nivel actual del party (`0x8c`, no nivel de encuentro). Se rechazan especies fuera de 1–649 y niveles fuera de 1–100. No se valida legalidad de movimientos, habilidades o ejemplares.
+Species (`0x08`), held item (`0x0a`), trainer ID (`0x0c`), ability (`0x15`), moves (`0x28`–`0x2e`), egg flag (`0x38`, bit 30), form (`0x40`, bits 3–7), and current party level (`0x8c`, not the encounter level) are extracted. Species outside 1–649 and levels outside 1–100 are rejected. Move, ability, or specimen legality is not validated.
 
-La comparación incluye orden/slot, PID, entrenador, especie, nivel, objeto, habilidad, movimientos, forma, huevo, mote, PS actuales/máximos y experiencia total. Cambios de PS o experiencia sí generan actualización del equipo. PP, dinero y tiempo no se extraen ni participan en esta comparación. Los duplicados se conservan por slot; no se mezclan con las especies únicas de la colección manual.
+The comparison includes order/slot, PID, trainer, species, level, held item, ability, moves, form, egg flag, nickname, current/max HP, and total experience. HP or experience changes do trigger a team update. PP, money, and playtime are neither extracted nor part of this comparison. Duplicates are kept per slot; they are never merged with the manual collection's unique species.
 
-## Watcher y transporte
+## Watcher and transport
 
-### Ejemplares en cajas
+### Specimens in boxes
 
-Cada caja contiene 30 slots consecutivos de 136 bytes desde su inicio. El padding hasta el siguiente bloque no contiene ejemplares. El PK5 almacenado usa el mismo cuerpo cifrado, checksum y reorganización que el party, pero carece de sus 84 bytes adicionales. Se omiten slots completamente vacíos y estructuras vacías cifradas con checksum válido. Se validan especie, cabecera y checksum de cada ejemplar; una caja corrupta invalida la lectura completa para conservar el último estado coherente.
+Each box contains 30 consecutive 136-byte slots from its start. The padding up to the next block holds no specimens. The stored PK5 uses the same encrypted body, checksum, and shuffling as the party entry, but lacks its extra 84 bytes. Completely empty slots and empty structures encrypted with a valid checksum are skipped. Species, header, and checksum are validated for each specimen; a corrupt box invalidates the whole read in order to keep the last coherent state.
 
-`parseSave` devuelve `boxes` con índices de caja y slot basados en cero y los datos comunes del Pokémon. No inventa niveles de cajas ni consulta la Pokédex para construir esta lista. La comparación incluye ubicación y datos relevantes, conserva duplicados y distingue cajas desconocidas de cajas vacías.
+`parseSave` returns `boxes` with zero-based box and slot indices and the common Pokémon data. It never invents box levels or queries the Pokédex to build this list. The comparison includes location and relevant data, keeps duplicates, and distinguishes unknown boxes from empty boxes.
 
-`fs.watch` observa el directorio y filtra el nombre para soportar reemplazos atómicos. Debounce: 300 ms. Aperturas exclusivamente `open(path, 'r')`; dos lecturas separadas 120 ms deben coincidir y mantener tamaño, fechas e identidad del archivo. Reintentos: 500, 1000 y 2000 ms. Ante error persistente o ausencia de watcher se recupera cada 5 segundos; durante funcionamiento normal no hay polling. Los resultados de lecturas superadas por un nuevo evento se descartan.
+`fs.watch` observes the directory and filters by filename to support atomic replacements. Debounce: 300 ms. Opens are exclusively `open(path, 'r')`; two reads 120 ms apart must match and keep the same size, dates, and file identity. Retries: 500, 1000, and 2000 ms. On a persistent error or missing watcher, it recovers every 5 seconds; during normal operation there is no polling. Results from reads superseded by a newer event are discarded.
 
-El bridge escucha en `127.0.0.1:3001` y expone GET `/save-api/events` mediante SSE y GET `/save-api/health` para identificar el servicio local. Emite estado inicial al conectar, cambios relevantes y estados de error/recuperación; compara party, cajas y ambos conjuntos de Pokédex por separado. Un cambio exclusivo de cajas o flags sí emite actualización; una escritura sin cambios relevantes no la emite. Un heartbeat cada 15 segundos mantiene la conexión. Vite hace proxy en desarrollo y preview. No hay endpoint para modificar el save o elegir archivos arbitrarios desde una página web.
+The bridge listens on `127.0.0.1:3001` and exposes GET `/save-api/events` over SSE and GET `/save-api/health` to identify the local service. It emits initial state on connect, relevant changes, and error/recovery states; it compares party, boxes, and both Pokédex sets separately. A change exclusive to boxes or flags does emit an update; a write with no relevant change does not. A heartbeat every 15 seconds keeps the connection alive. Vite proxies it in development and preview. There is no endpoint to modify the save or pick arbitrary files from a web page.
 
-React conserva el último equipo válido ante errores de archivo, desconexión o fallos de PokéAPI. EventSource reconecta y la resolución estática reintenta automáticamente. La elección Manual/melonDS se conserva localmente. El equipo importado se recupera del bridge al recargar, no se convierte en colección manual.
+React keeps the last valid team on file errors, disconnection, or PokéAPI failures. EventSource reconnects and static resolution retries automatically. The Manual/melonDS choice is kept locally. The imported team is recovered from the bridge on reload; it is never turned into the manual collection.
 
-La colección sincronizada combina party y cajas, resolviendo metadatos mediante el servicio existente con un máximo de cuatro solicitudes concurrentes y reutilización por especie/forma. Se publica completa; errores o respuestas antiguas no reemplazan la última colección válida. No incluye Day Care ni otras ubicaciones. La colección manual conserva su almacenamiento separado.
+The synced collection combines party and boxes, resolving metadata through the existing service with a maximum of four concurrent requests and reuse per species/form. It is published as a whole; errors or stale responses never replace the last valid collection. It does not include Day Care or other locations. The manual collection keeps its own separate storage.
 
-Los tipos de formas de Rotom, Wormadam, Shaymin, Castform, Darmanitan y Meloetta se resuelven por variedades de PokéAPI; Arceus usa su tipo de forma Gen V. Otras formas con los mismos tipos usan el sprite predeterminado. Los huevos se muestran y se excluyen del análisis. El análisis sigue sin simular habilidades/objetos; los movimientos leídos aún no sustituyen la cobertura STAB.
+Form types for Rotom, Wormadam, Shaymin, Castform, Darmanitan, and Meloetta are resolved through PokéAPI varieties; Arceus uses its Gen V form type. Other forms sharing the same types use the default sprite. Eggs are shown and excluded from the analysis. The analysis still does not simulate abilities/items; the moves that are read do not yet replace STAB coverage.
 
-## Fixtures y comprobaciones
+## Fixtures and checks
 
-`tests/helpers/save-fixture.ts` genera PK5 cifrados y saves sintéticos en memoria. Su encoder utiliza BigInt y una tabla explícita de permutaciones, distinta del algoritmo de descifrado. El CRC se contrasta también con el vector estándar `123456789 → 0x29b1`. Los únicos archivos escritos durante tests son fixtures temporales creados por el propio test; no se abre ningún save del usuario para escritura.
+`tests/helpers/save-fixture.ts` generates encrypted PK5 entries and synthetic saves in memory. Its encoder uses BigInt and an explicit permutation table, distinct from the decryption algorithm. The CRC is also cross-checked against the standard vector `123456789 → 0x29b1`. The only files written during tests are temporary fixtures created by the test itself; no user save is ever opened for writing.
 
-Los tests verifican las 32 variantes de shuffle, múltiples miembros, duplicados, species/nivel, secundarios, party vacío, datos corruptos, respaldo, igualdad, lectura sin alterar bytes/mtime, watcher nativo, reintentos, reemplazo, borrado, transporte SSE y adaptación al frontend. Los fixtures de Pokédex son bloques sintéticos pequeños generados en los tests; incluyen especies no vistas, vistas sin captura, capturadas, límites bajos/altos y persistencia independiente de party/cajas/Day Care. Otro test modifica solo flags en un archivo sintético y comprueba la emisión del watcher; el adaptador recibe ese cambio sin volver a resolver el equipo.
+The tests verify the 32 shuffle variants, multiple members, duplicates, species/level, secondary stats, empty party, corrupt data, backup, equality, reading without altering bytes/mtime, native watcher, retries, replacement, deletion, SSE transport, and frontend adaptation. Pokédex fixtures are small synthetic blocks generated in the tests; they include unseen species, seen-not-caught, caught, low/high bounds, and persistence independent of party/boxes/Day Care. Another test modifies only flags in a synthetic file and checks the watcher's emission; the adapter receives that change without re-resolving the team.
 
-En el save real de Black del usuario se confirmaron Solosis visto/no capturado y Minccino/Cinccino capturados, concordando con su historia de evolución. Un guardado dentro de melonDS generó el evento y lectura estable; no cambió los conjuntos ni el equipo, por lo que no hubo emisión redundante. Una nueva captura real durante el guardado no se verificó; ese caso se comprueba mediante fixtures. El archivo personal se abrió únicamente para lectura y no se incorpora al repositorio.
-## Datos de salud y experiencia del equipo
+On the user's real Black save, Solosis seen/not-caught and Minccino/Cinccino caught were confirmed, matching their evolution history. A save made inside melonDS produced the event and a stable read; it didn't change the sets or the team, so there was no redundant emission. A real new capture during a save was not verified; that case is checked through fixtures. The personal file was opened only for reading and is not included in the repository.
 
-Tras descifrar PK5 y restaurar el orden de sus bloques, la experiencia total es uint32 LE en `0x10`; los PS actuales y máximos son uint16 LE en `0x8e` y `0x90`. Se contrastaron los offsets con la [definición PK5 de PKHeX](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs). Los PS pertenecen a la extensión del equipo de 220 bytes y no se extraen de las entradas de caja de 136 bytes. Son lecturas de solo lectura.
+## Team HP and experience data
+
+After decrypting the PK5 and restoring its block order, total experience is a uint32 LE at `0x10`; current and max HP are uint16 LE at `0x8e` and `0x90`. The offsets were cross-checked with [PKHeX's PK5 definition](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs). HP belongs to the party entry's 220-byte extension and is never extracted from the 136-byte box entries. These are read-only reads.

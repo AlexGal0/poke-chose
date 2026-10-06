@@ -1,189 +1,194 @@
+**Versión en español:** [README.es.md](README.es.md)
+
 # PokéChose
 
-Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro**. PokéChose funciona en el navegador y puede leer tu partida de melonDS sin modificarla.
+Organize your collection, put together a team of up to six Pokémon, and check their strengths and weaknesses while playing **Pokémon Black**. PokéChose runs in the browser and can read your melonDS save without modifying it.
 
-Puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. El catálogo y el análisis utilizan las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
+You can use it manually, sync it with a save file, or enable live reading. The catalog and analysis use **Black/White, Generation V** rules; in-game integration is implemented for **Pokémon Black**.
 
-## Funciones
+## Features
 
-- **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
-- **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
-- **Balance de tipos:** identifica debilidades compartidas, resistencias, inmunidades y cobertura ofensiva potencial por STAB.
-- **Tabla de tipos:** matriz interactiva de los 17 tipos de Generación V, con multiplicadores y desplazamiento horizontal en móvil.
-- **Capturas por zona:** consulta encuentros de Negro, niveles, métodos y porcentajes; filtra por acceso a Surf y Supercaña. La Pokédex marca las especies capturadas alguna vez, aunque ya las hayas evolucionado o liberado.
-- **Evoluciones:** abre el árbol de cada familia con sus requisitos de Generación V.
-- **Movimientos:** consulta el aprendizaje por nivel en Black/White, con nombres y descripciones en español, tipo, categoría y PP.
-- **Datos de tu equipo:** muestra nivel, objeto equipado, PS y progreso de experiencia cuando están disponibles en la partida.
-- **Lectura en vivo y combate experimental:** sigue el equipo, las cajas y la Pokédex sin guardar; en combate, consulta tu Pokémon activo, el rival, sus PS y referencias de ventaja por tipos.
-- **Cuatro temas:** Original, Pokémon, Pokémon oscuro y Fiesta 🎉. La selección se guarda automáticamente.
-- **Guardado local:** conserva la colección y el equipo manuales, preferencias y caché en el navegador. Sin cuentas ni base de datos.
+- **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
+- **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
+- **Type balance:** identifies shared weaknesses, resistances, immunities, and potential offensive STAB coverage.
+- **Type chart:** interactive matrix of the 17 Generation V types, with multipliers and horizontal scrolling on mobile.
+- **Captures by zone:** check Black's encounters, levels, methods, and chances; filter by Surf and Super Rod access. The Pokédex marks species as ever caught even if you've since evolved or released them.
+- **Evolutions:** open each family's tree with its Generation V requirements.
+- **Moves:** check level-up learnsets in Black/White, with localized names and descriptions, type, category, and PP.
+- **Your team's data:** shows level, held item, HP, and experience progress when available from the save.
+- **Live reading and experimental battle view:** follow the team, boxes, and Pokédex without saving; in battle, check your active Pokémon, the opponent, their HP, and type-advantage references.
+- **Four themes:** Original, Pokémon, Dark Pokémon, and Party 🎉. The selection saves automatically.
+- **Language:** switch between Spanish and English with the header selector. The interface translates instantly, with no reload; Spanish is the default language and your choice is saved automatically.
+- **Local storage:** keeps your manual collection and team, preferences, and cache in the browser. No accounts, no database.
 
-## Instalación fácil en Windows
+## Easy installation on Windows
 
-### 1. Instala los requisitos
+### 1. Install the requirements
 
-| Requisito | Para qué se necesita |
+| Requirement | What it's needed for |
 | --- | --- |
-| [Node.js](https://nodejs.org/en/download), versión 22.15 o posterior | Ejecutar PokéChose y sus servicios locales. Incluye npm. |
-| Navegador moderno | Usar la interfaz; las comprobaciones del proyecto se realizaron en Chrome. |
-| [melonDS 1.1 para escritorio](https://github.com/melonDS-emu/melonDS/releases/tag/1.1) | Leer una partida de Pokémon Negro. No es necesario en modo manual. |
-| Tu copia de Pokémon Negro y su partida | Usar los modos conectados. Estos archivos no se incluyen en el proyecto. |
+| [Node.js](https://nodejs.org/en/download), version 22.15 or later | Running PokéChose and its local services. Includes npm. |
+| A modern browser | Using the interface; the project's checks were performed in Chrome. |
+| [melonDS 1.1 for desktop](https://github.com/melonDS-emu/melonDS/releases/tag/1.1) | Reading a Pokémon Black save. Not needed in manual mode. |
+| Your own copy of Pokémon Black and its save | Using the connected modes. These files are not included in the project. |
 
-La **lectura en vivo y el lector de combate** se configuraron con melonDS 1.1 y **Pokémon Negro en español, código IRBS, revisión 0**. Otra versión, idioma o revisión del juego necesita direcciones de memoria distintas y no se detecta automáticamente. Si no tienes esa edición, empieza por el modo manual o por la lectura del `.sav` compatible.
+**Live reading and the battle reader** were configured with melonDS 1.1 and **Pokémon Black (Spanish), IRBS code, revision 0**. A different version, language, or revision of the game needs different memory addresses and is not auto-detected. If you don't have that edition, start with manual mode or with the compatible `.sav` reading option.
 
-### 2. Descarga el proyecto
+### 2. Download the project
 
-En la página de este repositorio en GitHub, pulsa **Code → Download ZIP** y extrae el contenido en una carpeta. Abre la carpeta que contiene `package.json` e **Iniciar PokeChose.cmd**; no ejecutes el programa dentro del ZIP.
+On this repository's GitHub page, click **Code → Download ZIP** and extract the contents into a folder. Open the folder that contains `package.json` and **Iniciar PokeChose.cmd**; don't run the program from inside the ZIP.
 
-### 3. Elige cómo arrancarlo
+### 3. Choose how to start it
 
-**Solo modo manual, sin emulador:** abre una terminal en la carpeta del proyecto y ejecuta:
+**Manual mode only, no emulator:** open a terminal in the project folder and run:
 
 ```powershell
 npm ci
 npm run dev
 ```
 
-Abre la dirección que muestre Vite y selecciona **Manual** en **Origen del equipo**. No necesitas archivos de configuración.
+Open the address Vite shows and select **Manual** under **Team source**. You don't need any configuration files.
 
-**Con melonDS y el lanzador de Windows:**
+**With melonDS and the Windows launcher:**
 
-1. Copia `live.config.example.json` y renombra la copia a `live.config.local.json`. Conserva la plantilla sin cambios si vas a utilizar la edición española IRBS revisión 0 indicada arriba. El lanzador necesita este archivo porque también inicia el lector de combate, aunque solo elijas el modo Save.
-2. Si quieres leer el archivo de guardado, configura también `save.config.local.json` como se explica en el apartado siguiente. Para usar únicamente la lectura en vivo no hace falta configurar la ruta del `.sav`.
-3. Haz doble clic en **[Iniciar PokeChose.cmd](Iniciar%20PokeChose.cmd)**. Instala las dependencias si falta Vite, inicia la aplicación y los servicios locales, y abre el navegador.
-4. Deja abierta la ventana de la terminal mientras uses PokéChose. Pulsa **Ctrl+C** para detenerlo.
+1. Copy `live.config.example.json` and rename the copy to `live.config.local.json`. Keep the template unchanged if you'll use the Spanish IRBS revision 0 edition noted above. The launcher needs this file because it also starts the battle reader, even if you only choose Save mode.
+2. If you want to read the save file, also configure `save.config.local.json` as explained in the next section. For live reading only, you don't need to configure the `.sav` path.
+3. Double-click **[Iniciar PokeChose.cmd](Iniciar%20PokeChose.cmd)**. It installs dependencies if Vite is missing, starts the app and the local services, and opens the browser.
+4. Leave the terminal window open while you use PokéChose. Press **Ctrl+C** to stop it.
 
-La primera instalación y las consultas de datos no guardados en caché necesitan internet. En los siguientes usos, vuelve a abrir el lanzador. PokéChose se ejecuta como aplicación local; no necesitas publicar un servidor ni abrir `index.html` directamente.
+The first install and queries for data not yet cached need internet access. On later uses, just reopen the launcher. PokéChose runs as a local app; you don't need to publish a server or open `index.html` directly.
 
-## Cómo conectar tu partida
+## How to connect your save
 
-| Origen del equipo | Qué muestra | Cuándo se actualiza |
+| Team source | What it shows | When it updates |
 | --- | --- | --- |
-| Manual | Tu colección y equipo elegidos en la aplicación | Al hacer cambios en la interfaz |
-| Save de melonDS | Equipo, cajas y Pokédex del `.sav` | Cuando guardas dentro del juego |
-| melonDS en vivo (experimental) | Equipo, cajas y Pokédex de la memoria del emulador | Mientras el lector está conectado |
+| Manual | Your collection and team chosen in the app | When you make changes in the interface |
+| melonDS Save | Team, boxes, and Pokédex from the `.sav` | When you save inside the game |
+| melonDS live (experimental) | Team, boxes, and Pokédex from the emulator's memory | While the reader is connected |
 
-### Opción A: leer el archivo de guardado
+### Option A: read the save file
 
-Esta opción admite **Pokémon Negro RAW `.sav` de 512 KiB**. No admite partidas de Blanco, Negro 2/Blanco 2 ni savestates.
+This option supports **Pokémon Black RAW `.sav`, 512 KiB**. It does not support White, Black 2/White 2 saves, or savestates.
 
-1. Abre Pokémon Negro en melonDS y guarda desde el menú del juego para tener un archivo `.sav`.
-2. Localiza el `.sav` que usa el emulador. La ubicación puede depender de su configuración; no selecciones un archivo de estado rápido.
-3. Copia `save.config.example.json` como `save.config.local.json` en la carpeta del proyecto.
-4. Edita `savePath` con la ruta de **tu** archivo. En Windows puedes usar `/`:
+1. Open Pokémon Black in melonDS and save from the in-game menu to have a `.sav` file.
+2. Locate the `.sav` file your emulator uses. Its location may depend on your configuration; don't select a quick-save state file.
+3. Copy `save.config.example.json` as `save.config.local.json` in the project folder.
+4. Edit `savePath` with the path to **your** file. On Windows you can use `/`:
 
 ```json
 {
-  "savePath": "D:/Mis partidas/Pokemon Black.sav"
+  "savePath": "D:/My saves/Pokemon Black.sav"
 }
 ```
 
-5. Inicia PokéChose con el lanzador, siguiendo los pasos de instalación, y elige **Save de melonDS** en **Origen del equipo**.
-6. Juega y guarda dentro de Pokémon Negro. Los cambios escritos en ese archivo aparecerán automáticamente en PokéChose.
+5. Start PokéChose with the launcher, following the installation steps, and choose **melonDS Save** under **Team source**.
+6. Play and save inside Pokémon Black. Changes written to that file will appear automatically in PokéChose.
 
-No necesitas activar GDB para leer el `.sav`. Los cambios que solo existen en memoria o en un savestate no actualizan esta fuente. Si cambias `savePath`, reinicia los servicios. Los archivos de configuración local y los `.sav` están excluidos mediante `.gitignore`.
+You don't need to enable GDB to read the `.sav`. Changes that only exist in memory or in a savestate don't update this source. If you change `savePath`, restart the services. Local configuration files and `.sav` files are excluded via `.gitignore`.
 
-### Opción B: leer melonDS en vivo
+### Option B: read melonDS live
 
-Para esta opción utiliza la configuración de juego y emulador compatible descrita en los requisitos.
+For this option, use the compatible game and emulator setup described in the requirements.
 
-1. Crea `live.config.local.json` a partir de `live.config.example.json`, si todavía no lo has hecho.
-2. En las opciones de depuración **GDB** de melonDS, activa el servidor para **ARM7 en el puerto 3334**. Para la vista de combate, activa también **ARM9 en el puerto 3333**.
-3. Desmarca **Break on startup** para que el juego no quede detenido al iniciar. Si melonDS requiere reiniciar para aplicar las opciones, conserva primero tu progreso.
-4. Abre Pokémon Negro y entra a tu partida.
-5. Inicia PokéChose con **Iniciar PokeChose.cmd**, selecciona **melonDS en vivo (experimental)** y pulsa **Conectar lector**.
-6. Para consultar al rival, abre **Combate** y pulsa **Conectar combate**. Es un lector separado y utiliza la conexión ARM9.
+1. Create `live.config.local.json` from `live.config.example.json`, if you haven't already.
+2. In melonDS's **GDB** debugging options, enable the server for **ARM7 on port 3334**. For the battle view, also enable **ARM9 on port 3333**.
+3. Uncheck **Break on startup** so the game doesn't stay paused when it starts. If melonDS needs a restart to apply the options, save your progress first.
+4. Open Pokémon Black and enter your save.
+5. Start PokéChose with **Iniciar PokeChose.cmd**, select **melonDS live (experimental)**, and press **Connect reader**.
+6. To check the opponent, open **Battle** and press **Connect battle**. It's a separate reader and uses the ARM9 connection.
 
-El equipo, los PS, la experiencia y la Pokédex se consultan aproximadamente cada **3 segundos**, más el tiempo que tarda la lectura. Las cajas se revisan cada **2 minutos**; puedes adelantar su lectura con **Actualizar colección** en **Mi colección**. El servicio no escribe la memoria del emulador ni el save.
+Team, HP, experience, and the Pokédex are polled roughly every **3 seconds**, plus however long the read takes. Boxes are checked every **2 minutes**; you can trigger an earlier read with **Update collection** in **My Collection**. The service never writes to the emulator's memory or the save.
 
-Tras un Reset, reapertura del emulador o pérdida de conexión, utiliza **Reconectar lector** y, si corresponde, **Reconectar combate**. **Pausar lectura** detiene el sondeo del lector principal. Cambiar de origen no lo pausa automáticamente: pulsa ese botón si quieres detenerlo en segundo plano.
+After a Reset, reopening the emulator, or a dropped connection, use **Reconnect reader** and, if needed, **Reconnect battle**. **Pause reading** stops the main reader's polling. Switching sources doesn't pause it automatically: press that button if you want to stop it in the background.
 
-No conectes otro lector al mismo puerto GDB mientras PokéChose lo esté usando. Si el emulador acepta la conexión pero no responde, conserva tu progreso, reinicia la partida en melonDS y vuelve a conectar. Más detalles: [lectura en vivo](docs/live-reading.md) y [vista de combate](docs/enemy-prototype.md).
+Don't connect another reader to the same GDB port while PokéChose is using it. If the emulator accepts the connection but doesn't respond, keep your progress, restart the save in melonDS, and reconnect. More details: [live reading](docs/live-reading.md) and [battle view](docs/es/enemy-prototype.md) *(Spanish, historical record)*.
 
-## Cómo usar PokéChose
+## How to use PokéChose
 
-### Preparar tu equipo
+### Set up your team
 
-1. Elige **Manual**, **Save de melonDS** o **melonDS en vivo** en el selector de origen.
-2. En Manual, abre **Explorar catálogo**, busca una especie y pulsa **+ Colección**.
-3. Ve a **Mi colección** y añade hasta seis Pokémon al equipo. Puedes quitar miembros y probar otras combinaciones.
-4. Abre **Balance de tipos** para revisar las debilidades compartidas y la cobertura potencial. Usa **Tabla de tipos** como referencia para tus enfrentamientos.
+1. Choose **Manual**, **melonDS Save**, or **melonDS live** in the source selector.
+2. In Manual, open **Browse catalog**, search for a species, and press **+ Collection**.
+3. Go to **My Collection** and add up to six Pokémon to the team. You can remove members and try other combinations.
+4. Open **Type balance** to review shared weaknesses and potential coverage. Use the **Type chart** as a reference for your matchups.
 
-En los modos conectados, el equipo y la colección reflejan la partida y son de solo lectura. Tu colección manual se conserva por separado y vuelve al elegir Manual.
+In connected modes, the team and collection reflect the save and are read-only. Your manual collection is kept separately and comes back when you choose Manual.
 
-### Planificar capturas y evoluciones
+### Plan captures and evolutions
 
-En **Capturas por zona**, selecciona una ubicación y marca tu acceso a Surf y Supercaña en **Mis objetos y habilidades**. Estos filtros se configuran manualmente; no leen la mochila ni comprueban tu progreso de historia. Con una Pokédex válida, las especies capturadas quedan completadas aunque ya no estén en tus cajas.
+In **Captures by zone**, select a location and mark your Surf and Super Rod access in **My items and abilities**. These filters are configured manually; they don't read your bag or check your story progress. With a valid Pokédex, caught species stay complete even if they're no longer in your boxes.
 
-Los encuentros muestran método, nivel y porcentaje cuando están disponibles. Los indicadores de oportunidad señalan mejores porcentajes registrados en zonas posteriores o una única zona con encuentros naturales registrados; no aseguran que una especie solo pueda obtenerse por esa vía.
+Encounters show method, level, and chance when available. Opportunity indicators point out better recorded chances in later zones, or a single zone with recorded natural encounters; they don't guarantee a species can only be obtained that way.
 
-En el catálogo, los iconos explican las formas de obtención en Negro. La lupa abre la página de la especie en WikiDex. Los nombres de variantes, como `frillish-male`, se presentan como **Frillish** y las cachés antiguas se normalizan sin tener que borrarlas.
+In the catalog, icons explain the acquisition routes in Black. The magnifying glass opens the species' page on WikiDex. Variant names, such as `frillish-male`, are shown as **Frillish**, and old caches are normalized without needing to be cleared.
 
-Pulsa **Evoluciones** para consultar una familia y sus requisitos, o **Movimientos** para ver el aprendizaje por nivel en Black/White. El listado de movimientos no incluye MT/MO, tutores ni crianza. Los sprites se revelan cuando una especie está vista o capturada en tu Pokédex; en Manual, al añadirla a tu colección.
+Press **Evolutions** to check a family and its requirements, or **Moves** to see level-up learnsets in Black/White. The move list doesn't include TMs/HMs, tutors, or breeding. Sprites are revealed once a species is seen or caught in your Pokédex; in Manual, once you add it to your collection.
 
-### Elegir un tema y conservar tus datos
+### Choose a theme and keep your data
 
-El selector **Tema** de la cabecera ofrece **Original**, **Pokémon**, **Pokémon oscuro** y **Fiesta 🎉**. La selección se guarda al cambiarla y se restaura al recargar. Se aplica también a diálogos y combate.
+The header's **Theme** selector offers **Original**, **Pokémon**, **Dark Pokémon**, and **Party 🎉**. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
 
-La colección manual, el equipo y las preferencias se guardan en el navegador. Para recuperarlos, usa el mismo navegador, perfil y dirección: `localhost` y `127.0.0.1`, o puertos distintos, tienen almacenamientos separados. No se sincronizan entre dispositivos. Borrar los datos del sitio elimina lo guardado; una ventana privada puede descartarlo al cerrarse. Si no se puede guardar, la interfaz muestra un aviso.
+The manual collection, team, and preferences are saved in the browser. To get them back, use the same browser, profile, and address: `localhost` and `127.0.0.1`, or different ports, have separate storage. They don't sync across devices. Clearing site data removes what was saved; a private window may discard it on close. If saving isn't possible, the interface shows a notice.
 
-## Problemas frecuentes
+## Common issues
 
-| Problema | Qué revisar |
+| Issue | What to check |
 | --- | --- |
-| El lanzador se cierra o indica que falta un archivo | Comprueba Node.js 22.15 o posterior y que exista `live.config.local.json` junto a `package.json`. Lee el error de la terminal. |
-| No aparece la partida en modo Save | Revisa `savePath`, el formato RAW de 512 KiB y que hayas guardado dentro del juego. Reinicia los servicios después de cambiar la ruta. |
-| El lector en vivo no conecta | Revisa GDB ARM7 3334, la edición compatible, la partida abierta y el botón Conectar lector. |
-| Combate no muestra al rival | Revisa GDB ARM9 3333 y Conectar combate. La vista es experimental y requiere una lectura confirmada. |
-| Las cajas muestran datos anteriores | Espera la próxima revisión o pulsa Actualizar colección en modo en vivo. |
-| El tema o la colección no se conservan | Usa la misma dirección, navegador y perfil; revisa los avisos de almacenamiento. |
-| No cargan datos de una especie | Comprueba internet y pulsa Reintentar. Los datos ya consultados se reutilizan desde caché. |
-| Un puerto está ocupado | Cierra tu instancia anterior si ya no la necesitas. El lanzador reutiliza servicios compatibles y avisa si otro programa ocupa el puerto. |
+| The launcher closes or says a file is missing | Check for Node.js 22.15 or later and that `live.config.local.json` exists next to `package.json`. Read the terminal error. |
+| The save doesn't show up in Save mode | Check `savePath`, the 512 KiB RAW format, and that you saved inside the game. Restart the services after changing the path. |
+| The live reader won't connect | Check GDB ARM7 3334, the compatible edition, the save being open, and the Connect reader button. |
+| Battle doesn't show the opponent | Check GDB ARM9 3333 and Connect battle. The view is experimental and requires a confirmed read. |
+| The boxes show stale data | Wait for the next check, or press Update collection in live mode. |
+| The theme or collection isn't kept | Use the same address, browser, and profile; check the storage notices. |
+| A species' data won't load | Check your internet connection and press Retry. Already-fetched data is reused from cache. |
+| A port is in use | Close your previous instance if you no longer need it. The launcher reuses compatible services and warns if another program is using the port. |
 
-## Alcance y limitaciones
+## Scope and limitations
 
-- El análisis usa **Generación V**: 17 tipos, sin Hada; Acero resiste Fantasma y Siniestro.
-- Calcula defensa por tipos y cobertura potencial STAB frente a tipos individuales. No simula movimientos reales, habilidades, objetos, clima ni todos los efectos del combate. Los huevos se excluyen del análisis.
-- El catálogo abarca generaciones I–V; que una especie aparezca no garantiza que se pueda capturar en Negro. Los encuentros y vías de obtención dependen de los datos disponibles y sus complementos locales.
-- La lectura en vivo y el combate son experimentales, con compatibilidad limitada a las direcciones configuradas. Ante errores se conservan los últimos datos válidos y se indica cuando están desactualizados.
-- El modo manual y el análisis de datos guardados pueden funcionar sin conexión. Datos no cacheados y sprites necesitan red. No hay service worker.
+- The analysis uses **Generation V**: 17 types, no Fairy; Steel resists Ghost and Dark.
+- It computes defensive typing and potential STAB coverage against individual types. It does not simulate actual moves, abilities, held items, weather, or every battle effect. Eggs are excluded from the analysis.
+- The catalog spans generations I–V; a species appearing there doesn't guarantee it can be caught in Black. Encounters and acquisition routes depend on available data and its local add-ons.
+- Live reading and battle are experimental, with compatibility limited to the configured addresses. On errors, the last valid data is kept and marked as stale.
+- Manual mode and saved-data analysis can work offline. Data not yet cached and sprites need network access. There is no service worker.
 
-## Desarrollo
+## Development
 
-React + TypeScript + Vite, con React Compiler. Ejecuta los comandos desde la carpeta que contiene `package.json`:
+React + TypeScript + Vite, with React Compiler. Run commands from the folder that contains `package.json`:
 
-| Comando | Función |
+| Command | Purpose |
 | --- | --- |
-| `npm ci` | Instalar las dependencias del lockfile |
-| `npm run dev` | Iniciar solo la interfaz |
-| `npm run dev:save` | Iniciar interfaz y servicios de save, lectura en vivo y combate; requiere `live.config.local.json` |
-| `npm test` | Ejecutar las pruebas de Node |
-| `npm run lint` | Comprobar el código con ESLint |
-| `npm run build` | Comprobar TypeScript y generar `dist/` |
-| `npm run preview` | Servir el bundle después de compilar |
-| `npm run preview:save` | Servir el bundle con los servicios locales; requiere `live.config.local.json` |
+| `npm ci` | Install dependencies from the lockfile |
+| `npm run dev` | Start only the interface |
+| `npm run dev:save` | Start the interface plus the save, live-reading, and battle services; requires `live.config.local.json` |
+| `npm test` | Run the Node tests |
+| `npm run lint` | Check the code with ESLint |
+| `npm run build` | Type-check and generate `dist/` |
+| `npm run preview` | Serve the bundle after building |
+| `npm run preview:save` | Serve the bundle with the local services; requires `live.config.local.json` |
 
-Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos terminales: `npm run bridge` y `npm run dev`. Los servicios en vivo y combate también pueden iniciarse por separado con `npm run bridge:live` y `npm run bridge:battle`.
+To read only the `.sav` without starting the live and battle readers, use two terminals: `npm run bridge` and `npm run dev`. The live and battle services can also be started separately with `npm run bridge:live` and `npm run bridge:battle`.
 
-Los servicios escuchan en `127.0.0.1`: save en **3001**, en vivo en **3002** y combate en **3003**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
+The services listen on `127.0.0.1`: save on **3001**, live on **3002**, and battle on **3003**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
-La última validación de código registrada aprobó **167 pruebas**, lint y build. Se comprobaron los cuatro temas a 1280, 390 y 320 px y los nombres, búsqueda y enlaces del catálogo con datos sintéticos. Esta reorganización del README solo revisó documentación y enlaces; no repitió pruebas de código ni una instalación nueva.
+The last recorded code validation passed **167 tests**, lint, and build. The four themes were checked at 1280, 390, and 320 px, along with catalog names, search, and links using synthetic data. This README reorganization only reviewed documentation and links; it did not re-run code tests or a fresh install.
 
-## Documentación técnica
+## Technical documentation
 
-Para preparar una publicación en GitHub, consulta [preparación del repositorio](docs/github-preparation.md). Las configuraciones locales, partidas, ROMs, perfiles de navegador y salidas de investigación están excluidas; las plantillas y capturas seleccionadas permanecen disponibles.
+To prepare a GitHub release, see [repository preparation](docs/es/github-preparation.md) *(Spanish, historical record)*. Local configurations, saves, ROMs, browser profiles, and research outputs are excluded; templates and selected screenshots remain available.
 
-- [Fuentes de datos y adaptadores](docs/data-sources.md)
-- [Formato del save y acceso de solo lectura](docs/save-format.md)
-- [Configuración, intervalos y recuperación de la lectura en vivo](docs/live-reading.md)
-- [Vista experimental de combate](docs/enemy-prototype.md) y [viabilidad del lector](docs/battle-feasibility.md)
-- [Vías de obtención del catálogo](docs/acquisition.md)
-- [Temas y persistencia](docs/themes-validation.md)
-- [Nombres y enlaces del catálogo](docs/catalog-names-validation.md)
-- [Validación de integración](docs/live-integration-validation.md) y [barras y objetos](docs/team-vitals-validation.md)
+- [Data sources and adapters](docs/data-sources.md) ([Español](docs/es/data-sources.md))
+- [Save format and read-only access](docs/save-format.md) ([Español](docs/es/save-format.md))
+- [Live-reading configuration, intervals, and recovery](docs/live-reading.md) ([Español](docs/es/live-reading.md))
+- [Experimental battle view](docs/es/enemy-prototype.md) and [reader feasibility](docs/es/battle-feasibility.md) *(Spanish, historical record)*
+- [Catalog acquisition routes](docs/acquisition.md) ([Español](docs/es/acquisition.md))
+- [Themes and persistence](docs/es/themes-validation.md) *(Spanish, historical record)*
+- [Catalog names and links](docs/es/catalog-names-validation.md) *(Spanish, historical record)*
+- [Integration validation](docs/es/live-integration-validation.md) and [bars and items](docs/es/team-vitals-validation.md) *(Spanish, historical records)*
 
-## Datos y créditos
+The guides above with no English link are historical records of one specific development session (screenshots, test-pass counts, and dates included), not a living description of current behavior; see the [documentation translation audit](docs/doc-translation-audit.md) for what was translated and why. The contributor guide in `AGENTS.md`, including its Localization section (`src/i18n/`), is already in English.
 
-Datos y sprites de [PokéAPI](https://pokeapi.co/docs/v2). Enlaces y referencias de especies, zonas y métodos de obtención de [WikiDex](https://www.wikidex.net/wiki/WikiDex). Emulación mediante [melonDS](https://github.com/melonDS-emu/melonDS).
+## Data and credits
 
-PokéChose es un proyecto independiente de apoyo a la partida. Pokémon y sus elementos pertenecen a sus respectivos titulares.
+Data and sprites from [PokéAPI](https://pokeapi.co/docs/v2). Species, zone, and acquisition-method links and references from [WikiDex](https://www.wikidex.net/wiki/WikiDex). Emulation via [melonDS](https://github.com/melonDS-emu/melonDS).
+
+PokéChose is an independent, unofficial companion project. Pokémon and its assets belong to their respective rights holders.
