@@ -102,6 +102,17 @@
     }
   },
   "captureChecklist": {
+    "location": {
+      "follow": "Follow location",
+      "detected": "Detected location: {{zone}} · {{source}}.",
+      "save": "last save",
+      "live": "live memory",
+      "stale": "Location is out of date. The selected zone is kept until the connection recovers.",
+      "unknown": "Map {{map}} has no verified match. The selected zone is kept.",
+      "unavailable": "Location is unavailable from this source.",
+      "hint": "Selecting a zone manually pauses following. Turning following off restores your last manual selection. Current coverage: Route 6 outdoors.",
+      "saveFailed": "Could not save the follow preference."
+    },
     "pokedexLookup": {
       "summary": "Look up a species in the Pokédex · {{caught}} caught / {{seen}} seen",
       "hint": "Global record for this save, including species obtained by evolution or trade. This lookup doesn't indicate wild encounters in Black.",

@@ -56,3 +56,5 @@
 .dex-lookup input { width: 100%; max-width: 430px; padding: 10px; margin-top: 10px; border-radius: 7px; border: 1px solid var(--border, #394655); background: var(--surface-inset, #111923); }
 .dex-lookup ul { padding-left: 20px; }.dex-lookup small { color: var(--text-muted, #9caabb); }
 @media(max-width: 640px) { .capture-list { grid-template-columns: 1fr; }.zone-select { align-items: flex-start; flex-direction: column; }.zone-select select { width: 100%; } }
+.location-follow { margin: 18px 0; }
+.location-follow label { display: flex; align-items: center; gap: 8px; }

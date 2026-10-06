@@ -4,8 +4,9 @@ Trabajo del issue #5 en `codex/5-detect-player-location`.
 
 El parser devuelve `position` con el identificador interno de mapa y coordenadas
 del último guardado. No representa una ubicación de PokéAPI ni una lectura en vivo.
-Se publica mediante SSE y se expone en el estado de la fuente, pero todavía no
-cambia el selector de capturas. Los bridges anteriores y el bridge en vivo pueden
+Se publica mediante SSE y se expone en el estado de la fuente. El control opcional
+«Seguir ubicación» cambia el selector de capturas para mapas verificados.
+Los bridges anteriores y el bridge en vivo pueden
 omitir el campo; el adaptador lo convierte a `null` sin reutilizar una posición ajena.
 
 La implementación propia usa el bloque BW `0x19500`, longitud `0x9c`, CRC local
@@ -47,8 +48,32 @@ resolver los Pokémon. Una posición corrupta se publica como `null`; la descone
 conserva el último snapshot y su estado de error/conexión indica que no es actual.
 Las pruebas cubren publicación, SSE, validación de transporte y recuperación con fixtures.
 
-Próximo paso: observar mapas en ubicaciones conocidas, documentar versión/región
-y construir correspondencias verificadas con las zonas existentes. Después extender
-el seguimiento opcional en la interfaz. La búsqueda
+## Seguimiento en la interfaz
+
+Desactivado inicialmente, con preferencia persistida aparte de la última zona
+manual. Seleccionar una zona o navegar con las flechas pausa el seguimiento.
+Desactivar el control recupera la selección manual. Mapas desconocidos o muestras
+desactualizadas conservan la última zona reconocida durante esta sesión y fuente;
+cambiar de fuente descarta esa zona para evitar mezclar ubicaciones.
+La búsqueda conserva visible la zona seguida. La carga existente cancela solicitudes
+anteriores y solo muestra resultados cuyo identificador coincide con la selección.
+
+Validación de esta entrega: 188 pruebas automáticas, ESLint y build correctos.
+Se ejecutó `npm run dev:save` con SAVE_BRIDGE_PORT=3011 (Vite eligió 5174) para no
+interrumpir los servicios que ya estaban abiertos. Se usó el guardado real de Ruta 6,
+sin modificarlo. Se verificaron seguimiento, pausa manual, restauración manual,
+persistencia tras recarga, búsqueda que excluye Ruta 6, traducción inglesa y cambio
+a fuente en vivo sin posición. Se revisó el control en vistas ancha y estrecha con
+overrides de viewport 1280x900 y 390x844; el navegador embebido mostró un ancho
+CSS efectivo diferente al solicitado. No se afirma una validación exacta de esos
+breakpoints. Capturas: artifacts/location-follow-desktop.png y
+artifacts/location-follow-mobile.png. La vista estrecha presenta un pequeño
+desbordamiento horizontal general; el texto del control se ajusta y sigue accesible.
+No se han simulado en navegador mapas desconocidos ni desconexiones en esta entrega.
+
+Para usarlo, reiniciar el bridge si estaba ejecutándose antes de estos cambios;
+un bridge anterior no envía posición y la interfaz muestra «no disponible».
+
+Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
