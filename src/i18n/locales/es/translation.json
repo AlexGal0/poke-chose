@@ -262,5 +262,16 @@
     "battleWaiting": "esperando conexión",
     "lastReading": "Última lectura del equipo: {{time}}",
     "goToControlsButton": "Ir a controles de conexión"
+  },
+  "evolutionDialog": {
+    "orBranch": "O bien: ",
+    "queriedSpecies": "Especie consultada",
+    "heading": "Árbol de evolución",
+    "closeAria": "Cerrar árbol de evolución",
+    "loading": "Cargando familia evolutiva…",
+    "loadError": "No se pudo cargar la evolución. Comprueba tu conexión con PokéAPI.",
+    "readingHint": "Lee el árbol de izquierda a derecha. Cada relación muestra cómo evoluciona a la especie siguiente en Black/White. Las ramas alternativas se muestran una debajo de otra.",
+    "scrollAria": "Familia evolutiva; desplaza horizontalmente para ver todas las etapas",
+    "noEvolutionsHint": "Esta especie no tiene evoluciones ni preevoluciones en Generación V."
   }
 }
