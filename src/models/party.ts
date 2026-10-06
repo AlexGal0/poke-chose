@@ -1,6 +1,8 @@
 import type { Pokemon } from './pokemon.ts'
 import { isPokedexSnapshot } from './pokedex.ts'
 import type { PokedexSnapshot } from './pokedex.ts'
+import { isPlayerPosition } from './player-position.ts'
+import type { PlayerPosition } from './player-position.ts'
 
 export interface SavedPokemonData {
   personality: number
@@ -33,6 +35,8 @@ export type CollectionPokemon = Pokemon & SavedPokemonData & {
 export type PartyPokemon = Pokemon & SavedPartyMember
 export type SaveStatus = 'waiting' | 'ready' | 'missing' | 'error'
 export interface PokemonSnapshot {
+  // Optional for compatibility with bridges that do not read position yet.
+  position?: PlayerPosition | null
   status: SaveStatus
   message: string
   party: SavedPartyMember[] | null
@@ -55,6 +59,7 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
     (member.nickname == null || (typeof member.nickname === 'string' && member.nickname.length <= 10 && member.nickname.trim().length > 0 && [...member.nickname].every(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) !== 127))) &&
     Array.isArray(member.moveIds) && member.moveIds.length === 4 && member.moveIds.every(id => integer(id, 0, 65535))
   return ['waiting', 'ready', 'missing', 'error'].includes(snapshot.status) && typeof snapshot.message === 'string' &&
+    (snapshot.position === undefined || snapshot.position === null || isPlayerPosition(snapshot.position)) &&
     (snapshot.pokedex === null || isPokedexSnapshot(snapshot.pokedex)) &&
     (snapshot.boxes === null || (Array.isArray(snapshot.boxes) && snapshot.boxes.length <= 720 &&
       new Set(snapshot.boxes.map(member => `${member?.box}-${member?.slot}`)).size === snapshot.boxes.length &&

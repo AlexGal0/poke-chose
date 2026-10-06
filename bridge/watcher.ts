@@ -6,6 +6,7 @@ import { parseSave } from './parser.ts'
 import { boxesEqual, partiesEqual } from '../src/models/party.ts'
 import type { SaveSnapshot } from '../src/models/party.ts'
 import { pokedexEqual, serializePokedex } from '../src/models/pokedex.ts'
+import { positionsEqual } from '../src/models/player-position.ts'
 
 interface WatchOptions {
   debounceMs?: number
@@ -16,7 +17,7 @@ interface WatchOptions {
 }
 
 export class SaveWatcher {
-  snapshot: SaveSnapshot = { status: 'waiting', message: 'waiting', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
+  snapshot: SaveSnapshot = { status: 'waiting', message: 'waiting', party: null, boxes: null, pokedex: null, position: null, updatedAt: null, backup: false }
   private fileWatcher: FSWatcher | null = null
   private timer: ReturnType<typeof setTimeout> | undefined
   private generation = 0
@@ -122,6 +123,7 @@ export class SaveWatcher {
     const boxesChanged = !boxesEqual(this.snapshot.boxes, result.boxes)
     const pokedex = serializePokedex(result.pokedex)
     const dexChanged = !pokedexEqual(this.snapshot.pokedex, pokedex)
+    const positionChanged = !positionsEqual(this.snapshot.position, result.position)
     if (changed) this.options.log(`Save válido; party encontrado (${result.party.length}); cambio de party detectado.`)
     if (boxesChanged) this.options.log(`Cajas actualizadas: ${result.boxes.length} ejemplares almacenados.`)
     if (dexChanged) this.options.log(`Pokédex actualizada: ${pokedex.caughtSpeciesIds.length} capturados / ${pokedex.seenSpeciesIds.length} vistos.`)
@@ -130,7 +132,8 @@ export class SaveWatcher {
       party: changed ? result.party : this.snapshot.party,
       boxes: boxesChanged ? result.boxes : this.snapshot.boxes,
       pokedex: dexChanged ? pokedex : this.snapshot.pokedex,
-      updatedAt: changed || boxesChanged || dexChanged ? new Date().toISOString() : this.snapshot.updatedAt,
+      position: positionChanged ? result.position : this.snapshot.position,
+      updatedAt: changed || boxesChanged || dexChanged || positionChanged ? new Date().toISOString() : this.snapshot.updatedAt,
       backup: result.backup,
     })
   }

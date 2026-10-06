@@ -4,7 +4,9 @@ Trabajo del issue #5 en `codex/5-detect-player-location`.
 
 El parser devuelve `position` con el identificador interno de mapa y coordenadas
 del último guardado. No representa una ubicación de PokéAPI ni una lectura en vivo.
-No se publica todavía mediante SSE ni cambia el selector de capturas.
+Se publica mediante SSE y se expone en el estado de la fuente, pero todavía no
+cambia el selector de capturas. Los bridges anteriores y el bridge en vivo pueden
+omitir el campo; el adaptador lo convierte a `null` sin reutilizar una posición ajena.
 
 La implementación propia usa el bloque BW `0x19500`, longitud `0x9c`, CRC local
 `0x1959e` y espejo `0x23f38`. Lee mapa como uint32 LE en `+0x80` y coordenadas
@@ -24,8 +26,13 @@ La validación global de la tabla de checksums sigue siendo obligatoria.
 Las pruebas usan exclusivamente fixtures sintéticos. No se ha comprobado todavía
 la semántica del mapa o las coordenadas en una partida real ni una dirección RAM.
 
+Un cambio exclusivo de posición actualiza el snapshot y su fecha sin volver a
+resolver los Pokémon. Una posición corrupta se publica como `null`; la desconexión
+conserva el último snapshot y su estado de error/conexión indica que no es actual.
+Las pruebas cubren publicación, SSE, validación de transporte y recuperación con fixtures.
+
 Próximo paso: observar mapas en ubicaciones conocidas, documentar versión/región
 y construir correspondencias verificadas con las zonas existentes. Después extender
-el contrato de snapshots, SSE y seguimiento opcional en la interfaz. La búsqueda
+el seguimiento opcional en la interfaz. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
