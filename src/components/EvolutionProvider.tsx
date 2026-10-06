@@ -3,14 +3,15 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EvolutionContext } from './evolution-context'
 import { getEvolutionTree } from '../api/evolution'
-import { evolutionMethodLabel } from '../domain/evolution'
+import { evolutionMethodFacts } from '../domain/evolution'
+import { evolutionMethodLabel } from '../i18n/evolution.ts'
 import type { EvolutionNode, EvolutionTree } from '../models/evolution'
 import { PokemonCard } from './PokemonCard'
 import './Evolution.css'
 
 function EvolutionBranch({ node, tree, currentId }: { node: EvolutionNode; tree: EvolutionTree; currentId: number }) {
   const { t } = useTranslation()
-  const methods = [...new Set(node.methods.map(method => evolutionMethodLabel(method, node.speciesId, tree.labels)))]
+  const methods = [...new Set(node.methods.map(method => evolutionMethodLabel(t, evolutionMethodFacts(method, node.speciesId, tree.labels))))]
   return <div className="evolution-branch">
     {methods.length > 0 && <div className="evolution-relation"><span aria-hidden="true">→</span>{methods.map((method, index) => <p key={method}>{index > 0 && <strong>{t('evolutionDialog.orBranch')}</strong>}{method}</p>)}</div>}
     <div className={`evolution-card ${node.speciesId === currentId ? 'current' : ''}`}><PokemonCard pokemon={tree.pokemon[node.speciesId]} showEvolution={false}>{node.speciesId === currentId && <small>{t('evolutionDialog.queriedSpecies')}</small>}</PokemonCard></div>

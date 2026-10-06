@@ -4,7 +4,8 @@ import { getBlackEncounterIndex } from '../api/encounter-opportunities'
 import { encounterOpportunity } from '../domain/encounter-opportunities'
 import type { ZoneEncounters } from '../domain/encounter-opportunities'
 import type { BlackEncounterDetail } from '../models/encounters'
-import { zoneLabel, zoneStage } from '../domain/black-zones'
+import { zoneStage } from '../domain/black-zones'
+import { stageLabel, zoneLabel } from '../i18n/zones.ts'
 import { encounterMethod } from '../domain/encounter-methods'
 import './EncounterOpportunity.css'
 
@@ -20,7 +21,7 @@ export function EncounterOpportunity({ speciesId, locationId, details }: { speci
   }, [attempt])
   const opportunity = zones ? encounterOpportunity(speciesId, locationId, details, zones) : null
   if (opportunity?.kind === 'other') return null
-  const alternatives = opportunity?.kind === 'later' ? [...new Set(opportunity.alternatives.map(row => t('encounterOpportunity.alternativeBase', { zone: zoneLabel(row.location), stage: zoneStage(row.location), current: row.current, chance: row.chance, method: encounterMethod(row.method).label }) + (row.conditions.length ? t('encounterChances.describeConditionsSuffix', { conditions: row.conditions.join(', ') }) : '')))] : []
+  const alternatives = opportunity?.kind === 'later' ? [...new Set(opportunity.alternatives.map(row => t('encounterOpportunity.alternativeBase', { zone: zoneLabel(t, row.location), stage: stageLabel(t, zoneStage(row.location)), current: row.current, chance: row.chance, method: encounterMethod(row.method).label }) + (row.conditions.length ? t('encounterChances.describeConditionsSuffix', { conditions: row.conditions.join(', ') }) : '')))] : []
   const label = opportunity?.kind === 'unique' ? t('encounterOpportunity.uniqueLabel')
     : opportunity?.kind === 'later' ? t('encounterOpportunity.laterLabel', { alternatives: alternatives.join('; ') })
       : failed ? t('encounterOpportunity.failedLabel') : t('encounterOpportunity.pendingLabel')

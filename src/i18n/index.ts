@@ -1,8 +1,8 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { loadLocale } from '../storage/locale.ts'
-import es from './locales/es/translation.json'
-import en from './locales/en/translation.json'
+import es from './locales/es/translation.json' with { type: 'json' }
+import en from './locales/en/translation.json' with { type: 'json' }
 
 void i18n.use(initReactI18next).init({
   resources: {
