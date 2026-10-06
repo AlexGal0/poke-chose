@@ -369,5 +369,25 @@
       "disconnected": "Servicio en vivo desconectado. Se conservan los últimos datos.",
       "refreshFailed": "No se pudieron actualizar las cajas. Comprueba el lector en vivo."
     }
+  },
+  "encounterOpportunity": {
+    "uniqueLabel": "Única zona con encuentros naturales registrados para esta especie en Black. No incluye regalos, evolución ni intercambios.",
+    "laterLabel": "Mayor probabilidad en zonas posteriores del orden orientativo, con el mismo método y condiciones: {{alternatives}}. Porcentajes de tablas individuales; no se suman. Los filtros actuales de Surf y Supercaña se aplican al método comparado.",
+    "failedLabel": "No se pudieron comparar todas las zonas. Pulsa para reintentar.",
+    "pendingLabel": "Consultando encuentros en las demás zonas de Black…",
+    "alternativeBase": "{{zone}} ({{stage}}): {{current}}% → {{chance}}% · {{method}}"
+  },
+  "evolutionButton": {
+    "viewTreeAria": "Ver árbol de evolución de {{name}}",
+    "viewTreeTitle": "Ver árbol de evolución",
+    "label": "↗ Evoluciones"
+  },
+  "pokemonCard": {
+    "inTeam": "En equipo",
+    "spriteUnavailable": "Sprite no disponible",
+    "notDiscovered": "Pokémon aún no descubierto",
+    "fainted": "Debilitado",
+    "movesAria": "Ver movimientos por nivel de {{name}}",
+    "movesButton": "☷ Movimientos"
   }
 }

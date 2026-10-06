@@ -369,5 +369,25 @@
       "disconnected": "Live service disconnected. The last data is kept.",
       "refreshFailed": "Couldn't refresh the boxes. Check the live reader."
     }
+  },
+  "encounterOpportunity": {
+    "uniqueLabel": "Only zone with natural encounters registered for this species in Black. Doesn't include gifts, evolution, or trades.",
+    "laterLabel": "Higher chance in later zones of the suggested order, with the same method and conditions: {{alternatives}}. Percentages are per individual table; they don't add up. Current Surf/Super Rod filters apply to the compared method.",
+    "failedLabel": "Couldn't compare every zone. Tap to retry.",
+    "pendingLabel": "Checking encounters in Black's other zones…",
+    "alternativeBase": "{{zone}} ({{stage}}): {{current}}% → {{chance}}% · {{method}}"
+  },
+  "evolutionButton": {
+    "viewTreeAria": "View {{name}}'s evolution tree",
+    "viewTreeTitle": "View evolution tree",
+    "label": "↗ Evolutions"
+  },
+  "pokemonCard": {
+    "inTeam": "In team",
+    "spriteUnavailable": "Sprite unavailable",
+    "notDiscovered": "Pokémon not yet discovered",
+    "fainted": "Fainted",
+    "movesAria": "View {{name}}'s moves by level",
+    "movesButton": "☷ Moves"
   }
 }
