@@ -394,7 +394,30 @@
     "filterByTypeAria": "Filter by type"
   },
   "encounterMethods": {
-    "groupAria": "Encounter methods"
+    "groupAria": "Encounter methods",
+    "unknownLabel": "{{method}}",
+    "unknownDescription": "Method registered by PokéAPI: {{method}}.",
+    "list": {
+      "walk": { "label": "Walk · grass / ground", "description": "Walk through normal grass or across a cave or indoor floor." },
+      "dark-grass": { "label": "Dark grass", "description": "Walk through dark grass; two Pokémon can appear at once." },
+      "grass-spots": { "label": "Moving grass patch", "description": "Step into a patch of grass that's moving." },
+      "cave-spots": { "label": "Dust cloud", "description": "Step into a dust cloud in a cave." },
+      "bridge-spots": { "label": "Shadow on a bridge", "description": "Approach a shadow that appears on a bridge." },
+      "surf": { "label": "Surf", "description": "Move across water using Surf." },
+      "surf-spots": { "label": "Surf · moving water", "description": "Use Surf on a patch of water that's moving." },
+      "old-rod": { "label": "Fishing · Old Rod", "description": "Fish with the Old Rod." },
+      "good-rod": { "label": "Fishing · Good Rod", "description": "Fish with the Good Rod." },
+      "super-rod": { "label": "Fishing · Super Rod", "description": "Fish with the Super Rod in normal water." },
+      "super-rod-spots": { "label": "Fishing · moving water", "description": "Fish with the Super Rod on a patch of water that's moving." },
+      "gift": { "label": "Gift", "description": "Receive a Pokémon as a gift." },
+      "gift-egg": { "label": "Gift egg", "description": "Receive an egg as a gift." },
+      "static": { "label": "Static encounter", "description": "A Pokémon placed at a specific spot, instead of a random encounter." },
+      "npc-trade": { "label": "Trade with a character", "description": "Get a Pokémon by trading with an in-game character." },
+      "roaming-grass": { "label": "Roamer · grass", "description": "Find a Pokémon that roams between zones, in grass." },
+      "roaming-water": { "label": "Roamer · water", "description": "Find a Pokémon that roams between zones, in water." },
+      "rock-smash": { "label": "Rock Smash", "description": "Break a rock using Rock Smash." },
+      "headbutt": { "label": "Headbutt", "description": "Hit a tree using Headbutt." }
+    }
   },
   "genderIcon": {
     "unconfirmed": "Species' sex not confirmed. Tap to retry.",
