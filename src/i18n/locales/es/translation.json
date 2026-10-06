@@ -427,6 +427,12 @@
       "season-winter": "Invierno"
     }
   },
+  "gender": {
+    "genderless": "Especie sin sexo",
+    "male": "Especie solo macho",
+    "female": "Especie solo hembra",
+    "both": "La especie puede ser macho o hembra"
+  },
   "genderIcon": {
     "unconfirmed": "Sexo de la especie sin confirmar. Pulsa para reintentar.",
     "loading": "Consultando los sexos posibles de la especie…"
