@@ -23,7 +23,9 @@
     "retry": "Retry",
     "speciesCount": "{{count}} species",
     "previousPage": "← Previous",
-    "nextPage": "Next →"
+    "nextPage": "Next →",
+    "hpAbbr": "HP",
+    "hpAria": "Hit points"
   },
   "app": {
     "battleWaitingMessage": "Waiting for the battle reader.",
@@ -381,6 +383,127 @@
     "viewTreeAria": "View {{name}}'s evolution tree",
     "viewTreeTitle": "View evolution tree",
     "label": "↗ Evolutions"
+  },
+  "collectionSearch": {
+    "searchAria": "Search My collection by tags",
+    "placeholder": "Species, nickname, number, or types",
+    "hint": "Combine tags with spaces or commas. All must match. Tap a type to add it.",
+    "activeTagsAria": "Active tags",
+    "removeTagAria": "Remove tag {{tag}}",
+    "clear": "Clear",
+    "filterByTypeAria": "Filter by type"
+  },
+  "encounterMethods": {
+    "groupAria": "Encounter methods"
+  },
+  "genderIcon": {
+    "unconfirmed": "Species' sex not confirmed. Tap to retry.",
+    "loading": "Checking the species' possible sexes…"
+  },
+  "heldItem": {
+    "none": "No item",
+    "retryTitle": "Retry the item lookup",
+    "retryLabel": "Item unavailable · Retry",
+    "loading": "Checking item…"
+  },
+  "movesDialog": {
+    "eyebrow": "BLACK / WHITE · BY LEVEL",
+    "heading": "{{name}}'s moves",
+    "closeAria": "Close moves",
+    "hint": "Level-up learnset for this species and form in Black/White. Base PP, no boosts. Doesn't include TMs, HMs, tutors, or breeding.",
+    "loading": "Loading moves…",
+    "loadError": "Couldn't load the moves.",
+    "tableCaption": "Black/White moves sorted by level",
+    "table": {
+      "level": "Level",
+      "move": "Move",
+      "type": "Type",
+      "category": "Category",
+      "pp": "PP",
+      "description": "Description"
+    },
+    "initialLevel": "Start",
+    "typeUnconfirmed": "Unconfirmed",
+    "noMoves": "No level-up moves registered for this form in Black/White."
+  },
+  "npcTradeDetails": {
+    "deliver": "Hand over: {{requested}}",
+    "receiveNote": "You receive this Pokémon at level {{level}}. One-time trade with a character."
+  },
+  "ownedEvolutionIcon": {
+    "label": "{{name}} evolves from {{ancestors}}, which you have in your team or boxes. May require intermediate stages and evolution conditions. Tap to see the tree."
+  },
+  "teamVitals": {
+    "noData": "No data",
+    "noHpData": "No HP data",
+    "valueOfMax": "{{current}} of {{max}}",
+    "expAria": "Experience toward the next level",
+    "maxLevel": "Max level",
+    "remainingToLevelUp": "{{count}} to level up",
+    "noExpData": "No experience data"
+  },
+  "battleHealthBar": {
+    "unconfirmed": "HP to be confirmed"
+  },
+  "battlePokemon": {
+    "enemyTitle": "Enemy Pokémon",
+    "speciesPlaceholder": "Species #{{id}} · Lv. {{level}}",
+    "loadError": "Couldn't load the species' information.",
+    "loading": "Loading species information…"
+  },
+  "battleTeam": {
+    "speciesPlaceholder": "Species #{{id}}",
+    "inBattle": "In battle",
+    "reserve": "Reserve",
+    "speciesUnavailable": "Species unavailable",
+    "notInBattle": "Not taking part in battle",
+    "memberAria": "Slot {{slot}}: {{name}}",
+    "healthAria": "{{name}}'s hit points",
+    "heading": "Your team's health",
+    "waitingReading": "Waiting for a reading of the battle team…",
+    "legend": "↑ Advantage · ↓ Disadvantage · ↕ Both super-effective · = Neutral · Types only, Gen V",
+    "matchup": {
+      "advantage": "Type advantage",
+      "disadvantage": "Type disadvantage",
+      "neutral": "Neutral type matchup",
+      "mutual": "Both have super-effective attacks by type",
+      "waiting": "Waiting for types"
+    },
+    "matchupDetail": "{{label}}. Best own multiplier: {{outgoing}}×; rival's: {{incoming}}×. No moves, abilities, or items."
+  },
+  "battleTypeMatchup": {
+    "matchesRival": "Matches one of the rival's types",
+    "matchesOwn": "Matches one of your Pokémon's types",
+    "immune": "Immune by type",
+    "waitingTypes": "Waiting for types…",
+    "ownAria": "Your weaknesses and strengths",
+    "rivalAria": "Rival's weaknesses and strengths",
+    "ownWeaknessesHeading": "Your weaknesses",
+    "rivalWeaknessesHeading": "Rival's weaknesses",
+    "noWeaknesses": "No weaknesses by type",
+    "strengthsHeading": "Strengths",
+    "strengthsSubnote": "· Resistances and immunities",
+    "noStrengths": "No resistances or immunities by type",
+    "matchLegend": "★ Matches a type {{target}}",
+    "targetRival": "of the rival",
+    "targetOwn": "of your Pokémon"
+  },
+  "battleStatStages": {
+    "caption": "Stat changes",
+    "unconfirmed": "No confirmed data",
+    "unchanged": "No changes",
+    "raised_one": "Raised {{count}} level",
+    "raised_other": "Raised {{count}} levels",
+    "lowered_one": "Lowered {{count}} level",
+    "lowered_other": "Lowered {{count}} levels",
+    "hint": "Changes to be confirmed"
+  },
+  "battleShortcut": {
+    "returnToPrevious": "Return to the previous screen",
+    "goTo": "Go to {{destination}}",
+    "detected": "Battle detected",
+    "notConfirmed": "No battle confirmed",
+    "combined": "{{action}} · {{status}}"
   },
   "pokemonCard": {
     "inTeam": "In team",

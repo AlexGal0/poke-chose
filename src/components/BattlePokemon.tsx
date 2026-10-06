@@ -1,5 +1,6 @@
 import type { Pokemon } from '../models/pokemon'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ActivePokemonCandidate, BattleHealth } from '../domain/enemy-prototype'
 import { updateBattleHealthDisplay } from '../domain/battle-health-display'
 import { DiscoveryContext } from './discovery-context'
@@ -10,6 +11,7 @@ import type { BattleStatStages as StatStages } from '../domain/battle-stat-stage
 import { updateStatStagesDisplay } from '../domain/battle-stat-stages'
 
 export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null }: { candidate: ActivePokemonCandidate; pokemon?: Pokemon | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
+  const { t } = useTranslation()
   const { speciesId } = candidate
   const identity = `${candidate.personality}:${candidate.trainerId}:${speciesId}:${candidate.form}`
   const [display, setDisplay] = useState(() => ({ identity, health, hit: 0, damageFraction: 0 }))
@@ -35,14 +37,14 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     return () => animation?.cancel()
   }, [hit, damageFraction, identity])
   return <div className={`battle-participant ${own ? 'own-participant' : 'enemy-participant'}`}>
-    <h3 className="battle-participant-title">{own ? 'Tu Pokémon activo' : 'Pokémon enemigo'}</h3>
+    <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>
       {pokemon ? <DiscoveryContext.Provider value={new Set([pokemon.id])}>
         <PokemonCard pokemon={{ ...pokemon, nickname: own ? candidate.nickname : undefined }} showEvolution={false} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
-          <p className="hint">Lv. {candidate.level}</p>
+          <p className="hint">{t('app.team.level', { level: candidate.level })}</p>
           <BattleHealthBar health={shownHealth} />
         </PokemonCard>
-      </DiscoveryContext.Provider> : <div className="battle-participant-empty"><strong>Especie #{speciesId} · Lv. {candidate.level}</strong><p className="hint">{error ? 'No se pudo cargar la información de la especie.' : 'Cargando información de la especie…'}</p></div>}
+      </DiscoveryContext.Provider> : <div className="battle-participant-empty"><strong>{t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</strong><p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p></div>}
     </div>
   </div>
 }

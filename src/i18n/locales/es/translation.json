@@ -23,7 +23,9 @@
     "retry": "Reintentar",
     "speciesCount": "{{count}} especies",
     "previousPage": "← Anterior",
-    "nextPage": "Siguiente →"
+    "nextPage": "Siguiente →",
+    "hpAbbr": "PS",
+    "hpAria": "Puntos de salud"
   },
   "app": {
     "battleWaitingMessage": "Esperando el lector de combate.",
@@ -381,6 +383,127 @@
     "viewTreeAria": "Ver árbol de evolución de {{name}}",
     "viewTreeTitle": "Ver árbol de evolución",
     "label": "↗ Evoluciones"
+  },
+  "collectionSearch": {
+    "searchAria": "Buscar en Mi colección por etiquetas",
+    "placeholder": "Especie, mote, número o tipos",
+    "hint": "Combina etiquetas con espacios o comas. Deben coincidir todas. Pulsa un tipo para añadirlo.",
+    "activeTagsAria": "Etiquetas activas",
+    "removeTagAria": "Quitar etiqueta {{tag}}",
+    "clear": "Limpiar",
+    "filterByTypeAria": "Filtrar por tipo"
+  },
+  "encounterMethods": {
+    "groupAria": "Métodos de encuentro"
+  },
+  "genderIcon": {
+    "unconfirmed": "Sexo de la especie sin confirmar. Pulsa para reintentar.",
+    "loading": "Consultando los sexos posibles de la especie…"
+  },
+  "heldItem": {
+    "none": "Sin objeto",
+    "retryTitle": "Reintentar consulta del objeto",
+    "retryLabel": "Objeto no disponible · Reintentar",
+    "loading": "Consultando objeto…"
+  },
+  "movesDialog": {
+    "eyebrow": "BLACK / WHITE · POR NIVEL",
+    "heading": "Movimientos de {{name}}",
+    "closeAria": "Cerrar movimientos",
+    "hint": "Aprendizaje por nivel de esta especie y forma en Negro/Blanco. PP base, sin aumentos. No incluye MT, MO, tutores ni crianza.",
+    "loading": "Cargando movimientos…",
+    "loadError": "No se pudieron cargar los movimientos.",
+    "tableCaption": "Movimientos de Black/White ordenados por nivel",
+    "table": {
+      "level": "Nivel",
+      "move": "Movimiento",
+      "type": "Tipo",
+      "category": "Categoría",
+      "pp": "PP",
+      "description": "Descripción"
+    },
+    "initialLevel": "Inicial",
+    "typeUnconfirmed": "Sin confirmar",
+    "noMoves": "No hay movimientos por nivel registrados para esta forma en Black/White."
+  },
+  "npcTradeDetails": {
+    "deliver": "Entrega: {{requested}}",
+    "receiveNote": "Recibes este Pokémon a nivel {{level}}. Intercambio único con un personaje."
+  },
+  "ownedEvolutionIcon": {
+    "label": "{{name}} evoluciona de {{ancestors}}, que tienes en el equipo o las cajas. Puede requerir etapas intermedias y condiciones de evolución. Pulsa para ver el árbol."
+  },
+  "teamVitals": {
+    "noData": "Sin datos",
+    "noHpData": "Sin datos de salud",
+    "valueOfMax": "{{current}} de {{max}}",
+    "expAria": "Experiencia hacia el siguiente nivel",
+    "maxLevel": "Nivel máximo",
+    "remainingToLevelUp": "{{count}} para subir",
+    "noExpData": "Sin datos de experiencia"
+  },
+  "battleHealthBar": {
+    "unconfirmed": "PS por confirmar"
+  },
+  "battlePokemon": {
+    "enemyTitle": "Pokémon enemigo",
+    "speciesPlaceholder": "Especie #{{id}} · Lv. {{level}}",
+    "loadError": "No se pudo cargar la información de la especie.",
+    "loading": "Cargando información de la especie…"
+  },
+  "battleTeam": {
+    "speciesPlaceholder": "Especie #{{id}}",
+    "inBattle": "En combate",
+    "reserve": "Reserva",
+    "speciesUnavailable": "Especie no disponible",
+    "notInBattle": "No participa en combate",
+    "memberAria": "Espacio {{slot}}: {{name}}",
+    "healthAria": "Puntos de salud de {{name}}",
+    "heading": "Salud de tu equipo",
+    "waitingReading": "Esperando una lectura del equipo en combate…",
+    "legend": "↑ Ventaja · ↓ Desventaja · ↕ Ambos supereficaces · = Neutral · Solo tipos, Gen V",
+    "matchup": {
+      "advantage": "Ventaja por tipos",
+      "disadvantage": "Desventaja por tipos",
+      "neutral": "Encuentro neutral por tipos",
+      "mutual": "Ambos tienen ataques supereficaces por tipo",
+      "waiting": "Esperando tipos"
+    },
+    "matchupDetail": "{{label}}. Mejor multiplicador propio: {{outgoing}}×; del rival: {{incoming}}×. Sin movimientos, habilidades ni objetos."
+  },
+  "battleTypeMatchup": {
+    "matchesRival": "Coincide con un tipo del rival",
+    "matchesOwn": "Coincide con un tipo de tu Pokémon",
+    "immune": "Inmune por tipo",
+    "waitingTypes": "Esperando tipos…",
+    "ownAria": "Tus debilidades y fortalezas",
+    "rivalAria": "Debilidades y fortalezas del rival",
+    "ownWeaknessesHeading": "Tus debilidades",
+    "rivalWeaknessesHeading": "Debilidades del rival",
+    "noWeaknesses": "Sin debilidades por tipo",
+    "strengthsHeading": "Fortalezas",
+    "strengthsSubnote": "· Resistencias e inmunidades",
+    "noStrengths": "Sin resistencias ni inmunidades por tipo",
+    "matchLegend": "★ Coincide con un tipo {{target}}",
+    "targetRival": "del rival",
+    "targetOwn": "de tu Pokémon"
+  },
+  "battleStatStages": {
+    "caption": "Cambios de estadísticas",
+    "unconfirmed": "Sin datos confirmados",
+    "unchanged": "Sin cambios",
+    "raised_one": "Aumentó {{count}} nivel",
+    "raised_other": "Aumentó {{count}} niveles",
+    "lowered_one": "Disminuyó {{count}} nivel",
+    "lowered_other": "Disminuyó {{count}} niveles",
+    "hint": "Cambios por confirmar"
+  },
+  "battleShortcut": {
+    "returnToPrevious": "Volver a la pantalla anterior",
+    "goTo": "Ir a {{destination}}",
+    "detected": "Combate detectado",
+    "notConfirmed": "Sin combate confirmado",
+    "combined": "{{action}} · {{status}}"
   },
   "pokemonCard": {
     "inTeam": "En equipo",
