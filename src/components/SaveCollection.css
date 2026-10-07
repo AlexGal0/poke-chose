@@ -1,5 +1,8 @@
 .collection-refresh { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0; }
-.collection-box-filter { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; font-size: 13px; }
+.collection-box-filter { margin: 18px 0; font-size: 13px; }
+.collection-box-filter summary { cursor: pointer; width: fit-content; padding: 10px 12px; border: 1px solid var(--border, #34404e); border-radius: 7px; background: var(--surface-raised, #222c38); }
+.collection-box-filter summary:focus-visible { outline: 2px solid var(--accent, #85d9ba); outline-offset: 3px; }
+.collection-box-options { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
 .collection-location-shortcuts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border, #34404e); }
 .collection-box-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
 .collection-location-button { --box-color: #244e43; min-height: 48px; background: var(--box-color); color: #fff; border: 2px solid transparent; font-weight: 600; }
