@@ -151,6 +151,9 @@ continuaron válidas con mapa 331. No se observó sustitución del mapa de la ru
 por un escenario de batalla en esas lecturas. No se atribuye una comprobación
 de interfaz a este paso: se contrastaron los endpoints de los bridges activos.
 
-La salida del combate está pendiente de confirmar. Este registro no valida
-todos los tipos de batalla ni sesiones largas. No se modificó código, no se
+El usuario confirmó salir del combate. El detector publicó `battleActive: false`
+a `2026-10-07T00:57:09.416Z` y el bridge de ubicación publicó `readyActive`,
+mapa 331, a `2026-10-07T00:57:09.849Z`, sin reconectar ni guardar. Queda contrastada
+la ubicación antes, durante y después de este combate en Ruta 6.
+Este registro no valida todos los tipos de batalla ni sesiones largas. No se modificó código, no se
 repitieron tests automáticos y no se escribieron RAM ni save.
