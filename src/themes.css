@@ -364,8 +364,15 @@
   --encounter-text: #becaff;
   --encounter-surface: #212b47;
   --encounter-border: #7889c6;
-  background-image: radial-gradient(ellipse at 0% 15%, #ff334b38, transparent 45%), radial-gradient(ellipse at 100% 30%, #2864ff52, transparent 50%), radial-gradient(ellipse at 45% 90%, #cd35ff26, transparent 50%), linear-gradient(#56f4ff0b 1px, transparent 1px), linear-gradient(90deg, #56f4ff0b 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-image:
+    radial-gradient(ellipse at 0% 15%, #ff334b55, transparent 50%),
+    radial-gradient(ellipse at 100% 30%, #2864ff66, transparent 55%),
+    radial-gradient(ellipse at 45% 90%, #cd35ff38, transparent 50%),
+    radial-gradient(circle, #b8eaff38 1px, transparent 1.5px),
+    repeating-linear-gradient(135deg, transparent 0 84px, #56f4ff1c 84px 86px, transparent 86px 168px),
+    repeating-linear-gradient(45deg, transparent 0 84px, #ff638f16 84px 86px, transparent 86px 168px),
+    linear-gradient(90deg, #17315c55, #28152d44 50%, #102c4055);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px, 240px 240px, 240px 240px, 100% 100%;
   background-attachment: fixed;
 }
 :root[data-theme='neon'] .site-header { border-bottom-color: #56f4ff; box-shadow: 0 1px 12px #56f4ff26; }
