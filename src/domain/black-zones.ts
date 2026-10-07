@@ -93,6 +93,10 @@ const entries: [number, string, ZoneStage?][] = [
   [427, 'route-gate', 'other'],
 ]
 const zones: Zone[] = entries.map(([id, slug, stage = 'story']) => ({ id, slug, stage }))
+
+export function blackZoneLocations(): EncounterLocation[] {
+  return zones.map(zone => ({ id: zone.id, name: zone.slug }))
+}
 const byId = new Map(zones.map((zone, order) => [zone.id, { ...zone, order }]))
 export const ZONE_STAGES: ZoneStage[] = ['story', 'optional', 'postLeague', 'other']
 

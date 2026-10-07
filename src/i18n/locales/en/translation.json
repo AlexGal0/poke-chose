@@ -110,7 +110,7 @@
       "stale": "Location is out of date. The selected zone is kept until a valid reading arrives.",
       "unknown": "Map {{map}} has no verified match. The selected zone is kept.",
       "unavailable": "Location is unavailable from this source.",
-      "hint": "Selecting a zone manually pauses following. Turning following off restores your last manual selection. Current coverage: Route 6, its Season Research Lab, and Driftveil City, including its Pokémon Center.",
+      "hint": "Selecting a zone manually pauses following. Turning following off restores your last manual selection. Catalog extracted from Spanish Pokémon Black (IRBS, revision 0): 388 maps grouped into 71 zones. Unresolved maps keep the selected zone.",
       "saveFailed": "Could not save the follow preference."
     },
     "pokedexLookup": {

@@ -59,6 +59,9 @@ remain unverified. Other versions require their own address validation.
 
 Do not configure both `mapAddress` and the experimental `positionBlockAddress`.
 Missing or invalid location samples do not discard valid team data. Optional
-“Follow location” in the capture checklist groups maps 331/332 under Route 6 and
-96/99 (including its Pokémon Center) under Driftveil City. Unknown maps keep the selected zone; manual selection
-pauses following. Restart the live bridge after changing its configuration.
+“Follow location” uses a catalog derived from Spanish Black IRBS revision 0:
+388 maps grouped into 71 checklist zones, including interiors sharing zone names.
+The 39 unresolved maps keep the selected zone; manual selection pauses following.
+The catalog was extracted statically, not validated by visiting every map. See
+[extraction details](es/rom-locations.md). Restart the live bridge after changing
+its configuration.

@@ -48,3 +48,35 @@ Las pruebas sintéticas verifican el recorrido Nitro → NARC → texto → cabe
 acentos, datos truncados, referencias inválidas y que el buffer original no cambia.
 La identificación de nombres no convierte sus índices en IDs de PokéAPI: esa
 correspondencia se debe resolver por separado.
+
+## Catálogo para la checklist
+
+```powershell
+node --experimental-strip-types scripts/generate-black-map-zones.mjs 'ruta/a/tu-juego.nds'
+```
+
+El generador emite TypeScript por stdout y el resumen de cobertura por stderr.
+`src/domain/black-map-zones.ts` conserva únicamente IDs derivados, agrupados por
+zona PokéAPI. La aplicación usa ese catálogo directamente: el navegador no
+necesita la ROM ni recibe sus bytes. La ROM solo se necesita para regenerarlo.
+
+Los nombres completos se comparan con las etiquetas españolas existentes,
+ignorando mayúsculas y acentos. Solo hay dos alias explícitos por abreviatura:
+«Alm. Frigoríficos» y «Centro Comercial». Nombres sin correspondencia única no
+se asignan; no se infieren por número, proximidad o campo padre.
+
+Resultado: 388 de 427 mapas, agrupados en 71 zonas. Los 39 restantes incluyen
+entradas sin nombre utilizable, nombres especiales y accesos cuya etiqueta no
+coincide con el catálogo. Se mantiene el comportamiento anterior de conservar
+la selección ante un mapa desconocido. La cobertura procede de la extracción
+estática: no significa que se hayan recorrido 388 mapas durante la validación.
+El nombre del juego agrupa interiores y plantas, por lo que la checklist sigue
+mostrando la zona general y no encuentros específicos de cada habitación.
+
+Validación del extractor: 204 pruebas, lint y build correctos. Validación de la
+integración del catálogo: 206 pruebas, lint y build correctos. En el navegador
+con el lector real activo se mostró Ruta 6, selección automática y el nuevo
+resumen de cobertura; el equipo terminó de cargar. No se reinició GDB.
+Captura: `artifacts/location-follow-rom-catalog.png`. No se repitieron recorridos
+por otras zonas ni pruebas responsive en este paso; se conservó la estructura
+de los controles. Reapertura completa y sesiones largas siguen pendientes.

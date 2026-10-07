@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { extractBlackLocations, readLocationNames, readNarc, readNitroFile } from '../scripts/rom/black-locations.mjs'
+import { matchRomLocations } from '../scripts/rom/match-locations.mjs'
 
 function textBank(names: string[]) {
   const base = 16
@@ -117,4 +118,13 @@ test('rejects truncated archives, malformed allocation ranges and text reference
   const text = textBank(['Ruta'])
   text.writeUInt32LE(0xffffffff, 20)
   assert.throws(() => readLocationNames(text), /Truncated/)
+})
+
+test('matches complete zone labels and explicit abbreviations without guessing ambiguous names', () => {
+  const locations = [{ id: 1, name: 'city' }, { id: 2, name: 'cold' }, { id: 3, name: 'duplicate' }]
+  const labels = { city: 'Ciudad sintética', cold: 'Almacenes Frigoríficos', duplicate: 'CIUDAD SINTETICA' }
+  const maps = [{ mapId: 99, name: 'Ciudad sintética' }, { mapId: 100, name: 'Alm. Frigoríficos' }, { mapId: 101, name: 'Acceso' }]
+  assert.deepEqual(matchRomLocations(maps, locations, labels), { groups: [{ locationId: 2, mapIds: [100] }], unresolved: [99, 101] })
+  assert.deepEqual(matchRomLocations(maps, locations.slice(0, 2), labels).groups[0], { locationId: 1, mapIds: [99] })
+  assert.throws(() => matchRomLocations([maps[0], maps[0]], locations, labels), /duplicate/)
 })

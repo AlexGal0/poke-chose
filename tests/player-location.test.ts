@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { resolveBlackMapLocation } from '../src/domain/player-location.ts'
 import { zoneSlug } from '../src/domain/black-zones.ts'
+import { BLACK_MAP_ZONES } from '../src/domain/black-map-zones.ts'
 
 test('verified Route 6 map resolves to the existing PokéAPI zone', () => {
   const location = resolveBlackMapLocation(331)
@@ -9,8 +10,8 @@ test('verified Route 6 map resolves to the existing PokéAPI zone', () => {
   assert.equal(zoneSlug(location!), 'unova-route-6')
 })
 
-test('unknown maps and PokéAPI IDs are not interpreted as internal maps', () => {
-  for (const id of [0, 330, 333, 361, -1, 331.5, NaN, Infinity, 0xffffffff]) {
+test('unresolved and invalid maps are not guessed', () => {
+  for (const id of [27, 51, 426, 427, -1, 331.5, NaN, Infinity, 0xffffffff]) {
     assert.equal(resolveBlackMapLocation(id), null)
   }
 })
@@ -31,5 +32,19 @@ test('consumers cannot mutate the verified correspondence table', () => {
 test('observed Driftveil Pokemon Center groups with its city', () => {
   assert.deepEqual(resolveBlackMapLocation(99), resolveBlackMapLocation(96))
   assert.equal(zoneSlug(resolveBlackMapLocation(99)!), 'driftveil-city')
-  for (const mapId of [97, 98, 100]) assert.equal(resolveBlackMapLocation(mapId), null)
+})
+
+test('ROM-derived maps have unique IDs and resolve to known checklist zones', () => {
+  const ids = BLACK_MAP_ZONES.flatMap(([, mapIds]) => [...mapIds])
+  assert.equal(new Set(ids).size, ids.length)
+  assert.equal(ids.length, 388)
+  for (const [locationId, mapIds] of BLACK_MAP_ZONES) {
+    for (const mapId of mapIds) {
+      const location = resolveBlackMapLocation(mapId)!
+      assert.equal(location.id, locationId)
+      assert.equal(zoneSlug(location), location.name)
+    }
+  }
+  // These map IDs are independent of the PokéAPI IDs used by the checklist.
+  assert.notEqual(resolveBlackMapLocation(361)?.id, 361)
 })

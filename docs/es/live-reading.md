@@ -22,9 +22,11 @@ sus direcciones. La reapertura completa del emulador todavía no se ha validado.
 No combinar `mapAddress` con `positionBlockAddress` (lector experimental de bloque).
 Sin dirección configurada o con muestra inválida, la ubicación es no disponible;
 los datos válidos del equipo pueden seguir actualizándose. No se inventan coordenadas.
-«Seguir ubicación» es opcional en Capturas por zona. Cobertura inicial: mapas 331
-y 332 agrupados como Ruta 6, y mapas 96 y 99 (Centro Pokémon) como Ciudad Fayenza. Los mapas desconocidos
-conservan la selección; una selección manual pausa el seguimiento.
+«Seguir ubicación» es opcional en Capturas por zona. El catálogo extraído de la
+ROM española IRBS revisión 0 resuelve 388 mapas en 71 zonas, incluidos interiores
+que comparten nombre de zona. Los 39 mapas sin correspondencia conservan la
+selección; una selección manual pausa el seguimiento. Véase
+[extracción y límites del catálogo](rom-locations.md).
 
 | Datos | Configuración | Valor por defecto |
 | --- | --- | --- |
