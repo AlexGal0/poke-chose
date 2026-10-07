@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import type { CollectionState, Pokemon } from "./models/pokemon";
 import {
@@ -42,6 +42,7 @@ function App() {
   const { t, i18n } = useTranslation();
   const [battleConnection, setBattleConnection] = useState<BattleConnection>({ status: 'waiting', message: t('app.battleWaitingMessage'), inBattle: false })
   const returnPoint = useRef<{ tab: Exclude<ActiveTab, 'battle'>; scrollY: number } | null>(null)
+  const pendingScroll = useRef<{ tab: ActiveTab; top: number | 'end' | 'workspace' } | null>(null)
   const lastConfirmedBattle = useRef(false)
   const [canReturnFromBattle, setCanReturnFromBattle] = useState(false)
   const [state, setState] = useState(loadState);
@@ -74,6 +75,7 @@ function App() {
   function setTab(next: ActiveTab, viaShortcut = false) {
     if (!viaShortcut) {
       returnPoint.current = null
+      pendingScroll.current = null
       setCanReturnFromBattle(false)
     }
     setActiveTab(next)
@@ -90,13 +92,23 @@ function App() {
       returnPoint.current = null
       setCanReturnFromBattle(false)
     }
+    pendingScroll.current = {
+      tab: next,
+      top: next === 'battle' ? scrollToEnd ? 'end' : 0 : previous?.scrollY ?? 'workspace',
+    }
     setTab(next, true)
-    requestAnimationFrame(() => {
-      if (next === 'battle') window.scrollTo({ top: scrollToEnd ? document.documentElement.scrollHeight : 0, behavior: 'instant' })
-      else if (previous) window.scrollTo({ top: previous.scrollY, behavior: 'instant' })
-      else document.getElementById('workspace')?.scrollIntoView({ block: 'start', behavior: 'instant' })
-    })
   }
+
+  useLayoutEffect(() => {
+    const pending = pendingScroll.current
+    if (!pending || pending.tab !== tab) return
+    pendingScroll.current = null
+    if (pending.top === 'workspace') {
+      document.getElementById('workspace')?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    } else {
+      window.scrollTo({ top: pending.top === 'end' ? document.documentElement.scrollHeight : pending.top, behavior: 'instant' })
+    }
+  }, [tab])
 
   const leaveFinishedBattle = useEffectEvent(() => {
     if (battleView) toggleBattleShortcut()
@@ -283,7 +295,7 @@ function App() {
           <button id="types-tab" role="tab" aria-selected={tab === "types"} aria-controls="workspace-panel" onClick={() => setTab("types")}>
             {t('app.tabs.types')}
           </button>
-          {source === 'live' && <button id="battle-tab" role="tab" aria-selected={tab === 'battle'} aria-controls="workspace-panel" onClick={() => setTab('battle')}>
+          {source === 'live' && <button id="battle-tab" role="tab" aria-selected={tab === 'battle'} aria-controls="workspace-panel" onClick={() => { if (tab !== 'battle') toggleBattleShortcut() }}>
             {t('app.tabs.battle')}
           </button>}
         </div>
