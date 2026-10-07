@@ -80,3 +80,21 @@ resumen de cobertura; el equipo terminó de cargar. No se reinició GDB.
 Captura: `artifacts/location-follow-rom-catalog.png`. No se repitieron recorridos
 por otras zonas ni pruebas responsive en este paso; se conservó la estructura
 de los controles. Reapertura completa y sesiones largas siguen pendientes.
+
+## Auditoría de mapas pendientes
+
+La revisión de las 39 cabeceras no resueltas en la misma ROM identificó:
+
+| Grupo | Cantidad | IDs |
+| --- | --- | --- |
+| Accesos | 23 | 27, 51, 90–92, 131–133, 159, 250–252, 318, 320, 347, 349, 366, 369, 372, 375, 379, 380, 384 |
+| Estación Radial | 9 | 66–74 |
+| Bosque Blanco | 4 | 295, 424–426 |
+| Nombre compuesto solo por guiones | 3 | 150, 151, 422 |
+
+Los accesos usan etiquetas diferentes a las de la checklist; sus campos padre
+pueden apuntar a rutas o puentes distintos de la ciudad nombrada. Estación Radial
+tiene campo padre 62 en esas nueve entradas, pero no se ha verificado su agrupación
+en vivo. Bosque Blanco no forma parte de las zonas de captura de Pokémon Negro
+que ofrece esta aplicación. Las entradas sin nombre no permiten asignar una zona
+por texto. Esta auditoría no cambia ninguna correspondencia ni amplía cobertura.
