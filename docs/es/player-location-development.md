@@ -96,6 +96,20 @@ de mapa y estabilidad tras reiniciar. No se activa ni se añade a la plantilla c
 dirección validada. Dos reconexiones posteriores no recibieron respuesta a qSupported;
 la siguiente prueba debe mantener una sola conexión abierta después del Reset.
 
+Con una conexión mantenida abierta después de otro Reset se observó el mismo mapa
+331 y X=148, Y=406, Z=0. El usuario confirmó caminar sin guardar; el lector no
+publicó cambios de esos campos (sí descartó algunas muestras de bloque inestables).
+Por tanto, este candidato no está validado como posición actual y su comportamiento
+es compatible con una copia del último guardado. Después el usuario confirmó haber
+entrado en Ciudad Fayenza sin guardar: el observador mantuvo mapa 331 y las mismas
+coordenadas, sin publicar cambios. Se descarta `0x0223506c` como dirección para
+seguimiento en vivo. No se habilita `positionBlockAddress` localmente.
+
+La siguiente investigación debe buscar el estado actual del mapa fuera de esta
+copia persistida, contrastando Ruta 6 y Ciudad Fayenza en una única conexión GDB.
+No basta encontrar el número 331 en RAM: habrá múltiples coincidencias que pueden
+ser constantes o copias; deben seguir transiciones sin guardar y sobrevivir reinicios.
+
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
