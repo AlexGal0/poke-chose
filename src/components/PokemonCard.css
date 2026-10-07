@@ -2,5 +2,7 @@
 .pokemon-card.fainted .sprite { filter: grayscale(1); opacity: 0.65; }
 .pokemon-card.fainted h3 { color: var(--text-muted, #b6b8c1); }
 .fainted-status { align-self: center; margin-top: 8px; padding: 4px 10px; border-radius: 4px; background: var(--danger-surface, #58313b); color: var(--danger-text, #ffc1c7); font-size: 11px; font-weight: 700; }
+.team-grid .fainted-status, .collection-panel .fainted-status { position: absolute; top: 8px; right: 8px; margin: 0; padding: 3px 6px; font-size: 10px; line-height: 1.4; }
+.collection-panel .fainted-status { top: 28px; }
 .collection-panel .card-actions .moves-button { margin-top: auto; }
 .collection-panel .card-actions .evolution-button { margin-top: 0; }

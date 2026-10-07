@@ -18,6 +18,8 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
   const [query, setQuery] = useState('')
   const [location, setLocation] = useState<CollectionLocationFilter>('all')
   const [page, setPage] = useState(0)
+  const [boxColors] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 6)))
+  const [boxTextures] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 4)))
   const [refreshing, setRefreshing] = useState(false)
   const [refreshMessage, setRefreshMessage] = useState<Notice>(null)
   const [refreshError, setRefreshError] = useState(false)
@@ -49,19 +51,19 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
     {state.collectionError && <p className="notice" role="alert">{t('saveCollection.resolveErrorNotice')}</p>}
     {(state.error || !state.connected) && collection !== null && <p className="notice">{t('saveCollection.staleNotice')}</p>}
     {collection === null ? <p className="empty">{t('saveCollection.waitingNotice')}</p> : <>
-      <div className="collection-box-filter">
-        <label htmlFor="collection-box">{t('saveCollection.locationLabel')}</label>
-        <select id="collection-box" value={location} onChange={event => {
-          const value = event.target.value
-          setLocation(value === 'all' || value === 'party' ? value : Number(value))
-          setPage(0)
-        }}>
-          <option value="all">{t('saveCollection.locationAll', { count: collection.length })}</option>
-          <option value="party">{t('saveCollection.locationParty', { count: partyCount })}</option>
-          {boxCounts.map((count, box) => <option key={box} value={box}>{t('saveCollection.locationBox', { number: box + 1, count })}</option>)}
-        </select>
-        <span className="hint" role="status">{t('saveCollection.boxFilter.filteredCount', { filtered: filtered.length, total: collection.length })}</span>
-      </div>
+      <details className="collection-box-filter">
+        <summary>{t('saveCollection.locationLabel')}: {location === 'all' ? t('saveCollection.locationAll', { count: collection.length }) : location === 'party' ? t('saveCollection.locationParty', { count: partyCount }) : t('saveCollection.locationBox', { number: location + 1, count: boxCounts[location] })}</summary>
+        <div className="collection-box-options" role="group" aria-label={t('saveCollection.locationLabel')}>
+        <div className="collection-location-shortcuts">
+          <button className="collection-location-button" aria-pressed={location === 'party'} onClick={() => { setLocation('party'); setPage(0) }}>{t('saveCollection.locationParty', { count: partyCount })}</button>
+          <button className="collection-all-button" aria-pressed={location === 'all'} onClick={() => { setLocation('all'); setPage(0) }}>{t('saveCollection.locationAll', { count: collection.length })}</button>
+        </div>
+        <div className="collection-box-grid">
+          {boxCounts.map((count, box) => <button key={box} className={`collection-location-button collection-box-color-${boxColors[box]} collection-box-texture-${boxTextures[box]}`} aria-pressed={location === box} onClick={() => { setLocation(box); setPage(0) }}>{t('saveCollection.locationBox', { number: box + 1, count })}</button>)}
+        </div>
+        </div>
+      </details>
+      <p className="hint" role="status">{t('saveCollection.boxFilter.filteredCount', { filtered: filtered.length, total: collection.length })}</p>
       <CollectionSearch collection={locationCollection} query={query} onChange={next => { setQuery(next); setPage(0) }} />
       {collection.length === 0 ? <p className="empty">{t('saveCollection.emptyCollection')}</p> : !locationCollection.length ? <p className="empty">{location === 'party' ? t('saveCollection.emptyParty') : t('saveCollection.emptyBox')}</p> : !filtered.length ? <p className="empty">{t('saveCollection.noMatches')}</p> : <>
         <div className="pokemon-grid">{filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves>

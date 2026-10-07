@@ -1,0 +1,3 @@
+.defense-member { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.defense-member-sprite { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; font-size: 24px; color: var(--text-muted, #b6b8c1); }
+.defense-member-sprite img { display: block; object-fit: contain; image-rendering: pixelated; }
