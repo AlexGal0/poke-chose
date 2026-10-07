@@ -133,6 +133,10 @@ seleccionarla y cargar sus encuentros. Captura: `artifacts/location-follow-reope
 
 Esto verifica recuperación con reconexión manual en esta reapertura y ROM;
 no demuestra reconexión automática ni estabilidad universal de la dirección.
-Queda pendiente contrastar un cambio de mapa sin guardar después de reabrir.
+Después, el usuario salió a Ruta 6 sin guardar. El SSE publicó `readyActive`,
+mapa 331, fecha `2026-10-07T00:54:36.702Z`; la interfaz cambió a «Ruta 6 · memoria
+en vivo» y seleccionó Ruta 6. Captura: `artifacts/location-follow-reopen-route6.png`.
+La transición 195 → 331 verifica actualización de la ubicación después de
+reabrir, sin depender de otro guardado.
 Este paso solo registra validación manual; no se modificó código ni se repitieron
 los tests automáticos. Las herramientas no escribieron el save ni la RAM.
