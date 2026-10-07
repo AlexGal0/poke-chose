@@ -115,4 +115,24 @@ anterior, pues no contó con confirmación simultánea del usuario.
 
 Este paso solo registra una comprobación manual real; no cambia código ni repite
 las pruebas automáticas. No se escribieron RAM ni save desde las herramientas.
-La comprobación de cierre y reapertura completa está en curso.
+La comprobación de cierre y reapertura completa se registra a continuación.
+
+## Cierre y reapertura completa de melonDS
+
+El usuario confirmó cerrar completamente melonDS, reabrirlo y entrar de nuevo
+a la partida en la cueva. Antes de reconectar, el SSE tenía `status: error`,
+`connectionLost`, último mapa 195 y fecha `2026-10-07T00:52:22.354Z`.
+La interfaz marcó la ubicación como desactualizada. La pestaña nueva de prueba
+usó la selección manual persistida (Ruta 6); no se presenta como conservación
+de la última zona automática entre recargas.
+
+Se pulsó «Reconectar lector» en la interfaz, sin reiniciar el bridge ni hacer
+Reset adicional. El SSE volvió a `readyActive` con mapa 195 y fecha nueva
+`2026-10-07T00:53:33.258Z`. La interfaz volvió a detectar Cueva Electrorroca,
+seleccionarla y cargar sus encuentros. Captura: `artifacts/location-follow-reopen.png`.
+
+Esto verifica recuperación con reconexión manual en esta reapertura y ROM;
+no demuestra reconexión automática ni estabilidad universal de la dirección.
+Queda pendiente contrastar un cambio de mapa sin guardar después de reabrir.
+Este paso solo registra validación manual; no se modificó código ni se repitieron
+los tests automáticos. Las herramientas no escribieron el save ni la RAM.
