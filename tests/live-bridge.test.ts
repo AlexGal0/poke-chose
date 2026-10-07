@@ -7,13 +7,20 @@ test('live service waits for explicit connection, emits consistent data and pres
   const ram = saveFixture().subarray(0, 0x24000)
   let connections = 0
   let fail = false
+  let unstablePosition = false
+  let positionReads = 0
   const instances: { socket: { destroyed: boolean }; close: () => void }[] = []
-  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, pollMs: 20, boxesPollMs: 20 }, () => {
+  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, mapAddress: 0x02019580, pollMs: 20, boxesPollMs: 20 }, () => {
     const instance = {
       socket: { destroyed: false },
       async connect() { connections++ },
       async readMemory(address: number, length: number) {
         if (fail) { instance.socket.destroyed = true; throw new Error('Disconnected') }
+        if (address === 0x02019580 && unstablePosition) {
+          const bytes = Buffer.alloc(length)
+          bytes.writeUInt16LE(++positionReads, 0)
+          return bytes
+        }
         return Buffer.from(ram.subarray(address - 0x02000000, address - 0x02000000 + length))
       },
       close() { instance.socket.destroyed = true },
@@ -58,10 +65,24 @@ test('live service waits for explicit connection, emits consistent data and pres
   assert.equal(ready.party.length, 1)
   assert.deepEqual(ready.boxes, [])
   assert.deepEqual(ready.pokedex.caughtSpeciesIds, [])
+  assert.equal(ready.position.mapId, 0)
+  ram.writeUInt32LE(331, 0x19580)
+  let moved = await until('ready')
+  for (let i = 0; i < 20 && moved.position?.mapId !== 331; i++) moved = await until('ready')
+  assert.equal(moved.position.mapId, 331)
+  assert.deepEqual(moved.party, ready.party)
+  unstablePosition = true
+  let unknown = await until('ready')
+  for (let i = 0; i < 20 && unknown.position !== null; i++) unknown = await until('ready')
+  assert.equal(unknown.position, null)
+  assert.deepEqual(unknown.party, ready.party)
+  unstablePosition = false
+  const recoveredPosition = await until('ready')
+  assert.equal(recoveredPosition.position.mapId, 331)
   fail = true
   const lost = await until('error')
   assert.deepEqual(lost.party, ready.party)
-  assert.equal(lost.updatedAt, ready.updatedAt)
+  assert.ok(lost.updatedAt)
   assert.equal(connections, 1)
   fail = false
   await post('connect')

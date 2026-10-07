@@ -25,6 +25,10 @@ import type { CollectionPokemon, PartyPokemon } from '../models/party'
 import { orderBlackZones, searchBlackZones, zoneStage, ZONE_STAGES } from '../domain/black-zones'
 import { areaLabel, stageLabel, zoneLabel } from '../i18n/zones.ts'
 import './CaptureChecklist.css'
+import type { PlayerPosition } from '../models/player-position'
+import { resolveBlackMapLocation } from '../domain/player-location'
+import { loadFollowLocation, saveFollowLocation } from '../storage/follow-location'
+import { nextFollowedZone } from '../domain/followed-zone'
 
 function PokedexLookup({ pokedex }: { pokedex: PokedexState }) {
   const { t } = useTranslation()
@@ -49,13 +53,26 @@ function PokedexLookup({ pokedex }: { pokedex: PokedexState }) {
   </details>
 }
 
-export function CaptureChecklist({ pokedex, enabled, stale, collection, team }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean; collection: readonly CollectionPokemon[] | null; team: readonly PartyPokemon[] }) {
+export function CaptureChecklist({ pokedex, enabled, stale, collection, team, position, source, positionStale }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean; collection: readonly CollectionPokemon[] | null; team: readonly PartyPokemon[]; position: PlayerPosition | null; source: 'manual' | 'save' | 'live'; positionStale: boolean }) {
   const { t } = useTranslation()
   const ownedSpeciesIds = new Set([...(collection ?? []), ...team].filter(pokemon => !pokemon.isEgg).map(pokemon => pokemon.speciesId))
   const [access, setAccess] = useState(loadEncounterAccess)
   const [accessSaved, setAccessSaved] = useState(true)
   const [locations, setLocations] = useState<EncounterLocation[]>([{ id: 358, name: 'unova-route-3' }])
-  const [selected, setSelected] = useState(loadEncounterZone)
+  const [manualZone, setManualZone] = useState(loadEncounterZone)
+  const [follow, setFollow] = useState(loadFollowLocation)
+  const [followSaved, setFollowSaved] = useState(true)
+  const detected = position ? resolveBlackMapLocation(position.mapId) : null
+  const locationStale = stale || positionStale
+  const freshZone = enabled && !locationStale && detected ? detected.id : null
+  const [followed, setFollowed] = useState<{ source: typeof source; id: number | null }>({ source, id: freshZone })
+  // Remember the last recognized zone only for this source; unknown/stale samples
+  // preserve it, while switching sources must not carry an unrelated location.
+  const nextFollowed = nextFollowedZone(followed, source, follow, freshZone)
+  if (followed.source !== nextFollowed.source || followed.id !== nextFollowed.id) {
+    setFollowed(nextFollowed)
+  }
+  const selected = follow ? nextFollowed.id ?? manualZone : manualZone
   const [zoneSaved, setZoneSaved] = useState(true)
   const [zoneQuery, setZoneQuery] = useState('')
   const [result, setResult] = useState<{ locationId: number; rows: EncounterSpecies[] } | null>(null)
@@ -90,13 +107,21 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team }: 
   const zoneIndex = navigationZones.findIndex(zone => zone.id === selected)
   const previousZone = zoneIndex > 0 ? navigationZones[zoneIndex - 1] : null
   const nextZone = zoneIndex >= 0 ? navigationZones[zoneIndex + 1] : null
-  function selectZone(id: number) { setSelected(id); setZoneSaved(saveEncounterZone(id)); setError('') }
+  function selectZone(id: number) {
+    setFollow(false)
+    setFollowSaved(saveFollowLocation(false))
+    setManualZone(id)
+    setZoneSaved(saveEncounterZone(id))
+    setError('')
+  }
   return <section className="panel capture-panel" aria-labelledby="capture-title">
     <div className="section-heading"><div><span className="eyebrow">POKÉDEX / POKÉMON BLACK</span><h2 id="capture-title">{t('app.tabs.captures')}</h2></div>{checklist && <span className="count" aria-live="polite">{t('captureChecklist.header.count', { caught: checklist.caught, total: checklist.total })}</span>}</div>
     <p className="hint">{t('captureChecklist.header.hint1')}</p>
     <p className="hint">{t('captureChecklist.header.hint2')}</p>
     {!enabled ? <p className="empty">{t('captureChecklist.disabledNotice')}</p> : <>
       {pokedex && <PokedexLookup pokedex={pokedex} />}
+      {position && !detected && !locationStale && <p className="hint" role="status">{t('captureChecklist.location.unknown', { map: position.mapId })}</p>}
+      {!followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
       <div className="zone-controls">
         <label className="zone-search">{t('captureChecklist.zoneSearchLabel')} <input type="search" value={zoneQuery} onChange={event => setZoneQuery(event.target.value)} placeholder={t('captureChecklist.zoneSearchPlaceholder')} /></label>
         <div className="zone-select"><label htmlFor="capture-zone">{t('captureChecklist.zoneLabel')}</label><div className="zone-navigation">
@@ -110,6 +135,11 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team }: 
           })}
         </select>
         <button type="button" className="zone-next" disabled={!nextZone} aria-label={t('captureChecklist.nextZoneAria')} title={nextZone ? t('captureChecklist.nextZoneTitle', { zone: zoneLabel(t, nextZone) }) : t('captureChecklist.lastZoneTitle')} onClick={() => { if (nextZone) selectZone(nextZone.id) }}>→</button>
+        <button type="button" className="zone-follow-toggle" aria-label={t('captureChecklist.location.follow')} title={t(follow ? 'captureChecklist.location.followingButton' : 'captureChecklist.location.follow')} aria-pressed={follow} onClick={() => {
+          setFollow(!follow)
+          setFollowSaved(saveFollowLocation(!follow))
+          setError('')
+        }}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" fill={follow ? 'currentColor' : 'none'} /><path d="M12 2v4m0 12v4M2 12h4m12 0h4" /></svg></button>
         </div></div>
       </div>
       {!zoneSaved && <p className="notice" role="status">{t('captureChecklist.zoneSaveFailed')}</p>}

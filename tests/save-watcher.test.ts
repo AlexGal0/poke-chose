@@ -30,6 +30,40 @@ async function temporarySave() {
 
 const options = { debounceMs: 40, retryMs: [30, 60], recoveryMs: 100, read: (path: string) => readStableSave(path, 10), log: () => {} }
 
+test('position-only changes publish, identical saves are suppressed, and invalid position recovers', async () => {
+  const temporary = await temporarySave()
+  const snapshots: SaveSnapshot[] = []
+  const watcher = new SaveWatcher(temporary.path, snapshot => snapshots.push(snapshot), options)
+  const bytes = saveFixture()
+  try {
+    await writeFile(temporary.path, bytes)
+    watcher.start()
+    await eventually(() => watcher.snapshot.status === 'ready')
+    const { party, boxes, pokedex, updatedAt } = watcher.snapshot
+    const first = snapshots.length
+    bytes.writeUInt32LE(123, 0x19580)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.position?.mapId === 123)
+    assert.equal(snapshots.length, first + 1)
+    assert.notEqual(watcher.snapshot.updatedAt, updatedAt)
+    assert.equal(watcher.snapshot.party, party)
+    assert.equal(watcher.snapshot.boxes, boxes)
+    assert.equal(watcher.snapshot.pokedex, pokedex)
+    await writeFile(temporary.path, bytes)
+    await delay(180)
+    assert.equal(snapshots.length, first + 1)
+    bytes[0x1959e] ^= 1
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.position === null)
+    assert.equal(watcher.snapshot.status, 'ready')
+    assert.equal(watcher.snapshot.party, party)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.position?.mapId === 123)
+  } finally { watcher.stop(); await temporary.cleanup() }
+})
+
 test('watcher emits nickname-only changes in party and boxes while keeping dex unchanged', async () => {
   const temporary = await temporarySave()
   const watcher = new SaveWatcher(temporary.path, () => {}, options)
@@ -216,6 +250,11 @@ test('bridge SSE sends initial/current party and changes; denies foreign origins
       } catch { /* Expected abort on cleanup. */ }
     })()
     await eventually(() => received.includes('"speciesId":502'))
+    const moved = saveFixture()
+    moved.writeUInt32LE(789, 0x19580)
+    refreshFixtureChecksums(moved)
+    await writeFile(temporary.path, moved)
+    await eventually(() => received.includes('"mapId":789'))
     await writeFile(temporary.path, saveFixture([pk5Fixture(496, 26)]))
     await eventually(() => received.includes('"speciesId":496') && received.includes('"level":26'))
     controller.abort()

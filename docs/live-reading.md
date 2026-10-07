@@ -46,3 +46,22 @@ Automated tests cover explicit connection, pause/resume without closing TCP, los
 The change to a two-minute interval and the button passed 119 tests, lint, and build. Periodicity tests use shortened intervals and synthetic RAM, not an actual two-minute wait. A React render through Vite verified the button is visible in live mode, disabled without a connection, and absent in Save mode. Clicking and the responsive layout were not checked in a browser in that session. The real previous service could not be restarted from the environment due to access being denied; it must be restarted to load the new code.
 
 HP and experience from the real save were extracted through read-only access. Their update during each turn of a real battle is still pending. Real box 24 was not available for validation. See the records in [integration validation](es/live-integration-validation.md) *(Spanish, historical record)*, [bars and items](es/team-vitals-validation.md) *(Spanish, historical record)*, and [experiment validation](../experiments/melonds-live/VALIDATION.md) *(Spanish, historical record)*.
+
+## Live player location
+
+The example configuration sets `mapAddress` to `0x0224f8cc` for Spanish Pokémon
+Black IRBS revision 0 with melonDS 1.1. Two matching uint16 LE reads provide the
+current map during each fast cycle, without reading the save or inventing coordinates.
+Observed unsaved transitions covered Route 6 (331), Driftveil City (96), and the
+Season Research Lab (332); the address also followed the lab transition after Reset.
+Full emulator reopen, other game versions, battle/menu behavior and long sessions
+remain unverified. Other versions require their own address validation.
+
+Do not configure both `mapAddress` and the experimental `positionBlockAddress`.
+Missing or invalid location samples do not discard valid team data. Optional
+“Follow location” uses a catalog derived from Spanish Black IRBS revision 0:
+388 maps grouped into 71 checklist zones, including interiors sharing zone names.
+The 39 unresolved maps keep the selected zone; manual selection pauses following.
+The catalog was extracted statically, not validated by visiting every map. See
+[extraction details](es/rom-locations.md). Restart the live bridge after changing
+its configuration.

@@ -116,6 +116,14 @@ In connected modes, the team and collection reflect the save and are read-only. 
 
 ### Plan captures and evolutions
 
+The location icon beside the zone selector enables automatic following. It stays
+green and pressed while enabled; selecting a zone manually pauses it. Save mode
+uses the last saved map, while live mode follows RAM without saving. Unknown maps
+keep the selection and display a notice. The catalog derived from Spanish Black
+IRBS revision 0 covers 388 maps grouped into 71 zones; 39 maps remain unresolved.
+Interiors and floors sharing a zone name are grouped; following does not filter
+encounters by floor. See [ROM catalog details](docs/es/rom-locations.md).
+
 In **Captures by zone**, select a location and mark your Surf and Super Rod access in **My items and abilities**. These filters are configured manually; they don't read your bag or check your story progress. With a valid Pokédex, caught species stay complete even if they're no longer in your boxes.
 
 Encounters show method, level, and chance when available. Opportunity indicators point out better recorded chances in later zones, or a single zone with recorded natural encounters; they don't guarantee a species can only be obtained that way.

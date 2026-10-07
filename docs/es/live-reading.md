@@ -10,6 +10,24 @@ Manual, Save y melonDS en vivo mantienen datos separados. El servicio live usa G
 
 ## Intervalos y consistencia
 
+### Ubicación del jugador
+
+`mapAddress` permite leer el mapa actual como uint16 LE estable (dos lecturas)
+en cada ciclo rápido, sin exigir cambios del equipo ni consultar el save.
+La plantilla usa `0x0224f8cc`, contrastada con Pokémon Negro español IRBS rev 0
+en melonDS 1.1 mediante Ruta 6, Ciudad Fayenza y el laboratorio de estaciones,
+incluyendo transiciones sin guardar y un Reset. Otras versiones requieren localizar
+sus direcciones. La reapertura completa del emulador todavía no se ha validado.
+
+No combinar `mapAddress` con `positionBlockAddress` (lector experimental de bloque).
+Sin dirección configurada o con muestra inválida, la ubicación es no disponible;
+los datos válidos del equipo pueden seguir actualizándose. No se inventan coordenadas.
+«Seguir ubicación» es opcional en Capturas por zona. El catálogo extraído de la
+ROM española IRBS revisión 0 resuelve 388 mapas en 71 zonas, incluidos interiores
+que comparten nombre de zona. Los 39 mapas sin correspondencia conservan la
+selección; una selección manual pausa el seguimiento. Véase
+[extracción y límites del catálogo](rom-locations.md).
+
 | Datos | Configuración | Valor por defecto |
 | --- | --- | --- |
 | Equipo, PS, experiencia y Pokédex | `fastPollMs` | 3000 ms |

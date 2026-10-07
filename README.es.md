@@ -116,6 +116,14 @@ En los modos conectados, el equipo y la colección reflejan la partida y son de 
 
 ### Planificar capturas y evoluciones
 
+El icono de ubicación junto al selector activa el seguimiento automático y queda
+verde y pulsado. Elegir una zona manualmente lo pausa. En modo Save sigue el último
+mapa guardado; en vivo sigue la RAM sin guardar. Los mapas desconocidos conservan
+la selección y muestran un aviso. El catálogo extraído de Negro español IRBS,
+revisión 0, cubre 388 mapas en 71 zonas; quedan 39 mapas sin correspondencia.
+Los interiores y plantas con nombre de zona compartido se agrupan: no se filtran
+encuentros por planta. Consulta [extracción y límites](docs/es/rom-locations.md).
+
 En **Capturas por zona**, selecciona una ubicación y marca tu acceso a Surf y Supercaña en **Mis objetos y habilidades**. Estos filtros se configuran manualmente; no leen la mochila ni comprueban tu progreso de historia. Con una Pokédex válida, las especies capturadas quedan completadas aunque ya no estén en tus cajas.
 
 Los encuentros muestran método, nivel y porcentaje cuando están disponibles. Los indicadores de oportunidad señalan mejores porcentajes registrados en zonas posteriores o una única zona con encuentros naturales registrados; no aseguran que una especie solo pueda obtenerse por esa vía.

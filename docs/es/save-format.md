@@ -71,6 +71,17 @@ Los tipos de formas de Rotom, Wormadam, Shaymin, Castform, Darmanitan y Meloetta
 
 ## Fixtures y comprobaciones
 
+### Posición opcional del último guardado
+
+El bloque BW empieza en `0x19500`, longitud `0x9c`, CRC local `0x1959e` y espejo
+`0x23f38`. Se lee mapa uint32 LE en `+0x80` y coordenadas uint16 LE: X `+0x86`,
+Z `+0x8a`, Y `+0x8e`. Se usa la misma entrada principal/respaldo que los Pokémon.
+Si falla el CRC de posición se devuelve `position: null` conservando los datos
+principales válidos, sin buscar posición en otra entrada. Un cambio exclusivo
+de posición actualiza el snapshot del watcher. Representa el último guardado,
+no movimiento en vivo; el mapa interno no es un ID de PokéAPI.
+Consulta [desarrollo y validación](player-location-development.md).
+
 `tests/helpers/save-fixture.ts` genera PK5 cifrados y saves sintéticos en memoria. Su encoder utiliza BigInt y una tabla explícita de permutaciones, distinta del algoritmo de descifrado. El CRC se contrasta también con el vector estándar `123456789 → 0x29b1`. Los únicos archivos escritos durante tests son fixtures temporales creados por el propio test; no se abre ningún save del usuario para escritura.
 
 Los tests verifican las 32 variantes de shuffle, múltiples miembros, duplicados, species/nivel, secundarios, party vacío, datos corruptos, respaldo, igualdad, lectura sin alterar bytes/mtime, watcher nativo, reintentos, reemplazo, borrado, transporte SSE y adaptación al frontend. Los fixtures de Pokédex son bloques sintéticos pequeños generados en los tests; incluyen especies no vistas, vistas sin captura, capturadas, límites bajos/altos y persistencia independiente de party/cajas/Day Care. Otro test modifica solo flags en un archivo sintético y comprueba la emisión del watcher; el adaptador recibe ese cambio sin volver a resolver el equipo.
