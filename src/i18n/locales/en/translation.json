@@ -104,6 +104,8 @@
   "captureChecklist": {
     "location": {
       "follow": "Follow location",
+      "followButton": "Follow zone",
+      "followingButton": "Following",
       "detected": "Detected location: {{zone}} · {{source}}.",
       "save": "last save",
       "live": "live memory",

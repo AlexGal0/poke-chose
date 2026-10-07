@@ -157,3 +157,19 @@ mapa 331, a `2026-10-07T00:57:09.849Z`, sin reconectar ni guardar. Queda contras
 la ubicación antes, durante y después de este combate en Ruta 6.
 Este registro no valida todos los tipos de batalla ni sesiones largas. No se modificó código, no se
 repitieron tests automáticos y no se escribieron RAM ni save.
+
+## Control visual de seguimiento
+
+El checkbox se sustituyó por un botón a la derecha del selector y sus flechas.
+Usa `aria-pressed` para expresar el estado, un indicador luminoso y color verde
+con sombra interior mientras está activado; al seleccionar manualmente una zona
+o usar las flechas vuelve al estado inactivo. El texto distingue «Seguir zona»
+de «Siguiendo». Activarlo conserva la semántica anterior: sigue la ubicación de
+la fuente seleccionada y no inicia por sí solo una conexión con melonDS.
+
+Validación actual: 206 pruebas, lint y build correctos. Con el lector real activo
+se comprobó estado pulsado, selección manual de Ruta 6 que lo desactiva y clic
+que lo reactiva y recupera la zona detectada. En viewport de 390 px el selector,
+las flechas y el botón caben en la misma fila. Se restauró el viewport después.
+Evidencias: `artifacts/location-follow-button.png` y
+`artifacts/location-follow-button-mobile.png`. No se creó una PR.

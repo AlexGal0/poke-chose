@@ -121,11 +121,6 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
     {!enabled ? <p className="empty">{t('captureChecklist.disabledNotice')}</p> : <>
       {pokedex && <PokedexLookup pokedex={pokedex} />}
       <div className="location-follow">
-        <label><input type="checkbox" checked={follow} onChange={event => {
-          setFollow(event.target.checked)
-          setFollowSaved(saveFollowLocation(event.target.checked))
-          setError('')
-        }} /> {t('captureChecklist.location.follow')}</label>
         <p className="hint" role="status">{locationStale && position ? t('captureChecklist.location.stale') : detected ? t('captureChecklist.location.detected', { zone: zoneLabel(t, detected), source: t(`captureChecklist.location.${source}`) }) : position ? t('captureChecklist.location.unknown', { map: position.mapId }) : t('captureChecklist.location.unavailable')}</p>
         <p className="hint">{t('captureChecklist.location.hint')}</p>
         {!followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
@@ -143,6 +138,11 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
           })}
         </select>
         <button type="button" className="zone-next" disabled={!nextZone} aria-label={t('captureChecklist.nextZoneAria')} title={nextZone ? t('captureChecklist.nextZoneTitle', { zone: zoneLabel(t, nextZone) }) : t('captureChecklist.lastZoneTitle')} onClick={() => { if (nextZone) selectZone(nextZone.id) }}>→</button>
+        <button type="button" className="zone-follow-toggle" aria-label={t('captureChecklist.location.follow')} aria-pressed={follow} onClick={() => {
+          setFollow(!follow)
+          setFollowSaved(saveFollowLocation(!follow))
+          setError('')
+        }}><span className="zone-follow-indicator" aria-hidden="true" />{t(follow ? 'captureChecklist.location.followingButton' : 'captureChecklist.location.followButton')}</button>
         </div></div>
       </div>
       {!zoneSaved && <p className="notice" role="status">{t('captureChecklist.zoneSaveFailed')}</p>}
