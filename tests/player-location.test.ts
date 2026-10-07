@@ -27,3 +27,9 @@ test('consumers cannot mutate the verified correspondence table', () => {
   location.name = 'changed'
   assert.deepEqual(resolveBlackMapLocation(331), { id: 361, name: 'unova-route-6' })
 })
+
+test('observed Driftveil Pokemon Center groups with its city', () => {
+  assert.deepEqual(resolveBlackMapLocation(99), resolveBlackMapLocation(96))
+  assert.equal(zoneSlug(resolveBlackMapLocation(99)!), 'driftveil-city')
+  for (const mapId of [97, 98, 100]) assert.equal(resolveBlackMapLocation(mapId), null)
+})

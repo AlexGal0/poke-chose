@@ -4,6 +4,7 @@ import type { EncounterLocation } from '../models/encounters.ts'
 // Add interiors/floors only after verification; adjacent IDs imply no relationship.
 const verifiedLocations = new Map<number, EncounterLocation>([
   [96, { id: 352, name: 'driftveil-city' }],
+  [99, { id: 352, name: 'driftveil-city' }], // Pokémon Center interior.
   [331, { id: 361, name: 'unova-route-6' }],
   [332, { id: 361, name: 'unova-route-6' }], // Season Research Lab interior.
 ])

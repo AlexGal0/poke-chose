@@ -23,7 +23,7 @@ No combinar `mapAddress` con `positionBlockAddress` (lector experimental de bloq
 Sin dirección configurada o con muestra inválida, la ubicación es no disponible;
 los datos válidos del equipo pueden seguir actualizándose. No se inventan coordenadas.
 «Seguir ubicación» es opcional en Capturas por zona. Cobertura inicial: mapas 331
-y 332 agrupados como Ruta 6, y mapa 96 como Ciudad Fayenza. Los mapas desconocidos
+y 332 agrupados como Ruta 6, y mapas 96 y 99 (Centro Pokémon) como Ciudad Fayenza. Los mapas desconocidos
 conservan la selección; una selección manual pausa el seguimiento.
 
 | Datos | Configuración | Valor por defecto |

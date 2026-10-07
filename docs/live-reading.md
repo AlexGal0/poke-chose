@@ -60,5 +60,5 @@ remain unverified. Other versions require their own address validation.
 Do not configure both `mapAddress` and the experimental `positionBlockAddress`.
 Missing or invalid location samples do not discard valid team data. Optional
 “Follow location” in the capture checklist groups maps 331/332 under Route 6 and
-96 under Driftveil City. Unknown maps keep the selected zone; manual selection
+96/99 (including its Pokémon Center) under Driftveil City. Unknown maps keep the selected zone; manual selection
 pauses following. Restart the live bridge after changing its configuration.

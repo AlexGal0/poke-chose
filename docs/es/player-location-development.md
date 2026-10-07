@@ -219,3 +219,17 @@ de mapa desconocido. No se ha asignado un nombre al mapa 99. Evidencia:
 
 Pendiente: reapertura completa del emulador, combate y sesiones largas, además
 de ampliar correspondencias mediante observaciones verificadas.
+
+### Centro Pokémon de Ciudad Fayenza
+
+El lector activo publicó `readyActive` con `{ mapId: 99 }` y el usuario confirmó
+estar dentro del Centro Pokémon de Ciudad Fayenza. Se incorpora 99 → PokéAPI 352,
+agrupándolo con la ciudad; no se extrapolan otros interiores ni se atribuyen
+encuentros al Centro Pokémon. La interfaz con el lector real mostró «Ciudad
+Fayenza · memoria en vivo» y seleccionó esa ciudad con seguimiento activado,
+sin reiniciar el bridge ni escribir el save o la RAM. Captura de esta comprobación:
+`artifacts/location-follow-pokemon-center.png`.
+
+Validación: 201 pruebas correctas, ESLint y build correctos. La prueba nueva
+verifica la agrupación del centro con la ciudad y mantiene desconocidos los IDs
+adyacentes 97, 98 y 100. La ida y vuelta exterior/interior no se repitió en este paso.
