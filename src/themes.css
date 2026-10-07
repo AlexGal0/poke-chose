@@ -448,3 +448,69 @@
 :root[data-theme='neon'] :is(button, input, select, a):focus-visible { outline-color: #ff81e8; }
 :root[data-theme='neon'] .pokeball { border-color: #56f4ff; box-shadow: 0 0 12px #56f4ff66; background: linear-gradient(#ff81e8 43%, #56f4ff 43%, #56f4ff 55%, #101323 55%); }
 :root[data-theme='neon'] .pokeball::after { border-color: #56f4ff; background: #101323; }
+
+
+/* Character-based terminal frames with static phosphor scanlines. */
+:root[data-theme='terminal'] {
+  color-scheme: dark;
+  font-family: 'Consolas', 'Lucida Console', monospace;
+  --page: #070d09;
+  --surface: #0b140e;
+  --surface-raised: #101e14;
+  --surface-inset: #070d09;
+  --surface-hover: #1c3323;
+  --border: #3e6b49;
+  --border-strong: #82c892;
+  --text: #b5efb9;
+  --text-muted: #8eb995;
+  --text-faint: #7ea185;
+  --accent: #9bf5a5;
+  --accent-text: #bfffc5;
+  --accent-surface: #183320;
+  --accent-border: #72b981;
+  --primary-surface: #183320;
+  --primary-border: #72b981;
+  --primary-hover: #254c30;
+  --success-text: #a5f3ac;
+  --success-surface: #142a1b;
+  --success-border: #4c8d5b;
+  --warning-text: #f0d78c;
+  --warning-surface: #282516;
+  --warning-border: #98874c;
+  --danger-text: #ffb1a1;
+  --danger-surface: #30201b;
+  --danger-border: #aa7567;
+  --immune-text: #b5d7ff;
+  --immune-surface: #172638;
+  --gender-male: #b5d7ff;
+  --gender-female: #edb9d6;
+  --gender-both: #d6c4ed;
+  --grass-text: #b5efb9;
+  --grass-surface: #142a1b;
+  --grass-border: #4c8d5b;
+  --encounter-text: #b5d7ff;
+  --encounter-surface: #172638;
+  --encounter-border: #57799d;
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, #9bf5a506 3px 4px);
+}
+:root[data-theme='terminal'] :is(button, select, .panel, .pokemon-card, .search, .count, .insight, .type, .multiplier, .coverage-item, .save-status, .collection-box-filter summary) { border-radius: 0; box-shadow: none; }
+:root[data-theme='terminal'] .panel { position: relative; border: 1px dashed var(--border); }
+:root[data-theme='terminal'] .panel::before { content: '+--[ POKECHOSE ]--+'; display: block; margin-bottom: 18px; color: var(--accent); font-size: 11px; letter-spacing: 1px; }
+:root[data-theme='terminal'] .panel::after { content: '+----------------+'; display: block; margin-top: 18px; color: var(--accent); font-size: 11px; letter-spacing: 1px; }
+:root[data-theme='terminal'] .pokemon-card { border-style: dashed; }
+:root[data-theme='terminal'] :is(h1, h2, .brand, .eyebrow, .game-label) { letter-spacing: normal; }
+:root[data-theme='terminal'] h1::before { content: '> '; color: var(--accent); }
+:root[data-theme='terminal'] .eyebrow::before { content: '[SYS] '; }
+:root[data-theme='terminal'] .brand { text-shadow: 0 0 8px #9bf5a530; }
+:root[data-theme='terminal'] .tabs button::before { content: '[ '; }
+:root[data-theme='terminal'] .tabs button::after { content: ' ]'; }
+:root[data-theme='terminal'] .tabs button[aria-selected=true] { border-style: dashed; }
+:root[data-theme='terminal'] .type { color: var(--text); background: var(--surface-inset); border: 1px solid var(--border); }
+:root[data-theme='terminal'] .collection-box-grid button { background: var(--surface-raised); color: var(--text); text-shadow: none; border: 1px dashed var(--border); }
+:root[data-theme='terminal'] .collection-box-grid button[aria-pressed=true] { background: var(--accent-surface); border: 2px solid var(--accent); }
+:root[data-theme='terminal'] .sprite img { filter: grayscale(1) sepia(1) hue-rotate(65deg) saturate(1.3); }
+:root[data-theme='terminal'] .defense-member-sprite img { filter: grayscale(1) sepia(1) hue-rotate(65deg) saturate(1.3); }
+:root[data-theme='terminal'] .pokemon-card.fainted .sprite { opacity: .6; }
+:root[data-theme='terminal'] .defense-table :is(th, td) { border: 1px dashed var(--border); }
+:root[data-theme='terminal'] .pokeball { border-color: var(--accent); background: linear-gradient(transparent 43%, var(--accent) 43%, var(--accent) 55%, transparent 55%); }
+:root[data-theme='terminal'] .pokeball::after { border-color: var(--accent); background: var(--page); }
