@@ -197,8 +197,10 @@ GDB mediante Reset, POST `/live-api/connect` devolvió 202 y el SSE real public�
 `readyActive` con `{ mapId: 331 }`. En navegador, fuente «melonDS en vivo» y
 «Seguir ubicación» mostraron «Ruta 6 · memoria en vivo» y selector 361.
 Captura: `artifacts/location-follow-live.png`. El lector de aplicación permanece
-activo; el observador experimental se cerró antes de conectarlo. La prueba de cambio
-a Ciudad Fayenza sin guardar mediante el bridge real está pendiente de confirmación.
+activo; el observador experimental se cerró antes de conectarlo. El usuario confirmó
+que, al entrar a Ciudad Fayenza sin guardar, la interfaz cambió automáticamente.
+La lectura posterior del SSE real devolvió `readyActive` con `{ mapId: 96 }`.
+Queda verificado el recorrido completo RAM → bridge → interfaz para esa transición.
 
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
