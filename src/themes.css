@@ -321,3 +321,62 @@
 :root[data-theme='classic-html'] .defense-table :is(th, td) { border: 1px solid #aaa; }
 :root[data-theme='classic-html'] .pokeball { border-color: #000; background: linear-gradient(#fff 43%, #000 43%, #000 55%, #fff 55%); }
 :root[data-theme='classic-html'] .pokeball::after { border-color: #000; background: #fff; }
+
+
+/* Neon tubing over a dark, static grid; no flashing effects. */
+:root[data-theme='neon'] {
+  color-scheme: dark;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  --page: #080913;
+  --surface: #101323;
+  --surface-raised: #181c31;
+  --surface-inset: #0b0e1b;
+  --surface-hover: #252d46;
+  --border: #354564;
+  --border-strong: #6d92b7;
+  --text: #edfaff;
+  --text-muted: #b1c7df;
+  --text-faint: #93aecb;
+  --accent: #56f4ff;
+  --accent-text: #a2faff;
+  --accent-surface: #12323c;
+  --accent-border: #38bacb;
+  --primary-surface: #174653;
+  --primary-border: #56f4ff;
+  --primary-hover: #205e6d;
+  --success-text: #96ffca;
+  --success-surface: #12342e;
+  --success-border: #3abf8a;
+  --warning-text: #ffe69a;
+  --warning-surface: #3a2e1d;
+  --warning-border: #b39242;
+  --danger-text: #ffb1d8;
+  --danger-surface: #3a1d34;
+  --danger-border: #c35a99;
+  --immune-text: #d2b5ff;
+  --immune-surface: #302145;
+  --gender-male: #8fdfff;
+  --gender-female: #ff9fd6;
+  --gender-both: #d2b5ff;
+  --grass-text: #b0f79a;
+  --grass-surface: #203421;
+  --grass-border: #65975b;
+  --encounter-text: #becaff;
+  --encounter-surface: #212b47;
+  --encounter-border: #7889c6;
+  background-image: radial-gradient(ellipse at 0% 0%, #fa35d81a, transparent 55%), radial-gradient(ellipse at 100% 45%, #24eaff12, transparent 55%), linear-gradient(#56f4ff08 1px, transparent 1px), linear-gradient(90deg, #56f4ff08 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+:root[data-theme='neon'] .site-header { border-bottom-color: #56f4ff; box-shadow: 0 1px 12px #56f4ff26; }
+:root[data-theme='neon'] .brand { text-shadow: 0 0 12px #56f4ff66; }
+:root[data-theme='neon'] h1 span { color: #ff81e8; text-shadow: 0 0 18px #ff35d84d; }
+:root[data-theme='neon'] .eyebrow { color: #ff9aeb; }
+:root[data-theme='neon'] .panel { border-color: #3c667e; box-shadow: inset 0 1px 0 #56f4ff20, 0 0 18px #56f4ff0c; }
+:root[data-theme='neon'] .pokemon-card { border-top-color: #bc6af0; box-shadow: 0 -1px 7px #e445fa1a; }
+:root[data-theme='neon'] .pokemon-card:is(.selected, .captured) { border-color: #38bacb; box-shadow: 0 0 10px #56f4ff1f; }
+:root[data-theme='neon'] .primary { color: #baffff; box-shadow: inset 0 0 9px #56f4ff14, 0 0 10px #56f4ff20; }
+:root[data-theme='neon'] .primary:hover:not(:disabled) { box-shadow: 0 0 16px #56f4ff40; }
+:root[data-theme='neon'] .tabs button[aria-selected=true] { color: #ffb5f2; background: #321c38; border-color: #f06cdb; box-shadow: 0 0 10px #ff35d826; }
+:root[data-theme='neon'] :is(button, input, select, a):focus-visible { outline-color: #ff81e8; }
+:root[data-theme='neon'] .pokeball { border-color: #56f4ff; box-shadow: 0 0 12px #56f4ff66; background: linear-gradient(#ff81e8 43%, #56f4ff 43%, #56f4ff 55%, #101323 55%); }
+:root[data-theme='neon'] .pokeball::after { border-color: #56f4ff; background: #101323; }

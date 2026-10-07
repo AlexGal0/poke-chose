@@ -1,7 +1,7 @@
 import { persistValue } from './persist.ts'
 
 const KEY = 'poke-chose:theme:v1'
-export const THEMES = ['base', 'pokemon', 'pokemon-dark', 'fiesta', 'gameboy-color', 'aqua-2000', 'classic-html'] as const
+export const THEMES = ['base', 'pokemon', 'pokemon-dark', 'fiesta', 'gameboy-color', 'aqua-2000', 'classic-html', 'neon'] as const
 export type Theme = typeof THEMES[number]
 
 export function loadTheme(): Theme {

@@ -26,6 +26,7 @@ export function ThemeSelector() {
           <option value="gameboy-color">{t('theme.options.gameboyColor')}</option>
           <option value="aqua-2000">{t('theme.options.aqua2000')}</option>
           <option value="classic-html">{t('theme.options.classicHtml')}</option>
+          <option value="neon">{t('theme.options.neon')}</option>
           <option value="fiesta">{t('theme.options.fiesta')}</option>
         </select>
       </label>
