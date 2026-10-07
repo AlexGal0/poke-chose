@@ -3,6 +3,7 @@
     "label": "Tema",
     "options": {
       "base": "Original",
+      "gameboyColor": "Game Boy Color",
       "pokemon": "Pokémon",
       "pokemonDark": "Pokémon oscuro",
       "fiesta": "Fiesta 🎉"

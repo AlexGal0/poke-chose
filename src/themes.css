@@ -128,3 +128,65 @@
 }
 :root[data-theme='pokemon'] .pokeball::after,
 :root[data-theme='pokemon-dark'] .pokeball::after { border-color: #18181b; background: #fff; }
+
+
+/* Muted LCD colors framed by a purple handheld shell. */
+:root[data-theme='gameboy-color'] {
+  color-scheme: light;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  --page: #d1c8de;
+  --surface: #e1e6be;
+  --surface-raised: #d0d9a6;
+  --surface-inset: #c2cd98;
+  --surface-hover: #b4c388;
+  --border: #7a8663;
+  --border-strong: #384b37;
+  --text: #24382c;
+  --text-muted: #46533d;
+  --text-faint: #536046;
+  --accent: #493469;
+  --accent-text: #39274f;
+  --accent-surface: #d5c9e0;
+  --accent-border: #6b5087;
+  --primary-surface: #493469;
+  --primary-border: #302340;
+  --primary-hover: #35254e;
+  --success-text: #274d39;
+  --success-surface: #c6d9ac;
+  --success-border: #567c52;
+  --warning-text: #644318;
+  --warning-surface: #eee0a8;
+  --warning-border: #9b7c3f;
+  --danger-text: #7a293c;
+  --danger-surface: #e7c3bd;
+  --danger-border: #a4676b;
+  --immune-text: #493469;
+  --immune-surface: #d5c9e0;
+  --gender-male: #30587b;
+  --gender-female: #80385b;
+  --gender-both: #624879;
+  --grass-text: #385529;
+  --grass-surface: #d1dfb0;
+  --grass-border: #7b955b;
+  --encounter-text: #394c70;
+  --encounter-surface: #d0d8dc;
+  --encounter-border: #7a8ba0;
+  background-image: radial-gradient(#49346914 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+:root[data-theme='gameboy-color'] .site-header { border-bottom: 4px solid #493469; }
+:root[data-theme='gameboy-color'] .panel {
+  border: 2px solid #384b37;
+  border-radius: 3px;
+  box-shadow: 4px 4px 0 #49346940;
+  background-image: linear-gradient(#24382c06 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+:root[data-theme='gameboy-color'] :is(button, select, .pokemon-card, .search, .count, .insight, .coverage-item, .collection-box-filter summary) { border-radius: 3px; }
+:root[data-theme='gameboy-color'] .primary { color: #f0ebd4; }
+:root[data-theme='gameboy-color'] :is(h1, h2, .brand) { letter-spacing: -1px; font-weight: 700; }
+:root[data-theme='gameboy-color'] .eyebrow { letter-spacing: 1px; }
+:root[data-theme='gameboy-color'] .sprite img { image-rendering: pixelated; }
+:root[data-theme='gameboy-color'] .tabs button[aria-selected=true] { box-shadow: inset 0 -3px 0 #493469; }
+:root[data-theme='gameboy-color'] .pokeball { border-color: #493469; background: linear-gradient(#83729b 43%, #493469 43%, #493469 55%, #e1e6be 55%); }
+:root[data-theme='gameboy-color'] .pokeball::after { border-color: #493469; background: #e1e6be; }
