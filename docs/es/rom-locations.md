@@ -98,3 +98,21 @@ tiene campo padre 62 en esas nueve entradas, pero no se ha verificado su agrupac
 en vivo. Bosque Blanco no forma parte de las zonas de captura de Pokémon Negro
 que ofrece esta aplicación. Las entradas sin nombre no permiten asignar una zona
 por texto. Esta auditoría no cambia ninguna correspondencia ni amplía cobertura.
+
+## Contraste en vivo: Cueva Electrorroca
+
+Tras la integración del catálogo, el usuario confirmó estar dentro de Cueva
+Electrorroca, en «planta 1». El SSE real publicó `readyActive`, mapa 195,
+con fecha `2026-10-07T00:50:45.997Z`. El catálogo generado ya asignaba ese mapa a
+PokéAPI 379 (`chargestone-cave`), sin añadir una correspondencia manual.
+
+La interfaz mostró «Cueva Electrorroca · memoria en vivo», seguimiento activado
+y Cueva Electrorroca seleccionada. Cargó los encuentros de planta 1 y sótanos
+1 y 2: la selección automática sigue siendo por zona, no un filtro de planta.
+Evidencia: `artifacts/location-follow-chargestone.png`. Antes se había observado
+mapa 194, también asignado a esa cueva; no se atribuye una planta a esa lectura
+anterior, pues no contó con confirmación simultánea del usuario.
+
+Este paso solo registra una comprobación manual real; no cambia código ni repite
+las pruebas automáticas. No se escribieron RAM ni save desde las herramientas.
+La comprobación de cierre y reapertura completa está en curso.
