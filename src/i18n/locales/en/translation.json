@@ -3,6 +3,12 @@
     "label": "Theme",
     "options": {
       "base": "Original",
+      "gameboyColor": "Game Boy Color",
+      "aqua2000": "Aqua 2000",
+      "terminal": "Terminal ASCII",
+      "windowsXp": "Windows XP",
+      "neon": "Neon",
+      "classicHtml": "Classic HTML",
       "pokemon": "Pokémon",
       "pokemonDark": "Pokémon (dark)",
       "fiesta": "Fiesta 🎉"

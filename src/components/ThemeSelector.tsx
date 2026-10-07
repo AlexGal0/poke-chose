@@ -23,6 +23,12 @@ export function ThemeSelector() {
           <option value="base">{t('theme.options.base')}</option>
           <option value="pokemon">{t('theme.options.pokemon')}</option>
           <option value="pokemon-dark">{t('theme.options.pokemonDark')}</option>
+          <option value="gameboy-color">{t('theme.options.gameboyColor')}</option>
+          <option value="aqua-2000">{t('theme.options.aqua2000')}</option>
+          <option value="classic-html">{t('theme.options.classicHtml')}</option>
+          <option value="neon">{t('theme.options.neon')}</option>
+          <option value="terminal">{t('theme.options.terminal')}</option>
+          <option value="windows-xp">{t('theme.options.windowsXp')}</option>
           <option value="fiesta">{t('theme.options.fiesta')}</option>
         </select>
       </label>

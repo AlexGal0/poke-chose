@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#1764c4"/><stop offset=".65" stop-color="#8acaff"/><stop offset="1" stop-color="#d7eaff"/></linearGradient><linearGradient id="hill" x2=".4" y2="1"><stop stop-color="#8dc831"/><stop offset=".45" stop-color="#4f9c20"/><stop offset="1" stop-color="#245d12"/></linearGradient><linearGradient id="back" x2="0" y2="1"><stop stop-color="#90bb42"/><stop offset="1" stop-color="#396b25"/></linearGradient><filter id="soft"><feGaussianBlur stdDeviation="13"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".48" numOctaves="3" seed="17"/><feColorMatrix type="saturate" values="0"/></filter></defs>
+<path fill="url(#sky)" d="M0 0h1600v1000H0z"/>
+<g fill="#fff" opacity=".75" filter="url(#soft)"><ellipse cx="300" cy="185" rx="150" ry="32"/><ellipse cx="400" cy="165" rx="110" ry="43"/><ellipse cx="1100" cy="110" rx="190" ry="26"/><ellipse cx="1230" cy="140" rx="160" ry="25"/><ellipse cx="780" cy="305" rx="120" ry="22"/></g>
+<path fill="url(#back)" d="M0 690Q380 540 740 630T1600 590V1000H0z"/>
+<path fill="url(#hill)" d="M0 700Q270 560 580 570Q980 570 1600 860V1000H0z"/>
+<path d="M0 720Q310 580 620 595Q1000 600 1600 880" fill="none" stroke="#b9db5b" stroke-width="4" opacity=".2"/>
+<path fill="#fff" opacity=".055" filter="url(#grain)" d="M0 570h1600v430H0z"/>
+</svg>
