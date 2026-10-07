@@ -140,3 +140,17 @@ La transición 195 → 331 verifica actualización de la ubicación después de
 reabrir, sin depender de otro guardado.
 Este paso solo registra validación manual; no se modificó código ni se repitieron
 los tests automáticos. Las herramientas no escribieron el save ni la RAM.
+
+## Ubicación durante combate en Ruta 6
+
+El usuario confirmó iniciar un combate en Ruta 6. El bridge de ubicación publicó
+`readyActive`, mapa 331, a `2026-10-07T00:56:23.211Z`; el detector de combate
+publicó `status: ready`, `battleActive: true` a `2026-10-07T00:56:35.093Z`.
+Dos muestras posteriores de ubicación, a `00:56:46.562Z` y `00:56:49.813Z`,
+continuaron válidas con mapa 331. No se observó sustitución del mapa de la ruta
+por un escenario de batalla en esas lecturas. No se atribuye una comprobación
+de interfaz a este paso: se contrastaron los endpoints de los bridges activos.
+
+La salida del combate está pendiente de confirmar. Este registro no valida
+todos los tipos de batalla ni sesiones largas. No se modificó código, no se
+repitieron tests automáticos y no se escribieron RAM ni save.
