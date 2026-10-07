@@ -138,6 +138,39 @@ codificados de otra forma o estructuras creadas solo después de la transición.
 Las pruebas sintéticas cubren alineación, subarrays, límites, agrupación de lecturas
 e inestabilidad independiente de candidatos. Total: 194 pruebas, lint y build correctos.
 
+## Resultado del primer ciclo sin guardar
+
+El escaneo real encontró 78 coincidencias de 331. La muestra inicial en Ruta 6
+fue estable en todas. Tras entrar al exterior de Ciudad Fayenza sin guardar,
+22 direcciones cambiaron: 20 a 96 y dos a cero. Al regresar a Ruta 6 sin guardar,
+las 22 volvieron a 331. El usuario confirmó ambas transiciones. Todas las muestras
+comparadas tuvieron cero valores inestables.
+
+Los 20 candidatos con ciclo `331 → 96 → 331` incluyen `0x021e4bc2`,
+`0x0224f8cc`, `0x0224ffa0`, `0x022584be`, `0x02259272`, `0x02259274`,
+`0x0225928c`, `0x02275844` y doce campos desde `0x022521ae` hasta
+`0x02252cae`, separados por `0x100`. Es evidencia de datos que siguen la zona,
+pero no determina cuál es la fuente autoritativa ni garantiza estabilidad tras Reset.
+Los valores 96 y los mapas interiores aún no se incorporan a la tabla de zonas:
+faltan contrastes adicionales. No se activa ninguna dirección en configuración.
+
+Al entrar sin guardar al laboratorio de estaciones de Ruta 6, confirmado por el
+usuario, 12 de esos 20 candidatos pasaron a 332: `0x021e4bc2`, `0x0224f8cc`,
+`0x0224ffa0`, los cinco campos desde `0x022521ae` a `0x022525ae`,
+`0x022584be`, `0x02259272`, `0x0225928c` y `0x02275844`.
+Otros siete campos pasaron a cero y `0x02259274` conservó el valor anterior.
+Esto reduce los candidatos compatibles con las tres ubicaciones a doce; sigue
+pendiente comprobar retorno al exterior y estabilidad tras Reset.
+
+El lector opcional admite ahora `mapAddress` para un uint16 LE independiente,
+alternativo a `positionBlockAddress`, nunca ambos. Hace dos lecturas estables de
+dos bytes y devuelve únicamente `{ mapId }`; no inventa coordenadas. El modelo
+de transporte acepta mapa solo o las tres coordenadas completas, pero rechaza
+coordenadas parciales. Las pruebas de bridge comprueban la publicación del mapa
+aislado y la recuperación de muestras inestables sin perder el equipo.
+Validación: 196 pruebas, ESLint y build correctos. Pendiente comprobar persistencia
+de direcciones tras reiniciar.
+
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.

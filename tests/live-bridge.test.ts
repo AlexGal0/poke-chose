@@ -10,15 +10,15 @@ test('live service waits for explicit connection, emits consistent data and pres
   let unstablePosition = false
   let positionReads = 0
   const instances: { socket: { destroyed: boolean }; close: () => void }[] = []
-  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, positionBlockAddress: 0x02019500, pollMs: 20, boxesPollMs: 20 }, () => {
+  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, mapAddress: 0x02019580, pollMs: 20, boxesPollMs: 20 }, () => {
     const instance = {
       socket: { destroyed: false },
       async connect() { connections++ },
       async readMemory(address: number, length: number) {
         if (fail) { instance.socket.destroyed = true; throw new Error('Disconnected') }
-        if (address === 0x02019500 && unstablePosition) {
+        if (address === 0x02019580 && unstablePosition) {
           const bytes = Buffer.alloc(length)
-          bytes.writeUInt32LE(++positionReads, 0x80)
+          bytes.writeUInt16LE(++positionReads, 0)
           return bytes
         }
         return Buffer.from(ram.subarray(address - 0x02000000, address - 0x02000000 + length))
