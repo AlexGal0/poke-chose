@@ -110,6 +110,34 @@ copia persistida, contrastando Ruta 6 y Ciudad Fayenza en una única conexión G
 No basta encontrar el número 331 en RAM: habrá múltiples coincidencias que pueden
 ser constantes o copias; deben seguir transiciones sin guardar y sobrevivir reinicios.
 
+## Herramienta de comparación de candidatos
+
+Ejecutar desde la raíz:
+
+```sh
+node --experimental-strip-types experiments/melonds-live/track-map.mjs
+```
+
+Utiliza `live.config.local.json` y una única conexión GDB. No usar mientras el bridge
+en vivo u otro depurador estén conectados al mismo puerto. Tras entrar a Ruta 6:
+
+1. `scan 331`: busca valores uint16 LE alineados en los 4 MiB de RAM. Mantenerse
+   en la zona durante la lectura, que no es atómica y puede afectar la fluidez.
+2. `sample ruta6`: lee dos veces las páginas que contienen candidatos y marca
+   estabilidad por valor, no por toda la página.
+3. Cambiar a Ciudad Fayenza sin guardar; ejecutar `sample fayenza`.
+4. Volver a Ruta 6 sin guardar; ejecutar `sample ruta6-regreso`.
+5. `quit`: desconexión GDB ordenada.
+
+Los cambios se comparan contra la última muestra estable de cada dirección.
+Los registros JSONL quedan ignorados en `experiments/melonds-live/artifacts/`;
+no contienen un volcado RAM. Todos los resultados se marcan como candidatos,
+sin asignar automáticamente zonas ni modificar configuración.
+La búsqueda de uint16 es una hipótesis de investigación: no detectará campos
+codificados de otra forma o estructuras creadas solo después de la transición.
+Las pruebas sintéticas cubren alineación, subarrays, límites, agrupación de lecturas
+e inestabilidad independiente de candidatos. Total: 194 pruebas, lint y build correctos.
+
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
