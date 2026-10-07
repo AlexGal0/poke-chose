@@ -251,24 +251,27 @@
   border-top-color: #ffffffed;
   border-left-color: #ffffffbf;
   border-radius: 16px;
-  background: linear-gradient(125deg, #ffffffb8, #edf8ff55 45%, #ffffff70), #d9efff66;
-  backdrop-filter: blur(14px) saturate(125%);
-  -webkit-backdrop-filter: blur(14px) saturate(125%);
-  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #ffffff66, 0 12px 30px #245b7e30, 0 2px 5px #245b7e26;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  background: linear-gradient(125deg, #ffffff55, #edf8ff0a 45%, #ffffff24), #d9efff1f;
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  box-shadow: inset 0 1px 0 #ffffffed, inset 0 -1px 0 #ffffff66, 0 20px 36px #245b7e40, 0 5px 10px #245b7e26;
 }
 :root[data-theme='aqua-2000'] :where(.pokemon-card, .coverage-item, .insight, .count, .save-status, .search) {
-  background: linear-gradient(135deg, #ffffffbf, #ffffff40 45%, #ffffff88), #e2f2ff55;
+  background: linear-gradient(135deg, #ffffff66, #ffffff0d 45%, #ffffff33), #e2f2ff1a;
   border-color: #789db96b;
   border-top-color: #fff;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: inset 0 1px 0 #fff, 0 5px 12px #245b7e26;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 #ffffffed, 0 9px 18px #245b7e33;
 }
-:root[data-theme='aqua-2000'] .pokemon-card { border-radius: 12px; }
-:root[data-theme='aqua-2000'] .pokemon-card:is(.selected, .captured) { background: linear-gradient(135deg, #ffffffb3, #b0ddff55 45%, #ffffff80), #a4d5f766; border-color: #559ed0; }
-:root[data-theme='aqua-2000'] .pokemon-card.fainted { background: linear-gradient(135deg, #ffffffb3, #f4c9d766); border-color: var(--danger-border); }
+:root[data-theme='aqua-2000'] .pokemon-card { border-radius: 12px; padding-top: 19px; padding-bottom: 19px; }
+:root[data-theme='aqua-2000'] .pokemon-card:is(.selected, .captured) { background: linear-gradient(135deg, #ffffff66, #b0ddff22 45%, #ffffff33), #a4d5f733; border-color: #559ed0; }
+:root[data-theme='aqua-2000'] .pokemon-card.fainted { background: linear-gradient(135deg, #ffffff66, #f4c9d733); border-color: var(--danger-border); }
 :root[data-theme='aqua-2000'] .insight.warning { background: linear-gradient(135deg, #fff9e5bb, #ffe7b366); }
 :root[data-theme='aqua-2000'] .coverage-item.covered { border-color: #559ed0; }
+@media (max-width: 640px) { :root[data-theme='aqua-2000'] .panel { padding-top: 24px; padding-bottom: 24px; } }
 :root[data-theme='aqua-2000'] :is(button, select, .collection-box-filter summary) { border-radius: 18px; }
 :root[data-theme='aqua-2000'] button:not(.primary, .type, .remove, .empty-slot, .collection-location-button),
 :root[data-theme='aqua-2000'] :is(select, .collection-box-filter summary) { background-image: linear-gradient(#ffffffb8, #ffffff55 48%, #88b7d333 50%, #ffffff33); box-shadow: inset 0 1px 0 #ffffffed, 0 1px 2px #1b4d7026; }
