@@ -3,6 +3,7 @@ import { GdbReader } from './live/gdb.mjs'
 import { readParty } from './live/party.mjs'
 import { readBoxes, readPokedex } from './live/storage.mjs'
 import { isSaveSnapshot } from '../src/models/party.ts'
+import { readPlayerPosition } from './live/position.mjs'
 
 export function createLiveBridge(config, makeReader = options => new GdbReader(options)) {
   const clients = new Set()
@@ -67,7 +68,13 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       // Old PC locations may overlap a newly withdrawn party member. Keep the team
       // fresh without rereading PC or publishing the same individual twice.
       const visibleBoxes = boxes?.filter(member => !partyIdentities.has(identity(member))) ?? null
-      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, updatedAt: new Date().toISOString(), backup: false }
+      let position = null
+      try { position = await readPlayerPosition(current, config) }
+      catch (error) {
+        // Location is optional; an unstable/invalid sample must not discard the team.
+        if (current.socket?.destroyed) throw error
+      }
+      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, position, updatedAt: new Date().toISOString(), backup: false }
       if (!isSaveSnapshot(next)) throw new Error('La memoria no contiene una partida compatible.')
       if (token === generation) {
         if (refreshBoxes && !boxesError) cachedBoxes = boxes

@@ -74,6 +74,28 @@ No se han simulado en navegador mapas desconocidos ni desconexiones en esta entr
 Para usarlo, reiniciar el bridge si estaba ejecutándose antes de estos cambios;
 un bridge anterior no envía posición y la interfaz muestra «no disponible».
 
+## Lector opcional en vivo
+
+`positionBlockAddress` permite leer un bloque de posición en RAM durante cada
+ciclo rápido. No tiene valor predeterminado: sin configuración publica `null`.
+Dos lecturas consecutivas del bloque deben coincidir; si la muestra es inestable
+o la dirección no es válida, la ubicación queda no disponible y los demás datos
+válidos siguen publicándose. La pérdida de TCP conserva el manejo de desconexión
+del bridge. No se valida CRC de save en RAM, donde esos checksums pueden ser antiguos.
+
+Pruebas sintéticas: lectura opcional, límites de dirección, muestras incompletas,
+inestabilidad, publicación SSE de cambios exclusivos de posición y recuperación
+sin descartar equipo. Total: 192 pruebas, ESLint y build correctos.
+
+La configuración local existente identifica melonDS 1.1 y Pokémon Negro español
+IRBS revisión 0. A partir de la disposición observada de cajas/equipo/Pokédex se
+calculó el candidato `0x0223506c`. Tras Reset, dos lecturas reales estables devolvieron
+mapa 331 y coordenadas coincidentes con el guardado de Ruta 6. Eso todavía puede
+ser una copia del último guardado: falta observar movimiento sin guardar, cambio
+de mapa y estabilidad tras reiniciar. No se activa ni se añade a la plantilla como
+dirección validada. Dos reconexiones posteriores no recibieron respuesta a qSupported;
+la siguiente prueba debe mantener una sola conexión abierta después del Reset.
+
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
