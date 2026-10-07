@@ -323,7 +323,7 @@
 :root[data-theme='classic-html'] .pokeball::after { border-color: #000; background: #fff; }
 
 
-/* Neon tubing over a dark, static grid; no flashing effects. */
+/* Colored light behind translucent, layered glass surfaces. */
 :root[data-theme='neon'] {
   color-scheme: dark;
   font-family: 'Segoe UI', system-ui, sans-serif;
@@ -364,17 +364,53 @@
   --encounter-text: #becaff;
   --encounter-surface: #212b47;
   --encounter-border: #7889c6;
-  background-image: radial-gradient(ellipse at 0% 0%, #fa35d81a, transparent 55%), radial-gradient(ellipse at 100% 45%, #24eaff12, transparent 55%), linear-gradient(#56f4ff08 1px, transparent 1px), linear-gradient(90deg, #56f4ff08 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-image: radial-gradient(ellipse at 0% 15%, #ff334b38, transparent 45%), radial-gradient(ellipse at 100% 30%, #2864ff52, transparent 50%), radial-gradient(ellipse at 45% 90%, #cd35ff26, transparent 50%), linear-gradient(#56f4ff0b 1px, transparent 1px), linear-gradient(90deg, #56f4ff0b 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
 }
 :root[data-theme='neon'] .site-header { border-bottom-color: #56f4ff; box-shadow: 0 1px 12px #56f4ff26; }
 :root[data-theme='neon'] .brand { text-shadow: 0 0 12px #56f4ff66; }
 :root[data-theme='neon'] h1 span { color: #ff81e8; text-shadow: 0 0 18px #ff35d84d; }
 :root[data-theme='neon'] .eyebrow { color: #ff9aeb; }
-:root[data-theme='neon'] .panel { border-color: #3c667e; box-shadow: inset 0 1px 0 #56f4ff20, 0 0 18px #56f4ff0c; }
-:root[data-theme='neon'] .pokemon-card { border-top-color: #bc6af0; box-shadow: 0 -1px 7px #e445fa1a; }
-:root[data-theme='neon'] .pokemon-card:is(.selected, .captured) { border-color: #38bacb; box-shadow: 0 0 10px #56f4ff1f; }
-:root[data-theme='neon'] .primary { color: #baffff; box-shadow: inset 0 0 9px #56f4ff14, 0 0 10px #56f4ff20; }
+:root[data-theme='neon'] .panel {
+  background: linear-gradient(125deg, #ffffff12, #0c14254d 45%, #3156a312), #0d1427a6;
+  border-color: #a7ceff40;
+  border-top-color: #d8edff80;
+  border-left-color: #c3e5ff55;
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+  box-shadow: inset 0 1px 0 #ffffff20, inset 0 -1px 0 #84baff16, 0 16px 40px #00000055, 0 2px 5px #00000040;
+}
+:root[data-theme='neon'] .pokemon-card { --glass-tint: #5f9dff; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n + 1) { --glass-tint: #ff526c; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n + 2) { --glass-tint: #5284ff; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n + 3) { --glass-tint: #56f4ff; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n + 4) { --glass-tint: #d98aff; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n + 5) { --glass-tint: #ffd36e; }
+:root[data-theme='neon'] .pokemon-card:nth-child(6n) { --glass-tint: #74ffc0; }
+:root[data-theme='neon'] :where(.pokemon-card, .coverage-item, .insight, .search, .count, .save-status, .collection-box-filter summary) {
+  background: linear-gradient(135deg, #ffffff18, #ffffff03 40%, #ffffff0b), #17213b70;
+  border-color: #b9d6ff38;
+  border-top-color: #e1f1ff70;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 #ffffff16, 0 6px 14px #00000038;
+}
+:root[data-theme='neon'] .pokemon-card {
+  border-top-color: var(--glass-tint);
+  background: linear-gradient(135deg, #ffffff1c, #ffffff02 42%, #ffffff09), color-mix(in srgb, var(--glass-tint) 9%, #101b2b88);
+  box-shadow: inset 0 1px 0 #ffffff30, inset 0 2px 12px color-mix(in srgb, var(--glass-tint) 12%, transparent), 0 8px 18px #00000055;
+}
+:root[data-theme='neon'] .pokemon-card:is(.selected, .captured) { border-color: color-mix(in srgb, var(--glass-tint) 60%, transparent); }
+:root[data-theme='neon'] .pokemon-card.fainted { border-color: #ff526c99; }
+:root[data-theme='neon'] .card-actions button {
+  background: linear-gradient(#ffffff12, #ffffff02), #14213f70;
+  border-color: #bfdcff3b;
+  box-shadow: inset 0 1px 0 #ffffff24, 0 3px 6px #00000030;
+}
+:root[data-theme='neon'] :is(.insight.warning, .shared-weakness) { background-color: #6c233840; }
+:root[data-theme='neon'] .coverage-item.covered { border-color: #56f4ff66; }
+:root[data-theme='neon'] .primary { color: #e2f5ff; background: linear-gradient(135deg, #78bbff40, #3157b580), #152c5280; border-color: #75b5ff; box-shadow: inset 0 1px 0 #ffffff55, 0 0 12px #3975ff40; }
 :root[data-theme='neon'] .primary:hover:not(:disabled) { box-shadow: 0 0 16px #56f4ff40; }
 :root[data-theme='neon'] .tabs button[aria-selected=true] { color: #ffb5f2; background: #321c38; border-color: #f06cdb; box-shadow: 0 0 10px #ff35d826; }
 :root[data-theme='neon'] :is(button, input, select, a):focus-visible { outline-color: #ff81e8; }
