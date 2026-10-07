@@ -185,3 +185,13 @@ zona reconocida se verificó ausencia del aviso, botón sin texto visible, selec
 manual que lo libera y clic que lo reactiva. Se comprobó a 390 px y se restauró
 el viewport. Captura: `artifacts/location-follow-icon.png`. No se forzó un mapa
 desconocido en el juego para esta comprobación visual.
+
+## Cierre de validación para la PR
+
+El usuario confirmó recorrer varias zonas con cambios correctos y aceptó terminar
+la validación sin una sesión prolongada; no se mide ni se atribuye duración a ese
+recorrido. En la revisión final volvieron a pasar las 206 pruebas, ESLint y build.
+El diff completo pasó `git diff --check`. Las capturas del icono documentan el
+estado final; las capturas anteriores son evidencia histórica de los pasos.
+La sesión prolongada, otras ROM/regiones y todos los tipos de combate siguen
+fuera de lo validado. El seguimiento tras reapertura requiere reconexión manual.

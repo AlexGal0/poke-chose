@@ -69,6 +69,17 @@ The synced collection combines party and boxes, resolving metadata through the e
 
 Form types for Rotom, Wormadam, Shaymin, Castform, Darmanitan, and Meloetta are resolved through PokéAPI varieties; Arceus uses its Gen V form type. Other forms sharing the same types use the default sprite. Eggs are shown and excluded from the analysis. The analysis still does not simulate abilities/items; the moves that are read do not yet replace STAB coverage.
 
+## Optional saved position
+
+The BW position block starts at `0x19500`, with length `0x9c`, local CRC at
+`0x1959e` and mirrored CRC at `0x23f38`. The parser reads the internal map as
+uint32 LE at `+0x80`, with uint16 LE coordinates X `+0x86`, Z `+0x8a`, Y `+0x8e`.
+It uses the same primary/backup entry as the Pokémon data. Invalid position CRC
+returns `position: null` while keeping valid core data; it never substitutes
+position from another entry. A position-only change updates the watcher snapshot.
+This describes the last save, not live movement. Internal map IDs are distinct
+from PokéAPI locations. See [development and validation](es/player-location-development.md).
+
 ## Fixtures and checks
 
 `tests/helpers/save-fixture.ts` generates encrypted PK5 entries and synthetic saves in memory. Its encoder uses BigInt and an explicit permutation table, distinct from the decryption algorithm. The CRC is also cross-checked against the standard vector `123456789 → 0x29b1`. The only files written during tests are temporary fixtures created by the test itself; no user save is ever opened for writing.
