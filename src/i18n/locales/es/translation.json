@@ -107,7 +107,7 @@
       "detected": "Ubicación detectada: {{zone}} · {{source}}.",
       "save": "último guardado",
       "live": "memoria en vivo",
-      "stale": "Ubicación desactualizada. Se conserva la zona seleccionada hasta recuperar la conexión.",
+      "stale": "Ubicación desactualizada. Se conserva la zona seleccionada hasta recibir una lectura válida.",
       "unknown": "Mapa {{map}} sin correspondencia verificada. Se conserva la zona seleccionada.",
       "unavailable": "Ubicación no disponible en esta fuente.",
       "hint": "Elegir una zona manualmente pausa el seguimiento. Al desactivarlo se recupera tu última selección manual. Cobertura actual: Ruta 6, su laboratorio de estaciones y Ciudad Fayenza.",

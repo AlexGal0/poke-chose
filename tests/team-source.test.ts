@@ -116,7 +116,19 @@ test('SSE adapter updates metadata, retains last valid party on errors, ignores 
     const position = { mapId: 123, x: 17, y: 41, z: 29 }
     fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position }) })
     assert.deepEqual(states.at(-1)!.position, position)
+    assert.equal(states.at(-1)!.positionStale, false)
     assert.equal(states.at(-1)!.team, teamBeforeMove)
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position, status: 'waiting', message: 'waitingUnstable' }) })
+    assert.equal(states.at(-1)!.positionStale, true)
+    assert.deepEqual(states.at(-1)!.position, position)
+    fake!.onopen!()
+    assert.equal(states.at(-1)!.positionStale, true, 'a connection alone does not refresh the location')
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position }) })
+    assert.equal(states.at(-1)!.positionStale, false)
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position, backup: true }) })
+    assert.equal(states.at(-1)!.positionStale, true)
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position }) })
+    assert.equal(states.at(-1)!.positionStale, false)
     for (const invalid of [{ ...position, mapId: -1 }, { ...position, x: 65536 }, { ...position, y: 1.5 }, { ...position, z: '29' }, {}]) {
       assert.equal(isSaveSnapshot({ ...snapshot, position: invalid }), false)
     }
@@ -131,6 +143,7 @@ test('SSE adapter updates metadata, retains last valid party on errors, ignores 
     assert.equal(states.at(-1)!.team[0].level, 25)
     fake!.onerror!()
     assert.equal(states.at(-1)!.connected, false)
+    assert.equal(states.at(-1)!.positionStale, true)
     assert.equal(states.at(-1)!.team.length, 1)
     fake!.onmessage!({ data: 'null' })
     assert.equal(states.at(-1)!.error, true)

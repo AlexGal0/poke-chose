@@ -28,6 +28,7 @@ import './CaptureChecklist.css'
 import type { PlayerPosition } from '../models/player-position'
 import { resolveBlackMapLocation } from '../domain/player-location'
 import { loadFollowLocation, saveFollowLocation } from '../storage/follow-location'
+import { nextFollowedZone } from '../domain/followed-zone'
 
 function PokedexLookup({ pokedex }: { pokedex: PokedexState }) {
   const { t } = useTranslation()
@@ -52,7 +53,7 @@ function PokedexLookup({ pokedex }: { pokedex: PokedexState }) {
   </details>
 }
 
-export function CaptureChecklist({ pokedex, enabled, stale, collection, team, position, source }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean; collection: readonly CollectionPokemon[] | null; team: readonly PartyPokemon[]; position: PlayerPosition | null; source: 'manual' | 'save' | 'live' }) {
+export function CaptureChecklist({ pokedex, enabled, stale, collection, team, position, source, positionStale }: { pokedex: PokedexState | null; enabled: boolean; stale: boolean; collection: readonly CollectionPokemon[] | null; team: readonly PartyPokemon[]; position: PlayerPosition | null; source: 'manual' | 'save' | 'live'; positionStale: boolean }) {
   const { t } = useTranslation()
   const ownedSpeciesIds = new Set([...(collection ?? []), ...team].filter(pokemon => !pokemon.isEgg).map(pokemon => pokemon.speciesId))
   const [access, setAccess] = useState(loadEncounterAccess)
@@ -62,14 +63,16 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
   const [follow, setFollow] = useState(loadFollowLocation)
   const [followSaved, setFollowSaved] = useState(true)
   const detected = position ? resolveBlackMapLocation(position.mapId) : null
-  const freshZone = enabled && !stale && detected ? detected.id : null
+  const locationStale = stale || positionStale
+  const freshZone = enabled && !locationStale && detected ? detected.id : null
   const [followed, setFollowed] = useState<{ source: typeof source; id: number | null }>({ source, id: freshZone })
   // Remember the last recognized zone only for this source; unknown/stale samples
   // preserve it, while switching sources must not carry an unrelated location.
-  if (followed.source !== source || (follow && freshZone !== null && followed.id !== freshZone)) {
-    setFollowed({ source, id: follow ? freshZone : null })
+  const nextFollowed = nextFollowedZone(followed, source, follow, freshZone)
+  if (followed.source !== nextFollowed.source || followed.id !== nextFollowed.id) {
+    setFollowed(nextFollowed)
   }
-  const selected = follow && followed.source === source ? freshZone ?? followed.id ?? manualZone : manualZone
+  const selected = follow ? nextFollowed.id ?? manualZone : manualZone
   const [zoneSaved, setZoneSaved] = useState(true)
   const [zoneQuery, setZoneQuery] = useState('')
   const [result, setResult] = useState<{ locationId: number; rows: EncounterSpecies[] } | null>(null)
@@ -123,7 +126,7 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
           setFollowSaved(saveFollowLocation(event.target.checked))
           setError('')
         }} /> {t('captureChecklist.location.follow')}</label>
-        <p className="hint" role="status">{stale ? t('captureChecklist.location.stale') : detected ? t('captureChecklist.location.detected', { zone: zoneLabel(t, detected), source: t(`captureChecklist.location.${source}`) }) : position ? t('captureChecklist.location.unknown', { map: position.mapId }) : t('captureChecklist.location.unavailable')}</p>
+        <p className="hint" role="status">{locationStale && position ? t('captureChecklist.location.stale') : detected ? t('captureChecklist.location.detected', { zone: zoneLabel(t, detected), source: t(`captureChecklist.location.${source}`) }) : position ? t('captureChecklist.location.unknown', { map: position.mapId }) : t('captureChecklist.location.unavailable')}</p>
         <p className="hint">{t('captureChecklist.location.hint')}</p>
         {!followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
       </div>

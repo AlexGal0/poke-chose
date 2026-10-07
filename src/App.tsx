@@ -293,7 +293,7 @@ function App() {
           aria-labelledby={`${tab}-tab`}
         >
           <div hidden={tab !== "captures"}>
-            <CaptureChecklist pokedex={saveTeam.pokedex} enabled={source !== "manual"} stale={saveTeam.error || !saveTeam.connected} collection={saveTeam.collection} team={saveTeam.team} position={saveTeam.position} source={source} />
+            <CaptureChecklist pokedex={saveTeam.pokedex} enabled={source !== "manual"} stale={saveTeam.error || !saveTeam.connected} collection={saveTeam.collection} team={saveTeam.team} position={saveTeam.position} positionStale={saveTeam.positionStale} source={source} />
           </div>
           <div hidden={tab !== "catalog"}>
             <Catalog

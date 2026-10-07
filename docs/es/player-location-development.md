@@ -202,6 +202,20 @@ que, al entrar a Ciudad Fayenza sin guardar, la interfaz cambió automáticament
 La lectura posterior del SSE real devolvió `readyActive` con `{ mapId: 96 }`.
 Queda verificado el recorrido completo RAM → bridge → interfaz para esa transición.
 
-Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
-de dirección RAM se hará por separado: no se presupone que el offset del archivo
-corresponda a una dirección estable del emulador.
+### Recuperación del seguimiento
+
+Las lecturas pendientes, inestables, de respaldo o desconectadas marcan la posición
+como desactualizada. Recuperar la conexión SSE por sí solo no la valida: se espera
+una nueva lectura correcta. La checklist conserva la última zona reconocida de
+esa fuente mientras llega una lectura válida o un mapa con correspondencia.
+Pausar el seguimiento descarta esa memoria, para que reactivarlo ante un mapa
+desconocido respete la selección manual. Cambiar de fuente también la descarta.
+
+Validación de este paso: 200 pruebas sintéticas, ESLint y build correctos. En el
+navegador con el lector real activo se observó el mapa 99, sin correspondencia;
+seleccionar Ruta 6 pausó el seguimiento y reactivarlo conservó Ruta 6 y el aviso
+de mapa desconocido. No se ha asignado un nombre al mapa 99. Evidencia:
+`artifacts/location-follow-unknown.png`. No se modificaron el save ni la RAM.
+
+Pendiente: reapertura completa del emulador, combate y sesiones largas, además
+de ampliar correspondencias mediante observaciones verificadas.

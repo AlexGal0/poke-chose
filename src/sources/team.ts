@@ -12,6 +12,7 @@ import type { PlayerPosition } from '../models/player-position.ts'
 
 export interface TeamSourceState {
   position: PlayerPosition | null
+  positionStale: boolean
   team: PartyPokemon[]
   collection: CollectionPokemon[] | null
   collectionLoading: boolean
@@ -29,6 +30,7 @@ export function manualTeam(state: CollectionState): Pokemon[] {
 
 export const initialSaveTeam: TeamSourceState = {
   position: null,
+  positionStale: true,
   team: [], collection: null, collectionLoading: false, collectionError: false, pokedex: null, connected: false, message: { key: 'sources.connectingBridge' }, updatedAt: null, error: false,
 }
 
@@ -87,7 +89,7 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
     if (closed) return
     if (event.type === 'connection') {
       snapshotError = !event.connected
-      publish({ connected: event.connected, error: !event.connected, message: event.message })
+      publish({ connected: event.connected, error: !event.connected, message: event.message, ...(!event.connected ? { positionStale: true } : {}) })
       return
     }
     let next: SaveSnapshot
@@ -95,11 +97,12 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
       const data: unknown = event.snapshot
       if (!isSaveSnapshot(data)) throw new Error('Invalid snapshot')
       next = data
-    } catch { publish({ error: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
+    } catch { publish({ error: true, positionStale: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
     snapshot = next
     snapshotError = next.status === 'error' || next.status === 'missing' || next.backup || event.connected === false
     publish({ connected: event.connected ?? true, message: { key: bridgeSnapshotMessageKey(source.id, next.message) }, error: snapshotError,
       position: next.position ?? null,
+      positionStale: next.status !== 'ready' || next.backup || event.connected === false,
       ...(next.pokedex !== null ? { pokedex: deserializePokedex(next.pokedex), updatedAt: next.updatedAt } : {}) })
     if (next.party !== null && next.boxes !== null &&
       (!collectionTarget || !partiesEqual(collectionTarget.party, next.party) || !boxesEqual(collectionTarget.boxes, next.boxes))) {
