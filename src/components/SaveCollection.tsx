@@ -19,6 +19,7 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
   const [location, setLocation] = useState<CollectionLocationFilter>('all')
   const [page, setPage] = useState(0)
   const [boxColors] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 6)))
+  const [boxTextures] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 4)))
   const [refreshing, setRefreshing] = useState(false)
   const [refreshMessage, setRefreshMessage] = useState<Notice>(null)
   const [refreshError, setRefreshError] = useState(false)
@@ -58,7 +59,7 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
           <button className="collection-all-button" aria-pressed={location === 'all'} onClick={() => { setLocation('all'); setPage(0) }}>{t('saveCollection.locationAll', { count: collection.length })}</button>
         </div>
         <div className="collection-box-grid">
-          {boxCounts.map((count, box) => <button key={box} className={`collection-location-button collection-box-color-${boxColors[box]}`} aria-pressed={location === box} onClick={() => { setLocation(box); setPage(0) }}>{t('saveCollection.locationBox', { number: box + 1, count })}</button>)}
+          {boxCounts.map((count, box) => <button key={box} className={`collection-location-button collection-box-color-${boxColors[box]} collection-box-texture-${boxTextures[box]}`} aria-pressed={location === box} onClick={() => { setLocation(box); setPage(0) }}>{t('saveCollection.locationBox', { number: box + 1, count })}</button>)}
         </div>
         </div>
       </details>
