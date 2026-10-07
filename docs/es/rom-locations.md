@@ -173,3 +173,15 @@ que lo reactiva y recupera la zona detectada. En viewport de 390 px el selector,
 las flechas y el botón caben en la misma fila. Se restauró el viewport después.
 Evidencias: `artifacts/location-follow-button.png` y
 `artifacts/location-follow-button-mobile.png`. No se creó una PR.
+
+El ajuste posterior sustituye el texto del botón por un icono de localización,
+manteniendo nombre accesible, tooltip, estado pulsado y color activo. Se retiran
+el aviso habitual de ubicación detectada y el párrafo de explicación del catálogo.
+Solo se muestra el aviso de mapa sin correspondencia cuando hay una posición
+actual válida y desconocida; los errores al guardar la preferencia siguen visibles.
+
+Validación del ajuste: 206 pruebas, lint y build correctos. Con el lector real y
+zona reconocida se verificó ausencia del aviso, botón sin texto visible, selección
+manual que lo libera y clic que lo reactiva. Se comprobó a 390 px y se restauró
+el viewport. Captura: `artifacts/location-follow-icon.png`. No se forzó un mapa
+desconocido en el juego para esta comprobación visual.

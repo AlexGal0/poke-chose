@@ -120,11 +120,8 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
     <p className="hint">{t('captureChecklist.header.hint2')}</p>
     {!enabled ? <p className="empty">{t('captureChecklist.disabledNotice')}</p> : <>
       {pokedex && <PokedexLookup pokedex={pokedex} />}
-      <div className="location-follow">
-        <p className="hint" role="status">{locationStale && position ? t('captureChecklist.location.stale') : detected ? t('captureChecklist.location.detected', { zone: zoneLabel(t, detected), source: t(`captureChecklist.location.${source}`) }) : position ? t('captureChecklist.location.unknown', { map: position.mapId }) : t('captureChecklist.location.unavailable')}</p>
-        <p className="hint">{t('captureChecklist.location.hint')}</p>
-        {!followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
-      </div>
+      {position && !detected && !locationStale && <p className="hint" role="status">{t('captureChecklist.location.unknown', { map: position.mapId })}</p>}
+      {!followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
       <div className="zone-controls">
         <label className="zone-search">{t('captureChecklist.zoneSearchLabel')} <input type="search" value={zoneQuery} onChange={event => setZoneQuery(event.target.value)} placeholder={t('captureChecklist.zoneSearchPlaceholder')} /></label>
         <div className="zone-select"><label htmlFor="capture-zone">{t('captureChecklist.zoneLabel')}</label><div className="zone-navigation">
@@ -138,11 +135,11 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
           })}
         </select>
         <button type="button" className="zone-next" disabled={!nextZone} aria-label={t('captureChecklist.nextZoneAria')} title={nextZone ? t('captureChecklist.nextZoneTitle', { zone: zoneLabel(t, nextZone) }) : t('captureChecklist.lastZoneTitle')} onClick={() => { if (nextZone) selectZone(nextZone.id) }}>→</button>
-        <button type="button" className="zone-follow-toggle" aria-label={t('captureChecklist.location.follow')} aria-pressed={follow} onClick={() => {
+        <button type="button" className="zone-follow-toggle" aria-label={t('captureChecklist.location.follow')} title={t(follow ? 'captureChecklist.location.followingButton' : 'captureChecklist.location.follow')} aria-pressed={follow} onClick={() => {
           setFollow(!follow)
           setFollowSaved(saveFollowLocation(!follow))
           setError('')
-        }}><span className="zone-follow-indicator" aria-hidden="true" />{t(follow ? 'captureChecklist.location.followingButton' : 'captureChecklist.location.followButton')}</button>
+        }}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" fill={follow ? 'currentColor' : 'none'} /><path d="M12 2v4m0 12v4M2 12h4m12 0h4" /></svg></button>
         </div></div>
       </div>
       {!zoneSaved && <p className="notice" role="status">{t('captureChecklist.zoneSaveFailed')}</p>}
