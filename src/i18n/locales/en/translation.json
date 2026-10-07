@@ -110,7 +110,7 @@
       "stale": "Location is out of date. The selected zone is kept until the connection recovers.",
       "unknown": "Map {{map}} has no verified match. The selected zone is kept.",
       "unavailable": "Location is unavailable from this source.",
-      "hint": "Selecting a zone manually pauses following. Turning following off restores your last manual selection. Current coverage: Route 6 outdoors.",
+      "hint": "Selecting a zone manually pauses following. Turning following off restores your last manual selection. Current coverage: Route 6, its Season Research Lab, and Driftveil City.",
       "saveFailed": "Could not save the follow preference."
     },
     "pokedexLookup": {

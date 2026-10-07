@@ -10,9 +10,15 @@ test('verified Route 6 map resolves to the existing PokéAPI zone', () => {
 })
 
 test('unknown maps and PokéAPI IDs are not interpreted as internal maps', () => {
-  for (const id of [0, 330, 332, 361, -1, 331.5, NaN, Infinity, 0xffffffff]) {
+  for (const id of [0, 330, 333, 361, -1, 331.5, NaN, Infinity, 0xffffffff]) {
     assert.equal(resolveBlackMapLocation(id), null)
   }
+})
+
+test('observed city and lab maps resolve to zones, grouping the lab with Route 6', () => {
+  assert.deepEqual(resolveBlackMapLocation(96), { id: 352, name: 'driftveil-city' })
+  assert.deepEqual(resolveBlackMapLocation(332), resolveBlackMapLocation(331))
+  assert.equal(zoneSlug(resolveBlackMapLocation(96)!), 'driftveil-city')
 })
 
 test('consumers cannot mutate the verified correspondence table', () => {

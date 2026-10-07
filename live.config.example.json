@@ -15,5 +15,6 @@
   "enemyBattleAddresses": ["0x0226e348", "0x0226f244"],
   "boxesAddress": "0x0221bf6c",
   "boxStride": 4096,
-  "pokedexAddress": "0x0223d16c"
+  "pokedexAddress": "0x0223d16c",
+  "mapAddress": "0x0224f8cc"
 }

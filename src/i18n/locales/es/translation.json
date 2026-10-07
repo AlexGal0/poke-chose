@@ -110,7 +110,7 @@
       "stale": "Ubicación desactualizada. Se conserva la zona seleccionada hasta recuperar la conexión.",
       "unknown": "Mapa {{map}} sin correspondencia verificada. Se conserva la zona seleccionada.",
       "unavailable": "Ubicación no disponible en esta fuente.",
-      "hint": "Elegir una zona manualmente pausa el seguimiento. Al desactivarlo se recupera tu última selección manual. Cobertura actual: exterior de Ruta 6.",
+      "hint": "Elegir una zona manualmente pausa el seguimiento. Al desactivarlo se recupera tu última selección manual. Cobertura actual: Ruta 6, su laboratorio de estaciones y Ciudad Fayenza.",
       "saveFailed": "No se pudo guardar la preferencia de seguimiento."
     },
     "pokedexLookup": {

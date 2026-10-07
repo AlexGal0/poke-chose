@@ -171,6 +171,35 @@ aislado y la recuperación de muestras inestables sin perder el equipo.
 Validación: 196 pruebas, ESLint y build correctos. Pendiente comprobar persistencia
 de direcciones tras reiniciar.
 
+## Validación tras Reset y configuración inicial
+
+Al salir del laboratorio los doce candidatos volvieron a 331. El usuario guardó
+en el exterior de Ruta 6 e hizo Reset. La conexión GDB anterior se cerró durante
+el reinicio; una nueva conexión leyó 331 en las mismas doce direcciones. Tras entrar
+de nuevo al laboratorio sin guardar, todas pasaron a 332. Se observaron valores
+distintos entre candidatos durante la transición, aunque cada lectura individual
+fuera estable; no son una instantánea atómica de la transición.
+
+Se seleccionó `mapAddress: "0x0224f8cc"` para esta configuración local y la plantilla
+de Pokémon Negro español IRBS rev 0 con melonDS 1.1. Es uno de los campos que
+siguió todas las ubicaciones y conservó su dirección tras Reset; esta prueba no
+establece que sea la única fuente autoritativa. Reapertura completa del emulador,
+otras revisiones/regiones, combate, menús y sesiones largas siguen pendientes.
+
+La tabla incorpora 96 → Ciudad Fayenza (PokéAPI 352) y 332 → Ruta 6 (PokéAPI 361),
+agrupando el laboratorio con el exterior. Identificar el laboratorio no significa
+que haya encuentros salvajes dentro: la checklist continúa agrupada por zona.
+La muestra de Ruta 6 del save y las observaciones en vivo mantienen sus fuentes
+separadas. Pruebas de correspondencia actualizadas; 197 pruebas, ESLint y build correctos.
+
+Se reiniciaron los bridges con el código/configuración nuevos. Después de recuperar
+GDB mediante Reset, POST `/live-api/connect` devolvió 202 y el SSE real publicó
+`readyActive` con `{ mapId: 331 }`. En navegador, fuente «melonDS en vivo» y
+«Seguir ubicación» mostraron «Ruta 6 · memoria en vivo» y selector 361.
+Captura: `artifacts/location-follow-live.png`. El lector de aplicación permanece
+activo; el observador experimental se cerró antes de conectarlo. La prueba de cambio
+a Ciudad Fayenza sin guardar mediante el bridge real está pendiente de confirmación.
+
 Próximo paso: ampliar las correspondencias y documentar versión/región. La búsqueda
 de dirección RAM se hará por separado: no se presupone que el offset del archivo
 corresponda a una dirección estable del emulador.
