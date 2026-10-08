@@ -61,3 +61,32 @@ to subsequent stages of issue #9.
   The restricted sandbox cannot run the existing bridge network tests.
 - `npm run lint` and `npm run build` pass. Vite emits its bundle-size warning
   for the main chunk exceeding 500 kB.
+
+## Nature presentation (stage 3)
+
+Saved specimens in team and collection cards show their nature name and the
+affected stat names with ↑ / ↓. Neutral natures are explicitly described.
+Missing or invalid IDs display Unavailable rather than a neutral default.
+Catalog/manual species and eggs do not show an individual nature. The reusable
+`NatureInfo` component will also serve the individual dialog in stage 4.
+
+Domain IDs and qualitative effects are locale-free. Presentation helpers resolve
+all 25 names in Spanish and English. Descriptive text for assistive technology
+and native titles accompany the arrows; color is an additional cue. This map
+does not apply multipliers or alter any stored/base stats.
+
+References: [stored nature ID ordering](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Game/Enums/Nature.cs),
+[Spanish names](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/Resources/text/other/es/text_Natures_es.txt),
+and [qualitative effects](https://github.com/smogon/pokemon-showdown/blob/master/data/natures.ts).
+
+Verified with a temporary Vite browser harness using synthetic cards: Jolly →
+Modest updates, missing legacy data removes the old indicators, neutral Hardy,
+no nature on catalog species/eggs, Spanish → English without reload, keyboard
+activation, and 320 × 740 card text wrapping. This checks presentation, not real
+save/emulator correspondence. Harness removed after checks. Captures:
+`artifacts/nature-desktop.jpg` and `artifacts/nature-mobile.jpg`.
+
+Stage-3 validation: `npm test` (224 pass), `npm run lint` and `npm run build`.
+Vite continues to report the main bundle-size warning. Existing services need
+the stage-2 bridge restart to send nature IDs; legacy services remain supported
+and their cards show Unavailable.

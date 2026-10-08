@@ -8,6 +8,7 @@ import { EvolutionButton } from './EvolutionButton'
 import { GenderIcon } from './GenderIcon'
 import { MovesContext } from './moves-context'
 import { StatsContext } from './stats-context'
+import { NatureInfo } from './NatureInfo'
 import './PokemonCard.css'
 
 export function PokemonCard({ pokemon, children, footer, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false }: {
@@ -35,6 +36,7 @@ export function PokemonCard({ pokemon, children, footer, selected = false, captu
       {pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}
     </div>
     <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
+    {!pokemon.isEgg && (pokemon.speciesId !== undefined || pokemon.natureId !== undefined) && <NatureInfo natureId={pokemon.natureId} />}
     {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}
     <div className="card-actions">{children}{showMoves && <button type="button" className="moves-button" onClick={() => openMoves(pokemon)} aria-label={t('pokemonCard.movesAria', { name: pokemon.nickname || pokemonDisplayName(pokemon.name) })}>{t('pokemonCard.movesButton')}</button>}{showEvolution && <EvolutionButton speciesId={pokemon.id} name={pokemonDisplayName(pokemon.name)} />}</div>
     {openStats && !pokemon.isEgg && <button type="button" className="stats-button" onClick={() => openStats(pokemon)} aria-label={t('statistics.buttonAria', { name: pokemonDisplayName(pokemon.name) })}>{t('statistics.button')}</button>}

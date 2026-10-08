@@ -1,0 +1,8 @@
+.nature-info { margin-top: 12px; padding: 9px 8px; border: 1px solid var(--border, #35404e); border-radius: 7px; font-size: 11px; line-height: 1.5; text-align: left; }
+.nature-name { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; }
+.nature-name > span, .nature-note { color: var(--text-muted, #a5b5c7); }
+.nature-note { margin-top: 4px; }
+.nature-effects { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 6px; }
+.nature-effect { overflow-wrap: anywhere; }
+.nature-increased { color: var(--accent, #85d9ba); }
+.nature-decreased { color: var(--danger-text, #ffc1c7); }
