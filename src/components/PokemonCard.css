@@ -6,3 +6,4 @@
 .collection-panel .fainted-status { top: 28px; }
 .collection-panel .card-actions .moves-button { margin-top: auto; }
 .collection-panel .card-actions .evolution-button { margin-top: 0; }
+.pokemon-card .stats-button { width: 100%; margin-top: 6px; padding: 8px 5px; font-size: 11px; }

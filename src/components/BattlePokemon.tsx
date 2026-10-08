@@ -40,7 +40,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>
       {pokemon ? <DiscoveryContext.Provider value={new Set([pokemon.id])}>
-        <PokemonCard pokemon={{ ...pokemon, nickname: own ? candidate.nickname : undefined }} showEvolution={false} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
+        <PokemonCard pokemon={{ ...pokemon, form: candidate.form, nickname: own ? candidate.nickname : undefined }} showEvolution={false} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
           <p className="hint">{t('app.team.level', { level: candidate.level })}</p>
           <BattleHealthBar health={shownHealth} />
         </PokemonCard>

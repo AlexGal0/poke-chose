@@ -1,4 +1,53 @@
 {
+  "statistics": {
+    "button": "Estadísticas",
+    "buttonAria": "Ver estadísticas de {{name}}",
+    "eyebrow": "Especie · Black/White",
+    "heading": "Estadísticas de {{name}}",
+    "form": "Forma: {{name}}",
+    "closeAria": "Cerrar estadísticas",
+    "hint": "Valores base de la especie en Generación V. El nivel, la naturaleza, los IV y los EV determinan las estadísticas de cada ejemplar.",
+    "loading": "Cargando estadísticas…",
+    "loadError": "No se pudieron cargar las estadísticas.",
+    "listAria": "Estadísticas base",
+    "total": "Total base",
+    "scale": "Todas las barras usan la misma escala: de 0 a {{max}}.",
+    "stats": {
+      "hp": "PS",
+      "attack": "Ataque",
+      "defense": "Defensa",
+      "special-attack": "Ataque Especial",
+      "special-defense": "Defensa Especial",
+      "speed": "Velocidad"
+    },
+    "forms": {
+      "castform": "Normal",
+      "castform-sunny": "Sol",
+      "castform-rainy": "Lluvia",
+      "castform-snowy": "Nieve",
+      "deoxys-normal": "Normal",
+      "deoxys-attack": "Ataque",
+      "deoxys-defense": "Defensa",
+      "deoxys-speed": "Velocidad",
+      "wormadam-plant": "Tronco Planta",
+      "wormadam-sandy": "Tronco Arena",
+      "wormadam-trash": "Tronco Basura",
+      "rotom": "Normal",
+      "rotom-heat": "Calor",
+      "rotom-wash": "Lavado",
+      "rotom-frost": "Frío",
+      "rotom-fan": "Ventilador",
+      "rotom-mow": "Corte",
+      "giratina-altered": "Modificada",
+      "giratina-origin": "Origen",
+      "shaymin-land": "Tierra",
+      "shaymin-sky": "Cielo",
+      "darmanitan-standard": "Normal",
+      "darmanitan-zen": "Daruma",
+      "meloetta-aria": "Lírica",
+      "meloetta-pirouette": "Danza"
+    }
+  },
   "theme": {
     "label": "Tema",
     "options": {

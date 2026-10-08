@@ -1,4 +1,53 @@
 {
+  "statistics": {
+    "button": "Stats",
+    "buttonAria": "View stats for {{name}}",
+    "eyebrow": "Species · Black/White",
+    "heading": "{{name}} stats",
+    "form": "Form: {{name}}",
+    "closeAria": "Close stats",
+    "hint": "Species base stats in Generation V. Level, nature, IVs and EVs determine each individual Pokémon’s stats.",
+    "loading": "Loading stats…",
+    "loadError": "Stats could not be loaded.",
+    "listAria": "Base stats",
+    "total": "Base stat total",
+    "scale": "All bars use the same scale: 0 to {{max}}.",
+    "stats": {
+      "hp": "HP",
+      "attack": "Attack",
+      "defense": "Defense",
+      "special-attack": "Special Attack",
+      "special-defense": "Special Defense",
+      "speed": "Speed"
+    },
+    "forms": {
+      "castform": "Normal",
+      "castform-sunny": "Sunny",
+      "castform-rainy": "Rainy",
+      "castform-snowy": "Snowy",
+      "deoxys-normal": "Normal",
+      "deoxys-attack": "Attack",
+      "deoxys-defense": "Defense",
+      "deoxys-speed": "Speed",
+      "wormadam-plant": "Plant Cloak",
+      "wormadam-sandy": "Sandy Cloak",
+      "wormadam-trash": "Trash Cloak",
+      "rotom": "Normal",
+      "rotom-heat": "Heat",
+      "rotom-wash": "Wash",
+      "rotom-frost": "Frost",
+      "rotom-fan": "Fan",
+      "rotom-mow": "Mow",
+      "giratina-altered": "Altered",
+      "giratina-origin": "Origin",
+      "shaymin-land": "Land",
+      "shaymin-sky": "Sky",
+      "darmanitan-standard": "Standard",
+      "darmanitan-zen": "Zen",
+      "meloetta-aria": "Aria",
+      "meloetta-pirouette": "Pirouette"
+    }
+  },
   "theme": {
     "label": "Theme",
     "options": {
