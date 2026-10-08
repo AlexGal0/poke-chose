@@ -381,10 +381,10 @@
       "readFailed": "No se pudo leer el prototipo."
     },
     "messages": {
-      "waitingConnect": "Conecta el lector de combate.",
+      "waitingConnect": "Pulsa Conectar lectores en los controles de conexión.",
       "connecting": "Conectando con melonDS…",
       "active": "Lectura experimental del combate activa.",
-      "disconnected": "Lectura de combate desconectada. Pulsa Reconectar combate."
+      "disconnected": "Lectura de combate desconectada. Pulsa Reconectar lectores."
     },
     "status": {
       "disconnected": "Lector de combate desconectado",
@@ -539,7 +539,7 @@
       "pause": "Pausar lectura"
     },
     "connectError": "No se pudo conectar.",
-    "liveHint": "Lee el equipo, cajas y Pokédex sin guardar. Tras Reset o reabrir melonDS, pulsa Reconectar lector. La sincronización puede tardar varios segundos.",
+    "liveHint": "Conecta el lector general y el de combate con un solo botón. Tras Reset o reabrir melonDS, pulsa Reconectar lectores. Cada lector muestra su propio estado.",
     "saveHint": "Configura <configFile>save.config.local.json</configFile> y ejecuta <bridgeCommand>npm run bridge</bridgeCommand>. Se sincroniza cuando el juego guarda en el .sav. El equipo manual se conserva."
   },
   "sources": {
@@ -937,5 +937,41 @@
     "fainted": "Debilitado",
     "movesAria": "Ver movimientos por nivel de {{name}}",
     "movesButton": "☷ Movimientos"
+  },
+  "fieldMoves": {
+    "label": "Movimientos de campo (MT/MO)",
+    "all": "Sin filtro",
+    "hint": "Selecciona uno o varios: debe poder aprender todos mediante MT/MO en Black/White, aunque no los tenga equipados. Se excluyen los huevos.",
+    "loading": "Consultando compatibilidad…",
+    "error": "No se pudo comprobar toda la colección. Los resultados pueden estar incompletos.",
+    "retry": "Reintentar",
+    "moves": {
+      "cut": "Corte · MO01",
+      "fly": "Vuelo · MO02",
+      "surf": "Surf · MO03",
+      "strength": "Fuerza · MO04",
+      "waterfall": "Cascada · MO05",
+      "dive": "Buceo · MO06",
+      "flash": "Destello · MT70",
+      "dig": "Excavar · MT28"
+    }
+  },
+  "readerConnections": {
+    "short": { "general": "General", "battle": "Combate" },
+    "generalDisconnectedDetail": "No hay una lectura en vivo activa. Reconecta los lectores.",
+    "general": "Lector general",
+    "battle": "Lector de combate",
+    "connect": "Conectar lectores",
+    "reconnect": "Reconectar lectores",
+    "connecting": "Conectando lectores…",
+    "connectingDetail": "Estableciendo conexión con melonDS…",
+    "pauseGeneral": "Pausar lector general",
+    "status": {
+      "connected": "Conectado",
+      "connecting": "Conectando…",
+      "waiting": "Esperando lectura",
+      "disconnected": "Sin conexión",
+      "paused": "Pausado"
+    }
   }
 }

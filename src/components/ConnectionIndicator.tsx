@@ -1,15 +1,19 @@
 import { useTranslation } from 'react-i18next'
 import type { TeamSourceState } from '../sources/team'
-import type { BattleConnection } from './EnemyPrototype'
+import type { ReaderStatus as Status } from '../domain/reader-status'
+import { ReaderStatus } from './ReaderStatus'
+import { showConnectionControls } from './connection-controls'
 import { noticeText } from '../i18n/notice.ts'
 import './ConnectionIndicator.css'
 
-export function ConnectionIndicator({ source, state, battle }: { source: 'manual' | 'save' | 'live'; state: TeamSourceState; battle: BattleConnection }) {
+export function ConnectionIndicator({ source, state, generalStatus, battleStatus, generalMessage, battleMessage }: {
+  source: 'manual' | 'save' | 'live'; state: TeamSourceState; generalStatus: Status; battleStatus: Status; generalMessage: string; battleMessage: string
+}) {
   const { t, i18n } = useTranslation()
   const manual = source === 'manual'
-  const connected = state.connected && !state.error
-  const battleConnected = battle.status === 'ready'
-  const color = manual ? 'manual' : connected && (source !== 'live' || battleConnected) ? 'connected' : connected ? 'partial' : state.updatedAt || state.error ? 'disconnected' : 'waiting'
+  const connected = source === 'live' ? generalStatus === 'connected' : state.connected && !state.error
+  const battleConnected = battleStatus === 'connected'
+  const color = manual ? 'manual' : connected && (source !== 'live' || battleConnected) ? 'connected' : connected || (source === 'live' && battleConnected) ? 'partial' : source === 'live' && (generalStatus === 'connecting' || battleStatus === 'connecting') ? 'waiting' : state.updatedAt || state.error ? 'disconnected' : 'waiting'
   const label = manual ? t('connectionIndicator.label.manual') : color === 'connected' ? t('connectionIndicator.label.connected') : color === 'partial' ? t('connectionIndicator.label.partial') : color === 'disconnected' ? t('connectionIndicator.label.disconnected') : t('connectionIndicator.label.waiting')
   return <>
     <button type="button" className={`connection-floating-button ${color}`} popoverTarget="connection-floating-panel" aria-label={t('connectionIndicator.statusAria', { label })} title={label}>
@@ -21,17 +25,10 @@ export function ConnectionIndicator({ source, state, battle }: { source: 'manual
     <div popover="auto" id="connection-floating-panel" className="connection-floating-panel" aria-labelledby="connection-floating-title">
       <strong id="connection-floating-title">{label}</strong>
       {manual ? <p>{t('connectionIndicator.manualHint')}</p> : <>
-        <p><b>{t('connectionIndicator.sourceStatus', { source: source === 'live' ? t('connectionIndicator.sourceLive') : t('connectionIndicator.sourceSave'), status: connected ? t('connectionIndicator.connected') : t('connectionIndicator.noActiveReading') })}</b></p>
-        <p>{noticeText(t, state.message)}</p>
-        {source === 'live' && <><p><b>{t('connectionIndicator.sourceStatus', { source: t('connectionIndicator.battleLabel'), status: battleConnected ? t('connectionIndicator.connected') : battle.status === 'error' ? t('connectionIndicator.battleDisconnected') : t('connectionIndicator.battleWaiting') })}</b></p><p>{battle.message}</p></>}
+        {source === 'live' ? <div className="connection-reader-statuses"><ReaderStatus reader="general" status={generalStatus} message={generalMessage} /><ReaderStatus reader="battle" status={battleStatus} message={battleMessage} /></div> : <><p><b>{t('connectionIndicator.sourceStatus', { source: t('connectionIndicator.sourceSave'), status: connected ? t('connectionIndicator.connected') : t('connectionIndicator.noActiveReading') })}</b></p><p>{noticeText(t, state.message)}</p></>}
         {state.updatedAt && <small>{t('connectionIndicator.lastReading', { time: new Date(state.updatedAt).toLocaleTimeString(i18n.language) })}</small>}
       </>}
-      <button type="button" popoverTarget="connection-floating-panel" popoverTargetAction="hide" onClick={() => {
-        const controls = document.getElementById('connection-settings')
-        const details = controls?.closest('details')
-        if (details) details.open = true
-        controls?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' })
-      }}>{t('connectionIndicator.goToControlsButton')}</button>
+      <button type="button" popoverTarget="connection-floating-panel" popoverTargetAction="hide" onClick={showConnectionControls}>{t('connectionIndicator.goToControlsButton')}</button>
     </div>
   </>
 }

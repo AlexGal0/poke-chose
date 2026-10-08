@@ -6,6 +6,7 @@
 .connection-floating-button.manual { background: var(--surface-hover, #384657); border-color: var(--border-strong, #9aabba); }
 .connection-floating-panel { position: fixed; inset: auto max(20px, env(safe-area-inset-right)) max(86px, calc(env(safe-area-inset-bottom) + 66px)) auto; margin: 0; width: min(340px, calc(100vw - 40px)); max-height: calc(100dvh - 120px); overflow: auto; padding: 20px; border: 1px solid var(--border-strong, #526174); border-radius: 12px; background: var(--surface-raised, #1d2631); color: var(--text, #edf4f8); box-shadow: 0 8px 32px rgb(0 0 0 / 45%); }
 .connection-floating-panel > strong { font-size: 17px; }
+.connection-reader-statuses { display: grid; gap: 10px; margin-top: 12px; }
 .connection-floating-panel p { margin-top: 12px; color: var(--text-muted, #b5c2d0); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 .connection-floating-panel small { display: block; margin-top: 12px; color: var(--text-muted, #a5b5c7); }
 .connection-floating-panel button { width: 100%; margin-top: 16px; font-size: 12px; }
