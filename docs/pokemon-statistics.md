@@ -64,8 +64,9 @@ below; calculations remain an optional future extension of issue #9.
 
 ## Nature presentation (stage 3)
 
-Saved specimens in team and collection cards show their nature name and the
-affected stat names with ↑ / ↓. Neutral natures are explicitly described.
+Saved specimens in team and collection cards offer a corner Nature icon.
+Its non-modal tooltip shows the nature name and affected stat names with ↑ / ↓.
+Neutral natures are explicitly described.
 Missing or invalid IDs display Unavailable rather than a neutral default.
 Catalog/manual species and eggs do not show an individual nature. The reusable
 `NatureInfo` component also serves the individual dialog in stage 4.
@@ -123,3 +124,23 @@ No game files were modified. The temporary harness was removed after verificatio
 Identity tests cover slot/box changes, namesakes, trainer/species mismatches,
 and ambiguous clones. Validation: `npm test` (226 pass), `npm run lint`, and
 `npm run build`; the existing main-bundle size warning remains.
+
+## Compact nature tooltip
+
+Main cards keep nature details behind a leaf icon in the upper-right corner.
+Hover or keyboard focus opens the tooltip below the icon without dimming or
+blocking the page. Moving into the tooltip keeps it visible for reading; leaving
+closes it after a short delay. Escape, blur, scrolling and resizing also close it.
+There is no click-toggle action. Status badges leave space for the corner icon.
+Existing translated nature content
+is reused, including neutral and unavailable states; the individual statistics
+dialog continues to show its nature details inline.
+
+Verified with temporary synthetic cards in Vite: simulated pointer entry/exit,
+movement into the tooltip, Tab focus, Escape, and desktop/320 × 740 positioning.
+Pointer events were dispatched by temporary harness controls because the browser
+automation API has no hover action; keyboard checks used real Tab/Escape input.
+Captures: `artifacts/nature-hover-desktop.jpg` and `artifacts/nature-hover-mobile.jpg`.
+Earlier click-popover captures are retained as historical artifacts. The harness
+was removed. Validation: 226 tests pass, lint and build pass, with the existing
+bundle-size warning.
