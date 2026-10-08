@@ -367,6 +367,7 @@
     "memberPartySlot": "Equipo · Espacio {{slot}}",
     "memberBoxSlot": "Caja {{box}} · Posición {{slot}}",
     "memberLevel": "Nv. {{level}}",
+    "levelUnavailable": "Nivel no disponible",
     "paginationAriaLabel": "Páginas de colección sincronizada"
   },
   "enemyPrototype": {
@@ -635,6 +636,12 @@
       "season-autumn": "Otoño",
       "season-winter": "Invierno"
     }
+  },
+  "individualGender": {
+    "male": "Macho",
+    "female": "Hembra",
+    "genderless": "Sin género",
+    "unknown": "Género no disponible"
   },
   "gender": {
     "genderless": "Especie sin sexo",

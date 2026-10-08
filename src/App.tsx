@@ -11,6 +11,8 @@ import { loadActiveTab, saveActiveTab } from './storage/active-tab'
 import type { ActiveTab } from './storage/active-tab'
 import { Catalog } from "./components/Catalog";
 import { PokemonCard } from "./components/PokemonCard";
+import { CollectionDetails } from './components/CollectionDetails'
+import { IndividualGenderIcon } from './components/IndividualGenderIcon'
 import { TeamVitals } from './components/TeamVitals'
 import { HeldItem } from './components/HeldItem'
 import { Analysis } from "./components/Analysis";
@@ -350,8 +352,10 @@ function App() {
                       key={pokemon.id}
                       pokemon={pokemon}
                       selected={state.teamIds.includes(pokemon.id)}
+                      tools={<IndividualGenderIcon pokemon={pokemon} />}
                       showMoves
                     >
+                      <CollectionDetails pokemon={pokemon} />
                       <button
                         className="primary"
                         disabled={

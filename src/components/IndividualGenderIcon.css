@@ -1,0 +1,4 @@
+.individual-gender-icon { display: inline-grid; place-items: center; width: 24px; height: 28px; flex-shrink: 0; border: 1px solid var(--border, #35404e); border-radius: 6px; background: var(--surface, #171e27); color: var(--text-muted, #a5b5c7); font-size: 17px; line-height: 1; cursor: help; }
+.individual-gender-icon.gender-male { color: var(--gender-male, #a5c9ff); }
+.individual-gender-icon.gender-female { color: var(--gender-female, #f5b5d5); }
+.individual-gender-icon:focus-visible { outline: 2px solid var(--accent, #85d9ba); outline-offset: 2px; }
