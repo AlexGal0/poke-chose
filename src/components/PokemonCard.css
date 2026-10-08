@@ -6,4 +6,10 @@
 .collection-panel .fainted-status { top: 28px; }
 .collection-panel .card-actions .moves-button { margin-top: auto; }
 .collection-panel .card-actions .evolution-button { margin-top: 0; }
-.pokemon-card .stats-button { width: 100%; margin-top: 6px; padding: 8px 5px; font-size: 11px; }
+.card-tools { position: absolute; top: 8px; right: 8px; display: flex; align-items: center; gap: 4px; }
+.card-tools > .gender-icon { position: static; margin: 0; }
+.pokemon-card .stats-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid var(--border, #35404e); border-radius: 6px; background: var(--surface, #171e27); color: var(--text-muted, #a5b5c7); }
+.pokemon-card .stats-icon:hover, .pokemon-card .stats-icon:focus-visible { color: var(--accent, #85d9ba); border-color: var(--accent-border, #559c81); }
+.pokemon-card .stats-icon:focus-visible { outline: 2px solid var(--accent, #85d9ba); outline-offset: 2px; }
+.pokemon-card:has(.card-tools > :first-child) > .in-team, .team-grid .pokemon-card:has(.card-tools > :first-child) > .fainted-status, .collection-panel .pokemon-card:has(.card-tools > :first-child) > .fainted-status { top: 42px; right: 8px; }
+.team-grid .pokemon-card.selected:has(.card-tools > :first-child) > .fainted-status, .collection-panel .pokemon-card.selected:has(.card-tools > :first-child) > .fainted-status { top: 62px; }

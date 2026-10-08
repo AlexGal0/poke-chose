@@ -144,3 +144,17 @@ Captures: `artifacts/nature-hover-desktop.jpg` and `artifacts/nature-hover-mobil
 Earlier click-popover captures are retained as historical artifacts. The harness
 was removed. Validation: 226 tests pass, lint and build pass, with the existing
 bundle-size warning.
+
+## Card statistics icon
+
+The Statistics action is a compact bar-chart icon immediately left of the
+Nature leaf in the upper-right card tools. It opens the existing modal on click
+or keyboard activation, with a translated accessible name and title. Species-only
+cards keep the statistics icon even when no individual nature is available.
+
+Verified with synthetic specimens/base stats in a temporary Vite harness: click
+opens My Pokémon, Enter opens Species for a catalog card, Escape closes and
+returns focus to the statistics icon, and Tab still opens the adjacent nature
+tooltip. Desktop and 320 × 740 layouts checked; captures:
+`artifacts/card-tools-desktop.jpg` and `artifacts/card-tools-mobile.jpg`.
+Harness removed; 226 tests, lint and build pass (existing bundle-size warning).
