@@ -17,8 +17,9 @@ test('party reads HP and experience across block shuffles, including fainted Pok
     assert.equal(isSaveSnapshot(snapshot), true)
     assert.equal(isSaveSnapshot({ ...snapshot, party: [{ ...member, currentHp: 84 }] }), false)
     assert.equal(isSaveSnapshot({ ...snapshot, party: [{ ...member, experience: -1 }] }), false)
-    const { currentHp, maxHp, experience, ...legacy } = member
+    const { currentHp, maxHp, experience, currentStats, natureId, ...legacy } = member
     assert.ok(currentHp === 0 && maxHp === 83 && experience === 16001)
+    assert.ok(currentStats && natureId === 0)
     assert.equal(isSaveSnapshot({ ...snapshot, party: [legacy] }), true)
   }
 })

@@ -1,7 +1,20 @@
 export const STATS = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'] as const
 export type Stat = typeof STATS[number]
 export type BaseStats = Record<Stat, number>
+// Directly stored party values. hp is maximum HP, not remaining HP.
+export type CurrentStats = Record<Stat, number>
 export const BASE_STAT_MAX = 255
+
+export function isCurrentStats(value: unknown): value is CurrentStats {
+  if (!value || typeof value !== 'object') return false
+  const stats = value as CurrentStats
+  return STATS.every(stat => Number.isInteger(stats[stat]) && stats[stat] >= 0 && stats[stat] <= 65535)
+}
+
+export function currentStatsEqual(a: CurrentStats | undefined, b: CurrentStats | undefined): boolean {
+  if (a === undefined || b === undefined) return a === b
+  return STATS.every(stat => a[stat] === b[stat])
+}
 
 export function isBaseStats(value: unknown): value is BaseStats {
   if (!value || typeof value !== 'object') return false
