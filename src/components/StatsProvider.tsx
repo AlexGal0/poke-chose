@@ -2,28 +2,37 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getBaseStats } from '../api/stats'
-import { BASE_STAT_MAX, STATS, statsForm, totalBaseStats } from '../domain/stats'
-import type { BaseStats } from '../domain/stats'
+import { BASE_STAT_MAX, STATS, highestBaseStats, statsForm, totalBaseStats } from '../domain/stats'
+import type { BaseStats, Stat } from '../domain/stats'
 import { pokemonDisplayName } from '../domain/pokemon-names'
 import { statLabel, statsFormLabel } from '../i18n/stats'
+import { natureDetails } from '../domain/nature'
+import { natureEffectLabel } from '../i18n/nature'
 import { findIndividual } from '../domain/individual-pokemon'
 import type { TeamSourceState } from '../sources/team'
 import { NatureInfo } from './NatureInfo'
+import { StatsRadar } from './StatsRadar'
 import { StatsContext } from './stats-context'
 import type { StatsPokemon } from './stats-context'
 import './Stats.css'
 
 type Source = 'manual' | 'save' | 'live'
 
-function StatsDialog({ pokemon, source, stale, missing, updatedAt, individual, onClose }: { pokemon: StatsPokemon; source: Source; stale: boolean; missing: boolean; updatedAt: string | null; individual: boolean; onClose: () => void }) {
-  const { t, i18n } = useTranslation()
+function StatsDialog({ pokemon, stale, missing, individual, onClose }: { pokemon: StatsPokemon; stale: boolean; missing: boolean; individual: boolean; onClose: () => void }) {
+  const { t } = useTranslation()
   const dialog = useRef<HTMLDialogElement>(null)
   const outsideStart = useRef(false)
   const [stats, setStats] = useState<BaseStats | null>(null)
   const [error, setError] = useState(false)
   const [attempt, setAttempt] = useState(0)
-  const [tab, setTab] = useState<'species' | 'individual'>(individual ? 'individual' : 'species')
+  const [hoveredStat, setHoveredStat] = useState<Stat | null>(null)
+  const [focusedStat, setFocusedStat] = useState<Stat | null>(null)
+  const activeStat = hoveredStat ?? focusedStat
   const form = statsForm(pokemon.id, pokemon.form)
+  const strengths = stats ? highestBaseStats(stats) : []
+  const nature = individual ? natureDetails(pokemon.natureId) : null
+  // Only the drawing scale adapts; stored statistics are never recalculated.
+  const scaleMax = Math.max(BASE_STAT_MAX, ...(individual ? STATS.map(stat => pokemon.currentStats?.[stat] ?? (stat === 'hp' ? pokemon.maxHp : undefined) ?? 0) : []))
   useEffect(() => {
     const element = dialog.current!
     const previous = document.activeElement as HTMLElement | null
@@ -43,51 +52,49 @@ function StatsDialog({ pokemon, source, stale, missing, updatedAt, individual, o
   }
   return <dialog ref={dialog} className="stats-dialog" aria-labelledby="stats-title" aria-describedby="stats-hint" onCancel={onClose} onPointerDown={event => { outsideStart.current = outside(event) }} onClick={event => { if (outsideStart.current && outside(event)) onClose(); outsideStart.current = false }}>
     <div className="stats-heading">
-      <div><span className="eyebrow">{t(tab === 'individual' ? 'statistics.individualEyebrow' : 'statistics.eyebrow')}</span><h2 id="stats-title">{t('statistics.heading', { name: pokemonDisplayName(pokemon.name) })}</h2>{form && <p className="hint stats-form">{t('statistics.form', { name: statsFormLabel(t, form) })}</p>}</div>
+      <div><span className="eyebrow">{t(individual ? 'statistics.individualEyebrow' : 'statistics.eyebrow')}</span><h2 id="stats-title">{t('statistics.heading', { name: pokemonDisplayName(pokemon.name) })}</h2>{form && <p className="hint stats-form">{t('statistics.form', { name: statsFormLabel(t, form) })}</p>}</div>
       <button type="button" onClick={onClose} autoFocus aria-label={t('statistics.closeAria')}>✕</button>
     </div>
-    {individual && <div className="stats-tabs" role="tablist" aria-label={t('statistics.tabsAria')}>
-      {(['species', 'individual'] as const).map((item, index) => <button key={item} id={`stats-tab-${item}`} type="button" role="tab" aria-selected={tab === item} aria-controls={`stats-panel-${item}`} tabIndex={tab === item ? 0 : -1} onClick={() => setTab(item)} onKeyDown={event => {
-        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
-        event.preventDefault()
-        const next = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : 1 - index
-        setTab(next === 0 ? 'species' : 'individual')
-        const buttons = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')
-        buttons?.[next].focus()
-      }}>{t(`statistics.tabs.${item}`)}</button>)}
-    </div>}
-    <p id="stats-hint" className="hint">{t(tab === 'individual' ? 'statistics.individualHint' : 'statistics.hint')}</p>
-    {individual && <section id="stats-panel-individual" role="tabpanel" aria-labelledby="stats-tab-individual" hidden={tab !== 'individual'} tabIndex={0}>
-      <dl className="stats-details">
-        <div><dt>{t('statistics.nickname')}</dt><dd>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</dd></div>
-        <div><dt>{t('statistics.level')}</dt><dd>{pokemon.level ?? t('statistics.unavailable')}</dd></div>
-        <div><dt>{t('statistics.location')}</dt><dd>{pokemon.location === 'box' ? t('statistics.box', { box: (pokemon.box ?? 0) + 1, slot: (pokemon.slot ?? 0) + 1 }) : t('statistics.party', { slot: (pokemon.slot ?? 0) + 1 })}</dd></div>
-        <div><dt>{t('statistics.source')}</dt><dd>{t(`statistics.sources.${source}`)}</dd></div>
-        <div><dt>{t('statistics.lastRead')}</dt><dd>{updatedAt && Number.isFinite(Date.parse(updatedAt)) ? new Intl.DateTimeFormat(i18n.resolvedLanguage, { dateStyle: 'short', timeStyle: 'medium' }).format(new Date(updatedAt)) : t('statistics.unavailable')}</dd></div>
-      </dl>
-      {stale && <p role="status" className="notice">{t(missing ? 'statistics.missing' : 'statistics.stale')}</p>}
+    <p id="stats-hint" className="hint">{t(individual ? 'statistics.comparisonHint' : 'statistics.hint')}</p>
+    {individual && stale && <p role="status" className="notice">{t(missing ? 'statistics.missing' : 'statistics.stale')}</p>}
+    <div className="stats-overview">
+    {individual && <div>
       <NatureInfo natureId={pokemon.natureId} />
-      <h3>{t('statistics.currentHeading')}</h3>
-      <p className="hint">{t('statistics.hpReading', { current: pokemon.currentHp ?? t('statistics.unavailable'), max: pokemon.maxHp ?? pokemon.currentStats?.hp ?? t('statistics.unavailable') })}</p>
-      <dl className="stats-current" aria-label={t('statistics.currentHeading')}>
-        {STATS.map(stat => <div key={stat}><dt>{statLabel(t, stat)}</dt><dd>{pokemon.currentStats?.[stat] ?? (stat === 'hp' ? pokemon.maxHp : undefined) ?? t('statistics.unavailable')}</dd></div>)}
-      </dl>
-      {!pokemon.currentStats && <p className="notice">{t(pokemon.location === 'box' ? 'statistics.boxHint' : 'statistics.incompleteHint')}</p>}
-      <p className="hint">{t('statistics.battleHint')}</p>
+      <p className="stats-hp">{t('statistics.hpReading', { current: pokemon.currentHp ?? t('statistics.unavailable'), max: pokemon.maxHp ?? pokemon.currentStats?.hp ?? t('statistics.unavailable') })}</p>
+    </div>}
+    {stats && <section className="stats-strengths" aria-label={t('statistics.strengthsHeading')}>
+      <p>{t('statistics.strengthsHeading')}</p>
+      <ul>{strengths.map(stat => <li key={stat}><span aria-hidden="true">★</span> {statLabel(t, stat)} <strong>{stats[stat]}</strong></li>)}</ul>
+      <p className="hint">{t('statistics.strengthsHint')}</p>
     </section>}
-    <section id="stats-panel-species" role={individual ? 'tabpanel' : undefined} aria-labelledby={individual ? 'stats-tab-species' : undefined} hidden={tab !== 'species'} tabIndex={0}>
-    {!stats && !error && <p role="status" className="empty">{t('statistics.loading')}</p>}
+    </div>
+    {!stats && !error && <p role="status" className="hint">{t('statistics.loading')}</p>}
     {error && <p role="alert" className="notice">{t('statistics.loadError')} <button type="button" onClick={() => { setError(false); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>}
-    {stats && <>
-      <dl className="stats-list" aria-label={t('statistics.listAria')}>
-        {STATS.map(stat => <div key={stat} className="stats-row">
-          <dt>{statLabel(t, stat)}</dt><dd><span className="stats-track" aria-hidden="true"><span className={`stats-fill stats-fill-${stat}`} style={{ width: `${stats[stat] / BASE_STAT_MAX * 100}%` }} /></span><span className="stats-value">{stats[stat]}</span></dd>
-        </div>)}
-      </dl>
-      <div className="stats-total"><span>{t('statistics.total')}</span><strong>{totalBaseStats(stats)}</strong></div>
-      <p className="hint stats-scale">{t('statistics.scale', { max: BASE_STAT_MAX })}</p>
-    </>}
-    </section>
+    <div className="stats-charts">
+    <div className="stats-table">
+    <dl className="stats-comparison" aria-label={t(individual ? 'statistics.comparisonAria' : 'statistics.listAria')}>
+      {STATS.map(stat => {
+        const current = pokemon.currentStats?.[stat] ?? (stat === 'hp' ? pokemon.maxHp : undefined)
+        const values = [{ kind: 'base', value: stats?.[stat] }, ...(individual ? [{ kind: 'current', value: current }] : [])]
+        const primary = strengths.includes(stat)
+        const effect = nature?.kind === 'changed' ? nature.increased === stat ? 'increased' : nature.decreased === stat ? 'decreased' : null : null
+        return <div key={stat} tabIndex={0} onPointerEnter={() => setHoveredStat(stat)} onPointerLeave={() => setHoveredStat(null)} onFocus={() => setFocusedStat(stat)} onBlur={() => setFocusedStat(null)} className={`stats-comparison-row${primary ? ' stats-primary' : ''}${activeStat === stat ? ' stats-active' : ''}`}>
+          <dt>{primary && <span className="stats-primary-star" aria-hidden="true">★ </span>}{statLabel(t, stat)}{primary && <span className="sr-only"> · {t('statistics.strength')}</span>}{effect && <span className={`stats-nature-arrow nature-${effect}`} role="img" aria-label={`${t('nature.heading')}: ${natureEffectLabel(t, effect, stat)}`} title={`${t('nature.heading')}: ${natureEffectLabel(t, effect, stat)}`}>{effect === 'increased' ? '↑' : '↓'}</span>}</dt>
+          <dd>{values.map(({ kind, value }) => <div key={kind} className={`stats-series stats-series-${kind}`}>
+            <span className="stats-series-label">{t(`statistics.series.${kind}`)}</span>
+            <span className={`stats-track${value === undefined ? ' stats-track-missing' : ''}`} aria-hidden="true">{value !== undefined && <span className="stats-fill" style={{ width: `${value / scaleMax * 100}%` }} />}</span>
+            <span className={`stats-value${value === undefined ? ' stats-value-missing' : ''}`}>{value ?? t('statistics.unavailable')}</span>
+          </div>)}</dd>
+        </div>
+      })}
+    </dl>
+    {stats && <div className="stats-total"><span>{t('statistics.total')}</span><strong>{totalBaseStats(stats)}</strong></div>}
+    </div>
+    <StatsRadar base={stats} current={individual ? pokemon.currentStats : undefined} individual={individual} max={scaleMax} activeStat={activeStat} onHoverStat={setHoveredStat} onFocusStat={setFocusedStat} />
+    </div>
+    {individual && !pokemon.currentStats && <p className="notice">{t(pokemon.location === 'box' ? 'statistics.comparisonBoxHint' : 'statistics.incompleteHint')}</p>}
+    <p className="hint stats-scale">{t('statistics.scale', { max: scaleMax })}{individual && <> {t('statistics.maxHpHint')}</>}</p>
+    {individual && <p className="hint stats-battle-note">{t('statistics.battleHint')}</p>}
   </dialog>
 }
 
@@ -101,5 +108,5 @@ export function StatsProvider({ children, source = 'manual', sourceState }: { ch
   const missing = individual && (!sameSource || !current)
   const pokemon = missing && selected ? { ...selected, level: null, natureId: undefined, currentHp: undefined, maxHp: undefined, currentStats: undefined } : current ?? selected
   const stale = missing || !sourceState?.connected || sourceState.error || sourceState.positionStale || sourceState.collectionLoading || sourceState.collectionError
-  return <StatsContext.Provider value={pokemon => setSelection({ pokemon, source })}>{children}{pokemon && <StatsDialog key={`${selected?.instanceKey ?? selected?.id}-${pokemon.form ?? 0}`} pokemon={pokemon} source={selection!.source} stale={stale} missing={missing} updatedAt={sameSource && !missing ? sourceState?.updatedAt ?? null : null} individual={individual} onClose={() => setSelection(null)} />}</StatsContext.Provider>
+  return <StatsContext.Provider value={pokemon => setSelection({ pokemon, source })}>{children}{pokemon && <StatsDialog key={`${selected?.instanceKey ?? selected?.id}-${pokemon.form ?? 0}`} pokemon={pokemon} stale={stale} missing={missing} individual={individual} onClose={() => setSelection(null)} />}</StatsContext.Provider>
 }

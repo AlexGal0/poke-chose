@@ -2,12 +2,21 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { baseStatsFromResponse, getBaseStats } from '../src/api/stats.ts'
 import type { StatsResponse } from '../src/api/stats.ts'
-import { STATS, isBaseStats, statsResource, statsForm, totalBaseStats } from '../src/domain/stats.ts'
+import { STATS, highestBaseStats, isBaseStats, statsResource, statsForm, totalBaseStats } from '../src/domain/stats.ts'
 import { statLabel, statsFormLabel } from '../src/i18n/stats.ts'
 import es from '../src/i18n/locales/es/translation.json' with { type: 'json' }
 import en from '../src/i18n/locales/en/translation.json' with { type: 'json' }
 
 const entries = (values: number[]) => STATS.map((name, index) => ({ stat: { name }, base_stat: values[index] }))
+
+test('base strengths select the two highest values, retaining all ties without changing the stats', () => {
+  const dewott = { hp: 75, attack: 75, defense: 60, 'special-attack': 83, 'special-defense': 60, speed: 60 }
+  const original = { ...dewott }
+  assert.deepEqual(highestBaseStats(dewott), ['special-attack', 'hp', 'attack'])
+  assert.deepEqual(dewott, original)
+  assert.deepEqual(highestBaseStats({ ...dewott, hp: 50, speed: 90 }), ['speed', 'special-attack'])
+  assert.deepEqual(highestBaseStats({ hp: 100, attack: 100, defense: 100, 'special-attack': 100, 'special-defense': 100, speed: 100 }), [...STATS])
+})
 const response = (): StatsResponse => ({
   id: 25, name: 'pikachu', stats: entries([35, 55, 40, 50, 50, 90]),
   past_stats: [

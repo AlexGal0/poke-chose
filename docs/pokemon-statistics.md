@@ -94,10 +94,10 @@ and their cards show Unavailable.
 
 ## Individual view (stage 4)
 
-Saved and live specimens open a My Pokémon tab alongside Species. It presents
-nickname, species/form, party or box location, directly read level, nature,
-source, last reading, current/max HP and the six stored current values. The HP
-stat is maximum HP; zero current HP remains zero. No formula fills missing data.
+Saved and live specimens open a combined comparison of species base values and
+the six stored current values. Nature and current/max HP remain visible; name,
+level, position, source and last-reading metadata are omitted from the body.
+The HP stat is maximum HP; zero current HP remains zero. No formula fills missing data.
 Manual/catalog entries keep the species-only view. Eggs have no statistics action.
 
 The open view follows personality, trainer and species identity across party
@@ -158,3 +158,91 @@ returns focus to the statistics icon, and Tab still opens the adjacent nature
 tooltip. Desktop and 320 × 740 layouts checked; captures:
 `artifacts/card-tools-desktop.jpg` and `artifacts/card-tools-mobile.jpg`.
 Harness removed; 226 tests, lint and build pass (existing bundle-size warning).
+
+## Combined statistics comparison
+
+The modal now shows paired horizontal bars for each stat: muted Base and accent
+Current, each with a numeric value and text label. Both series and all six stats
+share one drawing scale, at least 0–255 and extended to the largest read value
+when needed. Only the visual scale changes; read values are never recalculated.
+The previous tabs and metadata table are removed. Nature remains above the bars;
+current HP stays separate from the maximum HP used in the comparison.
+
+Missing values display Unavailable and a dashed empty track, never a zero-value
+bar. Box records keep base bars and an explanation. Species-only cards show one
+series. Failure/loading of base values does not hide available current values.
+Disconnect and missing-specimen notices remain visible.
+
+Verified in a temporary browser harness with synthetic Dewott records and API
+responses: all six numeric pairs and proportional widths, HP 0/280, values above
+255 (scale 310), update to Attack 340 while open (all bars use scale 340), base
+HTTP 503/retry while retaining current values, box data unavailable, species-only
+view, English translation while open, Escape closing, and 320 × 740 without
+horizontal overflow. Captures:
+`artifacts/statistics-comparison-desktop.jpg` and
+`artifacts/statistics-comparison-mobile.jpg`. These are synthetic presentation
+checks, not correspondence with a real save or emulator. Temporary harness
+removed; `npm test` (226 pass), `npm run lint` and `npm run build` pass, with the
+existing bundle-size warning. This visual topic remains uncommitted for review.
+
+## Quickly recognizing species strengths
+
+A compact Highest base stats summary lists the two highest base values in
+descending order, retaining ties at the cutoff. Corresponding chart rows have a
+star, background highlight and gold base bar; current bars retain their accent
+color. Text and star markers communicate the distinction without relying on
+color. Selection uses only base values, not current HP, level, or the nature's
+effect. No statistics are recalculated. If all base values tie, all are retained.
+
+Tests cover ties, two distinct leaders, a fully balanced spread and preservation
+of the input values. Synthetic browser checks verified Dewott's Special Attack
+83 followed by HP/Attack 75, while the specimen's current Attack is 340; the
+summary remains about the species. Verified specimen/species views, ES/EN,
+Escape and 320 × 740 with no horizontal overflow. Captures:
+`artifacts/statistics-strengths-desktop.jpg` and
+`artifacts/statistics-strengths-mobile.jpg`. Temporary harness removed.
+Validation: 227 tests pass, lint and build pass (existing bundle-size warning).
+
+Nature effects also appear as ↑ / ↓ beside the affected chart-row names, with
+translated accessible labels and native explanations on hover. These indicators
+reuse the existing qualitative nature map; they do not modify either series.
+Synthetic browser checks verified Modest (Special Attack ↑, Attack ↓), no arrows
+for neutral/unknown nature, and 320 × 740 without horizontal overflow. Captures:
+`artifacts/statistics-nature-arrows-desktop.jpg` and
+`artifacts/statistics-nature-arrows-mobile.jpg`. The temporary harness was removed.
+
+## Radar profile beside the bars
+
+A six-axis radar accompanies the comparison, covering HP and the five other
+stats. Base (muted, dashed) and Current (accent, solid) polygons share the exact
+scale used by the bars, including maximum HP. Numeric values remain in the bars
+and in the SVG's translated accessible description; vertex titles identify each
+read value. Only complete series are drawn. Missing data never creates an
+invented zero vertex or a misleading partial polygon.
+
+The wider desktop modal presents bars and radar side by side, with nature and
+strengths arranged above. At 760 px and below, the radar moves beneath the bars.
+No chart dependency or statistical calculation was added: SVG geometry only
+maps already available values onto the shared scale.
+
+Synthetic Vite browser checks verified six axes/vertices for each series, base
+load failure/retry while retaining the Current polygon, box/species Base-only
+profiles, ES/EN labels, and a live fixture update of Defense from 140 to 360:
+both charts use scale 360 and the Defense vertex reaches the outer ring. At
+320 × 740 the radar stacks below the bars with no horizontal overflow. Captures:
+`artifacts/statistics-radar-desktop.jpg` and `artifacts/statistics-radar-mobile.jpg`.
+The temporary harness was removed. Validation: 227 tests, lint and build pass,
+with the existing bundle-size warning. This statistics visual topic is still
+uncommitted pending user validation.
+
+Highlighted statistics retain a darker full-length track and subtle outline so the row highlight cannot hide the comparison scale. Verified in the browser with synthetic Dewott data; screenshot: artifacts/statistics-track-contrast.jpg.
+
+Linked highlighting: hovering a comparison row or a radar sector highlights the same statistic in both views, including both series vertices. Keyboard focus provides the same effect, with reduced-motion support. Verified using synthetic pointer events in a temporary browser harness (not a physical mouse hover), Tab navigation, and a 320px viewport without horizontal dialog overflow. Screenshot: artifacts/statistics-linked-hover.jpg. No real save was used.
+
+Hover spacing: comparison rows now keep 8px horizontal padding at rest and during highlighting. Verified with a static synthetic row harness using the actual styles at desktop and 320px widths; label inset was 8px with no horizontal row overflow. Screenshot: artifacts/statistics-hover-spacing.jpg.
+
+Battle fainted badge: moved the badge into card layout flow (first grid cell on desktop, normal flow on narrow screens) to separate it from corner tools. Verified actual PokemonCard components with synthetic fainted own/rival data at desktop and 320px: no badge/tool overlap or mobile card overflow. Screenshots: artifacts/statistics-battle-fainted-desktop.jpg and statistics-battle-fainted-mobile.jpg.
+
+Base total alignment: placed the total inside the table column, using the same horizontal padding as statistic rows. Browser verification with synthetic Dewott data confirmed matching right edges of total and row values on desktop (675.78px) and 320px mobile (261px). Screenshot: artifacts/statistics-total-aligned.jpg.
+
+Catalog tools: moved the wiki link into PokemonCard's shared tools slot. Catalog tools use layout flow and wrapping so wiki, gender and stats cannot occupy the same corner or collide with the dex number. Verified real card components with synthetic catalog entries at desktop and 320px; no wiki/stats overlap or card overflow, and stats opens correctly. Screenshots: artifacts/statistics-catalog-tools.jpg and statistics-catalog-tools-mobile.jpg.

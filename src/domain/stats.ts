@@ -1,6 +1,12 @@
 export const STATS = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'] as const
 export type Stat = typeof STATS[number]
 export type BaseStats = Record<Stat, number>
+// Include ties at the second-highest value; never arbitrarily hide a strength.
+export function highestBaseStats(stats: BaseStats): Stat[] {
+  const ordered = [...STATS].sort((a, b) => stats[b] - stats[a])
+  const cutoff = stats[ordered[1]]
+  return ordered.filter(stat => stats[stat] >= cutoff)
+}
 // Directly stored party values. hp is maximum HP, not remaining HP.
 export type CurrentStats = Record<Stat, number>
 export const BASE_STAT_MAX = 255
