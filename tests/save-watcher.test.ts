@@ -30,6 +30,37 @@ async function temporarySave() {
 
 const options = { debounceMs: 40, retryMs: [30, 60], recoveryMs: 100, read: (path: string) => readStableSave(path, 10), log: () => {} }
 
+test('watcher publishes directly stored stat and nature changes in party and boxes', async () => {
+  const temporary = await temporarySave()
+  const watcher = new SaveWatcher(temporary.path, () => {}, options)
+  const bytes = saveFixture()
+  pk5Fixture().subarray(0, 136).copy(bytes, 0x400)
+  refreshFixtureChecksums(bytes)
+  const changed = { natureId: 24, attack: 77, defense: 52, speed: 53, specialAttack: 54, specialDefense: 55 }
+  try {
+    await writeFile(temporary.path, bytes)
+    watcher.start()
+    await eventually(() => watcher.snapshot.status === 'ready')
+    const dex = watcher.snapshot.pokedex
+    pk5Fixture(502, 25, 9, undefined, undefined, { ...changed, natureId: 0 }).copy(bytes, 0x18e08)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.party?.[0].currentStats?.attack === 77)
+    pk5Fixture(502, 25, 9, undefined, undefined, changed).copy(bytes, 0x18e08)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.party?.[0].natureId === 24)
+    const party = watcher.snapshot.party
+    pk5Fixture(502, 25, 9, undefined, undefined, changed).subarray(0, 136).copy(bytes, 0x400)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.boxes?.[0].natureId === 24)
+    assert.equal(watcher.snapshot.party, party)
+    assert.equal(watcher.snapshot.pokedex, dex)
+    assert.equal('currentStats' in watcher.snapshot.boxes![0], false)
+  } finally { watcher.stop(); await temporary.cleanup() }
+})
+
 test('position-only changes publish, identical saves are suppressed, and invalid position recovers', async () => {
   const temporary = await temporarySave()
   const snapshots: SaveSnapshot[] = []

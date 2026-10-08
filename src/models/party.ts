@@ -3,6 +3,8 @@ import { isPokedexSnapshot } from './pokedex.ts'
 import type { PokedexSnapshot } from './pokedex.ts'
 import { isPlayerPosition } from './player-position.ts'
 import type { PlayerPosition } from './player-position.ts'
+import { currentStatsEqual, isCurrentStats } from '../domain/stats.ts'
+import type { CurrentStats } from '../domain/stats.ts'
 
 export interface SavedPokemonData {
   personality: number
@@ -14,6 +16,8 @@ export interface SavedPokemonData {
   form: number
   isEgg: boolean
   nickname?: string | null
+  // Stored Gen V nature index (0–24); absent in older snapshots.
+  natureId?: number
 }
 
 export interface SavedPartyMember extends SavedPokemonData {
@@ -22,9 +26,13 @@ export interface SavedPartyMember extends SavedPokemonData {
   currentHp?: number
   maxHp?: number
   experience?: number
+  currentStats?: CurrentStats
 }
 export interface SavedBoxPokemon extends SavedPokemonData { box: number; slot: number }
 export type CollectionPokemon = Pokemon & SavedPokemonData & {
+  currentStats?: CurrentStats
+  currentHp?: number
+  maxHp?: number
   location: 'party' | 'box'
   box: number | null
   slot: number
@@ -56,6 +64,7 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
   const pokemon = (member: SavedPokemonData) => member && typeof member === 'object' && integer(member.personality, 0, 0xffffffff) &&
     integer(member.trainerId, 0, 0xffffffff) && integer(member.speciesId, 1, 649) && integer(member.heldItemId, 0, 65535) &&
     integer(member.abilityId, 0, 255) && integer(member.form, 0, 31) && typeof member.isEgg === 'boolean' &&
+    (member.natureId === undefined || integer(member.natureId, 0, 24)) &&
     (member.nickname == null || (typeof member.nickname === 'string' && member.nickname.length <= 10 && member.nickname.trim().length > 0 && [...member.nickname].every(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) !== 127))) &&
     Array.isArray(member.moveIds) && member.moveIds.length === 4 && member.moveIds.every(id => integer(id, 0, 65535))
   return ['waiting', 'ready', 'missing', 'error'].includes(snapshot.status) && typeof snapshot.message === 'string' &&
@@ -68,6 +77,8 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
     (snapshot.party === null || (Array.isArray(snapshot.party) && snapshot.party.length <= 6 && snapshot.party.every((member, slot) =>
       pokemon(member) && member.slot === slot && integer(member.level, 1, 100) &&
       (member.experience === undefined || integer(member.experience, 0, 0xffffffff)) &&
+      (member.currentStats === undefined || (isCurrentStats(member.currentStats) &&
+        integer(member.maxHp, 0, 65535) && member.currentStats.hp === member.maxHp)) &&
       (member.currentHp === undefined && member.maxHp === undefined ||
         integer(member.currentHp, 0, 65535) && integer(member.maxHp, 0, 65535) && member.currentHp! <= member.maxHp!))))
 }
@@ -78,6 +89,7 @@ export function boxesEqual(a: readonly SavedBoxPokemon[] | null, b: readonly Sav
     return member.box === other.box && member.slot === other.slot && member.personality === other.personality &&
       member.trainerId === other.trainerId && member.speciesId === other.speciesId && member.heldItemId === other.heldItemId &&
       member.abilityId === other.abilityId && member.form === other.form && member.isEgg === other.isEgg && (member.nickname ?? null) === (other.nickname ?? null) &&
+      member.natureId === other.natureId &&
       member.moveIds.every((move, moveIndex) => move === other.moveIds[moveIndex])
   })
 }
@@ -88,6 +100,7 @@ export function partiesEqual(a: readonly SavedPartyMember[] | null, b: readonly 
     return member.slot === other.slot && member.personality === other.personality && member.trainerId === other.trainerId &&
       member.speciesId === other.speciesId && member.level === other.level && member.heldItemId === other.heldItemId &&
       member.currentHp === other.currentHp && member.maxHp === other.maxHp && member.experience === other.experience &&
+      member.natureId === other.natureId && currentStatsEqual(member.currentStats, other.currentStats) &&
       member.abilityId === other.abilityId && member.form === other.form && member.isEgg === other.isEgg && (member.nickname ?? null) === (other.nickname ?? null) &&
       member.moveIds.every((move, moveIndex) => move === other.moveIds[moveIndex])
   })

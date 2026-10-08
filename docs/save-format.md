@@ -49,7 +49,7 @@ All numeric fields are little-endian. The header holds the PID and checksum. The
 
 Species (`0x08`), held item (`0x0a`), trainer ID (`0x0c`), ability (`0x15`), moves (`0x28`–`0x2e`), egg flag (`0x38`, bit 30), form (`0x40`, bits 3–7), and current party level (`0x8c`, not the encounter level) are extracted. Species outside 1–649 and levels outside 1–100 are rejected. Move, ability, or specimen legality is not validated.
 
-The comparison includes order/slot, PID, trainer, species, level, held item, ability, moves, form, egg flag, nickname, current/max HP, and total experience. HP or experience changes do trigger a team update. PP, money, and playtime are neither extracted nor part of this comparison. Duplicates are kept per slot; they are never merged with the manual collection's unique species.
+The comparison includes order/slot, PID, trainer, species, level, held item, ability, moves, form, egg flag, nickname, nature, current/max HP, all six stored stats and total experience. Changes to any extracted stat or nature trigger an update. PP, money, and playtime are neither extracted nor part of this comparison. Duplicates are kept per slot; they are never merged with the manual collection's unique species.
 
 ## Watcher and transport
 
@@ -89,5 +89,47 @@ The tests verify the 32 shuffle variants, multiple members, duplicates, species/
 On the user's real Black save, Solosis seen/not-caught and Minccino/Cinccino caught were confirmed, matching their evolution history. A save made inside melonDS produced the event and a stable read; it didn't change the sets or the team, so there was no redundant emission. A real new capture during a save was not verified; that case is checked through fixtures. The personal file was opened only for reading and is not included in the repository.
 
 ## Team HP and experience data
+
+### Direct stats and nature (issue #9, stage 2)
+
+The independently implemented parser reads the stored nature byte at `0x41`
+after decryption and unshuffling. `natureId` is the game's stable index 0–24;
+out-of-range bytes invalidate the record. Nature is not derived from PID.
+The reference is [PKHeX's PK5 field definition](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs).
+
+| Field | Offset | Storage | Party save/live | Boxes save/live |
+| --- | --- | --- | --- | --- |
+| Nature | `0x41` | uint8 | Direct | Direct |
+| Current level | `0x8c` | uint8 | Direct | Absent |
+| Remaining HP | `0x8e` | uint16 LE | Direct | Absent |
+| Maximum HP | `0x90` | uint16 LE | Direct | Absent |
+| Attack | `0x92` | uint16 LE | Direct | Absent |
+| Defense | `0x94` | uint16 LE | Direct | Absent |
+| Speed | `0x96` | uint16 LE | Direct | Absent |
+| Special Attack | `0x98` | uint16 LE | Direct | Absent |
+| Special Defense | `0x9a` | uint16 LE | Direct | Absent |
+
+`currentStats.hp` represents maximum HP and must match `maxHp`; remaining HP
+stays in `currentHp`. The five other values retain the exact uint16 reading,
+including zero if actually stored: range validation is structural, not a legality
+check. No nature multipliers, IV/EV formulas or battle-stage modifiers are applied.
+Current HP greater than maximum HP invalidates the party record.
+
+Both bridges use `parsePk5` for their 220-byte team entries and `parseStoredPk5`
+for their 136-byte box entries. The latter has no party extension: it emits
+nature but no current stats or level. Adjacent slots/padding are never read as an
+extension. The collection adapter preserves party stats and keeps box level null.
+
+The added fields are optional in frontend snapshots so older bridges remain
+compatible. Missing means unknown, not zero or neutral nature. The equality
+checks detect stat-only and nature-only changes. Existing source state retains
+the last valid readings and marks disconnection/error separately for subsequent
+UI presentation. Restart the save/live process after upgrading to receive the
+new fields; the previous process can continue to emit legacy snapshots safely.
+
+Stage-2 verification uses original synthetic encrypted records across all 32
+shuffle values, malformed and legacy snapshots, fake RAM readers, live SSE,
+temporary-save watcher updates and both frontend adapters. No real save was
+mutated; no emulator memory was written. No UI changes are included in this stage.
 
 After decrypting the PK5 and restoring its block order, total experience is a uint32 LE at `0x10`; current and max HP are uint16 LE at `0x8e` and `0x90`. The offsets were cross-checked with [PKHeX's PK5 definition](https://github.com/kwsch/PKHeX/blob/master/PKHeX.Core/PKM/PK5.cs). HP belongs to the party entry's 220-byte extension and is never extracted from the 136-byte box entries. These are read-only reads.

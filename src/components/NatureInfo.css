@@ -1,0 +1,14 @@
+.nature-info { margin-top: 12px; padding: 9px 8px; border: 1px solid var(--border, #35404e); border-radius: 7px; font-size: 11px; line-height: 1.5; text-align: left; }
+.nature-name { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; }
+.nature-name > span, .nature-note { color: var(--text-muted, #a5b5c7); }
+.nature-note { margin-top: 4px; }
+.nature-effects { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 6px; }
+.nature-effect { overflow-wrap: anywhere; }
+.nature-increased { color: var(--accent, #85d9ba); }
+.nature-decreased { color: var(--danger-text, #ffc1c7); }
+.nature-trigger { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--border, #35404e); border-radius: 6px; background: var(--surface, #171e27); color: var(--text-muted, #a5b5c7); cursor: help; }
+.nature-trigger:hover, .nature-trigger:focus-visible { color: var(--accent, #85d9ba); border-color: var(--accent-border, #559c81); }
+.nature-trigger:focus-visible { outline: 2px solid var(--accent, #85d9ba); outline-offset: 2px; }
+.nature-popover { position: fixed; inset: auto; top: var(--nature-top); left: clamp(8px, var(--nature-left), calc(100vw - 248px)); width: 240px; max-width: calc(100vw - 16px); max-height: calc(100dvh - var(--nature-top) - 8px); overflow: auto; box-sizing: border-box; margin: 0; padding: 12px; border: 1px solid var(--border, #35404e); border-radius: 9px; background: var(--surface, #171e27); color: var(--text, #edf4f8); box-shadow: 0 8px 24px rgb(0 0 0 / 25%); }
+.nature-popover::backdrop { background: transparent; pointer-events: none; }
+.nature-popover .nature-info { margin: 0; padding: 0; border: 0; }

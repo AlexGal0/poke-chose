@@ -66,7 +66,10 @@ function parsePokemonData(data: Uint8Array): SavedPokemonData {
   if (fields.getUint16(4, true) !== 0 || speciesId < 1 || speciesId > 649) {
     throw new Error('Especie PK5 inválida.')
   }
+  const natureId = data[0x41]
+  if (natureId > 24) throw new Error('Naturaleza PK5 inválida.')
   return {
+    natureId,
     speciesId, personality: fields.getUint32(0, true), trainerId: fields.getUint32(0x0c, true),
     heldItemId: fields.getUint16(0x0a, true), abilityId: data[0x15],
     moveIds: [0x28, 0x2a, 0x2c, 0x2e].map(offset => fields.getUint16(offset, true)) as SavedPartyMember['moveIds'],
@@ -93,7 +96,20 @@ export function parsePk5(encrypted: Uint8Array, slot = 0): SavedPartyMember {
   const level = data[0x8c]
   if (level < 1 || level > 100) throw new Error('Nivel PK5 inválido.')
   const fields = view(data)
-  return { ...parsePokemonData(data), slot, level, currentHp: fields.getUint16(0x8e, true), maxHp: fields.getUint16(0x90, true), experience: fields.getUint32(0x10, true) }
+  const currentHp = fields.getUint16(0x8e, true)
+  const maxHp = fields.getUint16(0x90, true)
+  if (currentHp > maxHp) throw new Error('PS PK5 inválidos.')
+  return {
+    ...parsePokemonData(data), slot, level, currentHp, maxHp, experience: fields.getUint32(0x10, true),
+    currentStats: {
+      hp: maxHp,
+      attack: fields.getUint16(0x92, true),
+      defense: fields.getUint16(0x94, true),
+      speed: fields.getUint16(0x96, true),
+      'special-attack': fields.getUint16(0x98, true),
+      'special-defense': fields.getUint16(0x9a, true),
+    },
+  }
 }
 
 export function parseStoredPk5(encrypted: Uint8Array): SavedPokemonData | null {

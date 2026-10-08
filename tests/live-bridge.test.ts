@@ -63,6 +63,8 @@ test('live service waits for explicit connection, emits consistent data and pres
   assert.equal((await post('connect')).status, 202)
   const ready = await until('ready')
   assert.equal(ready.party.length, 1)
+  assert.equal(ready.party[0].natureId, 0)
+  assert.deepEqual(ready.party[0].currentStats, { hp: 80, attack: 51, defense: 52, speed: 53, 'special-attack': 54, 'special-defense': 55 })
   assert.deepEqual(ready.boxes, [])
   assert.deepEqual(ready.pokedex.caughtSpeciesIds, [])
   assert.equal(ready.position.mapId, 0)

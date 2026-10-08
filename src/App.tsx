@@ -35,6 +35,7 @@ import { DiscoveryContext } from "./components/discovery-context";
 import { discoveredSpecies } from "./domain/discovery";
 import { EvolutionProvider } from "./components/EvolutionProvider";
 import { MovesProvider } from "./components/MovesProvider";
+import { StatsProvider } from './components/StatsProvider'
 import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
 
@@ -139,7 +140,7 @@ function App() {
   }
 
   return (
-    <DiscoveryContext.Provider value={discovered}><MovesProvider><EvolutionProvider>
+    <DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
       <header className={`site-header ${battleView ? 'battle-header' : ''}`}>
         <a className="brand" href="#">
           <span className="pokeball" aria-hidden="true" />
@@ -397,7 +398,7 @@ function App() {
       </footer>
       <ConnectionIndicator source={source} state={saveTeam} battle={battleConnection} />
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
-    </EvolutionProvider></MovesProvider></DiscoveryContext.Provider>
+    </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>
   );
 }
 

@@ -35,8 +35,7 @@ function CatalogCard({ entry, collected, caught, onAdd, readOnly, acquisition, o
     {(readOnly || collected) && <p className="catalog-capture-state">{status}</p>}
     {error ? <><p>{t('catalog.card.loadError')}</p><button onClick={() => { setError(false); setAttempt(a => a + 1) }}>{t('common.retry')}</button></> : <p role="status">{t('catalog.card.loading')}</p>}
   </article>
-  return <PokemonCard pokemon={{ ...pokemon, name: pokemonDisplayName(entry.name) }} captured={captured} showGender showMoves>
-    {wikiLink}
+  return <PokemonCard pokemon={{ ...pokemon, name: pokemonDisplayName(entry.name) }} captured={captured} showGender showMoves tools={wikiLink}>
     <AcquisitionIcons tags={acquisition?.tags} error={acquisition?.error} onRetry={onRetryAcquisition} />
     {readOnly ? <p className="catalog-capture-state" role="status">{status}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>{collected ? t('catalog.card.status.inCollection') : t('catalog.card.addButton')}</button>}
   </PokemonCard>
