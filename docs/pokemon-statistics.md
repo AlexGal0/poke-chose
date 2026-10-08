@@ -37,8 +37,8 @@ Black/White view because they were introduced in Black 2/White 2.
 
 Every bar uses a fixed 0–255 scale, with a visible number and translated label.
 The total sums all six base stats. No ranking or individual-quality judgment is
-inferred from these numbers. Individual calculations and save extraction belong
-to subsequent stages of issue #9.
+inferred from these numbers. Individual values are read directly as described
+below; calculations remain an optional future extension of issue #9.
 
 ## Verification — 2026-10-07
 
@@ -68,7 +68,7 @@ Saved specimens in team and collection cards show their nature name and the
 affected stat names with ↑ / ↓. Neutral natures are explicitly described.
 Missing or invalid IDs display Unavailable rather than a neutral default.
 Catalog/manual species and eggs do not show an individual nature. The reusable
-`NatureInfo` component will also serve the individual dialog in stage 4.
+`NatureInfo` component also serves the individual dialog in stage 4.
 
 Domain IDs and qualitative effects are locale-free. Presentation helpers resolve
 all 25 names in Spanish and English. Descriptive text for assistive technology
@@ -90,3 +90,36 @@ Stage-3 validation: `npm test` (224 pass), `npm run lint` and `npm run build`.
 Vite continues to report the main bundle-size warning. Existing services need
 the stage-2 bridge restart to send nature IDs; legacy services remain supported
 and their cards show Unavailable.
+
+## Individual view (stage 4)
+
+Saved and live specimens open a My Pokémon tab alongside Species. It presents
+nickname, species/form, party or box location, directly read level, nature,
+source, last reading, current/max HP and the six stored current values. The HP
+stat is maximum HP; zero current HP remains zero. No formula fills missing data.
+Manual/catalog entries keep the species-only view. Eggs have no statistics action.
+
+The open view follows personality, trainer and species identity across party
+slots and boxes. Same-species specimens are not interchangeable. Ambiguous
+cloned identities require an exact instance key. Disconnects, hydration and
+source errors mark retained values as potentially outdated. When a specimen
+disappears or the source changes, individual values become unavailable and
+species information remains accessible. Box records expose nature but no
+direct level or current stats. Battle stages remain in battle analysis and are
+not applied to these values.
+
+Verification used a temporary Vite browser harness with synthetic specimens and
+a synthetic base-stat response, not a real save or running emulator. Checked:
+distinct Dewott specimens (60/80 HP, Attack 51 versus 11/80 HP, Attack 72), an
+update to 0 HP and Attack 101 while open, disconnected warning, movement to box
+3 slot 5 with missing level/stats and retained nature, Species access from boxes,
+Spanish/English change while open, arrow/End tab navigation, Escape and returned
+trigger focus, source-switch invalidation, the Live source label after reopening,
+and species-only catalog cards with no action on eggs. The 320 × 740 dialog fits without internal horizontal overflow;
+its long contents scroll vertically. Captures: `artifacts/individual-stats-desktop.jpg`
+`artifacts/individual-stats-values.jpg`, and `artifacts/individual-stats-mobile.jpg`.
+No game files were modified. The temporary harness was removed after verification.
+
+Identity tests cover slot/box changes, namesakes, trainer/species mismatches,
+and ambiguous clones. Validation: `npm test` (226 pass), `npm run lint`, and
+`npm run build`; the existing main-bundle size warning remains.

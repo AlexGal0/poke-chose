@@ -14,4 +14,11 @@
 .stats-total { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border, #303c49); padding-top: 14px; }
 .stats-total strong { font-variant-numeric: tabular-nums; color: var(--accent, #85d9ba); }
 .stats-scale { margin-top: 16px; }
+.stats-tabs { display: flex; gap: 8px; margin: 16px 0; }
+.stats-tabs [aria-selected="true"] { border-color: var(--accent, #85d9ba); background: var(--surface-raised, #222c38); }
+.stats-details, .stats-current { margin: 16px 0; }
+.stats-details > div, .stats-current > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border, #303c49); }
+.stats-details dt { font-size: 13px; }
+.stats-details dd, .stats-current dd { margin: 0; text-align: right; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.stats-dialog h3 { margin-top: 20px; }
 @media (max-width: 480px) { .stats-dialog { padding: 16px; } .stats-row { grid-template-columns: 112px minmax(0, 1fr); gap: 8px; } .stats-row dd { gap: 8px; } }

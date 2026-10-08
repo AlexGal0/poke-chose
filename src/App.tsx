@@ -140,7 +140,7 @@ function App() {
   }
 
   return (
-    <DiscoveryContext.Provider value={discovered}><StatsProvider><MovesProvider><EvolutionProvider>
+    <DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
       <header className={`site-header ${battleView ? 'battle-header' : ''}`}>
         <a className="brand" href="#">
           <span className="pokeball" aria-hidden="true" />

@@ -37,6 +37,7 @@
     }
   },
   "statistics": {
+    "individualEyebrow": "Specimen · Black/White",
     "button": "Stats",
     "buttonAria": "View stats for {{name}}",
     "eyebrow": "Species · Black/White",
@@ -83,7 +84,33 @@
       "darmanitan-zen": "Zen",
       "meloetta-aria": "Aria",
       "meloetta-pirouette": "Pirouette"
-    }
+    },
+    "tabsAria": "Statistics type",
+    "tabs": {
+      "species": "Species",
+      "individual": "My Pokémon"
+    },
+    "individualHint": "Values read from this specimen, without recalculation or prediction. HP in the list is the maximum read.",
+    "nickname": "Specimen name",
+    "level": "Read level",
+    "location": "Location",
+    "box": "Box {{box}} · slot {{slot}}",
+    "party": "Party · slot {{slot}}",
+    "source": "Source",
+    "sources": {
+      "save": "Save file",
+      "live": "Live",
+      "manual": "Manual"
+    },
+    "lastRead": "Last read",
+    "unavailable": "Unavailable",
+    "stale": "Unconfirmed data: the source is disconnected, synchronizing, or reporting an error. Values may be outdated.",
+    "missing": "This specimen is no longer available in this source. Current values are unavailable; species statistics remain accessible.",
+    "currentHeading": "Read current statistics",
+    "hpReading": "Current HP: {{current}} / {{max}}",
+    "boxHint": "Box records do not include level or current statistics. Base values remain available under Species.",
+    "incompleteHint": "The source does not include all current statistics. Missing data is not calculated.",
+    "battleHint": "These values do not apply battle modifiers. Stat stages are shown separately in battle analysis."
   },
   "theme": {
     "label": "Theme",

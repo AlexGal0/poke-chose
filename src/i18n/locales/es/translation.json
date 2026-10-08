@@ -37,6 +37,7 @@
     }
   },
   "statistics": {
+    "individualEyebrow": "Ejemplar · Black/White",
     "button": "Estadísticas",
     "buttonAria": "Ver estadísticas de {{name}}",
     "eyebrow": "Especie · Black/White",
@@ -83,7 +84,33 @@
       "darmanitan-zen": "Daruma",
       "meloetta-aria": "Lírica",
       "meloetta-pirouette": "Danza"
-    }
+    },
+    "tabsAria": "Tipo de estadísticas",
+    "tabs": {
+      "species": "Especie",
+      "individual": "Mi Pokémon"
+    },
+    "individualHint": "Valores leídos del ejemplar, sin recalcular ni predecir. PS en la lista indica el máximo leído.",
+    "nickname": "Nombre del ejemplar",
+    "level": "Nivel leído",
+    "location": "Ubicación",
+    "box": "Caja {{box}} · posición {{slot}}",
+    "party": "Equipo · posición {{slot}}",
+    "source": "Fuente",
+    "sources": {
+      "save": "Archivo guardado",
+      "live": "En vivo",
+      "manual": "Manual"
+    },
+    "lastRead": "Última lectura",
+    "unavailable": "No disponible",
+    "stale": "Datos sin confirmar: la fuente está desconectada, sincronizando o presenta un error. Los valores pueden estar desactualizados.",
+    "missing": "El ejemplar ya no está disponible en esta fuente. Sus valores actuales no están disponibles; puedes seguir consultando la especie.",
+    "currentHeading": "Estadísticas actuales leídas",
+    "hpReading": "PS actuales: {{current}} / {{max}}",
+    "boxHint": "El registro de caja no incluye nivel ni estadísticas actuales. Puedes consultar los valores base en Especie.",
+    "incompleteHint": "La fuente no incluye todas las estadísticas actuales. Los datos ausentes no se calculan.",
+    "battleHint": "Estos valores no aplican modificadores de combate. Las etapas de estadísticas se consultan por separado en el análisis de batalla."
   },
   "theme": {
     "label": "Tema",
