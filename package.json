@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "repel:fast": "node scripts/repel-poll.mjs fast",
+    "repel:normal": "node scripts/repel-poll.mjs normal",
     "dev": "vite",
     "bridge": "node --experimental-strip-types bridge/index.ts",
     "dev:save": "node scripts/start-save.mjs",

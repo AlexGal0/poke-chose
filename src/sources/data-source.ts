@@ -6,6 +6,7 @@ import type { Notice } from '../i18n/notice.ts'
 export type DataSourceEvent =
   | { type: 'connection'; connected: boolean; message: Notice }
   | { type: 'snapshot'; snapshot: unknown; connected?: boolean }
+  | { type: 'repel'; reading: unknown }
 
 export interface PokemonDataSource {
   readonly id: string
@@ -15,6 +16,7 @@ export interface PokemonDataSource {
     party: boolean
     boxes: boolean
     pokedex: boolean
+    repel?: boolean
   }
   subscribe(notify: (event: DataSourceEvent) => void): () => void
   // Optional explicit reconnection, for providers such as the live reader.

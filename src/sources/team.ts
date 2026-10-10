@@ -9,10 +9,13 @@ import type { PokedexState } from '../models/pokedex.ts'
 import type { Notice } from '../i18n/notice.ts'
 import { bridgeSnapshotMessageKey } from '../i18n/bridge-messages.ts'
 import type { PlayerPosition } from '../models/player-position.ts'
+import { isRepelReading, type RepelReading } from '../models/repel.ts'
 
 export interface TeamSourceState {
   position: PlayerPosition | null
   positionStale: boolean
+  repel: RepelReading | null
+  repelStale: boolean
   team: PartyPokemon[]
   collection: CollectionPokemon[] | null
   collectionLoading: boolean
@@ -31,6 +34,8 @@ export function manualTeam(state: CollectionState): Pokemon[] {
 export const initialSaveTeam: TeamSourceState = {
   position: null,
   positionStale: true,
+  repel: null,
+  repelStale: true,
   team: [], collection: null, collectionLoading: false, collectionError: false, pokedex: null, connected: false, message: { key: 'sources.connectingBridge' }, updatedAt: null, error: false,
 }
 
@@ -87,9 +92,15 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
   const publish = (patch: Partial<TeamSourceState>) => { state = { ...state, ...patch }; if (!closed) notify(state) }
   const unsubscribe = source.subscribe(event => {
     if (closed) return
+    if (event.type === 'repel') {
+      if (source.capabilities.repel !== true) return
+      const fresh = snapshot?.status === 'ready' && !snapshotError && isRepelReading(event.reading)
+      publish({ repel: fresh ? event.reading as RepelReading : state.repel, repelStale: !fresh })
+      return
+    }
     if (event.type === 'connection') {
       snapshotError = !event.connected
-      publish({ connected: event.connected, error: !event.connected, message: event.message, ...(!event.connected ? { positionStale: true } : {}) })
+      publish({ connected: event.connected, error: !event.connected, message: event.message, ...(!event.connected ? { positionStale: true, repelStale: true } : {}) })
       return
     }
     let next: SaveSnapshot
@@ -97,10 +108,13 @@ export function subscribeTeamSource(source: PokemonDataSource, notify: (state: T
       const data: unknown = event.snapshot
       if (!isSaveSnapshot(data)) throw new Error('Invalid snapshot')
       next = data
-    } catch { publish({ error: true, positionStale: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
+    } catch { publish({ error: true, positionStale: true, repelStale: true, message: { key: source.id === 'live' ? 'sources.invalidResponseLive' : 'sources.invalidResponseSave' } }); return }
     snapshot = next
     snapshotError = next.status === 'error' || next.status === 'missing' || next.backup || event.connected === false
+    const repelFresh = source.capabilities.repel === true && next.status === 'ready' && !next.backup && event.connected !== false && next.repel != null
     publish({ connected: event.connected ?? true, message: { key: bridgeSnapshotMessageKey(source.id, next.message) }, error: snapshotError,
+      repel: repelFresh ? next.repel! : state.repel,
+      repelStale: !repelFresh,
       position: next.position ?? null,
       positionStale: next.status !== 'ready' || next.backup || event.connected === false,
       ...(next.pokedex !== null ? { pokedex: deserializePokedex(next.pokedex), updatedAt: next.updatedAt } : {}) })

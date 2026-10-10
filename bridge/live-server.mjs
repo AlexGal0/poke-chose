@@ -4,6 +4,7 @@ import { readParty } from './live/party.mjs'
 import { readBoxes, readPokedex } from './live/storage.mjs'
 import { isSaveSnapshot } from '../src/models/party.ts'
 import { readPlayerPosition } from './live/position.mjs'
+import { readRepel } from './live/repel.mjs'
 
 export function createLiveBridge(config, makeReader = options => new GdbReader(options)) {
   const clients = new Set()
@@ -13,6 +14,9 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   let closed = false
   let control = Promise.resolve()
   let sampling = Promise.resolve()
+  let repelTimer
+  let repelPollMs = config.repelPollMs === undefined ? 500 : config.repelPollMs
+  if (repelPollMs !== null && (!Number.isInteger(repelPollMs) || repelPollMs < 500 || repelPollMs > 3000)) throw new Error('repelPollMs must be null or 500–3000.')
   const fastPollMs = config.fastPollMs ?? config.pollMs ?? 3000
   const boxesPollMs = config.boxesPollMs ?? 120000
   let boxesAttemptAt = null
@@ -29,6 +33,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   function stop() {
     generation++
     clearTimeout(timer)
+    clearTimeout(repelTimer)
     reader?.close()
     reader = null
     active = false
@@ -38,9 +43,37 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
     active = false
     generation++
     clearTimeout(timer)
+    clearTimeout(repelTimer)
     await sampling
   }
-  function schedule(token) { sampling = sample(token) }
+  function enqueue(operation) { sampling = sampling.catch(() => {}).then(operation) }
+  function schedule(token) { enqueue(() => sample(token)) }
+  function scheduleRepel(token) {
+    clearTimeout(repelTimer)
+    if (!closed && active && token === generation && repelPollMs !== null && config.repelStepsAddress != null) {
+      repelTimer = setTimeout(() => enqueue(() => sampleRepel(token)), repelPollMs)
+    }
+  }
+  async function sampleRepel(token) {
+    if (closed || !active || token !== generation || repelPollMs === null) return
+    const current = reader
+    try {
+      let repel = null
+      try { repel = await readRepel(current, config) }
+      catch (error) { if (current.socket?.destroyed) throw error }
+      if (!closed && active && token === generation && repelPollMs !== null && snapshot.status === 'ready') {
+        snapshot = { ...snapshot, repel }
+        // Lightweight event: do not resend or rehydrate the team/boxes.
+        for (const client of clients) client.write(`event: repel\ndata: ${JSON.stringify(repel)}\n\n`)
+      }
+    } catch {
+      if (token === generation && !closed && current.socket?.destroyed) {
+        stop()
+        publish({ status: 'error', message: 'connectionLost' })
+      }
+    }
+    scheduleRepel(token)
+  }
   async function sample(token) {
     if (closed || token !== generation) return
     const current = reader
@@ -74,7 +107,14 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
         // Location is optional; an unstable/invalid sample must not discard the team.
         if (current.socket?.destroyed) throw error
       }
-      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, position, updatedAt: new Date().toISOString(), backup: false }
+      let repel = repelPollMs === null ? null : snapshot.repel ?? null
+      try { if (repelPollMs === null) repel = await readRepel(current, config) }
+      catch (error) {
+        // Optional data must not invalidate the team. null means unavailable,
+        // never zero steps; consumers retain the last reading as stale.
+        if (current.socket?.destroyed) throw error
+      }
+      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, position, repel, updatedAt: new Date().toISOString(), backup: false }
       if (!isSaveSnapshot(next)) throw new Error('La memoria no contiene una partida compatible.')
       if (token === generation) {
         if (refreshBoxes && !boxesError) cachedBoxes = boxes
@@ -116,6 +156,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       if (closed || token !== generation) return
       active = true
       schedule(token)
+      scheduleRepel(token)
     } catch {
       if (token !== generation) return
       stop()
@@ -147,10 +188,30 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       req.on('close', () => clients.delete(res))
       return
     }
-    if (req.method === 'POST' && ['/live-api/connect', '/live-api/disconnect', '/live-api/refresh-boxes'].includes(req.url)) {
+    if (req.method === 'POST' && ['/live-api/connect', '/live-api/disconnect', '/live-api/refresh-boxes', '/live-api/repel-poll'].includes(req.url)) {
       let originAllowed = !req.headers.origin
       try { if (req.headers.origin) originAllowed = ['127.0.0.1', 'localhost'].includes(new URL(req.headers.origin).hostname) } catch { originAllowed = false }
       if (!originAllowed || req.headers['content-type'] !== 'application/json') { res.writeHead(403).end(); return }
+      if (req.url === '/live-api/repel-poll') {
+        let body = ''
+        req.on('data', chunk => { body += chunk; if (body.length > 1024) req.destroy() })
+        req.on('end', () => {
+          let intervalMs
+          try {
+            intervalMs = JSON.parse(body).intervalMs
+            if (intervalMs !== null && (!Number.isInteger(intervalMs) || intervalMs < 500 || intervalMs > 3000)) throw new Error('invalid')
+          } catch { res.writeHead(400).end(); return }
+          control = control.then(async () => {
+            if (closed) { res.writeHead(503).end(); return }
+            clearTimeout(repelTimer)
+            repelPollMs = intervalMs
+            await sampling
+            scheduleRepel(generation)
+            res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ intervalMs: repelPollMs }))
+          })
+        })
+        return
+      }
       req.resume()
       if (req.url === '/live-api/refresh-boxes') {
         if (!refreshRequest) {

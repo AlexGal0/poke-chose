@@ -21,6 +21,7 @@ import { EnemyPrototype } from './components/EnemyPrototype'
 import type { BattleConnection } from './components/EnemyPrototype'
 import { ConnectionIndicator } from './components/ConnectionIndicator'
 import { BattleShortcut } from './components/BattleShortcut'
+import { RepelIndicator } from './components/RepelIndicator'
 import { battleShortcutDestination, battleHasEnded, battleHasStarted } from './domain/battle-shortcut'
 import { SaveSync } from "./components/SaveSync";
 import { useTeamSource } from './hooks/useTeamSource'
@@ -426,6 +427,7 @@ function App() {
         </span>
       </footer>
       <ConnectionIndicator source={source} state={saveTeam} generalStatus={generalStatus} battleStatus={combatStatus} generalMessage={generalMessage} battleMessage={combatMessage} />
+      {source === 'live' && <RepelIndicator reading={saveTeam.repel} stale={saveTeam.repelStale} />}
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
     </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>
   );

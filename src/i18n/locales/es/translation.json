@@ -973,5 +973,16 @@
       "disconnected": "Sin conexión",
       "paused": "Pausado"
     }
+  },
+  "repel": {
+    "label": "Repelente: {{steps}} pasos restantes",
+    "staleLabel": "Repelente: última lectura de {{steps}} pasos, desactualizada",
+    "steps": "pasos",
+    "stale": "Sin actualizar",
+    "active": "Repelente activo",
+    "lastKnown": "Última lectura del repelente",
+    "detail": "Pasos restantes según el juego.",
+    "staleDetail": "El valor puede haber cambiado. Se actualizará al recuperar la lectura.",
+    "lastReading": "Última lectura: {{time}}"
   }
 }

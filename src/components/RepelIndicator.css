@@ -1,0 +1,16 @@
+.repel-floating { position: fixed; top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); z-index: 30; width: 84px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px; color: var(--text, #edf4f8); border: 1px solid var(--accent, #83dcb8); border-radius: 14px; background: var(--surface-raised, #222c38); box-shadow: 0 4px 18px rgb(0 0 0 / 30%); }
+.repel-floating > svg { width: 17px; height: 17px; color: var(--accent, #83dcb8); }
+.repel-steps { font-size: 38px; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -1px; }
+.repel-caption { font-size: 10px; line-height: 1.3; white-space: nowrap; }
+.repel-floating.stale { border-style: dashed; border-color: var(--warning-text, #e9bc96); }
+.repel-floating.stale > svg, .repel-floating.stale .repel-caption { color: var(--warning-text, #e9bc96); }
+.repel-floating:focus-visible { outline: 3px solid var(--accent, #83dcb8); outline-offset: 4px; }
+.repel-tooltip { display: none; position: absolute; top: calc(100% + 8px); right: 0; width: min(280px, calc(100vw - 32px)); padding: 14px; border: 1px solid var(--border, #34404e); border-radius: 10px; background: var(--surface-raised, #222c38); box-shadow: 0 6px 24px rgb(0 0 0 / 30%); font-size: 12px; line-height: 1.5; }
+.repel-tooltip p { margin: 6px 0; color: var(--text-muted, #a5b5c7); }
+.repel-tooltip small { color: var(--text-muted, #a5b5c7); }
+.repel-floating::after { content: ''; display: none; position: absolute; top: 100%; left: 0; width: 100%; height: 9px; }
+.repel-floating:not([data-dismissed="true"]):is(:hover, :focus-within) .repel-tooltip, .repel-floating:not([data-dismissed="true"]):is(:hover, :focus-within)::after { display: block; }
+body:has(.repel-floating) .site-header { min-height: 104px; }
+body:has(.repel-floating) .site-header .header-controls { margin-right: 96px; }
+body:has(dialog[open]) .repel-floating { display: none; }
+@media (max-width: 640px) { body:has(.repel-floating) .site-header .brand { margin-right: 96px; } body:has(.repel-floating) .site-header .header-controls { margin-top: 64px; margin-right: 0; } }
