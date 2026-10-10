@@ -1,0 +1,19 @@
+.field-move-filter { margin: 16px 0; text-align: right; }
+.field-move-label { margin: 0 0 10px; font-size: 12px; font-weight: 700; color: var(--text-muted, #a5b5c7); }
+.field-move-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.field-move-button[data-move="cut"] { --field-icon-color: #287642; }
+.field-move-button[data-move="fly"] { --field-icon-color: #8041a5; }
+.field-move-button[data-move="surf"] { --field-icon-color: #1767b6; }
+.field-move-button[data-move="strength"] { --field-icon-color: #b13e40; }
+.field-move-button[data-move="waterfall"] { --field-icon-color: #087886; }
+.field-move-button[data-move="dive"] { --field-icon-color: #4545aa; }
+.field-move-button[data-move="flash"] { --field-icon-color: #956400; }
+.field-move-button[data-move="dig"] { --field-icon-color: #91532d; }
+.field-move-button svg { color: var(--field-icon-color); background: transparent; }
+.field-move-buttons .field-move-button { position: relative; display: inline-grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; padding: 0; border: 1px solid var(--border, #34404e); border-radius: 7px; color: var(--text, #e9eef5); background: var(--surface-raised, #222c38); }
+.field-move-buttons .field-move-button:hover { border-color: var(--accent, #85d9ba); }
+.collection-panel .field-move-filter .field-move-buttons .field-move-button[aria-pressed="true"] { color: var(--accent-text, #d1f5e8); border-color: var(--accent, #85d9ba); background: var(--accent-surface, #294b43); box-shadow: inset 0 0 0 2px var(--accent, #85d9ba); }
+.field-move-button[aria-pressed="true"]::after { content: '✓'; position: absolute; top: -4px; right: -4px; display: grid; place-items: center; width: 14px; height: 14px; border-radius: 50%; font-size: 10px; font-weight: 700; line-height: 1; background: var(--accent, #85d9ba); color: var(--page, #10151c); }
+.field-move-buttons .field-move-button:focus-visible { outline: 2px solid var(--accent, #85d9ba); outline-offset: 3px; }
+.field-move-filter .hint { margin: 8px 0; }
+.field-move-filter .notice { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }

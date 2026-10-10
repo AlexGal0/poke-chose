@@ -38,13 +38,13 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
       {tools}
     </div>
     {selected && <span className="in-team">{t('pokemonCard.inTeam')}</span>}
+    {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}
     <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? t('pokemonCard.spriteUnavailable') : t('pokemonCard.notDiscovered')}>?</span>}</div>
     <div className="pokemon-identity">
       <h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>
       {pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}
     </div>
     <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
-    {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}
     <div className="card-actions">{children}{showMoves && <button type="button" className="moves-button" onClick={() => openMoves(pokemon)} aria-label={t('pokemonCard.movesAria', { name: pokemon.nickname || pokemonDisplayName(pokemon.name) })}>{t('pokemonCard.movesButton')}</button>}{showEvolution && <EvolutionButton speciesId={pokemon.id} name={pokemonDisplayName(pokemon.name)} />}</div>
     {footer}
   </article>

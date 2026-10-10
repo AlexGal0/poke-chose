@@ -1,4 +1,5 @@
 import type { SavedBoxPokemon, SavedPartyMember, SavedPokemonData } from '../src/models/party.ts'
+import { storedGender } from '../src/domain/gender.ts'
 import type { PokedexState } from '../src/models/pokedex.ts'
 import { parsePokedexBlock, POKEDEX_LENGTH, POKEDEX_OFFSET } from './pokedex.ts'
 import type { PlayerPosition } from '../src/models/player-position.ts'
@@ -69,7 +70,9 @@ function parsePokemonData(data: Uint8Array): SavedPokemonData {
   const natureId = data[0x41]
   if (natureId > 24) throw new Error('Naturaleza PK5 inválida.')
   return {
+    gender: storedGender((data[0x40] >>> 1) & 3),
     natureId,
+    experience: fields.getUint32(0x10, true),
     speciesId, personality: fields.getUint32(0, true), trainerId: fields.getUint32(0x0c, true),
     heldItemId: fields.getUint16(0x0a, true), abilityId: data[0x15],
     moveIds: [0x28, 0x2a, 0x2c, 0x2e].map(offset => fields.getUint16(offset, true)) as SavedPartyMember['moveIds'],
@@ -100,7 +103,7 @@ export function parsePk5(encrypted: Uint8Array, slot = 0): SavedPartyMember {
   const maxHp = fields.getUint16(0x90, true)
   if (currentHp > maxHp) throw new Error('PS PK5 inválidos.')
   return {
-    ...parsePokemonData(data), slot, level, currentHp, maxHp, experience: fields.getUint32(0x10, true),
+    ...parsePokemonData(data), slot, level, currentHp, maxHp,
     currentStats: {
       hp: maxHp,
       attack: fields.getUint16(0x92, true),

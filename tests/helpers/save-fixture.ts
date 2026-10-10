@@ -2,7 +2,7 @@
 // Test encoder deliberately uses BigInt arithmetic and a literal permutation table.
 const permutations = 'ABCD ABDC ACBD ACDB ADBC ADCB BACD BADC BCAD BCDA BDAC BDCA CABD CADB CBAD CBDA CDAB CDBA DABC DACB DBAC DBCA DCAB DCBA'.split(' ')
 
-export function pk5Fixture(species = 502, level = 25, shuffle = 9, name?: { text: string; nicknamed?: boolean; terminator?: number }, vitals = { currentHp: 60, maxHp: 80, experience: 15625 }, individual = { natureId: 0, attack: 51, defense: 52, speed: 53, specialAttack: 54, specialDefense: 55 }): Buffer {
+export function pk5Fixture(species = 502, level = 25, shuffle = 9, name?: { text: string; nicknamed?: boolean; terminator?: number }, vitals = { currentHp: 60, maxHp: 80, experience: 15625 }, individual = { natureId: 0, attack: 51, defense: 52, speed: 53, specialAttack: 54, specialDefense: 55 }, identity = { gender: 0, form: 0 }): Buffer {
   const data = Buffer.alloc(220)
   const pid = (0xa000001f | (shuffle << 13)) >>> 0
   data.writeUInt32LE(pid)
@@ -16,6 +16,7 @@ export function pk5Fixture(species = 502, level = 25, shuffle = 9, name?: { text
   data.writeUInt16LE(vitals.currentHp, 0x8e)
   data.writeUInt16LE(vitals.maxHp, 0x90)
   data[0x41] = individual.natureId
+  data[0x40] = (identity.form << 3) | (identity.gender << 1) | 1
   ;[individual.attack, individual.defense, individual.speed, individual.specialAttack, individual.specialDefense].forEach((value, index) => data.writeUInt16LE(value, 0x92 + index * 2))
   if (name) {
     if (name.nicknamed !== false) data.writeUInt32LE(0x80000000, 0x38)

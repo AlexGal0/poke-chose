@@ -367,6 +367,7 @@
     "memberPartySlot": "Team · Slot {{slot}}",
     "memberBoxSlot": "Box {{box}} · Position {{slot}}",
     "memberLevel": "Lv. {{level}}",
+    "levelUnavailable": "Level unavailable",
     "paginationAriaLabel": "Synced collection pages"
   },
   "enemyPrototype": {
@@ -380,10 +381,10 @@
       "readFailed": "Couldn't read the prototype."
     },
     "messages": {
-      "waitingConnect": "Connect the battle reader.",
+      "waitingConnect": "Press Connect readers in the connection controls.",
       "connecting": "Connecting to melonDS…",
       "active": "Experimental battle reading active.",
-      "disconnected": "Battle reading disconnected. Press Reconnect battle."
+      "disconnected": "Battle reading disconnected. Press Reconnect readers."
     },
     "status": {
       "disconnected": "Battle reader disconnected",
@@ -538,7 +539,7 @@
       "pause": "Pause reading"
     },
     "connectError": "Couldn't connect.",
-    "liveHint": "Reads the team, boxes, and Pokédex without saving. After a Reset or reopening melonDS, press Reconnect reader. Syncing can take several seconds.",
+    "liveHint": "Connect the general and battle readers with one button. After a Reset or reopening melonDS, press Reconnect readers. Each reader shows its own status.",
     "saveHint": "Set up <configFile>save.config.local.json</configFile> and run <bridgeCommand>npm run bridge</bridgeCommand>. It syncs when the game saves to the .sav file. The manual team is kept."
   },
   "sources": {
@@ -635,6 +636,12 @@
       "season-autumn": "Autumn",
       "season-winter": "Winter"
     }
+  },
+  "individualGender": {
+    "male": "Male",
+    "female": "Female",
+    "genderless": "Genderless",
+    "unknown": "Gender unavailable"
   },
   "gender": {
     "genderless": "Genderless species",
@@ -930,5 +937,41 @@
     "fainted": "Fainted",
     "movesAria": "View {{name}}'s moves by level",
     "movesButton": "☷ Moves"
+  },
+  "fieldMoves": {
+    "label": "Field moves (TM/HM)",
+    "all": "No filter",
+    "hint": "Select one or more: must be able to learn all selected moves through TMs/HMs in Black/White, even if not currently known. Eggs are excluded.",
+    "loading": "Checking compatibility…",
+    "error": "Could not check the entire collection. Results may be incomplete.",
+    "retry": "Retry",
+    "moves": {
+      "cut": "Cut · HM01",
+      "fly": "Fly · HM02",
+      "surf": "Surf · HM03",
+      "strength": "Strength · HM04",
+      "waterfall": "Waterfall · HM05",
+      "dive": "Dive · HM06",
+      "flash": "Flash · TM70",
+      "dig": "Dig · TM28"
+    }
+  },
+  "readerConnections": {
+    "short": { "general": "General", "battle": "Battle" },
+    "generalDisconnectedDetail": "No active live reading. Reconnect the readers.",
+    "general": "General reader",
+    "battle": "Battle reader",
+    "connect": "Connect readers",
+    "reconnect": "Reconnect readers",
+    "connecting": "Connecting readers…",
+    "connectingDetail": "Establishing a connection to melonDS…",
+    "pauseGeneral": "Pause general reader",
+    "status": {
+      "connected": "Connected",
+      "connecting": "Connecting…",
+      "waiting": "Waiting for a reading",
+      "disconnected": "Disconnected",
+      "paused": "Paused"
+    }
   }
 }

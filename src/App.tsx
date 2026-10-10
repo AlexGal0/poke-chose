@@ -11,6 +11,8 @@ import { loadActiveTab, saveActiveTab } from './storage/active-tab'
 import type { ActiveTab } from './storage/active-tab'
 import { Catalog } from "./components/Catalog";
 import { PokemonCard } from "./components/PokemonCard";
+import { CollectionDetails } from './components/CollectionDetails'
+import { IndividualGenderIcon } from './components/IndividualGenderIcon'
 import { TeamVitals } from './components/TeamVitals'
 import { HeldItem } from './components/HeldItem'
 import { Analysis } from "./components/Analysis";
@@ -28,6 +30,11 @@ import { manualTeam } from "./sources/team";
 import { CaptureChecklist } from "./components/CaptureChecklist";
 import { SaveCollection } from "./components/SaveCollection";
 import { CollectionSearch } from "./components/CollectionSearch";
+import { FieldMoveFilter } from './components/FieldMoveFilter'
+import { useFieldMoveFilter } from './hooks/useFieldMoveFilter'
+import { useReaderConnections } from './hooks/useReaderConnections'
+import { readerStatus } from './domain/reader-status'
+import { noticeText } from './i18n/notice'
 import { matchesCollectionTags } from "./domain/collection-search";
 import { typeLabel } from "./i18n/types.ts";
 import "./App.css";
@@ -58,6 +65,18 @@ function App() {
     readCache("team-source") === "live" ? "live" : readCache("team-source") === "save" ? "save" : "manual",
   );
   const saveTeam = useTeamSource(source === "live" ? liveDataSource : source === "save" ? saveDataSource : null);
+  const readers = useReaderConnections()
+  const sourceMessageKey = saveTeam.message && 'key' in saveTeam.message ? saveTeam.message.key : null
+  const generalStatus = readerStatus({
+    connected: saveTeam.connected,
+    connecting: readers.general.connecting || sourceMessageKey === 'sources.live.messages.connecting',
+    error: saveTeam.error || Boolean(readers.general.error),
+    paused: sourceMessageKey === 'sources.live.messages.paused',
+  })
+  const combatStatus = readerStatus({ connected: battleConnection.status === 'ready', connecting: readers.battle.connecting, error: battleConnection.status === 'error' || Boolean(readers.battle.error) })
+  const generalMessage = noticeText(t, readers.general.error) || (generalStatus === 'disconnected' && ['sources.loadingSpeciesData', 'sources.partyResolveFailed'].includes(sourceMessageKey ?? '')
+    ? t('readerConnections.generalDisconnectedDetail') : noticeText(t, saveTeam.message)) || ''
+  const combatMessage = noticeText(t, readers.battle.error) || battleConnection.message
   const manual = manualTeam(state);
   const battleView = source === 'live' && tab === 'battle'
   const team = source !== "manual" ? saveTeam.team : manual;
@@ -66,8 +85,9 @@ function App() {
   const discovered = source !== "manual"
     ? discoveredSpecies(saveTeam.pokedex)
     : new Set(state.collection.map(pokemon => pokemon.id));
+  const manualFieldMoves = useFieldMoveFilter(state.collection)
   const filteredManualCollection = state.collection.filter((pokemon) =>
-    matchesCollectionTags(pokemon, collectionQuery, type => typeLabel(t, type)),
+    matchesCollectionTags(pokemon, collectionQuery, type => typeLabel(t, type)) && manualFieldMoves.matches(pokemon),
   );
   function updateState(next: CollectionState) {
     setState(next);
@@ -186,6 +206,12 @@ function App() {
             if (next !== 'live' && tab === 'battle') setTab('catalog')
           }}
           state={saveTeam}
+          onConnect={() => { void readers.connect() }}
+          connecting={readers.busy}
+          generalStatus={generalStatus}
+          battleStatus={combatStatus}
+          generalMessage={generalMessage}
+          battleMessage={combatMessage}
         />
         </details>
         <section className="panel team-panel" aria-labelledby="team-title" hidden={battleView}>
@@ -334,6 +360,7 @@ function App() {
                 query={collectionQuery}
                 onChange={setCollectionQuery}
               />
+              <FieldMoveFilter selected={manualFieldMoves.selected} onChange={manualFieldMoves.setSelected} loading={manualFieldMoves.loading} error={manualFieldMoves.error} onRetry={manualFieldMoves.retry} />
               {state.collection.length === 0 ? (
                 <div className="empty">
                   <p>{t('app.collection.emptyIntro')}</p>
@@ -342,7 +369,7 @@ function App() {
                   </button>
                 </div>
               ) : filteredManualCollection.length === 0 ? (
-                <p className="empty">{t('app.collection.noMatches')}</p>
+                !manualFieldMoves.loading && !manualFieldMoves.error && <p className="empty">{t('app.collection.noMatches')}</p>
               ) : (
                 <div className="pokemon-grid">
                   {filteredManualCollection.map((pokemon) => (
@@ -350,8 +377,10 @@ function App() {
                       key={pokemon.id}
                       pokemon={pokemon}
                       selected={state.teamIds.includes(pokemon.id)}
+                      tools={<IndividualGenderIcon pokemon={pokemon} />}
                       showMoves
                     >
+                      <CollectionDetails pokemon={pokemon} />
                       <button
                         className="primary"
                         disabled={
@@ -396,7 +425,7 @@ function App() {
           />
         </span>
       </footer>
-      <ConnectionIndicator source={source} state={saveTeam} battle={battleConnection} />
+      <ConnectionIndicator source={source} state={saveTeam} generalStatus={generalStatus} battleStatus={combatStatus} generalMessage={generalMessage} battleMessage={combatMessage} />
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
     </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>
   );

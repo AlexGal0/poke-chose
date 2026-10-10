@@ -2,7 +2,7 @@ import type { PokemonDataSource } from './data-source.ts'
 import { KeyedError } from '../i18n/notice.ts'
 
 async function control(action: 'connect' | 'disconnect') {
-  const response = await fetch(`/live-api/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+  const response = await fetch(`/live-api/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}', signal: AbortSignal.timeout(20000) })
   if (!response.ok) throw new KeyedError('sources.live.controlFailed')
 }
 

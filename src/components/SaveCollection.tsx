@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TeamSourceState } from '../sources/team'
 import { PokemonCard } from './PokemonCard'
+import { CollectionDetails } from './CollectionDetails'
+import { IndividualGenderIcon } from './IndividualGenderIcon'
 import { CollectionSearch } from './CollectionSearch'
+import { FieldMoveFilter } from './FieldMoveFilter'
+import { useFieldMoveFilter } from '../hooks/useFieldMoveFilter'
 import { matchesCollectionLocation, matchesCollectionTags } from '../domain/collection-search'
 import { typeLabel } from '../i18n/types.ts'
 import type { CollectionLocationFilter } from '../domain/collection-search'
@@ -37,7 +41,8 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
   }
   const collection = state.collection
   const locationCollection = collection?.filter(pokemon => matchesCollectionLocation(pokemon, location)) ?? []
-  const filtered = locationCollection.filter(pokemon => matchesCollectionTags(pokemon, query, type => typeLabel(t, type)))
+  const fieldMoves = useFieldMoveFilter(locationCollection)
+  const filtered = locationCollection.filter(pokemon => matchesCollectionTags(pokemon, query, type => typeLabel(t, type)) && fieldMoves.matches(pokemon))
   const boxCounts = Array.from({ length: 24 }, (_, box) => collection?.filter(pokemon => matchesCollectionLocation(pokemon, box)).length ?? 0)
   const partyCount = collection?.filter(pokemon => pokemon.location === 'party').length ?? 0
   const pages = Math.ceil(filtered.length / PAGE_SIZE)
@@ -65,9 +70,11 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
       </details>
       <p className="hint" role="status">{t('saveCollection.boxFilter.filteredCount', { filtered: filtered.length, total: collection.length })}</p>
       <CollectionSearch collection={locationCollection} query={query} onChange={next => { setQuery(next); setPage(0) }} />
-      {collection.length === 0 ? <p className="empty">{t('saveCollection.emptyCollection')}</p> : !locationCollection.length ? <p className="empty">{location === 'party' ? t('saveCollection.emptyParty') : t('saveCollection.emptyBox')}</p> : !filtered.length ? <p className="empty">{t('saveCollection.noMatches')}</p> : <>
-        <div className="pokemon-grid">{filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves>
-          <div className="save-member-info">{pokemon.location === 'party' ? t('saveCollection.memberPartySlot', { slot: pokemon.slot + 1 }) : t('saveCollection.memberBoxSlot', { box: pokemon.box! + 1, slot: pokemon.slot + 1 })}{pokemon.isEgg ? <small>{t('app.team.eggLabel')}</small> : pokemon.level !== null && <small>{t('saveCollection.memberLevel', { level: pokemon.level })}</small>}</div>
+      <FieldMoveFilter selected={fieldMoves.selected} onChange={move => { fieldMoves.setSelected(move); setPage(0) }} loading={fieldMoves.loading} error={fieldMoves.error} onRetry={fieldMoves.retry} />
+      {collection.length === 0 ? <p className="empty">{t('saveCollection.emptyCollection')}</p> : !locationCollection.length ? <p className="empty">{location === 'party' ? t('saveCollection.emptyParty') : t('saveCollection.emptyBox')}</p> : !filtered.length ? (!fieldMoves.loading && !fieldMoves.error && <p className="empty">{t('saveCollection.noMatches')}</p>) : <>
+        <div className="pokemon-grid">{filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves tools={<IndividualGenderIcon pokemon={pokemon} />}>
+          <CollectionDetails pokemon={pokemon} />
+          <div className="save-member-info">{pokemon.location === 'party' ? t('saveCollection.memberPartySlot', { slot: pokemon.slot + 1 }) : t('saveCollection.memberBoxSlot', { box: pokemon.box! + 1, slot: pokemon.slot + 1 })}{pokemon.isEgg && <small>{t('app.team.eggLabel')}</small>}</div>
         </PokemonCard>)}</div>
         {pages > 1 && <nav className="pagination" aria-label={t('saveCollection.paginationAriaLabel')}><button disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t('common.previousPage')}</button><span>{currentPage + 1} / {pages}</span><button disabled={currentPage + 1 >= pages} onClick={() => setPage(currentPage + 1)}>{t('common.nextPage')}</button></nav>}
       </>}

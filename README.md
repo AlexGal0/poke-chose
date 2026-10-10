@@ -10,6 +10,7 @@ You can use it manually, sync it with a save file, or enable live reading. The c
 
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
 - **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
+- **Field move filter:** in My Collection, toggle the icons for Cut, Fly, Surf, Strength, Waterfall, Dive, Flash or Dig through Black/White TMs/HMs. Multiple selections find Pokémon compatible with all selected moves. Combine it with name/type and box filters. Compatibility does not mean the move is currently known or that its machine is owned; eggs are excluded. Results load on demand and are cached; incomplete checks show a retry notice.
 - **Type balance:** identifies shared weaknesses, resistances, immunities, and potential offensive STAB coverage.
 - **Type chart:** interactive matrix of the 17 Generation V types, with multipliers and horizontal scrolling on mobile.
 - **Captures by zone:** check Black's encounters, levels, methods, and chances; filter by Surf and Super Rod access. The Pokédex marks species as ever caught even if you've since evolved or released them.
@@ -94,12 +95,12 @@ For this option, use the compatible game and emulator setup described in the req
 2. In melonDS's **GDB** debugging options, enable the server for **ARM7 on port 3334**. For the battle view, also enable **ARM9 on port 3333**.
 3. Uncheck **Break on startup** so the game doesn't stay paused when it starts. If melonDS needs a restart to apply the options, save your progress first.
 4. Open Pokémon Black and enter your save.
-5. Start PokéChose with **Iniciar PokeChose.cmd**, select **melonDS live (experimental)**, and press **Connect reader**.
-6. To check the opponent, open **Battle** and press **Connect battle**. It's a separate reader and uses the ARM9 connection.
+5. Start PokéChose with **Iniciar PokeChose.cmd**, select **melonDS live (experimental)**, and press **Connect readers**. This starts both connections; separate status cards show General reader and Battle reader progress and errors.
+6. To check the opponent, open **Battle**. Its ARM9 reader connects through the same button; a connected reader without an active battle is normal.
 
 Team, HP, experience, and the Pokédex are polled roughly every **3 seconds**, plus however long the read takes. Boxes are checked every **2 minutes**; you can trigger an earlier read with **Update collection** in **My Collection**. The service never writes to the emulator's memory or the save.
 
-After a Reset, reopening the emulator, or a dropped connection, use **Reconnect reader** and, if needed, **Reconnect battle**. **Pause reading** stops the main reader's polling. Switching sources doesn't pause it automatically: press that button if you want to stop it in the background.
+After a Reset, reopening the emulator, or a dropped connection, use **Reconnect readers**. Each connection completes independently; one failure does not cancel the other. The floating connection indicator repeats both statuses and links to the shared controls. **Pause general reader** stops only the main reader's polling; the battle reader remains independent. Switching sources doesn't pause it automatically.
 
 Don't connect another reader to the same GDB port while PokéChose is using it. If the emulator accepts the connection but doesn't respond, keep your progress, restart the save in melonDS, and reconnect. More details: [live reading](docs/live-reading.md) and [battle view](docs/es/enemy-prototype.md) *(Spanish, historical record)*.
 
@@ -144,8 +145,8 @@ The manual collection, team, and preferences are saved in the browser. To get th
 | --- | --- |
 | The launcher closes or says a file is missing | Check for Node.js 22.15 or later and that `live.config.local.json` exists next to `package.json`. Read the terminal error. |
 | The save doesn't show up in Save mode | Check `savePath`, the 512 KiB RAW format, and that you saved inside the game. Restart the services after changing the path. |
-| The live reader won't connect | Check GDB ARM7 3334, the compatible edition, the save being open, and the Connect reader button. |
-| Battle doesn't show the opponent | Check GDB ARM9 3333 and Connect battle. The view is experimental and requires a confirmed read. |
+| The live reader won't connect | Check GDB ARM7 3334, the compatible edition, the save being open, and the Connect readers button. |
+| Battle doesn't show the opponent | Check GDB ARM9 3333 and the Battle reader status in the shared connection controls. The view is experimental and requires a confirmed read. |
 | The boxes show stale data | Wait for the next check, or press Update collection in live mode. |
 | The theme or collection isn't kept | Use the same address, browser, and profile; check the storage notices. |
 | A species' data won't load | Check your internet connection and press Retry. Already-fetched data is reused from cache. |

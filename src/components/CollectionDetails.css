@@ -1,0 +1,4 @@
+.collection-details { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; font-size: 11px; line-height: 1.5; color: var(--text-muted, #a5b5c7); }
+.collection-panel .pokemon-card > .card-tools { position: static; align-self: flex-end; flex-wrap: wrap; justify-content: flex-end; margin-top: 4px; }
+.collection-panel .pokemon-card:has(.card-tools > :first-child) > .in-team, .collection-panel .pokemon-card:has(.card-tools > :first-child) > .fainted-status { position: absolute; top: 62px; right: 8px; margin: 0; z-index: 1; }
+.collection-panel .pokemon-card.selected:has(.card-tools > :first-child) > .fainted-status { top: 82px; }

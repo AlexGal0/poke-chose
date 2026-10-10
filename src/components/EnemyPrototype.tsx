@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyedError, noticeText, toNotice } from '../i18n/notice.ts'
+import { showConnectionControls } from './connection-controls'
 import type { Notice } from '../i18n/notice.ts'
 import { consistentBattleHealth } from '../domain/enemy-prototype'
 import type { EnemyCandidate, ActivePokemonCandidate, BattleTeamMember } from '../domain/enemy-prototype'
@@ -29,25 +30,10 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
   const { t } = useTranslation()
   const [snapshot, setSnapshot] = useState<EnemySnapshot | null>(null)
   const [error, setError] = useState<Notice>(null)
-  const [reconnecting, setReconnecting] = useState(false)
-  const [connectionError, setConnectionError] = useState<Notice>(null)
   const [session, setSession] = useState(emptyBattleSession)
   const connectionStatus = error ? 'error' : snapshot?.status ?? 'waiting'
   const snapshotMessage = snapshot ? t(`enemyPrototype.messages.${snapshot.message}`, { defaultValue: snapshot.message }) : null
   const connectionMessage = noticeText(t, error) || snapshotMessage || t('app.battleWaitingMessage')
-  async function reconnect() {
-    setReconnecting(true)
-    setConnectionError(null)
-    try {
-      const response = await fetch('/enemy-api/connect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
-      await response.json().catch(() => null)
-      if (!response.ok) throw new KeyedError('enemyPrototype.errors.reconnectFailed')
-      setError(null)
-      setSnapshot(null)
-    } catch (cause) {
-      setConnectionError(toNotice(cause, 'enemyPrototype.errors.reconnectFailed'))
-    } finally { setReconnecting(false) }
-  }
   useEffect(() => {
     const controller = new AbortController()
     let timer: ReturnType<typeof setTimeout>
@@ -91,8 +77,7 @@ export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (c
       <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : snapshot?.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
       <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshotMessage || t('enemyPrototype.detail.connecting'))}</span>
     </div>
-    {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button className="primary" disabled={reconnecting} onClick={() => { void reconnect() }}>{reconnecting ? t('enemyPrototype.button.connecting') : disconnected ? t('enemyPrototype.button.reconnect') : t('enemyPrototype.button.connect')}</button></div>}
-    {connectionError && <p className="notice" role="alert">{noticeText(t, connectionError)}</p>}
+    {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button onClick={showConnectionControls}>{t('connectionIndicator.goToControlsButton')}</button></div>}
     {candidate && <div className="battle-participants">
       {activeCandidate ? <BattlePokemon candidate={activeCandidate} pokemon={ownData.pokemon} error={ownData.error} health={ownHealth} stages={ownStages} own /> : <div className="battle-participant own-participant"><h3 className="battle-participant-title">{t('enemyPrototype.ownTitle')}</h3><div className="battle-participant-empty"><strong>{t('enemyPrototype.toBeConfirmed')}</strong><p className="hint">{snapshot?.activeMessage ? t('enemyPrototype.detail.activeReadFailed') : t('enemyPrototype.noActiveReading')}</p></div></div>}
       <BattlePokemon candidate={candidate} pokemon={enemyData.pokemon} error={enemyData.error} health={enemyHealth} stages={enemyStages} />
