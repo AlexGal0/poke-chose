@@ -8,6 +8,8 @@ Puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la
 
 ## Funciones
 
+- **Guardería:** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
+
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
 - **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
 - **Balance de tipos:** identifica debilidades compartidas, resistencias, inmunidades y cobertura ofensiva potencial por STAB.

@@ -8,6 +8,8 @@ You can use it manually, sync it with a save file, or enable live reading. The c
 
 ## Features
 
+- **Day Care:** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
+
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
 - **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
 - **Field move filter:** in My Collection, toggle the icons for Cut, Fly, Surf, Strength, Waterfall, Dive, Flash or Dig through Black/White TMs/HMs. Multiple selections find Pokémon compatible with all selected moves. Combine it with name/type and box filters. Compatibility does not mean the move is currently known or that its machine is owned; eggs are excluded. Results load on demand and are cached; incomplete checks show a retry notice.
