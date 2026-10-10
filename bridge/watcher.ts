@@ -124,6 +124,7 @@ export class SaveWatcher {
     const pokedex = serializePokedex(result.pokedex)
     const dexChanged = !pokedexEqual(this.snapshot.pokedex, pokedex)
     const positionChanged = !positionsEqual(this.snapshot.position, result.position)
+    const daycareChanged = JSON.stringify(this.snapshot.daycare) !== JSON.stringify(result.daycare)
     if (changed) this.options.log(`Save válido; party encontrado (${result.party.length}); cambio de party detectado.`)
     if (boxesChanged) this.options.log(`Cajas actualizadas: ${result.boxes.length} ejemplares almacenados.`)
     if (dexChanged) this.options.log(`Pokédex actualizada: ${pokedex.caughtSpeciesIds.length} capturados / ${pokedex.seenSpeciesIds.length} vistos.`)
@@ -133,7 +134,8 @@ export class SaveWatcher {
       boxes: boxesChanged ? result.boxes : this.snapshot.boxes,
       pokedex: dexChanged ? pokedex : this.snapshot.pokedex,
       position: positionChanged ? result.position : this.snapshot.position,
-      updatedAt: changed || boxesChanged || dexChanged || positionChanged ? new Date().toISOString() : this.snapshot.updatedAt,
+      daycare: daycareChanged ? result.daycare : this.snapshot.daycare,
+      updatedAt: changed || boxesChanged || dexChanged || positionChanged || daycareChanged ? new Date().toISOString() : this.snapshot.updatedAt,
       backup: result.backup,
     })
   }

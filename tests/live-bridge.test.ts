@@ -87,7 +87,7 @@ test('live service waits for explicit connection, emits consistent data and pres
   let repelReads = 0
   ram[0x21b31] = 250
   const instances: { socket: { destroyed: boolean }; close: () => void }[] = []
-  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, mapAddress: 0x02019580, repelStepsAddress: 0x02021b31, repelPollMs: null, pollMs: 20, boxesPollMs: 20 }, () => {
+  const bridge = createLiveBridge({ partyAddress: 0x02018e08, partyCountAddress: 0x02018e04, partyStride: 220, boxesAddress: 0x02000400, boxStride: 4096, pokedexAddress: 0x02021600, mapAddress: 0x02019580, daycareAddress: 0x02020e00, daycarePollMs: 20, repelStepsAddress: 0x02021b31, repelPollMs: null, pollMs: 20, boxesPollMs: 20 }, () => {
     const instance = {
       socket: { destroyed: false },
       async connect() { connections++ },
@@ -146,6 +146,13 @@ test('live service waits for explicit connection, emits consistent data and pres
   assert.deepEqual(ready.boxes, [])
   assert.deepEqual(ready.pokedex.caughtSpeciesIds, [])
   assert.equal(ready.position.mapId, 0)
+  assert.deepEqual(ready.daycare, { slots: [null, null], eggAvailable: false })
+  ram.writeUInt32LE(2, 0x20e00)
+  let corruptDaycare = await until('ready')
+  for (let i = 0; i < 20 && corruptDaycare.daycare !== null; i++) corruptDaycare = await until('ready')
+  assert.equal(corruptDaycare.daycare, null)
+  assert.deepEqual(corruptDaycare.party, ready.party)
+  ram.writeUInt32LE(0, 0x20e00)
   assert.equal(ready.repel.steps, 250)
   ram[0x21b31] = 249
   let stepped = await until('ready')

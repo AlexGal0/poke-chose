@@ -46,6 +46,8 @@ import { MovesProvider } from "./components/MovesProvider";
 import { StatsProvider } from './components/StatsProvider'
 import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
+import { Daycare } from './components/Daycare'
+import { DaycareAlertButton } from './components/DaycareAlertButton'
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -320,6 +322,9 @@ function App() {
           <button id="analysis-tab" role="tab" aria-selected={tab === "analysis"} aria-controls="workspace-panel" onClick={() => setTab("analysis")}>
             {t('app.tabs.analysis')}
           </button>
+          <button id="daycare-tab" role="tab" aria-selected={tab === 'daycare'} aria-controls="workspace-panel" onClick={() => setTab('daycare')}>
+            {t('app.tabs.daycare')}
+          </button>
           <button id="types-tab" role="tab" aria-selected={tab === "types"} aria-controls="workspace-panel" onClick={() => setTab("types")}>
             {t('app.tabs.types')}
           </button>
@@ -413,6 +418,7 @@ function App() {
             <Analysis team={source !== "manual" ? saveTeam.team.filter(member => !member.isEgg) : team} />
           </div>
           <div hidden={tab !== "types"}><TypeChart /></div>
+          <div hidden={tab !== 'daycare'}>{tab === 'daycare' && <Daycare state={saveTeam} source={source} />}</div>
           {source === 'live' && <div hidden={tab !== 'battle'}><EnemyPrototype onConnectionChange={setBattleConnection} /></div>}
         </div>
       </main>
@@ -427,6 +433,11 @@ function App() {
         </span>
       </footer>
       <ConnectionIndicator source={source} state={saveTeam} generalStatus={generalStatus} battleStatus={combatStatus} generalMessage={generalMessage} battleMessage={combatMessage} />
+      {source !== 'manual' && <DaycareAlertButton daycare={saveTeam.daycare} stale={saveTeam.daycareStale} onClick={() => {
+        setTab('daycare')
+        pendingScroll.current = { tab: 'daycare', top: 'workspace' }
+        if (tab === 'daycare') document.getElementById('workspace')?.scrollIntoView({ block: 'start', behavior: 'instant' })
+      }} />}
       {source === 'live' && <RepelIndicator reading={saveTeam.repel} stale={saveTeam.repelStale} />}
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
     </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>

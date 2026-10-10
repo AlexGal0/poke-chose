@@ -113,6 +113,14 @@ test('SSE adapter updates metadata, retains last valid party on errors, ignores 
     await delay(15)
     assert.equal(states.at(-1)!.team[0].level, 25)
     const teamBeforeMove = states.at(-1)!.team
+    const daycare = { slots: [null, null], eggAvailable: true }
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, daycare }) })
+    assert.deepEqual(states.at(-1)!.daycare, daycare)
+    assert.equal(states.at(-1)!.daycareStale, false)
+    assert.equal(states.at(-1)!.team, teamBeforeMove)
+    fake!.onmessage!({ data: JSON.stringify({ ...snapshot, daycare: null }) })
+    assert.deepEqual(states.at(-1)!.daycare, daycare)
+    assert.equal(states.at(-1)!.daycareStale, true)
     const position = { mapId: 123, x: 17, y: 41, z: 29 }
     fake!.onmessage!({ data: JSON.stringify({ ...snapshot, position }) })
     assert.deepEqual(states.at(-1)!.position, position)

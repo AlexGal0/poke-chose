@@ -1,6 +1,5 @@
-import type { SavedBoxPokemon, SavedPartyMember, SavedPokemonData } from '../src/models/party.ts'
+import type { DaycareState, SavedBoxPokemon, SavedPartyMember, SavedPokemonData } from '../src/models/party.ts'
 import { storedGender } from '../src/domain/gender.ts'
-import type { PokedexState } from '../src/models/pokedex.ts'
 import { parsePokedexBlock, POKEDEX_LENGTH, POKEDEX_OFFSET } from './pokedex.ts'
 import type { PlayerPosition } from '../src/models/player-position.ts'
 import { parsePlayerPositionBlock, POSITION_LENGTH, POSITION_OFFSET } from './player-position.ts'
@@ -124,7 +123,22 @@ export function parseStoredPk5(encrypted: Uint8Array): SavedPokemonData | null {
   return parsePokemonData(data)
 }
 
-function parseEntry(save: Uint8Array, base: number): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState; position: PlayerPosition | null } {
+export function parseDaycareBlock(block: Uint8Array): DaycareState {
+  if (block.length !== 0x1cc) throw new Error('Invalid daycare block size.')
+  const fields = view(block)
+  const slots = [0, 1].map(slot => {
+    const offset = slot * 228
+    const occupied = fields.getUint32(offset, true)
+    if (occupied !== 0 && occupied !== 1) throw new Error('Invalid daycare occupancy.')
+    if (!occupied) return null
+    const pokemon = parseStoredPk5(block.subarray(offset + 4, offset + 140))
+    if (!pokemon || pokemon.isEgg || pokemon.experience === undefined) throw new Error('Invalid daycare Pokemon.')
+    return { ...pokemon, experience: pokemon.experience, gainedExperience: fields.getUint32(offset + 224, true) }
+  }) as DaycareState['slots']
+  return { slots, eggAvailable: Boolean(block[0x1c8] & 1) }
+}
+
+function parseEntry(save: Uint8Array, base: number) {
   const fields = view(save)
   const checksum = (offset: number, length: number, stored: number, mirror?: number) => {
     const actual = crc16(save.subarray(base + offset, base + offset + length))
@@ -160,10 +174,15 @@ function parseEntry(save: Uint8Array, base: number): { party: SavedPartyMember[]
     checksum(POSITION_OFFSET, POSITION_LENGTH, 0x1959e, 0x23f38)
     position = parsePlayerPositionBlock(save.subarray(base + POSITION_OFFSET, base + POSITION_OFFSET + POSITION_LENGTH))
   } catch { /* Location unavailable; retain the valid core entry. */ }
-  return { party, boxes, position, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
+  let daycare: DaycareState | null = null
+  try {
+    checksum(0x20e00, 0x1cc, 0x20fce, 0x23f64)
+    daycare = parseDaycareBlock(save.subarray(base + 0x20e00, base + 0x20fcc))
+  } catch { /* Optional failure must not discard or mix the core entry. */ }
+  return { party, boxes, position, daycare, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
 }
 
-export function parseSave(save: Uint8Array, allowBackup = true): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[]; pokedex: PokedexState; position: PlayerPosition | null; backup: boolean } {
+export function parseSave(save: Uint8Array, allowBackup = true) {
   if (save.length !== SAVE_SIZE) throw new Error('Save inválido: se necesita un .sav RAW de 512 KiB (524288 bytes).')
   try { return { ...parseEntry(save, 0), backup: false } } catch (primaryError) {
     if (allowBackup) {

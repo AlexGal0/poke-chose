@@ -1,0 +1,7 @@
+.daycare-floating-alert { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(152px, calc(env(safe-area-inset-bottom) + 132px)); z-index: 30; display: flex; align-items: center; justify-content: center; gap: 5px; width: 54px; height: 54px; padding: 0; border: 2px solid #a4dfbd; border-radius: 50%; background: #286c4c; color: #edfff5; box-shadow: 0 4px 20px rgb(0 0 0 / 35%); }
+.daycare-floating-alert > span { font-size: 26px; }
+.daycare-floating-alert > strong { font-size: 17px; font-variant-numeric: tabular-nums; }
+.daycare-floating-alert-soon { background: #795d25; border-color: #eac56a; color: #fff5d6; }
+.daycare-floating-alert:hover { filter: brightness(1.15); }
+.daycare-floating-alert:focus-visible { outline: 3px solid var(--text, #edf4f8); outline-offset: 4px; }
+body:has(dialog[open]) .daycare-floating-alert { display: none; }

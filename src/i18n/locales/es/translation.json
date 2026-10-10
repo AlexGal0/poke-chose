@@ -209,6 +209,7 @@
       }
     },
     "tabs": {
+      "daycare": "Guardería",
       "ariaLabel": "Secciones de PokéChose",
       "captures": "Capturas por zona",
       "catalog": "Explorar catálogo",
@@ -972,6 +973,42 @@
       "waiting": "Esperando lectura",
       "disconnected": "Sin conexión",
       "paused": "Pausado"
+    }
+  },
+  "daycare": {
+    "title": "Guardería",
+    "manual": "Selecciona el lector de save para consultar la guardería de tu partida.",
+    "saveHint": "Datos del último guardado. Guarda en el juego para actualizar los espacios, niveles y huevo.",
+    "liveHint": "Datos en vivo del lector general. Los cambios se consultan periódicamente.",
+    "eggReady": "Huevo disponible para recoger",
+    "noEgg": "Sin huevo disponible",
+    "eggUnknown": "Estado del huevo desconocido",
+    "stale": "Última lectura válida; los datos están desactualizados.",
+    "unavailable": "No se pudo leer la guardería. Los demás datos de tu partida siguen disponibles.",
+    "slot": "Espacio {{number}}",
+    "species": "Pokémon #{{id}}",
+    "level": "Nivel {{level}}",
+    "levelUnavailable": "Nivel no disponible",
+    "loading": "Cargando nivel…",
+    "retry": "Reintentar",
+    "unknown": "Sin datos",
+    "empty": "Espacio libre",
+    "maxLevel": "Nivel máximo",
+    "nextLevel": "Hacia nivel {{level}}",
+    "expAria": "Experiencia hacia el siguiente nivel",
+    "expValue": "{{current}} de {{max}} puntos de experiencia",
+    "stepsRemaining": "≈ {{steps}} pasos para subir",
+    "evolutionRemaining": "Faltan {{count}} niveles para evolucionar (nivel {{level}})",
+    "evolutionReached": "Umbral de evolución alcanzado (nivel {{level}})",
+    "evolutionHint": "No evoluciona en la guardería: retíralo y sube un nivel. Pulsa para ver la evolución.",
+    "floatingAlert": "Guardería: {{count}} Pokémon con alerta de evolución. Abrir guardería",
+    "floatingDetail": {
+      "soon": "Espacio {{slot}}: cerca del nivel de evolución",
+      "reached": "Espacio {{slot}}: nivel de evolución alcanzado"
+    },
+    "evolutionAlert": {
+      "soon": "¡Cerca del nivel de evolución! ≈ {{steps}} pasos hasta el nivel {{level}}.",
+      "reached": "Nivel de evolución alcanzado. Retíralo y sube un nivel para evolucionar."
     }
   },
   "repel": {

@@ -209,6 +209,7 @@
       }
     },
     "tabs": {
+      "daycare": "Day Care",
       "ariaLabel": "PokéChose sections",
       "captures": "Captures by zone",
       "catalog": "Browse catalog",
@@ -972,6 +973,42 @@
       "waiting": "Waiting for a reading",
       "disconnected": "Disconnected",
       "paused": "Paused"
+    }
+  },
+  "daycare": {
+    "title": "Day Care",
+    "manual": "Select the save reader to view your game’s Day Care.",
+    "saveHint": "Data from your last save. Save in the game to update slots, levels and egg status.",
+    "liveHint": "Live data from the general reader. Changes are checked periodically.",
+    "eggReady": "Egg ready to collect",
+    "noEgg": "No egg available",
+    "eggUnknown": "Egg status unknown",
+    "stale": "Last valid reading; data is outdated.",
+    "unavailable": "Could not read Day Care. Your other game data remains available.",
+    "slot": "Slot {{number}}",
+    "species": "Pokémon #{{id}}",
+    "level": "Level {{level}}",
+    "levelUnavailable": "Level unavailable",
+    "loading": "Loading level…",
+    "retry": "Retry",
+    "unknown": "No data",
+    "empty": "Empty slot",
+    "maxLevel": "Maximum level",
+    "nextLevel": "Toward level {{level}}",
+    "expAria": "Experience toward the next level",
+    "expValue": "{{current}} of {{max}} experience points",
+    "stepsRemaining": "≈ {{steps}} steps to level up",
+    "evolutionRemaining": "{{count}} levels until evolution (level {{level}})",
+    "evolutionReached": "Evolution threshold reached (level {{level}})",
+    "evolutionHint": "It cannot evolve in Day Care: withdraw it and level up. Click to view evolution.",
+    "floatingAlert": "Day Care: {{count}} Pokémon with evolution alerts. Open Day Care",
+    "floatingDetail": {
+      "soon": "Slot {{slot}}: approaching evolution level",
+      "reached": "Slot {{slot}}: evolution level reached"
+    },
+    "evolutionAlert": {
+      "soon": "Evolution level approaching! ≈ {{steps}} steps until level {{level}}.",
+      "reached": "Evolution level reached. Withdraw it and level up to evolve."
     }
   },
   "repel": {

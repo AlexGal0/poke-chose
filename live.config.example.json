@@ -17,6 +17,8 @@
   "boxStride": 4096,
   "pokedexAddress": "0x0223d16c",
   "mapAddress": "0x0224f8cc",
+  "daycareAddress": null,
+  "daycarePollMs": 3000,
   "repelStepsAddress": null,
   "repelPollMs": 500
 }
