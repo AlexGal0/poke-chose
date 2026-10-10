@@ -2,17 +2,18 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getSavePokemon } from '../api/pokeapi'
 import { getExperienceLevels } from '../api/experience'
-import { levelFromExperience } from '../domain/experience'
+import type { ExperienceLevel } from '../api/experience'
+import { experienceProgress, levelFromExperience } from '../domain/experience'
 import type { SavedDaycarePokemon } from '../models/party'
 import type { Pokemon } from '../models/pokemon'
 import type { TeamSourceState } from '../sources/team'
 import './Daycare.css'
 
 function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [attempt, setAttempt] = useState(0)
-  const [result, setResult] = useState<{ key: string; pokemon: Pokemon | null; level: number | null } | null>(null)
-  const key = `${member.speciesId}-${member.form}-${member.experience}-${member.gainedExperience}`
+  const [result, setResult] = useState<{ key: string; pokemon: Pokemon | null; levels: ExperienceLevel[] | null } | null>(null)
+  const key = `${member.speciesId}-${member.form}`
   useEffect(() => {
     const controller = new AbortController()
     void Promise.allSettled([
@@ -21,17 +22,25 @@ function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
     ]).then(([pokemon, levels]) => {
       if (controller.signal.aborted) return
       setResult({ key, pokemon: pokemon.status === 'fulfilled' ? pokemon.value : null,
-        level: levels.status === 'fulfilled' ? levelFromExperience(member.experience + member.gainedExperience, levels.value) : null })
+        levels: levels.status === 'fulfilled' ? levels.value : null })
     })
     return () => controller.abort()
-  }, [key, member.speciesId, member.form, member.experience, member.gainedExperience, attempt])
+  }, [key, member.speciesId, member.form, attempt])
   const current = result?.key === key ? result : null
+  const totalExperience = member.experience + member.gainedExperience
+  const level = current?.levels ? levelFromExperience(totalExperience, current.levels) : null
+  const progress = level != null && current?.levels ? experienceProgress(level, totalExperience, current.levels) : null
   return <>
     {current?.pokemon?.sprite && <img className="daycare-sprite" src={current.pokemon.sprite} alt="" />}
     <h3>{member.nickname ?? current?.pokemon?.name ?? t('daycare.species', { id: member.speciesId })}</h3>
     {member.nickname && current?.pokemon && <p>{current.pokemon.name}</p>}
-    <strong className="daycare-level">{current?.level != null ? t('daycare.level', { level: current.level }) : t(current ? 'daycare.levelUnavailable' : 'daycare.loading')}</strong>
-    {current && (!current.pokemon || current.level == null) && <button onClick={() => setAttempt(value => value + 1)}>{t('daycare.retry')}</button>}
+    <strong className="daycare-level">{level != null ? t('daycare.level', { level }) : t(current ? 'daycare.levelUnavailable' : 'daycare.loading')}</strong>
+    {progress && <div className="daycare-experience">
+      <div className="daycare-exp-label"><span>EXP</span><span>{level === 100 ? t('daycare.maxLevel') : t('daycare.nextLevel', { level: level! + 1 })}</span></div>
+      <progress className="daycare-exp-bar" aria-label={t('daycare.expAria')} aria-valuetext={level === 100 ? t('daycare.maxLevel') : t('daycare.expValue', { current: progress.value, max: progress.max })} value={progress.value} max={progress.max} />
+      <p className="daycare-steps">{level === 100 ? t('daycare.maxLevel') : t('daycare.stepsRemaining', { steps: progress.remaining.toLocaleString(i18n.language) })}</p>
+    </div>}
+    {current && (!current.pokemon || level == null) && <button onClick={() => setAttempt(value => value + 1)}>{t('daycare.retry')}</button>}
   </>
 }
 

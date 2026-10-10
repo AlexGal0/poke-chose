@@ -992,6 +992,11 @@
     "loading": "Cargando nivel…",
     "retry": "Reintentar",
     "unknown": "Sin datos",
-    "empty": "Espacio libre"
+    "empty": "Espacio libre",
+    "maxLevel": "Nivel máximo",
+    "nextLevel": "Hacia nivel {{level}}",
+    "expAria": "Experiencia hacia el siguiente nivel",
+    "expValue": "{{current}} de {{max}} puntos de experiencia",
+    "stepsRemaining": "≈ {{steps}} pasos para subir"
   }
 }

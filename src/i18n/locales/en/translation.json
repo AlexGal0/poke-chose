@@ -992,6 +992,11 @@
     "loading": "Loading level…",
     "retry": "Retry",
     "unknown": "No data",
-    "empty": "Empty slot"
+    "empty": "Empty slot",
+    "maxLevel": "Maximum level",
+    "nextLevel": "Toward level {{level}}",
+    "expAria": "Experience toward the next level",
+    "expValue": "{{current}} of {{max}} experience points",
+    "stepsRemaining": "≈ {{steps}} steps to level up"
   }
 }
