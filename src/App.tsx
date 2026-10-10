@@ -46,6 +46,7 @@ import { StatsProvider } from './components/StatsProvider'
 import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
 import { Daycare } from './components/Daycare'
+import { DaycareAlertButton } from './components/DaycareAlertButton'
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -431,6 +432,11 @@ function App() {
         </span>
       </footer>
       <ConnectionIndicator source={source} state={saveTeam} generalStatus={generalStatus} battleStatus={combatStatus} generalMessage={generalMessage} battleMessage={combatMessage} />
+      {source !== 'manual' && <DaycareAlertButton daycare={saveTeam.daycare} stale={saveTeam.daycareStale} onClick={() => {
+        setTab('daycare')
+        pendingScroll.current = { tab: 'daycare', top: 'workspace' }
+        if (tab === 'daycare') document.getElementById('workspace')?.scrollIntoView({ block: 'start', behavior: 'instant' })
+      }} />}
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
     </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>
   );

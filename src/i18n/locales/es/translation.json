@@ -1001,6 +1001,11 @@
     "evolutionRemaining": "Faltan {{count}} niveles para evolucionar (nivel {{level}})",
     "evolutionReached": "Umbral de evolución alcanzado (nivel {{level}})",
     "evolutionHint": "No evoluciona en la guardería: retíralo y sube un nivel. Pulsa para ver la evolución.",
+    "floatingAlert": "Guardería: {{count}} Pokémon con alerta de evolución. Abrir guardería",
+    "floatingDetail": {
+      "soon": "Espacio {{slot}}: cerca del nivel de evolución",
+      "reached": "Espacio {{slot}}: nivel de evolución alcanzado"
+    },
     "evolutionAlert": {
       "soon": "¡Cerca del nivel de evolución! ≈ {{steps}} pasos hasta el nivel {{level}}.",
       "reached": "Nivel de evolución alcanzado. Retíralo y sube un nivel para evolucionar."
