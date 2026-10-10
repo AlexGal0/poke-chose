@@ -8,11 +8,16 @@ async function control(action: 'connect' | 'disconnect') {
 
 export const liveDataSource: PokemonDataSource = {
   id: 'live', labelKey: 'sources.live.label',
-  capabilities: { party: true, boxes: true, pokedex: true },
+  capabilities: { party: true, boxes: true, pokedex: true, repel: true },
   reconnect: () => control('connect'),
   subscribe(notify) {
     const events = new EventSource('/live-api/events')
     events.onerror = () => notify({ type: 'connection', connected: false, message: { key: 'sources.live.disconnected' } })
+    events.addEventListener('repel', event => {
+      let reading: unknown
+      try { reading = JSON.parse((event as MessageEvent).data) } catch { reading = null }
+      notify({ type: 'repel', reading })
+    })
     events.onmessage = event => {
       let snapshot: unknown
       try { snapshot = JSON.parse(event.data) } catch { snapshot = null }
