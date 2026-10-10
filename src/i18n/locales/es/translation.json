@@ -1000,6 +1000,10 @@
     "stepsRemaining": "≈ {{steps}} pasos para subir",
     "evolutionRemaining": "Faltan {{count}} niveles para evolucionar (nivel {{level}})",
     "evolutionReached": "Umbral de evolución alcanzado (nivel {{level}})",
-    "evolutionHint": "No evoluciona en la guardería: retíralo y sube un nivel. Pulsa para ver la evolución."
+    "evolutionHint": "No evoluciona en la guardería: retíralo y sube un nivel. Pulsa para ver la evolución.",
+    "evolutionAlert": {
+      "soon": "¡Cerca del nivel de evolución! ≈ {{steps}} pasos hasta el nivel {{level}}.",
+      "reached": "Nivel de evolución alcanzado. Retíralo y sube un nivel para evolucionar."
+    }
   }
 }

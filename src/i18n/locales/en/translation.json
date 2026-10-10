@@ -1000,6 +1000,10 @@
     "stepsRemaining": "≈ {{steps}} steps to level up",
     "evolutionRemaining": "{{count}} levels until evolution (level {{level}})",
     "evolutionReached": "Evolution threshold reached (level {{level}})",
-    "evolutionHint": "It cannot evolve in Day Care: withdraw it and level up. Click to view evolution."
+    "evolutionHint": "It cannot evolve in Day Care: withdraw it and level up. Click to view evolution.",
+    "evolutionAlert": {
+      "soon": "Evolution level approaching! ≈ {{steps}} steps until level {{level}}.",
+      "reached": "Evolution level reached. Withdraw it and level up to evolve."
+    }
   }
 }

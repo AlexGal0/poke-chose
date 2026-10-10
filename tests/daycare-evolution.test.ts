@@ -1,7 +1,17 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { nextEvolutionLevel } from '../src/domain/daycare-evolution.ts'
+import { daycareEvolutionAlert, nextEvolutionLevel } from '../src/domain/daycare-evolution.ts'
 import type { EvolutionNode } from '../src/models/evolution.ts'
+
+test('daycare evolution alert only warns near the evolution threshold and persists after reaching it', () => {
+  assert.equal(daycareEvolutionAlert(15, 16, 50), 'soon')
+  assert.equal(daycareEvolutionAlert(15, 16, 1), 'soon')
+  assert.equal(daycareEvolutionAlert(15, 16, 51), null)
+  assert.equal(daycareEvolutionAlert(14, 16, 1), null)
+  assert.equal(daycareEvolutionAlert(15, 16, null), null)
+  assert.equal(daycareEvolutionAlert(16, 16, 800), 'reached')
+  assert.equal(daycareEvolutionAlert(21, 16, null), 'reached')
+})
 
 test('daycare evolution selects the next stage and excludes conditional or non-level methods', () => {
   const child: EvolutionNode = { speciesId: 507, name: 'herdier', methods: [{ trigger: { name: 'level-up', url: '' }, min_level: 16 }], children: [{ speciesId: 508, name: 'stoutland', methods: [{ trigger: { name: 'level-up', url: '' }, min_level: 32 }], children: [] }] }

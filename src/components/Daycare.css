@@ -12,6 +12,9 @@
 .daycare-slot { position: relative; }
 .daycare-evolution { position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 6px; padding: 5px 9px; font-variant-numeric: tabular-nums; }
 .daycare-slot-label { padding-right: 60px; }
+.daycare-evolution-highlight { border-color: var(--accent, #85d9ba); color: var(--accent, #85d9ba); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #85d9ba) 20%, transparent); }
+.daycare-evolution-alert { width: 100%; padding: 10px 12px; border: 1px solid var(--accent, #85d9ba); border-radius: 10px; background: color-mix(in srgb, var(--accent, #85d9ba) 10%, var(--surface, #18212c)); color: var(--text); font-size: .85rem; line-height: 1.5; }
+.daycare-evolution-alert-soon { border-color: #d99b27; background: color-mix(in srgb, #d99b27 12%, var(--surface, #18212c)); }
 .daycare-slot h3 { text-transform: capitalize; overflow-wrap: anywhere; }
 .daycare-empty { margin: auto; color: var(--text-muted, #a8b5c5); }
 .daycare-experience { width: 100%; margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--border, #35404e); }

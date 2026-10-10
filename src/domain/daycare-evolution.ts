@@ -1,5 +1,10 @@
 import type { EvolutionNode } from '../models/evolution.ts'
 
+export function daycareEvolutionAlert(level: number, target: number, stepsRemaining: number | null): 'soon' | 'reached' | null {
+  if (level >= target) return 'reached'
+  return level + 1 === target && stepsRemaining != null && stepsRemaining > 0 && stepsRemaining <= 50 ? 'soon' : null
+}
+
 export function nextEvolutionLevel(root: EvolutionNode, speciesId: number): number | null {
   const find = (node: EvolutionNode): EvolutionNode | undefined => node.speciesId === speciesId ? node : node.children.map(find).find(Boolean)
   const current = find(root)
