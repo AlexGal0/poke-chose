@@ -8,6 +8,7 @@ import type { SavedDaycarePokemon } from '../models/party'
 import type { Pokemon } from '../models/pokemon'
 import type { TeamSourceState } from '../sources/team'
 import './Daycare.css'
+import { DaycareEvolution } from './DaycareEvolution'
 
 function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
   const { t, i18n } = useTranslation()
@@ -31,6 +32,7 @@ function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
   const level = current?.levels ? levelFromExperience(totalExperience, current.levels) : null
   const progress = level != null && current?.levels ? experienceProgress(level, totalExperience, current.levels) : null
   return <>
+    <DaycareEvolution speciesId={member.speciesId} level={level} />
     {current?.pokemon?.sprite && <img className="daycare-sprite" src={current.pokemon.sprite} alt="" />}
     <h3>{member.nickname ?? current?.pokemon?.name ?? t('daycare.species', { id: member.speciesId })}</h3>
     {member.nickname && current?.pokemon && <p>{current.pokemon.name}</p>}

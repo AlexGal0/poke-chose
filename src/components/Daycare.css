@@ -9,6 +9,9 @@
 .daycare-slot-label { align-self: flex-start; color: var(--text-muted, #a8b5c5); font-size: .85rem; }
 .daycare-sprite { width: 96px; height: 96px; image-rendering: pixelated; }
 .daycare-level { font-size: 1.4rem; }
+.daycare-slot { position: relative; }
+.daycare-evolution { position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 6px; padding: 5px 9px; font-variant-numeric: tabular-nums; }
+.daycare-slot-label { padding-right: 60px; }
 .daycare-slot h3 { text-transform: capitalize; overflow-wrap: anywhere; }
 .daycare-empty { margin: auto; color: var(--text-muted, #a8b5c5); }
 .daycare-experience { width: 100%; margin-top: 4px; padding-top: 16px; border-top: 1px solid var(--border, #35404e); }

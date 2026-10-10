@@ -997,6 +997,9 @@
     "nextLevel": "Hacia nivel {{level}}",
     "expAria": "Experiencia hacia el siguiente nivel",
     "expValue": "{{current}} de {{max}} puntos de experiencia",
-    "stepsRemaining": "≈ {{steps}} pasos para subir"
+    "stepsRemaining": "≈ {{steps}} pasos para subir",
+    "evolutionRemaining": "Faltan {{count}} niveles para evolucionar (nivel {{level}})",
+    "evolutionReached": "Umbral de evolución alcanzado (nivel {{level}})",
+    "evolutionHint": "No evoluciona en la guardería: retíralo y sube un nivel. Pulsa para ver la evolución."
   }
 }
