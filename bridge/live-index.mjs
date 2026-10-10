@@ -6,7 +6,7 @@ try { config = JSON.parse(await readFile('live.config.local.json', 'utf8')) }
 catch (error) { if (error.code !== 'ENOENT') { console.error('[live]', error.message); process.exit(1) } }
 const port = Number(process.env.LIVE_BRIDGE_PORT ?? 3002)
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('LIVE_BRIDGE_PORT inválido.')
-for (const key of ['pollMs', 'fastPollMs', 'boxesPollMs']) {
+for (const key of ['pollMs', 'fastPollMs', 'boxesPollMs', 'daycarePollMs']) {
   const maximum = key === 'boxesPollMs' ? 600000 : 60000
   if (config[key] !== undefined && (!Number.isInteger(config[key]) || config[key] < 1000 || config[key] > maximum)) throw new Error(`${key} debe estar entre 1000 y ${maximum}.`)
 }

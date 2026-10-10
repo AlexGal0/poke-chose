@@ -4,6 +4,7 @@ import { readParty } from './live/party.mjs'
 import { readBoxes, readPokedex } from './live/storage.mjs'
 import { isSaveSnapshot } from '../src/models/party.ts'
 import { readPlayerPosition } from './live/position.mjs'
+import { readDaycare } from './live/daycare.mjs'
 
 export function createLiveBridge(config, makeReader = options => new GdbReader(options)) {
   const clients = new Set()
@@ -20,6 +21,9 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   let active = false
   let refreshRequest = null
   let boxesError = null
+  const daycarePollMs = config.daycarePollMs ?? 3000
+  let daycareAttemptAt = null
+  let cachedDaycare = null
   const identity = p => `${p.personality}-${p.trainerId}-${p.speciesId}`
   let snapshot = { status: 'waiting', message: 'pressConnect', party: null, boxes: null, pokedex: null, updatedAt: null, backup: false }
   function publish(next) {
@@ -33,6 +37,8 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
     reader = null
     active = false
     boxesAttemptAt = null
+    daycareAttemptAt = null
+    cachedDaycare = null
   }
   async function pause() {
     active = false
@@ -46,6 +52,13 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
     const current = reader
     try {
       const party = await readParty(current, config)
+      if (daycareAttemptAt === null || Date.now() - daycareAttemptAt >= daycarePollMs) {
+        try { cachedDaycare = await readDaycare(current, config) }
+        catch (error) {
+          cachedDaycare = null
+          if (current.socket?.destroyed) throw error
+        } finally { daycareAttemptAt = Date.now() }
+      }
       const pokedex = await readPokedex(current, config)
       const refreshBoxes = boxesAttemptAt === null || Date.now() - boxesAttemptAt >= boxesPollMs
       let boxes = cachedBoxes
@@ -74,7 +87,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
         // Location is optional; an unstable/invalid sample must not discard the team.
         if (current.socket?.destroyed) throw error
       }
-      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, position, updatedAt: new Date().toISOString(), backup: false }
+      const next = { status: 'ready', message: boxesError ? 'readyBoxesFailed' : 'readyActive', party, boxes: visibleBoxes, pokedex, position, daycare: cachedDaycare, updatedAt: new Date().toISOString(), backup: false }
       if (!isSaveSnapshot(next)) throw new Error('La memoria no contiene una partida compatible.')
       if (token === generation) {
         if (refreshBoxes && !boxesError) cachedBoxes = boxes
@@ -93,6 +106,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   }
   async function connect() {
     await pause()
+    daycareAttemptAt = null
     boxesAttemptAt = null
     const token = generation
     publish({ status: 'waiting', message: 'connecting' })

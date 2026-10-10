@@ -979,7 +979,7 @@
     "title": "Guardería",
     "manual": "Selecciona el lector de save para consultar la guardería de tu partida.",
     "saveHint": "Datos del último guardado. Guarda en el juego para actualizar los espacios, niveles y huevo.",
-    "liveHint": "La guardería en vivo aún no está disponible. Consulta el lector de save.",
+    "liveHint": "Datos en vivo del lector general. Los cambios se consultan periódicamente.",
     "eggReady": "Huevo disponible para recoger",
     "noEgg": "Sin huevo disponible",
     "eggUnknown": "Estado del huevo desconocido",
