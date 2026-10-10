@@ -209,6 +209,7 @@
       }
     },
     "tabs": {
+      "daycare": "Day Care",
       "ariaLabel": "PokéChose sections",
       "captures": "Captures by zone",
       "catalog": "Browse catalog",
@@ -973,5 +974,24 @@
       "disconnected": "Disconnected",
       "paused": "Paused"
     }
+  },
+  "daycare": {
+    "title": "Day Care",
+    "manual": "Select the save reader to view your game’s Day Care.",
+    "saveHint": "Data from your last save. Save in the game to update slots, levels and egg status.",
+    "liveHint": "Live Day Care is not available yet. Use the save reader.",
+    "eggReady": "Egg ready to collect",
+    "noEgg": "No egg available",
+    "eggUnknown": "Egg status unknown",
+    "stale": "Last valid reading; data is outdated.",
+    "unavailable": "Could not read Day Care. Your other game data remains available.",
+    "slot": "Slot {{number}}",
+    "species": "Pokémon #{{id}}",
+    "level": "Level {{level}}",
+    "levelUnavailable": "Level unavailable",
+    "loading": "Loading level…",
+    "retry": "Retry",
+    "unknown": "No data",
+    "empty": "Empty slot"
   }
 }

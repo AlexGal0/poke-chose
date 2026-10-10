@@ -209,6 +209,7 @@
       }
     },
     "tabs": {
+      "daycare": "Guardería",
       "ariaLabel": "Secciones de PokéChose",
       "captures": "Capturas por zona",
       "catalog": "Explorar catálogo",
@@ -973,5 +974,24 @@
       "disconnected": "Sin conexión",
       "paused": "Pausado"
     }
+  },
+  "daycare": {
+    "title": "Guardería",
+    "manual": "Selecciona el lector de save para consultar la guardería de tu partida.",
+    "saveHint": "Datos del último guardado. Guarda en el juego para actualizar los espacios, niveles y huevo.",
+    "liveHint": "La guardería en vivo aún no está disponible. Consulta el lector de save.",
+    "eggReady": "Huevo disponible para recoger",
+    "noEgg": "Sin huevo disponible",
+    "eggUnknown": "Estado del huevo desconocido",
+    "stale": "Última lectura válida; los datos están desactualizados.",
+    "unavailable": "No se pudo leer la guardería. Los demás datos de tu partida siguen disponibles.",
+    "slot": "Espacio {{number}}",
+    "species": "Pokémon #{{id}}",
+    "level": "Nivel {{level}}",
+    "levelUnavailable": "Nivel no disponible",
+    "loading": "Cargando nivel…",
+    "retry": "Reintentar",
+    "unknown": "Sin datos",
+    "empty": "Espacio libre"
   }
 }
