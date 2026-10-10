@@ -68,3 +68,11 @@ Los tests sintéticos cubren slots libres/ocupados, separación de experiencia, 
 Se consultó PokéAPI para especie 506: curva `medium-slow`. La tabla pública se conserva como fixture en `tests/helpers/medium-slow-experience.json`, con URL de origen. Umbrales: nivel 4 = 96, nivel 15 = 2035, nivel 16 = 2535, nivel 100 = 1059860. Los 2384 puntos observados corresponden a nivel 15 con el conversor existente. Los tests pasan por el parser de investigación con PK5 sintético y verifican experiencia inicial + ganada, límites inmediatos de nivel 16 y 100, y exceso de experiencia sin superar 100. No se pidieron más acciones en el juego para estas comprobaciones.
 
 Validación de esta etapa: `npm test` (242 tests), `npm run lint` y `npm run build` pasan. La suite completa requiere permiso para sus servidores locales; la ejecución restringida falló y la ejecución con ese permiso pasó. El build conserva el aviso de tamaño de bundle. No se hicieron cambios de interfaz en esta etapa.
+
+## Integración de referencia save
+
+El parser definitivo expone `daycare` con dos slots (null significa libre confirmado), identidad PK5, experiencia original y ganada y flag de huevo. No expone el nivel de depósito como actual. `daycare: null` significa bloque no disponible o inválido; el dato es opcional para compatibilidad con lectores anteriores. Valida CRC local/espejo y PK5 sin usar los campos obsoletos de estadísticas del depósito. La selección de principal/backup se hace con el núcleo del save; no mezcla guardería de otra entrada si el bloque opcional falla.
+
+Watcher y snapshots publican cambios exclusivos de guardería sin reemplazar equipo/cajas. El adaptador conserva la última lectura válida con `daycareStale` ante dato no disponible, error o desconexión. El dato de guardería no se añade a la colección ni a la checklist. La conversión al nivel actual y la resolución de sprites se harán en la pestaña usando las tablas ya contrastadas.
+
+El parser definitivo se contrastó contra el lector de investigación sobre el último save real: identidad y experiencias de ambos slots y estado de huevo coinciden. Tests sintéticos cubren corrupción aislada, respaldo seleccionado, recuperación del watcher y adaptación sin rehidratar equipo. Validación: 245 tests, lint y build pasan. No se pidieron más acciones al usuario ni se modificó su partida.

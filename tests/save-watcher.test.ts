@@ -30,6 +30,32 @@ async function temporarySave() {
 
 const options = { debounceMs: 40, retryMs: [30, 60], recoveryMs: 100, read: (path: string) => readStableSave(path, 10), log: () => {} }
 
+test('daycare-only updates publish without replacing team and corrupt daycare recovers', async () => {
+  const temporary = await temporarySave()
+  const watcher = new SaveWatcher(temporary.path, () => {}, options)
+  const bytes = saveFixture()
+  try {
+    await writeFile(temporary.path, bytes)
+    watcher.start()
+    await eventually(() => watcher.snapshot.status === 'ready')
+    const { party, boxes } = watcher.snapshot
+    bytes[0x20fc8] = 1
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.daycare?.eggAvailable === true)
+    assert.equal(watcher.snapshot.party, party)
+    assert.equal(watcher.snapshot.boxes, boxes)
+    bytes[0x20fce] ^= 1
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.daycare === null)
+    assert.equal(watcher.snapshot.status, 'ready')
+    assert.equal(watcher.snapshot.party, party)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.daycare?.eggAvailable === true)
+  } finally { watcher.stop(); await temporary.cleanup() }
+})
+
 test('watcher publishes directly stored stat and nature changes in party and boxes', async () => {
   const temporary = await temporarySave()
   const watcher = new SaveWatcher(temporary.path, () => {}, options)

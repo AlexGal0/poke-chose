@@ -44,7 +44,16 @@ export type CollectionPokemon = Pokemon & SavedPokemonData & {
 
 export type PartyPokemon = Pokemon & SavedPartyMember
 export type SaveStatus = 'waiting' | 'ready' | 'missing' | 'error'
+export interface SavedDaycarePokemon extends SavedPokemonData {
+  experience: number
+  gainedExperience: number
+}
+export interface DaycareState {
+  slots: [SavedDaycarePokemon | null, SavedDaycarePokemon | null]
+  eggAvailable: boolean
+}
 export interface PokemonSnapshot {
+  daycare?: DaycareState | null
   // Optional for compatibility with bridges that do not read position yet.
   position?: PlayerPosition | null
   status: SaveStatus
@@ -72,6 +81,10 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
     (member.nickname == null || (typeof member.nickname === 'string' && member.nickname.length <= 10 && member.nickname.trim().length > 0 && [...member.nickname].every(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) !== 127))) &&
     Array.isArray(member.moveIds) && member.moveIds.length === 4 && member.moveIds.every(id => integer(id, 0, 65535))
   return ['waiting', 'ready', 'missing', 'error'].includes(snapshot.status) && typeof snapshot.message === 'string' &&
+    (snapshot.daycare == null || (typeof snapshot.daycare.eggAvailable === 'boolean' &&
+      Array.isArray(snapshot.daycare.slots) && snapshot.daycare.slots.length === 2 &&
+      snapshot.daycare.slots.every(member => member === null || (pokemon(member) && !member.isEgg &&
+        integer(member.experience, 0, 0xffffffff) && integer(member.gainedExperience, 0, 0xffffffff))))) &&
     (snapshot.position === undefined || snapshot.position === null || isPlayerPosition(snapshot.position)) &&
     (snapshot.pokedex === null || isPokedexSnapshot(snapshot.pokedex)) &&
     (snapshot.boxes === null || (Array.isArray(snapshot.boxes) && snapshot.boxes.length <= 720 &&
