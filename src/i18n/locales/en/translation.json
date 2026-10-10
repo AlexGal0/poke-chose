@@ -973,5 +973,16 @@
       "disconnected": "Disconnected",
       "paused": "Paused"
     }
+  },
+  "repel": {
+    "label": "Repel: {{steps}} steps remaining",
+    "staleLabel": "Repel: last reading of {{steps}} steps, out of date",
+    "steps": "steps",
+    "stale": "Out of date",
+    "active": "Repel active",
+    "lastKnown": "Last repel reading",
+    "detail": "Steps remaining according to the game.",
+    "staleDetail": "The value may have changed. It will update when readings resume.",
+    "lastReading": "Last reading: {{time}}"
   }
 }

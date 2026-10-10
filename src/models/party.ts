@@ -6,6 +6,8 @@ import type { PlayerPosition } from './player-position.ts'
 import { currentStatsEqual, isCurrentStats } from '../domain/stats.ts'
 import type { CurrentStats } from '../domain/stats.ts'
 import type { IndividualGender } from '../domain/gender.ts'
+import { isRepelReading } from './repel.ts'
+import type { RepelReading } from './repel.ts'
 
 export interface SavedPokemonData {
   personality: number
@@ -47,6 +49,8 @@ export type SaveStatus = 'waiting' | 'ready' | 'missing' | 'error'
 export interface PokemonSnapshot {
   // Optional for compatibility with bridges that do not read position yet.
   position?: PlayerPosition | null
+  // Missing/null means not read; steps = 0 is a confirmed inactive effect.
+  repel?: RepelReading | null
   status: SaveStatus
   message: string
   party: SavedPartyMember[] | null
@@ -73,6 +77,7 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
     Array.isArray(member.moveIds) && member.moveIds.length === 4 && member.moveIds.every(id => integer(id, 0, 65535))
   return ['waiting', 'ready', 'missing', 'error'].includes(snapshot.status) && typeof snapshot.message === 'string' &&
     (snapshot.position === undefined || snapshot.position === null || isPlayerPosition(snapshot.position)) &&
+    (snapshot.repel === undefined || snapshot.repel === null || isRepelReading(snapshot.repel)) &&
     (snapshot.pokedex === null || isPokedexSnapshot(snapshot.pokedex)) &&
     (snapshot.boxes === null || (Array.isArray(snapshot.boxes) && snapshot.boxes.length <= 720 &&
       new Set(snapshot.boxes.map(member => `${member?.box}-${member?.slot}`)).size === snapshot.boxes.length &&
