@@ -10,8 +10,9 @@ import { MovesContext } from './moves-context'
 import { StatsContext } from './stats-context'
 import { NatureIndicator } from './NatureIndicator'
 import './PokemonCard.css'
+import { PokedexScopeBadge } from './PokedexScopeBadge'
 
-export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false }: {
+export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false, showPokedexScope = false }: {
   pokemon: StatsPokemon
   children?: React.ReactNode
   footer?: React.ReactNode
@@ -22,6 +23,7 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
   showEvolution?: boolean
   showGender?: boolean
   showMoves?: boolean
+  showPokedexScope?: boolean
 }) {
   const { t } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
@@ -45,6 +47,7 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
       {pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}
     </div>
     <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
+    {showPokedexScope && !pokemon.isEgg && <PokedexScopeBadge speciesId={pokemon.speciesId ?? pokemon.id} />}
     <div className="card-actions">{children}{showMoves && <button type="button" className="moves-button" onClick={() => openMoves(pokemon)} aria-label={t('pokemonCard.movesAria', { name: pokemon.nickname || pokemonDisplayName(pokemon.name) })}>{t('pokemonCard.movesButton')}</button>}{showEvolution && <EvolutionButton speciesId={pokemon.id} name={pokemonDisplayName(pokemon.name)} />}</div>
     {footer}
   </article>

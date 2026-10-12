@@ -388,6 +388,7 @@ function App() {
                       selected={state.teamIds.includes(pokemon.id)}
                       tools={<IndividualGenderIcon pokemon={pokemon} />}
                       showMoves
+                      showPokedexScope
                     >
                       <CollectionDetails pokemon={pokemon} />
                       <button

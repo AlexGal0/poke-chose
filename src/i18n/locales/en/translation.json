@@ -1021,5 +1021,15 @@
     "detail": "Steps remaining according to the game.",
     "staleDetail": "The value may have changed. It will update when readings resume.",
     "lastReading": "Last reading: {{time}}"
+  },
+  "pokedexScope": {
+    "unova": {
+      "label": "Unova",
+      "description": "Part of the Black/White Unova Pokédex and also the National Pokédex."
+    },
+    "national": {
+      "label": "National",
+      "description": "Part of the National Pokédex, but not the Black/White Unova Pokédex."
+    }
   }
 }
