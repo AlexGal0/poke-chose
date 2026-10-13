@@ -48,6 +48,7 @@ import { StatsProvider } from './components/StatsProvider'
 import { ThemeSelector } from './components/ThemeSelector'
 import { LocaleSelector } from './components/LocaleSelector'
 import { Daycare } from './components/Daycare'
+import { EvolutionRequirements } from './components/EvolutionRequirements'
 import { DaycareAlertButton } from './components/DaycareAlertButton'
 
 function App() {
@@ -328,6 +329,7 @@ function App() {
           <button id="daycare-tab" role="tab" aria-selected={tab === 'daycare'} aria-controls="workspace-panel" onClick={() => setTab('daycare')}>
             {t('app.tabs.daycare')}
           </button>
+          <button id="evolutions-tab" role="tab" aria-selected={tab === 'evolutions'} aria-controls="workspace-panel" onClick={() => setTab('evolutions')}>{t('evolutionRequirements.title')}</button>
           <button id="types-tab" role="tab" aria-selected={tab === "types"} aria-controls="workspace-panel" onClick={() => setTab("types")}>
             {t('app.tabs.types')}
           </button>
@@ -423,6 +425,7 @@ function App() {
           </div>
           <div hidden={tab !== "types"}><TypeChart /></div>
           <div hidden={tab !== 'daycare'}>{tab === 'daycare' && <Daycare state={saveTeam} source={source} />}</div>
+          <div hidden={tab !== 'evolutions'}>{tab === 'evolutions' && <EvolutionRequirements collection={collection} caught={saveTeam.pokedex} manual={source === 'manual'} stale={source !== 'manual' && (!saveTeam.connected || saveTeam.error || saveTeam.collectionError)} />}</div>
           {source === 'live' && <div hidden={tab !== 'battle'}><EnemyPrototype onConnectionChange={setBattleConnection} /></div>}
         </div>
       </main>

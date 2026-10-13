@@ -1031,5 +1031,36 @@
       "label": "Nacional",
       "description": "Pertenece a la Pokédex nacional, pero no a la de Teselia de Negro/Blanco."
     }
+  },
+  "evolutionRequirements": {
+    "title": "Evoluciones pendientes",
+    "scope": "Filtrar por Pokédex",
+    "nationalOnly": "Solo Nacional",
+    "all": "Todas",
+    "hint": "Próximas evoluciones por objeto o intercambio de especies que posees y cuyo resultado aún no está registrado como capturado.",
+    "manual": "En modo manual se usa tu colección como referencia. Conecta un save para consultar cantidades de objetos.",
+    "inventorySave": "Objetos del último save: bolsa y objetos equipados en ese mismo guardado. Guarda dentro del juego para actualizar; no es una lectura de la bolsa en vivo.",
+    "inventoryStale": "Las cantidades conservadas están desactualizadas. No confirman lo que tienes ahora.",
+    "inventoryUnknown": "No hay una lectura válida de la bolsa. Las cantidades son desconocidas, no cero.",
+    "collectionStale": "La colección puede estar desactualizada o incompleta; las evoluciones pendientes también.",
+    "noDex": "Sin Pokédex confirmada no se puede determinar qué evoluciones te faltan.",
+    "loading": "Consultando familias y objetos de evolución…",
+    "partial": "Datos incompletos ({{count}} familias sin resolver). No se interpreta como ausencia de evoluciones.",
+    "itemsTitle": "Objetos necesarios",
+    "required": "Necesarios: {{count}}",
+    "available": "En bolsa: {{bag}} · Equipados: {{held}}",
+    "missing": "Faltan {{count}}",
+    "sufficient": "Cantidad suficiente en el último save",
+    "quantityUnknown": "Cantidad disponible desconocida",
+    "noItems": "Estas evoluciones no necesitan objetos, o no hay pendientes para este filtro.",
+    "allocationHint": "Objetivo: un ejemplar de cada especie pendiente. Los métodos alternativos se evalúan por objeto; no asignan automáticamente recursos. Para completar varias ramas puedes necesitar criar o capturar más preevoluciones. Retira los objetos equipados si vas a usarlos con otro Pokémon.",
+    "groups": {
+      "trade": "Por intercambio",
+      "item": "Por piedras y otros objetos"
+    },
+    "emptyGroup": "Sin evoluciones pendientes conocidas en esta sección.",
+    "tradeHint": "Requiere un intercambio compatible. Tener el objeto no confirma acceso al intercambio ni las demás condiciones.",
+    "alternative": "También existe una ruta sin este objeto o intercambio. Consulta el árbol para sus condiciones.",
+    "viewEvolution": "Ver requisitos y árbol"
   }
 }

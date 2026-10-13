@@ -1031,5 +1031,36 @@
       "label": "National",
       "description": "Part of the National Pokédex, but not the Black/White Unova Pokédex."
     }
+  },
+  "evolutionRequirements": {
+    "title": "Pending evolutions",
+    "scope": "Filter by Pokédex",
+    "nationalOnly": "National only",
+    "all": "All",
+    "hint": "Next item or trade evolutions of species you own whose result is not yet registered as caught.",
+    "manual": "Manual mode uses your collection as the reference. Connect a save to check item quantities.",
+    "inventorySave": "Items from the latest save: bag and held items from the same saved state. Save in the game to update; this is not live bag data.",
+    "inventoryStale": "Retained quantities are outdated. They do not confirm what you currently have.",
+    "inventoryUnknown": "No valid bag reading. Quantities are unknown, not zero.",
+    "collectionStale": "The collection may be outdated or incomplete; pending evolutions may be too.",
+    "noDex": "Without confirmed Pokédex data, missing evolutions cannot be determined.",
+    "loading": "Loading evolution families and items…",
+    "partial": "Incomplete data ({{count}} unresolved families). This does not mean no evolutions exist.",
+    "itemsTitle": "Required items",
+    "required": "Required: {{count}}",
+    "available": "In bag: {{bag}} · Held: {{held}}",
+    "missing": "Missing {{count}}",
+    "sufficient": "Enough in the latest save",
+    "quantityUnknown": "Available quantity unknown",
+    "noItems": "These evolutions need no items, or no pending evolutions match this filter.",
+    "allocationHint": "Goal: one specimen of each missing species. Alternative methods are evaluated by item; resources are not allocated automatically. Completing several branches may require breeding or catching more predecessors. Remove held items before using them on another Pokémon.",
+    "groups": {
+      "trade": "By trade",
+      "item": "By stones and other items"
+    },
+    "emptyGroup": "No known pending evolutions in this section.",
+    "tradeHint": "Requires a compatible trade. Having the item does not confirm trade access or other conditions.",
+    "alternative": "A route without this item or trade also exists. Check the tree for its conditions.",
+    "viewEvolution": "View requirements and tree"
   }
 }

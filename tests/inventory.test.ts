@@ -25,3 +25,18 @@ test('inventory parses item pairs, rejects invalid counts and isolates corruptio
   assert.equal(isSaveSnapshot({ ...snapshot, inventory: [{ gameIndex: 80, count: -1 }] }), false)
   assert.equal(isSaveSnapshot({ ...snapshot, inventory: undefined }), true)
 })
+
+test('inventory follows the selected backup and never substitutes a different entry for an optional failure', () => {
+  const save = saveFixture(undefined, [])
+  for (const [base, count] of [[0, 2], [0x24000, 9]]) {
+    save.writeUInt16LE(82, base + 0x18400)
+    save.writeUInt16LE(count, base + 0x18402)
+    refreshFixtureChecksums(save, base)
+  }
+  save[0x18dc2] ^= 1
+  assert.equal(parseSave(save).inventory, null)
+  assert.equal(parseSave(save).backup, false)
+  save[0x19336] ^= 1
+  assert.deepEqual(parseSave(save).inventory, [{ gameIndex: 82, count: 9 }])
+  assert.equal(parseSave(save).backup, true)
+})

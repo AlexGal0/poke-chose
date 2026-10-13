@@ -1,7 +1,7 @@
 import { persistValue } from './persist.ts'
 
 const KEY = 'poke-chose:active-tab:v1'
-const TABS = ['collection', 'catalog', 'captures', 'analysis', 'types', 'battle', 'daycare'] as const
+const TABS = ['collection', 'catalog', 'captures', 'analysis', 'types', 'battle', 'daycare', 'evolutions'] as const
 export type ActiveTab = typeof TABS[number]
 
 export function loadActiveTab(): ActiveTab {
