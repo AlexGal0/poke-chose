@@ -174,6 +174,7 @@ React + TypeScript + Vite, with React Compiler. Run commands from the folder tha
 | --- | --- |
 | `npm ci` | Install dependencies from the lockfile |
 | `npm run dev` | Start only the interface |
+| `npm start` | Start the interface and local services, and open the browser (same as the Windows launcher) |
 | `npm run dev:save` | Start the interface plus the save, live-reading, and battle services; requires `live.config.local.json` |
 | `npm test` | Run the Node tests |
 | `npm run lint` | Check the code with ESLint |

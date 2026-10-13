@@ -1021,5 +1021,15 @@
     "detail": "Pasos restantes según el juego.",
     "staleDetail": "El valor puede haber cambiado. Se actualizará al recuperar la lectura.",
     "lastReading": "Última lectura: {{time}}"
+  },
+  "pokedexScope": {
+    "unova": {
+      "label": "Teselia",
+      "description": "Pertenece a la Pokédex de Teselia de Negro/Blanco y también a la nacional."
+    },
+    "national": {
+      "label": "Nacional",
+      "description": "Pertenece a la Pokédex nacional, pero no a la de Teselia de Negro/Blanco."
+    }
   }
 }

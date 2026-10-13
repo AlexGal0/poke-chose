@@ -10,8 +10,9 @@ import { MovesContext } from './moves-context'
 import { StatsContext } from './stats-context'
 import { NatureIndicator } from './NatureIndicator'
 import './PokemonCard.css'
+import { PokedexScopeBadge } from './PokedexScopeBadge'
 
-export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false }: {
+export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false, showPokedexScope = false }: {
   pokemon: StatsPokemon
   children?: React.ReactNode
   footer?: React.ReactNode
@@ -22,6 +23,7 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
   showEvolution?: boolean
   showGender?: boolean
   showMoves?: boolean
+  showPokedexScope?: boolean
 }) {
   const { t } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
@@ -36,6 +38,7 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
       </button>}
       {!pokemon.isEgg && (pokemon.speciesId !== undefined || pokemon.natureId !== undefined) && <NatureIndicator natureId={pokemon.natureId} />}
       {tools}
+      {showPokedexScope && !pokemon.isEgg && <PokedexScopeBadge speciesId={pokemon.speciesId ?? pokemon.id} />}
     </div>
     {selected && <span className="in-team">{t('pokemonCard.inTeam')}</span>}
     {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}

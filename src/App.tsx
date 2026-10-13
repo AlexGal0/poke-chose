@@ -25,6 +25,7 @@ import { RepelIndicator } from './components/RepelIndicator'
 import { battleShortcutDestination, battleHasEnded, battleHasStarted } from './domain/battle-shortcut'
 import { SaveSync } from "./components/SaveSync";
 import { useTeamSource } from './hooks/useTeamSource'
+import { useTeamReorderAnimation } from './hooks/useTeamReorderAnimation'
 import { saveDataSource } from './sources/save'
 import { liveDataSource } from './sources/live'
 import { manualTeam } from "./sources/team";
@@ -83,6 +84,8 @@ function App() {
   const manual = manualTeam(state);
   const battleView = source === 'live' && tab === 'battle'
   const team = source !== "manual" ? saveTeam.team : manual;
+  const teamGrid = useRef<HTMLDivElement>(null)
+  useTeamReorderAnimation(teamGrid, team.map(pokemon => `${source}:${pokemon.instanceKey ?? pokemon.id}`), !battleView)
   const collection =
     source !== "manual" ? (saveTeam.collection ?? []) : state.collection;
   const discovered = source !== "manual"
@@ -225,7 +228,7 @@ function App() {
             </div>
             <span className="count">{team.length} / 6</span>
           </div>
-          <div className="team-grid">
+          <div className="team-grid" ref={teamGrid}>
             {team.map((pokemon, index) => (
               <PokemonCard
                 key={pokemon.instanceKey ?? pokemon.id}
@@ -385,6 +388,7 @@ function App() {
                       selected={state.teamIds.includes(pokemon.id)}
                       tools={<IndividualGenderIcon pokemon={pokemon} />}
                       showMoves
+                      showPokedexScope
                     >
                       <CollectionDetails pokemon={pokemon} />
                       <button

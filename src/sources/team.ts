@@ -46,11 +46,15 @@ export const initialSaveTeam: TeamSourceState = {
 // Adapts raw party identities to the same static Pokémon model consumed by the UI/domain.
 export async function resolveParty(party: SavedPartyMember[], signal: AbortSignal): Promise<PartyPokemon[]> {
   const requests = new Map<string, Promise<Pokemon>>()
+  const occurrences = new Map<string, number>()
   return Promise.all(party.map(async member => {
+    const identity = `${member.personality}-${member.trainerId}-${member.speciesId}-${member.form}`
+    const occurrence = occurrences.get(identity) ?? 0
+    occurrences.set(identity, occurrence + 1)
     const key = `${member.speciesId}-${member.form}`
     if (!requests.has(key)) requests.set(key, getSavePokemon(member.speciesId, member.form, signal))
     const pokemon = await requests.get(key)!
-    return { ...pokemon, ...member, instanceKey: `save-${member.slot}-${member.personality}-${member.trainerId}` }
+    return { ...pokemon, ...member, instanceKey: `save-${identity}-${occurrence}` }
   }))
 }
 
