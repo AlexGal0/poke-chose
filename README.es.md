@@ -8,6 +8,9 @@ Puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la
 
 ## Funciones
 
+- **Evoluciones pendientes:** separa intercambios y objetos para especies poseídas cuya siguiente evolución falta en la Pokédex. Filtra Teselia/Nacional/todas y compara los objetos necesarios con bolsa y objetos equipados del último save, incluso al usar la colección en vivo.
+- **Detalles de obtención:** pulsa la imagen de un Pokémon del catálogo para consultar encuentros de Negro, intercambios NPC, requisitos de evolución e instrucciones especiales con fuentes. No comprueba tu progreso ni la elegibilidad de eventos históricos.
+
 - **Guardería:** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
 
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
