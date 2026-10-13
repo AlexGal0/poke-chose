@@ -169,6 +169,7 @@ React + TypeScript + Vite, con React Compiler. Ejecuta los comandos desde la car
 | --- | --- |
 | `npm ci` | Instalar las dependencias del lockfile |
 | `npm run dev` | Iniciar solo la interfaz |
+| `npm start` | Iniciar interfaz y servicios locales y abrir el navegador (igual que el lanzador de Windows) |
 | `npm run dev:save` | Iniciar interfaz y servicios de save, lectura en vivo y combate; requiere `live.config.local.json` |
 | `npm test` | Ejecutar las pruebas de Node |
 | `npm run lint` | Comprobar el código con ESLint |
