@@ -3,6 +3,7 @@ import type { Theme } from './storage/theme'
 const palettes: Record<Theme, readonly [string, string, string, string]> = {
   base: ['#10151c', '#10151c', '#83dcb8', '#10151c'],
   halo: ['#72864b', '#111d20', '#88d6ef', '#dcb76b'],
+  halloween: ['#f59b42', '#241731', '#c5a0f2', '#c7ec91'],
   pokemon: ['#d51c36', '#ffffff', '#18181b', '#ffffff'],
   'pokemon-dark': ['#d51c36', '#ffffff', '#e9eef3', '#ffffff'],
   fiesta: ['#ff78d0', '#ffd861', '#5af8ef', '#fff6ff'],

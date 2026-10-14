@@ -6,6 +6,7 @@ import { loadTheme } from './storage/theme'
 import { applyTheme } from './theme'
 import './themes.css'
 import './halo.css'
+import './halloween.css'
 import './i18n/index.ts'
 
 applyTheme(loadTheme())
