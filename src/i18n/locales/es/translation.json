@@ -129,6 +129,7 @@
     "label": "Tema",
     "options": {
       "base": "Original",
+      "halo": "Halo: Combat Evolved",
       "gameboyColor": "Game Boy Color",
       "aqua2000": "Aqua 2000",
       "terminal": "Terminal ASCII",
