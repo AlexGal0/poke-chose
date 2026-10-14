@@ -3,6 +3,8 @@ import { storedGender } from '../src/domain/gender.ts'
 import { parsePokedexBlock, POKEDEX_LENGTH, POKEDEX_OFFSET } from './pokedex.ts'
 import type { PlayerPosition } from '../src/models/player-position.ts'
 import { parsePlayerPositionBlock, POSITION_LENGTH, POSITION_OFFSET } from './player-position.ts'
+import { INVENTORY_OFFSET, INVENTORY_LENGTH, parseInventoryBlock } from './inventory.ts'
+import type { InventoryItem } from '../src/models/inventory.ts'
 
 export const SAVE_SIZE = 0x80000
 const PARTY_OFFSET = 0x18e00
@@ -179,7 +181,12 @@ function parseEntry(save: Uint8Array, base: number) {
     checksum(0x20e00, 0x1cc, 0x20fce, 0x23f64)
     daycare = parseDaycareBlock(save.subarray(base + 0x20e00, base + 0x20fcc))
   } catch { /* Optional failure must not discard or mix the core entry. */ }
-  return { party, boxes, position, daycare, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
+  let inventory: InventoryItem[] | null = null
+  try {
+    checksum(INVENTORY_OFFSET, INVENTORY_LENGTH, 0x18dc2, 0x23f32)
+    inventory = parseInventoryBlock(save.subarray(base + INVENTORY_OFFSET, base + INVENTORY_OFFSET + INVENTORY_LENGTH))
+  } catch { /* Optional bag failure preserves the selected core save entry. */ }
+  return { party, boxes, position, daycare, inventory, pokedex: parsePokedexBlock(save.subarray(base + POKEDEX_OFFSET, base + POKEDEX_OFFSET + POKEDEX_LENGTH)) }
 }
 
 export function parseSave(save: Uint8Array, allowBackup = true) {

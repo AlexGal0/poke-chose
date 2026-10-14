@@ -4,6 +4,7 @@ import { getSpeciesGender } from '../api/gender'
 import type { SpeciesGender } from '../domain/gender'
 import { genderLabel } from '../i18n/gender.ts'
 import './GenderIcon.css'
+import { GenderSymbol } from './GenderSymbol'
 
 export function GenderIcon({ speciesId }: { speciesId: number }) {
   const { t } = useTranslation()
@@ -22,7 +23,7 @@ export function GenderIcon({ speciesId }: { speciesId: number }) {
   const gender = loaded ? result.gender : null
   const label = gender ? genderLabel(t, gender.kind) : loaded ? t('genderIcon.unconfirmed') : t('genderIcon.loading')
   return <button type="button" className={`gender-icon gender-${gender?.kind ?? 'unknown'}`} aria-label={label} title={label} onClick={() => { if (!gender) setAttempt(value => value + 1) }}>
-    <span aria-hidden="true">{gender?.icon ?? (loaded ? '?' : '…')}</span>
+    <GenderSymbol kind={gender?.kind} loading={!loaded} />
     <span className="gender-tooltip" role="tooltip">{label}</span>
   </button>
 }

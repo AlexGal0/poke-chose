@@ -8,6 +8,9 @@ You can use it manually, sync it with a save file, or enable live reading. The c
 
 ## Features
 
+- **Pending evolutions:** separate trade and item routes for owned species whose next evolution is missing from the Pokédex. Filter Unova/National/all and compare required items with bag and held quantities from the latest save, including when using the live collection.
+- **Acquisition details:** click a catalog Pokémon’s image to review Black encounters, NPC trades, evolution requirements and sourced special instructions. This does not verify your story progress or historical event eligibility.
+
 - **Day Care:** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
 
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.

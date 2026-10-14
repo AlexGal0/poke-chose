@@ -12,7 +12,7 @@ import { NatureIndicator } from './NatureIndicator'
 import './PokemonCard.css'
 import { PokedexScopeBadge } from './PokedexScopeBadge'
 
-export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false, showPokedexScope = false }: {
+export function PokemonCard({ pokemon, children, footer, tools, selected = false, captured = false, fainted = false, showEvolution = true, showGender = false, showMoves = false, showPokedexScope = false, onSpriteClick }: {
   pokemon: StatsPokemon
   children?: React.ReactNode
   footer?: React.ReactNode
@@ -24,11 +24,13 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
   showGender?: boolean
   showMoves?: boolean
   showPokedexScope?: boolean
+  onSpriteClick?: () => void
 }) {
   const { t } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
   const openMoves = useContext(MovesContext)
   const openStats = useContext(StatsContext)
+  const sprite = discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? t('pokemonCard.spriteUnavailable') : t('pokemonCard.notDiscovered')}>?</span>
   return <article className={`pokemon-card ${selected ? 'selected' : ''} ${captured ? 'captured' : ''} ${fainted ? 'fainted' : ''}`}>
     <span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span>
     <div className="card-tools">
@@ -42,7 +44,7 @@ export function PokemonCard({ pokemon, children, footer, tools, selected = false
     </div>
     {selected && <span className="in-team">{t('pokemonCard.inTeam')}</span>}
     {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}
-    <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? t('pokemonCard.spriteUnavailable') : t('pokemonCard.notDiscovered')}>?</span>}</div>
+    {onSpriteClick ? <button type="button" className={`sprite sprite-button ${discovered ? '' : 'undiscovered'}`} onClick={onSpriteClick} aria-label={t('acquisitionDetails.open', { name: pokemonDisplayName(pokemon.name) })}>{sprite}</button> : <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{sprite}</div>}
     <div className="pokemon-identity">
       <h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>
       {pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}

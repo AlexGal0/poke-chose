@@ -30,6 +30,32 @@ async function temporarySave() {
 
 const options = { debounceMs: 40, retryMs: [30, 60], recoveryMs: 100, read: (path: string) => readStableSave(path, 10), log: () => {} }
 
+test('inventory-only changes and optional corruption preserve the party and recover independently', async () => {
+  const temporary = await temporarySave()
+  const watcher = new SaveWatcher(temporary.path, () => {}, options)
+  const bytes = saveFixture()
+  try {
+    await writeFile(temporary.path, bytes)
+    watcher.start()
+    await eventually(() => watcher.snapshot.status === 'ready')
+    const party = watcher.snapshot.party
+    bytes.writeUInt16LE(82, 0x18400)
+    bytes.writeUInt16LE(2, 0x18402)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.inventory?.[0]?.count === 2)
+    assert.equal(watcher.snapshot.party, party)
+    bytes[0x18dc2] ^= 1
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.inventory === null)
+    assert.equal(watcher.snapshot.status, 'ready')
+    assert.equal(watcher.snapshot.party, party)
+    refreshFixtureChecksums(bytes)
+    await writeFile(temporary.path, bytes)
+    await eventually(() => watcher.snapshot.inventory?.[0]?.count === 2)
+  } finally { watcher.stop(); await temporary.cleanup() }
+})
+
 test('daycare-only updates publish without replacing team and corrupt daycare recovers', async () => {
   const temporary = await temporarySave()
   const watcher = new SaveWatcher(temporary.path, () => {}, options)
