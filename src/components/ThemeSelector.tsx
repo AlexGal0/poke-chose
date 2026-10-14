@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { loadTheme, saveTheme } from '../storage/theme'
 import type { Theme } from '../storage/theme'
+import { applyTheme } from '../theme'
 import './ThemeSelector.css'
 
 export function ThemeSelector() {
@@ -10,7 +11,7 @@ export function ThemeSelector() {
   const [saveFailed, setSaveFailed] = useState(false)
 
   function changeTheme(next: Theme) {
-    document.documentElement.dataset.theme = next
+    applyTheme(next)
     setTheme(next)
     setSaveFailed(!saveTheme(next))
   }
@@ -21,6 +22,7 @@ export function ThemeSelector() {
         <span>{t('theme.label')}</span>
         <select value={theme} onChange={event => changeTheme(event.target.value as Theme)}>
           <option value="base">{t('theme.options.base')}</option>
+          <option value="halo">{t('theme.options.halo')}</option>
           <option value="pokemon">{t('theme.options.pokemon')}</option>
           <option value="pokemon-dark">{t('theme.options.pokemonDark')}</option>
           <option value="gameboy-color">{t('theme.options.gameboyColor')}</option>

@@ -1,0 +1,50 @@
+/* Military olive armor, amber visor and cyan HUD inspired by Combat Evolved. */
+:root[data-theme='halo'] {
+  color-scheme: dark;
+  --page: #080f12;
+  --surface: #111d20;
+  --surface-raised: #19282a;
+  --surface-inset: #0b161a;
+  --surface-hover: #263a36;
+  --border: #3b5556;
+  --border-strong: #789b98;
+  --text: #edf4e4;
+  --text-muted: #b1c6c6;
+  --text-faint: #94afaf;
+  --accent: #88d6ef;
+  --accent-text: #b3eaff;
+  --accent-surface: #18353e;
+  --accent-border: #579db5;
+  --primary-surface: #657b42;
+  --primary-border: #9caf73;
+  --primary-hover: #7c9453;
+  --success-text: #c4df9b;
+  --success-surface: #243420;
+  --success-border: #617f49;
+  --warning-text: #f2cd81;
+  --warning-surface: #332a19;
+  --warning-border: #957640;
+  --danger-text: #ffb0a0;
+  --danger-surface: #38211e;
+  --danger-border: #945548;
+  background-image: radial-gradient(ellipse at 50% 0%, #66805233, transparent 65%), linear-gradient(120deg, #080f12, #122329);
+  background-attachment: fixed;
+}
+
+:root[data-theme='halo'] .site-header { background: linear-gradient(90deg, #27351e, #111d20 65%); border-bottom: 2px solid #88d6ef; }
+:root[data-theme='halo'] .brand { letter-spacing: 2px; text-shadow: 0 0 10px #88d6ef33; }
+:root[data-theme='halo'] .brand > span:last-child,
+:root[data-theme='halo'] h1 span { color: #dcb76b; }
+:root[data-theme='halo'] .eyebrow { color: #88d6ef; letter-spacing: 3px; }
+:root[data-theme='halo'] .panel { border-radius: 4px; border-top: 2px solid #789b98; background: linear-gradient(135deg, #72864b12, transparent 50%), var(--surface); box-shadow: inset 0 0 30px #88d6ef05, 0 8px 28px #0004; }
+:root[data-theme='halo'] :is(button, select, .search, .pokemon-card, .insight, .coverage-item) { border-radius: 3px; }
+:root[data-theme='halo'] .primary { color: #fff; background: linear-gradient(#7c9453, #506333); }
+:root[data-theme='halo'] .tabs button[aria-selected=true] { box-shadow: inset 0 -2px 0 #88d6ef, 0 0 12px #88d6ef15; }
+:root[data-theme='halo'] .pokemon-card:is(.selected, .captured) { border-color: #9caf73; }
+:root[data-theme='halo'] .pokeball { border-color: #88d6ef; background: linear-gradient(#72864b 43%, #88d6ef 43%, #88d6ef 55%, #111d20 55%); }
+:root[data-theme='halo'] .pokeball::after { border-color: #88d6ef; background: #dcb76b; }
+
+@media (min-width: 641px) and (max-width: 980px) {
+  :root[data-theme='halo'] .site-header { flex-wrap: wrap; gap: 16px; }
+  :root[data-theme='halo'] .header-controls { flex: 1 1 100%; flex-wrap: wrap; }
+}
