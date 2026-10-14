@@ -23,6 +23,7 @@ export function ThemeSelector() {
         <select value={theme} onChange={event => changeTheme(event.target.value as Theme)}>
           <option value="base">{t('theme.options.base')}</option>
           <option value="halo">{t('theme.options.halo')}</option>
+          <option value="halloween">{t('theme.options.halloween')}</option>
           <option value="pokemon">{t('theme.options.pokemon')}</option>
           <option value="pokemon-dark">{t('theme.options.pokemonDark')}</option>
           <option value="gameboy-color">{t('theme.options.gameboyColor')}</option>
