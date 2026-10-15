@@ -1034,7 +1034,31 @@
       "description": "Part of the National Pokédex, but not the Black/White Unova Pokédex."
     }
   },
+  "secretAlbum": {
+    "trigger": "Hold the Poké Ball to open the Unova album; with a keyboard, press Enter",
+    "eyebrow": "A collection of little wonders",
+    "title": "The Unova album",
+    "subtitle": "Every encounter, a memory. Every card, a story waiting to unfold.",
+    "progress": "{{count}} / {{total}} caught",
+    "close": "Close album",
+    "hint": "Explore the cards and select one for a closer look. Esc to go back.",
+    "loading": "Preparing your cards…",
+    "loadFailed": "Some cards could not be loaded.",
+    "openCard": "Expand {{name}}'s card",
+    "openSeenCard": "{{name}}: seen, not caught yet. Expand card",
+    "cardLoading": "Card {{number}} waiting to load",
+    "locked": "Card {{number}}: Pokémon not discovered yet",
+    "back": "Back to the mosaic",
+    "edition": "Pokémon Black · Unova edition",
+    "description": "Pokédex notes",
+    "noDescription": "A description could not be retrieved for this card.",
+    "loadingDescription": "Finding its story…",
+    "region": "Unova · Generation V"
+  },
   "evolutionRequirements": {
+    "eyebrow": "Your collection’s next chapter",
+    "summary": { "species": "Species to discover", "items": "Item types needed" },
+    "planning": "How to plan your evolutions",
     "title": "Pending evolutions",
     "scope": "Filter by Pokédex",
     "nationalOnly": "National only",

@@ -14,11 +14,15 @@ import type { PokedexState } from '../models/pokedex'
 import { useSaveInventory } from '../hooks/useSaveInventory'
 import { EvolutionContext } from './evolution-context'
 import { PokedexScopeBadge } from './PokedexScopeBadge'
+import { DiscoveryContext } from './discovery-context'
+import { CapturedPokemonIcon } from './CapturedPokemonIcon'
+import { EvolutionItemIcon } from './EvolutionItemIcon'
 import './EvolutionRequirements.css'
 
 export function EvolutionRequirements({ collection, caught, manual, stale }: { collection: readonly Pokemon[]; caught: PokedexState | null; manual: boolean; stale: boolean }) {
   const { t, i18n } = useTranslation()
   const openEvolution = useContext(EvolutionContext)
+  const discovered = useContext(DiscoveryContext)
   const inventory = useSaveInventory(!manual)
   const [scope, setScope] = useState('unova')
   const [attempt, setAttempt] = useState(0)
@@ -68,9 +72,9 @@ export function EvolutionRequirements({ collection, caught, manual, stale }: { c
     return { bag: inventory.inventory.find(item => item.gameIndex === gameIndex)?.count ?? 0, held: inventory.held[gameIndex] ?? 0 }
   }
   return <section className="panel evolution-requirements" aria-labelledby="requirements-title">
-    <div className="section-heading"><h2 id="requirements-title">{t('evolutionRequirements.title')}</h2><select aria-label={t('evolutionRequirements.scope')} value={scope} onChange={event => setScope(event.target.value)}>
+    <div className="section-heading requirements-header"><div><span className="eyebrow">{t('evolutionRequirements.eyebrow')}</span><h2 id="requirements-title">{t('evolutionRequirements.title')}</h2></div><label className="requirements-scope">{t('evolutionRequirements.scope')}<select value={scope} onChange={event => setScope(event.target.value)}>
       <option value="unova">{t('pokedexScope.unova.label')}</option><option value="national">{t('evolutionRequirements.nationalOnly')}</option><option value="all">{t('evolutionRequirements.all')}</option>
-    </select></div>
+    </select></label></div>
     <p className="hint">{t('evolutionRequirements.hint')}</p>
     <p className="hint">{t(manual ? 'evolutionRequirements.manual' : 'evolutionRequirements.inventorySave')}</p>
     {!manual && inventory.stale && <p role="status" className="notice">{t(inventory.inventory ? 'evolutionRequirements.inventoryStale' : 'evolutionRequirements.inventoryUnknown')}</p>}
@@ -79,29 +83,43 @@ export function EvolutionRequirements({ collection, caught, manual, stale }: { c
     {!current && <p role="status">{t('evolutionRequirements.loading')}</p>}
     {current && (current.failed > 0 || Object.values(current.items).some(item => !item)) && <p role="alert" className="notice">{t('evolutionRequirements.partial', { count: current.failed })} <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button></p>}
     {current && registered && <>
-      <h3>{t('evolutionRequirements.itemsTitle')}</h3>
+      <div className="requirements-overview">
+        <div><span aria-hidden="true">↗</span><strong>{new Set(rows.map(row => row.target.speciesId)).size}</strong><span>{t('evolutionRequirements.summary.species')}</span></div>
+        <div><span aria-hidden="true">⇄</span><strong>{rows.filter(row => row.group === 'trade').length}</strong><span>{t('evolutionRequirements.groups.trade')}</span></div>
+        <div><span aria-hidden="true">◇</span><strong>{needs.size}</strong><span>{t('evolutionRequirements.summary.items')}</span></div>
+      </div>
+      <details className="requirements-planning"><summary>{t('evolutionRequirements.planning')}</summary><p className="hint">{t('evolutionRequirements.allocationHint')}</p></details>
+      <div className="requirements-items-heading"><h3>{t('evolutionRequirements.itemsTitle')}</h3><span className="count">{needs.size}</span></div>
       {needs.size ? <div className="evolution-item-summary">{[...needs].map(([name, required]) => {
         const available = quantity(name)
         const total = available ? available.bag + available.held : null
         const missing = total == null ? null : Math.max(0, required - total)
         return <article key={name} className={missing === 0 && !inventory.stale ? 'item-sufficient' : missing && !inventory.stale ? 'item-missing' : ''}>
-          <strong>{current.items[name]?.name ?? name.replaceAll('-', ' ')}</strong>
+          <div className="requirement-item-name"><EvolutionItemIcon key={name} name={name} label={current.items[name]?.name ?? name.replaceAll('-', ' ')} /><strong>{current.items[name]?.name ?? name.replaceAll('-', ' ')}</strong></div>
           <p>{t('evolutionRequirements.required', { count: required })}</p>
           {available ? <><p>{t('evolutionRequirements.available', available)}</p><strong>{missing ? t('evolutionRequirements.missing', { count: missing }) : t('evolutionRequirements.sufficient')}</strong></> : <p>{t('evolutionRequirements.quantityUnknown')}</p>}
         </article>
       })}</div> : <p className="hint">{t('evolutionRequirements.noItems')}</p>}
-      <p className="hint">{t('evolutionRequirements.allocationHint')}</p>
-      {(['trade', 'item'] as const).map(group => <section key={group} className="evolution-requirements-group" aria-label={t(`evolutionRequirements.groups.${group}`)}>
-        <h3>{t(`evolutionRequirements.groups.${group}`)} <span className="count">{rows.filter(row => row.group === group).length}</span></h3>
+      <div className="requirements-routes">{(['trade', 'item'] as const).map(group => <section key={group} className="evolution-requirements-group" aria-label={t(`evolutionRequirements.groups.${group}`)}>
+        <h3><span className="requirements-group-symbol" aria-hidden="true">{group === 'trade' ? '⇄' : '◇'}</span>{t(`evolutionRequirements.groups.${group}`)} <span className="count">{rows.filter(row => row.group === group).length}</span></h3>
         {group === 'trade' && rows.some(row => row.group === group) && <p className="hint">{t('evolutionRequirements.tradeHint')}</p>}
         {!rows.some(row => row.group === group) && <p className="hint">{t('evolutionRequirements.emptyGroup')}</p>}
-        <ul>{rows.filter(row => row.group === group).map(row => <li key={`${row.source.speciesId}-${row.target.speciesId}-${JSON.stringify(row.method)}`}>
-          <div className="evolution-requirement-heading"><strong>{pokemonDisplayName(row.source.name)} → {pokemonDisplayName(row.target.name)}</strong><PokedexScopeBadge speciesId={row.target.speciesId} /></div>
-          <p>{evolutionMethodLabel(t, evolutionMethodFacts(row.method, row.target.speciesId, labels))}</p>
+        <ul>{rows.filter(row => row.group === group).map(row => {
+          const item = row.method.item ?? row.method.held_item
+          const sourceSprite = collection.find(pokemon => pokemon.id === row.source.speciesId)?.sprite
+          const targetDiscovered = discovered.has(row.target.speciesId)
+          return <li key={`${row.source.speciesId}-${row.target.speciesId}-${JSON.stringify(row.method)}`}>
+          <div className="evolution-requirement-heading"><span className="requirement-route-label">{t(`evolutionRequirements.groups.${group}`)}</span><PokedexScopeBadge speciesId={row.target.speciesId} /></div>
+          <div className="requirement-route">
+            <div><span className="requirement-portrait">{sourceSprite ? <img src={sourceSprite} alt="" loading="lazy" /> : <span aria-hidden="true">●</span>}</span><strong>{pokemonDisplayName(row.source.name)}</strong><small>#{String(row.source.speciesId).padStart(3, '0')}</small></div>
+            <span className="requirement-transition">{item && <EvolutionItemIcon key={item.name} name={item.name} label={current.items[item.name]?.name ?? item.name.replaceAll('-', ' ')} />}<span className="requirement-arrow" aria-hidden="true">→</span></span>
+            <div><span className={`requirement-portrait ${targetDiscovered ? '' : 'requirement-target'}`}>{targetDiscovered ? <CapturedPokemonIcon speciesId={row.target.speciesId} /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</span><strong>{pokemonDisplayName(row.target.name)}</strong><small>#{String(row.target.speciesId).padStart(3, '0')}</small></div>
+          </div>
+          <p className="requirement-method">{evolutionMethodLabel(t, evolutionMethodFacts(row.method, row.target.speciesId, labels))}</p>
           {row.target.methods.some(method => method !== row.method && !method.item && !method.held_item && method.trigger.name !== 'trade') && <p className="hint">{t('evolutionRequirements.alternative')}</p>}
-          <button onClick={() => openEvolution(row.source.speciesId)}>{t('evolutionRequirements.viewEvolution')}</button>
-        </li>)}</ul>
-      </section>)}
+          <button className="requirement-open" onClick={() => openEvolution(row.source.speciesId)}>{t('evolutionRequirements.viewEvolution')} <span aria-hidden="true">↗</span></button>
+        </li>})}</ul>
+      </section>)}</div>
     </>}
   </section>
 }

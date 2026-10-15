@@ -137,6 +137,12 @@ En el catálogo, los iconos explican las formas de obtención en Negro. La lupa 
 
 Pulsa **Evoluciones** para consultar una familia y sus requisitos, o **Movimientos** para ver el aprendizaje por nivel en Black/White. El listado de movimientos no incluye MT/MO, tutores ni crianza. Los sprites se revelan cuando una especie está vista o capturada en tu Pokédex; en Manual, al añadirla a tu colección.
 
+### Álbum secreto de Teselia
+
+Mantén pulsada la Poké Ball del encabezado durante unos 750 ms (o pulsa Intro con el icono enfocado) para abrir las 156 cartas regionales a pantalla completa, sin scroll. Los capturados aparecen a color, los vistos sin capturar en blanco y negro y los desconocidos con una interrogación. En modo manual, la colección determina cuáles conoces.
+
+Pulsa una carta conocida para ampliar su ficha con un sprite animado y una descripción en el idioma elegido. Las cartas del mosaico son estáticas. Al volver, su versión simple regresa a la casilla. Escape vuelve al mosaico y, desde este, cierra el álbum; también puedes cerrarlo manteniendo pulsada una carta. Se respeta la preferencia de movimiento reducido. Las descripciones priorizan Negro/Blanco dentro de cada idioma; si no hay traducción para esas ediciones, se consulta otra edición antes de recurrir al inglés.
+
 ### Elegir un tema y conservar tus datos
 
 El selector **Tema** de la cabecera ofrece **Original**, **Pokémon**, **Pokémon oscuro** y **Fiesta 🎉**. La selección se guarda al cambiarla y se restaura al recargar. Se aplica también a diálogos y combate.
@@ -182,7 +188,9 @@ React + TypeScript + Vite, con React Compiler. Ejecuta los comandos desde la car
 
 Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos terminales: `npm run bridge` y `npm run dev`. Los servicios en vivo y combate también pueden iniciarse por separado con `npm run bridge:live` y `npm run bridge:battle`.
 
-Los servicios escuchan en `127.0.0.1`: save en **3001**, en vivo en **3002** y combate en **3003**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
+Los servicios escuchan en `127.0.0.1`: save en **15301**, en vivo en **15302** y combate en **15303**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
+
+Reinicia el lanzador y Vite después de actualizar desde los antiguos puertos 3001–3003. Si definiste `SAVE_BRIDGE_PORT` o `LIVE_BRIDGE_PORT`, esas variables siguen teniendo prioridad. La web conserva los puertos de Vite (5173 en desarrollo y 4173 en preview), para mantener el acceso a los datos del navegador; los puertos GDB de melonDS siguen siendo 3333/3334.
 
 La última validación de código registrada aprobó **167 pruebas**, lint y build. Se comprobaron los cuatro temas a 1280, 390 y 320 px y los nombres, búsqueda y enlaces del catálogo con datos sintéticos. Esta reorganización del README solo revisó documentación y enlaces; no repitió pruebas de código ni una instalación nueva.
 

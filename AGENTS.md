@@ -36,7 +36,7 @@ Run commands from the project root. The README and Windows launcher require Node
 ## Save Integration & Domain Rules
 
 - Configure the save path in `save.config.local.json`, using `save.config.example.json` as a template, or through `MELONDS_SAVE_PATH`, which takes precedence. `.gitignore` excludes the local configuration and `*.sav` files.
-- The bridge binds to `127.0.0.1`, defaults to port 3001, and accepts `SAVE_BRIDGE_PORT`. Vite proxies `/save-api` in development and preview; use the same bridge port for both processes.
+- The bridge binds to `127.0.0.1`, defaults to port 15301, and accepts `SAVE_BRIDGE_PORT`. Vite proxies `/save-api` in development and preview; use the same bridge port for both processes.
 - The supported save format is Pokémon Black RAW `.sav`, 512 KiB. Preserve read-only access: the application must not modify the user's save.
 - Manual collection and team data persist in localStorage under `poke-chose:bw:v1`. Save mode reads the party, the 24 PC boxes, and Pokédex flags; manual data remains separate.
 - Capture checklists use Pokédex caught flags, not seen flags or current party/box contents. Surf and Super Rod access filters are configured separately in localStorage.

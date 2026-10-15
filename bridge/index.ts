@@ -19,7 +19,7 @@ async function configuredPath(): Promise<string | null> {
 }
 
 try {
-  const port = Number(process.env.SAVE_BRIDGE_PORT ?? 3001)
+  const port = Number(process.env.SAVE_BRIDGE_PORT ?? 15301)
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('SAVE_BRIDGE_PORT inválido.')
   const bridge = createSaveBridge(await configuredPath())
   bridge.server.on('error', error => { console.error('[save]', error.message); process.exitCode = 1; void bridge.close().catch(() => {}) })
