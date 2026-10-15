@@ -7,9 +7,9 @@ const open = process.argv.includes('--open')
 const processes = []
 try {
   const services = [
-    { name: 'live', port: Number(process.env.LIVE_BRIDGE_PORT ?? 3002), file: 'bridge/live-index.mjs' },
-    { name: 'save', port: Number(process.env.SAVE_BRIDGE_PORT ?? 3001), file: 'bridge/index.ts' },
-    { name: 'enemy', port: 3003, file: 'experiments/melonds-live/watch-enemy.mjs', args: ['--battle', '--wait'] },
+    { name: 'live', port: Number(process.env.LIVE_BRIDGE_PORT ?? 15302), file: 'bridge/live-index.mjs' },
+    { name: 'save', port: Number(process.env.SAVE_BRIDGE_PORT ?? 15301), file: 'bridge/index.ts' },
+    { name: 'enemy', port: 15303, file: 'experiments/melonds-live/watch-enemy.mjs', args: ['--battle', '--wait'] },
   ]
   const existing = await Promise.all(services.map(service => bridgeRunning(service.port, service.name)))
   for (const [index, service] of services.entries()) {

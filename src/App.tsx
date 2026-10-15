@@ -50,6 +50,7 @@ import { LocaleSelector } from './components/LocaleSelector'
 import { Daycare } from './components/Daycare'
 import { EvolutionRequirements } from './components/EvolutionRequirements'
 import { DaycareAlertButton } from './components/DaycareAlertButton'
+import { SecretAlbum } from './components/SecretAlbum'
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -169,10 +170,9 @@ function App() {
   return (
     <DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
       <header className={`site-header ${battleView ? 'battle-header' : ''}`}>
-        <a className="brand" href="#">
-          <span className="pokeball" aria-hidden="true" />
+        <div className="brand-lockup"><SecretAlbum owned={source === 'manual' ? new Set(state.collection.map(pokemon => pokemon.id)) : saveTeam.pokedex?.caughtSpeciesIds ?? new Set<number>()} seen={discovered} /><a className="brand" href="#">
           Poké<span>Chose</span>
-        </a>
+        </a></div>
         <div className="header-controls">
           <LocaleSelector />
           <ThemeSelector />

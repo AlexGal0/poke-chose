@@ -6,7 +6,7 @@
 
 Manual, Save y melonDS en vivo mantienen datos separados. El servicio live usa GDB de solo lectura, publica snapshots por SSE y no modifica RAM ni saves. Se validaron direcciones con melonDS 1.1, Pokémon Negro español IRBS revisión 0, usando ARM7 en el puerto 3334. Otra ROM requiere localizar y validar sus direcciones.
 
-`live.config.local.json` contiene la configuración privada; `live.config.example.json` sirve de plantilla. El servicio escucha en `127.0.0.1:3002` y Vite hace proxy de `/live-api`. `LIVE_BRIDGE_PORT` debe coincidir en ambos procesos. La conexión GDB se inicia desde el botón de la aplicación.
+`live.config.local.json` contiene la configuración privada; `live.config.example.json` sirve de plantilla. El servicio escucha en `127.0.0.1:15302` y Vite hace proxy de `/live-api`. `LIVE_BRIDGE_PORT` debe coincidir en ambos procesos. La conexión GDB se inicia desde el botón de la aplicación.
 
 ## Intervalos y consistencia
 

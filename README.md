@@ -142,6 +142,12 @@ In the catalog, icons explain the acquisition routes in Black. The magnifying gl
 
 Press **Evolutions** to check a family and its requirements, or **Moves** to see level-up learnsets in Black/White. The move list doesn't include TMs/HMs, tutors, or breeding. Sprites are revealed once a species is seen or caught in your Pokédex; in Manual, once you add it to your collection.
 
+### Secret Unova album
+
+Hold the header's Poké Ball for about 750 ms (or press Enter while focused) to open all 156 regional cards in a fullscreen mosaic without scrolling. Caught Pokémon appear in color, seen but uncaught Pokémon in grayscale, and unknown Pokémon as question marks. In manual mode, your collection determines which species are known.
+
+Select a known card to expand it with an animated sprite and a description in the selected language. Mosaic cards remain static. On return, the simple card flies back to its slot. Escape returns to the mosaic and, from there, closes the album; holding a mosaic card also closes it. Reduced motion preferences are respected. Descriptions prefer Black/White within each language; if those editions lack a translation, another edition is used before falling back to English.
+
 ### Choose a theme and keep your data
 
 The header's **Theme** selector offers **Original**, **Pokémon**, **Dark Pokémon**, and **Party 🎉**. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
@@ -187,7 +193,9 @@ React + TypeScript + Vite, with React Compiler. Run commands from the folder tha
 
 To read only the `.sav` without starting the live and battle readers, use two terminals: `npm run bridge` and `npm run dev`. The live and battle services can also be started separately with `npm run bridge:live` and `npm run bridge:battle`.
 
-The services listen on `127.0.0.1`: save on **3001**, live on **3002**, and battle on **3003**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
+The services listen on `127.0.0.1`: save on **15301**, live on **15302**, and battle on **15303**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
+
+Restart the launcher and Vite after updating from the former ports 3001–3003. Existing `SAVE_BRIDGE_PORT` and `LIVE_BRIDGE_PORT` overrides still take precedence. The web app keeps Vite's ports (5173 in development and 4173 in preview) to preserve access to browser data; melonDS GDB ports remain 3333/3334.
 
 The last recorded code validation passed **167 tests**, lint, and build. The four themes were checked at 1280, 390, and 320 px, along with catalog names, search, and links using synthetic data. This README reorganization only reviewed documentation and links; it did not re-run code tests or a fresh install.
 

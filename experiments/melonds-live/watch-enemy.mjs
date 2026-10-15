@@ -48,7 +48,7 @@ const bridge = createEnemyServer({
 })
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void bridge.close() })
 bridge.server.on('error', error => { console.error(error.message); void bridge.close(); process.exitCode = 1 })
-bridge.server.listen(3003, '127.0.0.1', () => {
-  console.log('Prototipo enemigo en 127.0.0.1:3003. ' + log)
+bridge.server.listen(15303, '127.0.0.1', () => {
+  console.log('Prototipo enemigo en 127.0.0.1:15303. ' + log)
   if (!process.argv.includes('--wait')) void bridge.connect().catch(error => console.error(error.message))
 })

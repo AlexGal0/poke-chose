@@ -1034,7 +1034,31 @@
       "description": "Pertenece a la Pokédex nacional, pero no a la de Teselia de Negro/Blanco."
     }
   },
+  "secretAlbum": {
+    "trigger": "Mantén pulsada la Poké Ball para abrir el álbum de Teselia; con teclado, pulsa Intro",
+    "eyebrow": "Una colección de pequeñas maravillas",
+    "title": "El álbum de Teselia",
+    "subtitle": "Cada encuentro, un recuerdo. Cada carta, una historia por descubrir.",
+    "progress": "{{count}} / {{total}} capturados",
+    "close": "Cerrar álbum",
+    "hint": "Recorre las cartas y pulsa una para verla de cerca. Esc para volver.",
+    "loading": "Preparando tus cartas…",
+    "loadFailed": "Algunas cartas no se pudieron cargar.",
+    "openCard": "Ampliar la carta de {{name}}",
+    "openSeenCard": "{{name}}: visto, aún no capturado. Ampliar carta",
+    "cardLoading": "Carta {{number}} pendiente de cargar",
+    "locked": "Carta {{number}}: Pokémon aún no descubierto",
+    "back": "Volver al mosaico",
+    "edition": "Pokémon Negro · Edición Teselia",
+    "description": "Notas de la Pokédex",
+    "noDescription": "No se pudo obtener una descripción para esta carta.",
+    "loadingDescription": "Buscando su historia…",
+    "region": "Teselia · Generación V"
+  },
   "evolutionRequirements": {
+    "eyebrow": "El siguiente paso de tu colección",
+    "summary": { "species": "Especies por descubrir", "items": "Tipos de objetos necesarios" },
+    "planning": "Cómo planificar tus evoluciones",
     "title": "Evoluciones pendientes",
     "scope": "Filtrar por Pokédex",
     "nationalOnly": "Solo Nacional",

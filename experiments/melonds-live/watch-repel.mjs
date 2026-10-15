@@ -8,7 +8,7 @@ import { compareRepelSamples, repelResearchRegion } from './repel-candidates.mjs
 // ARM7 connection. Stop the normal general bridge before starting this script.
 const config = JSON.parse(await readFile('live.config.local.json', 'utf8'))
 const region = repelResearchRegion(config)
-const port = Number(process.env.LIVE_BRIDGE_PORT ?? 3002)
+const port = Number(process.env.LIVE_BRIDGE_PORT ?? 15302)
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Puerto de bridge inválido.')
 await mkdir(new URL('./artifacts/', import.meta.url), { recursive: true })
 const report = new URL(`./artifacts/repel-research-${Date.now()}.jsonl`, import.meta.url)
