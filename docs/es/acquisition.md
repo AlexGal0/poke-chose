@@ -1,5 +1,7 @@
 *English version: [../acquisition.md](../acquisition.md)*
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 # Iconos de obtención y descubrimiento
 
 Los iconos describen vías para conseguir una especie en Pokémon Black, no el origen del ejemplar del usuario ni su disponibilidad inmediata. Se pueden mostrar varias vías. No se usa el filtro personal de Surf/Supercaña para decidir si una especie es capturable en el juego.

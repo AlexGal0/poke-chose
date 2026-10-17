@@ -1,5 +1,7 @@
 # Preparar el repositorio para GitHub
 
+> Actualización 2026-10-17: la política actual conserva solo las capturas seleccionadas en `artifacts/README.md`. Los scripts y arneses antiguos de esa carpeta se retiraron; la descripción siguiente documenta la preparación inicial.
+
 ## Archivos incluidos y excluidos
 
 Se mantienen el código, los tests y generadores de fixtures sintéticos, `package-lock.json`, configuraciones `*.example.json`, documentación y capturas/scripts de comprobación en el nivel superior de `artifacts/`.

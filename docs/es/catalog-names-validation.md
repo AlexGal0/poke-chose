@@ -1,5 +1,7 @@
 # Nombres y enlaces del catálogo
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 El catálogo nuevo consulta `pokemon-species?limit=649` en lugar de la lista de variantes `pokemon`. Las cachés anteriores del catálogo y de las tarjetas se normalizan al leerlas, sin borrarlas ni necesitar una consulta adicional. Los nombres visibles y los enlaces a WikiDex comparten la misma adaptación, que contempla sufijos de formas y nombres especiales como Mr. Mime, Mime Jr., Farfetch'd y Nidoran♀/♂. Las formas del equipo con tipos diferentes mantienen sus datos propios.
 
 Validación realizada al implementar la corrección en esta conversación:

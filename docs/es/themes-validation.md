@@ -1,5 +1,7 @@
 # Temas: comportamiento y validación
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 El selector de la cabecera ofrece Original, Pokémon, Pokémon oscuro y Fiesta 🎉. Está disponible también en combate. Las paletas se definen mediante variables CSS en `src/themes.css`; los colores originales quedan como valores de respaldo en las hojas de estilo de los componentes. Fiesta añade fondos con confeti, acentos neón y títulos multicolor. Los colores de tipos y los indicadores de salud conservan su significado.
 
 ## Persistencia

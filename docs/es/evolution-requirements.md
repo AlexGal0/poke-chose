@@ -1,5 +1,7 @@
 # Evoluciones pendientes y obtención en Negro
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 ## Plan
 - [x] Leer la bolsa de Objetos desde el save BW con CRC local/espejo, como dato opcional. Preservar el núcleo y la última lectura ante errores.
 - [x] Crear Evoluciones pendientes para especies poseídas cuyo siguiente resultado todavía no figure como capturado (en manual, no figure en colección). Excluir huevos.

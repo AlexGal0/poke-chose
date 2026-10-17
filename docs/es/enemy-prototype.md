@@ -1,5 +1,7 @@
 # Combate — prototipos 1, 2, 3 y 5, solo modo en vivo
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 La pestaña «Combate» aparece únicamente al seleccionar melonDS en vivo. Identifica al rival y a tu ejemplar activo, muestra sus PS y la salud del equipo completo. Las dos fichas y sus paneles de debilidades comparten columnas y alturas; las coincidencias con tipos del oponente se resaltan. La ficha propia conserva el mote. Los PS usan números y barras animadas, con color según la vida restante. El equipo incluye iconos de ventaja por tipos frente al rival. Los metadatos reutilizan el adaptador Gen V de PokéAPI; la referencia de tipos no incluye movimientos, STAB, habilidades, objetos ni cambios de tipo por efectos del combate. Los estados se pospusieron y la sincronización adicional de «Tu equipo» quedó fuera del alcance por decisión del usuario. La pestaña se conserva al recargar en vivo; al pasar a Manual o Save se selecciona el catálogo.
 
 ## Ejecutar

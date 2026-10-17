@@ -1,5 +1,7 @@
 # Investigación de guardería BW
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 Trabajo del issue #15, rama `codex/investigacion-guarderia`. Primero se establece una referencia desde el save; después se contrastará con RAM. No se modifica el save, RAM ni archivos del juego.
 
 ## Referencias y campos candidatos

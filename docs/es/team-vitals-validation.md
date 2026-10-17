@@ -1,5 +1,7 @@
 # Barras del equipo — validación de esta sesión
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 ## Nombre del objeto equipado
 
 Tras retirar los textos de habilidad y movimientos, `npm test` pasó 116 pruebas; lint y build también aprobaron. Una prueba verifica la traducción de índices de Generación V y el caso sin objeto. En Chrome con nombres sintéticos precargados en caché, las tarjetas mostraron «Superpoción» y «Agua Mística», sin textos «Objeto #», «Habilidad #» ni «Movimientos:». Se revisaron escritorio a 1280 px y móvil a 390 px, sin desbordamiento. Esta comprobación no valida una consulta externa real de nombres.
