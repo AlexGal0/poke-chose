@@ -54,7 +54,7 @@ npm ci
 npm run dev
 ```
 
-Open the address Vite shows and select **Manual** under **Team source**. You don't need any configuration files.
+Open **http://127.0.0.1:15300** and select **Manual** under **Team source**. You don't need any configuration files.
 
 **With melonDS and the Windows launcher:**
 
@@ -166,7 +166,7 @@ The manual collection, team, and preferences are saved in the browser. To get th
 | The boxes show stale data | Wait for the next check, or press Update collection in live mode. |
 | The theme or collection isn't kept | Use the same address, browser, and profile; check the storage notices. |
 | A species' data won't load | Check your internet connection and press Retry. Already-fetched data is reused from cache. |
-| A port is in use | Close your previous instance if you no longer need it. The launcher reuses compatible services and warns if another program is using the port. |
+| A port is in use | Web ports 15300/15400 are fixed; close the previous web instance or resolve the conflict. The launcher reuses compatible reader services on 15301–15303. |
 
 ## Scope and limitations
 
@@ -196,7 +196,9 @@ To read only the `.sav` without starting the live and battle readers, use two te
 
 The services listen on `127.0.0.1`: save on **15301**, live on **15302**, and battle on **15303**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
-Restart the launcher and Vite after updating from the former ports 3001–3003. Existing `SAVE_BRIDGE_PORT` and `LIVE_BRIDGE_PORT` overrides still take precedence. The web app keeps Vite's ports (5173 in development and 4173 in preview) to preserve access to browser data; melonDS GDB ports remain 3333/3334.
+The web app uses **http://127.0.0.1:15300** in development (including the Windows launcher and desktop shortcut), and **http://127.0.0.1:15400** for production preview. Both ports are fixed: an occupied port stops startup instead of silently choosing another. Close the previous instance or resolve the conflict before retrying. The shortcut launches the project’s configuration and needs no port-specific update.
+
+Restart the launcher and Vite after updating. Previously the web used 5173/4173 and the readers used 3001–3003. Browser data on those old web addresses remains there; it does not migrate to the new ports. Your manual collection, team, preferences, and cache must be set up again on the new address. Save/live data can be read again after reconnecting. Existing `SAVE_BRIDGE_PORT` and `LIVE_BRIDGE_PORT` overrides still take precedence; melonDS GDB ports remain 3333/3334.
 
 Run `npm test`, `npm run lint`, and `npm run build` before submitting code changes. Test counts and visual checks in session records are historical; they do not certify the current checkout. See [documentation maintenance](docs/doc-translation-audit.md) and the [curated captures](artifacts/README.md).
 

@@ -54,7 +54,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección que muestre Vite y selecciona **Manual** en **Origen del equipo**. No necesitas archivos de configuración.
+Abre **http://127.0.0.1:15300** y selecciona **Manual** en **Origen del equipo**. No necesitas archivos de configuración.
 
 **Con melonDS y el lanzador de Windows:**
 
@@ -166,7 +166,7 @@ La colección manual, el equipo y las preferencias se guardan en el navegador. P
 | Las cajas muestran datos anteriores | Espera la próxima revisión o pulsa Actualizar colección en modo en vivo. |
 | El tema o la colección no se conservan | Usa la misma dirección, navegador y perfil; revisa los avisos de almacenamiento. |
 | No cargan datos de una especie | Comprueba internet y pulsa Reintentar. Los datos ya consultados se reutilizan desde caché. |
-| Un puerto está ocupado | Cierra tu instancia anterior si ya no la necesitas. El lanzador reutiliza servicios compatibles y avisa si otro programa ocupa el puerto. |
+| Un puerto está ocupado | Los puertos web 15300/15400 son fijos; cierra la instancia web anterior o resuelve el conflicto. El lanzador reutiliza lectores compatibles en 15301–15303. |
 
 ## Alcance y limitaciones
 
@@ -196,7 +196,9 @@ Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos te
 
 Los servicios escuchan en `127.0.0.1`: save en **15301**, en vivo en **15302** y combate en **15303**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
 
-Reinicia el lanzador y Vite después de actualizar desde los antiguos puertos 3001–3003. Si definiste `SAVE_BRIDGE_PORT` o `LIVE_BRIDGE_PORT`, esas variables siguen teniendo prioridad. La web conserva los puertos de Vite (5173 en desarrollo y 4173 en preview), para mantener el acceso a los datos del navegador; los puertos GDB de melonDS siguen siendo 3333/3334.
+La web utiliza **http://127.0.0.1:15300** en desarrollo (incluidos el lanzador de Windows y el acceso directo del escritorio) y **http://127.0.0.1:15400** para la vista previa de producción. Ambos puertos son fijos: si están ocupados, el inicio falla en lugar de elegir otro silenciosamente. Cierra la instancia anterior o resuelve el conflicto antes de reintentar. El acceso directo utiliza la configuración del proyecto y no necesita cambiar su destino.
+
+Reinicia el lanzador y Vite después de actualizar. Antes la web usaba 5173/4173 y los lectores 3001–3003. Los datos del navegador de esas direcciones antiguas permanecen allí; no se migran a los nuevos puertos. Debes volver a configurar colección y equipo manuales, preferencias y caché en la nueva dirección. Los datos de save/live se pueden leer de nuevo al reconectar. Si definiste `SAVE_BRIDGE_PORT` o `LIVE_BRIDGE_PORT`, esas variables siguen teniendo prioridad; los puertos GDB de melonDS siguen siendo 3333/3334.
 
 Antes de entregar cambios de código, ejecuta `npm test`, `npm run lint` y `npm run build`. Los conteos de pruebas y controles visuales de los registros de sesión son históricos y no certifican el estado actual. Consulta el [mantenimiento documental](docs/doc-translation-audit.md) y las [capturas seleccionadas](artifacts/README.md).
 

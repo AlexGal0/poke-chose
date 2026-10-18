@@ -23,7 +23,7 @@ PokéChose is a React and TypeScript application powered by Vite, with React Com
 Run commands from the project root. The README and Windows launcher require Node.js 22.15 or later for the save bridge and tests, which use Node's experimental TypeScript stripping.
 
 - `npm ci`: install dependencies using the existing `package-lock.json`.
-- `npm run dev`: start the Vite development server with hot module replacement.
+- `npm run dev`: start Vite with hot module replacement at `http://127.0.0.1:15300` (strict port).
 - `npm test`: run `tests/*.test.ts` using Node's built-in test runner and `--experimental-strip-types`.
 - `npm run bridge`: start the read-only local save bridge.
 - `npm start`: start Vite and all local readers, and open the browser.
@@ -32,7 +32,7 @@ Run commands from the project root. The README and Windows launcher require Node
 - `npm run bridge:battle`: start only the experimental battle reader.
 - `npm run build`: run TypeScript project checks and generate the production bundle.
 - `npm run lint`: check source files with ESLint.
-- `npm run preview`: serve the production bundle locally after building.
+- `npm run preview`: serve the production bundle at `http://127.0.0.1:15400` after building (strict port).
 - `npm run preview:save`: start all local readers and production preview after building; requires `live.config.local.json`.
 - On Windows, double-click `Iniciar PokeChose.cmd` to start development mode with the bridge and open the browser. The launcher installs dependencies if Vite is absent.
 
