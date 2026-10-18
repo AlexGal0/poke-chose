@@ -1,5 +1,7 @@
 # Species statistics (Black/White)
 
+> Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.
+
 The Statistics action displays species/form base stats, not an individual's final
 stats or temporary battle stages. Like moves and evolutions, it is available from
 the catalog without adding the species first; it is hidden for eggs. The dialog

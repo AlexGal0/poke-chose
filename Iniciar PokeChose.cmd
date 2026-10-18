@@ -26,7 +26,8 @@ if not exist "node_modules\vite\bin\vite.js" (
 )
 
 echo Iniciando PokeChose y el bridge de melonDS...
-echo El navegador se abrira automaticamente.
+echo El navegador se abrira en http://127.0.0.1:15300
+echo El puerto es fijo: si esta ocupado, cierra la otra instancia antes de continuar.
 echo Manten esta ventana abierta. Para detener el programa pulsa Ctrl+C.
 echo.
 node scripts/start-save.mjs --open

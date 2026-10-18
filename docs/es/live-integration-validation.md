@@ -1,5 +1,7 @@
 # Validación de la integración en vivo
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 ## Actualizaciones posteriores
 
 Se implementaron ciclos separados de 3 segundos para equipo/Pokédex y 30 segundos para cajas. Las pruebas con RAM sintética verifican la reutilización del PC, su revisión periódica y la actualización anticipada por cambios de integrantes o capturas. No se midió el rendimiento de estos intervalos en una sesión real prolongada. Los detalles están en [lectura en vivo](live-reading.md).

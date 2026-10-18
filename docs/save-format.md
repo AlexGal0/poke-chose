@@ -1,5 +1,7 @@
 *Versión en español: [es/save-format.md](es/save-format.md)*
 
+> Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.
+
 # Black/White save reading
 
 An in-house, read-only implementation of the documented binary format. No PKHeX code (GPL-3.0) is integrated or copied; it was consulted to cross-check offsets and algorithms. Fixtures are synthetic, created within this project, with no personal saves or game binaries.

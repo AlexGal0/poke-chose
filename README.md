@@ -11,7 +11,7 @@ You can use it manually, sync it with a save file, or enable live reading. The c
 - **Pending evolutions:** separate trade and item routes for owned species whose next evolution is missing from the Pokédex. Filter Unova/National/all and compare required items with bag and held quantities from the latest save, including when using the live collection.
 - **Acquisition details:** click a catalog Pokémon’s image to review Black encounters, NPC trades, evolution requirements and sourced special instructions. This does not verify your story progress or historical event eligibility.
 
-- **Day Care:** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
+- **Day Care:** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/es/daycare-research.md).
 
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
 - **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
@@ -21,9 +21,10 @@ You can use it manually, sync it with a save file, or enable live reading. The c
 - **Captures by zone:** check Black's encounters, levels, methods, and chances; filter by Surf and Super Rod access. The Pokédex marks species as ever caught even if you've since evolved or released them.
 - **Evolutions:** open each family's tree with its Generation V requirements.
 - **Moves:** check level-up learnsets in Black/White, with localized names and descriptions, type, category, and PP.
+- **Statistics:** inspect Generation V species base stats and, when available, the specimen’s read values, with a comparison table and radar. Missing individual stats are not estimated. See [statistics](docs/pokemon-statistics.md).
 - **Your team's data:** shows level, held item, HP, and experience progress when available from the save.
 - **Live reading and experimental battle view:** follow the team, boxes, and Pokédex without saving; in battle, check your active Pokémon, the opponent, their HP, and type-advantage references.
-- **Four themes:** Original, Pokémon, Dark Pokémon, and Party 🎉. The selection saves automatically.
+- **Twelve themes:** Original, Pokémon, Pokémon (dark), Fiesta 🎉, Game Boy Color, Aqua 2000, Classic HTML, Neon, Terminal ASCII, Windows XP, Halo: Combat Evolved, and Halloween. The selection saves automatically.
 - **Language:** switch between Spanish and English with the header selector. The interface translates instantly, with no reload; Spanish is the default language and your choice is saved automatically.
 - **Local storage:** keeps your manual collection and team, preferences, and cache in the browser. No accounts, no database.
 
@@ -53,7 +54,7 @@ npm ci
 npm run dev
 ```
 
-Open the address Vite shows and select **Manual** under **Team source**. You don't need any configuration files.
+Open **http://127.0.0.1:15300** and select **Manual** under **Team source**. You don't need any configuration files.
 
 **With melonDS and the Windows launcher:**
 
@@ -105,7 +106,7 @@ For this option, use the compatible game and emulator setup described in the req
 
 Team, HP, experience, and the Pokédex are polled roughly every **3 seconds**, plus however long the read takes. Boxes are checked every **2 minutes**; you can trigger an earlier read with **Update collection** in **My Collection**. The service never writes to the emulator's memory or the save.
 
-An optional floating Repel indicator shows the game's remaining steps in the upper-right corner. Set `repelStepsAddress` only after validating the counter for your ROM; the example leaves it disabled (`null`). Address `0x0223D69D` was verified with Repels, Super Repels, and Max Repels in Spanish Black IRBS revision 0 on melonDS 1.1. The general reader samples it using its existing connection. Invalid readings retain the last count as out of date; a confirmed zero hides the indicator. No steps are estimated, and this feature is available only in live mode. See [research and validation](docs/repel-research.md) for evidence and pending checks.
+An optional floating Repel indicator shows the game's remaining steps in the upper-right corner. Set `repelStepsAddress` only after validating the counter for your ROM; the example leaves it disabled (`null`). Address `0x0223D69D` was verified with Repels, Super Repels, and Max Repels in Spanish Black IRBS revision 0 on melonDS 1.1. The general reader samples it using its existing connection. Invalid readings retain the last count as out of date; a confirmed zero hides the indicator. No steps are estimated, and this feature is available only in live mode. See [research and validation](docs/es/repel-research.md) for evidence and pending checks.
 
 Repel updates use a 500 ms timer by default on the same GDB connection, with small Repel-only events. Run `npm run repel:normal` to restore general polling immediately, or `npm run repel:fast` to return to 500 ms, without reconnecting melonDS. These commands change the session setting; restarting restores the configuration. Optional `repelPollMs` in local configuration accepts 500–3000 ms (default 500) or `null` to persist general polling. Long team/box reads may delay the counter because all memory reads are serialized. These commands do not change the team or box polling intervals. Polling continues at zero to detect the next Repel automatically; only the indicator disappears.
 
@@ -150,7 +151,7 @@ Select a known card to expand it with an animated sprite and a description in th
 
 ### Choose a theme and keep your data
 
-The header's **Theme** selector offers **Original**, **Pokémon**, **Dark Pokémon**, and **Party 🎉**. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
+The header's **Theme** selector offers the twelve themes listed above. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
 
 The manual collection, team, and preferences are saved in the browser. To get them back, use the same browser, profile, and address: `localhost` and `127.0.0.1`, or different ports, have separate storage. They don't sync across devices. Clearing site data removes what was saved; a private window may discard it on close. If saving isn't possible, the interface shows a notice.
 
@@ -165,7 +166,7 @@ The manual collection, team, and preferences are saved in the browser. To get th
 | The boxes show stale data | Wait for the next check, or press Update collection in live mode. |
 | The theme or collection isn't kept | Use the same address, browser, and profile; check the storage notices. |
 | A species' data won't load | Check your internet connection and press Retry. Already-fetched data is reused from cache. |
-| A port is in use | Close your previous instance if you no longer need it. The launcher reuses compatible services and warns if another program is using the port. |
+| A port is in use | Web ports 15300/15400 are fixed; close the previous web instance or resolve the conflict. The launcher reuses compatible reader services on 15301–15303. |
 
 ## Scope and limitations
 
@@ -195,14 +196,22 @@ To read only the `.sav` without starting the live and battle readers, use two te
 
 The services listen on `127.0.0.1`: save on **15301**, live on **15302**, and battle on **15303**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
-Restart the launcher and Vite after updating from the former ports 3001–3003. Existing `SAVE_BRIDGE_PORT` and `LIVE_BRIDGE_PORT` overrides still take precedence. The web app keeps Vite's ports (5173 in development and 4173 in preview) to preserve access to browser data; melonDS GDB ports remain 3333/3334.
+The web app uses **http://127.0.0.1:15300** in development (including the Windows launcher and desktop shortcut), and **http://127.0.0.1:15400** for production preview. Both ports are fixed: an occupied port stops startup instead of silently choosing another. Close the previous instance or resolve the conflict before retrying. The shortcut launches the project’s configuration and needs no port-specific update.
 
-The last recorded code validation passed **167 tests**, lint, and build. The four themes were checked at 1280, 390, and 320 px, along with catalog names, search, and links using synthetic data. This README reorganization only reviewed documentation and links; it did not re-run code tests or a fresh install.
+Restart the launcher and Vite after updating. Previously the web used 5173/4173 and the readers used 3001–3003. Browser data on those old web addresses remains there; it does not migrate to the new ports. Your manual collection, team, preferences, and cache must be set up again on the new address. Save/live data can be read again after reconnecting. Existing `SAVE_BRIDGE_PORT` and `LIVE_BRIDGE_PORT` overrides still take precedence; melonDS GDB ports remain 3333/3334.
+
+Run `npm test`, `npm run lint`, and `npm run build` before submitting code changes. Test counts and visual checks in session records are historical; they do not certify the current checkout. See [documentation maintenance](docs/doc-translation-audit.md) and the [curated captures](artifacts/README.md).
 
 ## Technical documentation
 
 To prepare a GitHub release, see [repository preparation](docs/es/github-preparation.md) *(Spanish, historical record)*. Local configurations, saves, ROMs, browser profiles, and research outputs are excluded; templates and selected screenshots remain available.
 
+- [Species and individual statistics](docs/pokemon-statistics.md) (English)
+- [Field move compatibility filter](docs/field-moves.md) (English)
+- [Shared reader controls](docs/reader-connections.md) (English)
+- [Day Care research](docs/es/daycare-research.md), [Repel research](docs/es/repel-research.md), and [evolution inventory](docs/es/inventory-research.md) (Spanish session records)
+- [Team reorder validation](docs/es/team-reorder-animation.md) and [evolution planning record](docs/es/evolution-requirements.md) (Spanish session records)
+- [Curated screenshots and retention policy](artifacts/README.md)
 - [Data sources and adapters](docs/data-sources.md) ([Español](docs/es/data-sources.md))
 - [Save format and read-only access](docs/save-format.md) ([Español](docs/es/save-format.md))
 - [Live-reading configuration, intervals, and recovery](docs/live-reading.md) ([Español](docs/es/live-reading.md))

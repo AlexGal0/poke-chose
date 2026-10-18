@@ -1,5 +1,7 @@
 # Collection field move filter
 
+> Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.
+
 The shared filter covers the six Black/White HMs (Cut, Fly, Surf, Strength, Waterfall, Dive) and the field TMs Flash (TM70) and Dig (TM28). It checks whether the current species/form can learn all selected moves by machine in the `black-white` version group. Other methods, other version groups and moves without a field use in this game (such as Rock Smash) do not qualify. It does not check equipped moves, machine ownership or story access. Eggs only appear when the field filter is off.
 
 The manual, save and live collection views use the same control and hook. Selection combines with existing search/type filters and, for imported collections, location. Changing the selected move resets imported pagination. Queries start only when a move is selected, share repeated species/forms, run up to four at a time and cache all eight compatibility results per resource. Numeric/domain data is locale-free; ES/EN labels are resolved at render time. Failed checks show an incomplete-results notice with Retry; they are never cached as incompatible. Late requests cannot overwrite a newer location/collection.
