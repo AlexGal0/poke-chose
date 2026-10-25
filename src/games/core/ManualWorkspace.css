@@ -1,0 +1,6 @@
+.manual-header { flex-wrap: wrap; gap: 16px; }
+.manual-header .header-controls { flex-wrap: wrap; gap: 16px; }
+.manual-view-switch { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.manual-view-switch button[aria-pressed=true] { color: var(--accent-text, #a1e1c7); border-color: var(--accent, #83dcb8); }
+.type-fairy { --type-color: #a74078; background: var(--type-color); }
+.saved-identity { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0; }

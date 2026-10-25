@@ -1,95 +1,45 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { KeyedError, noticeText, toNotice } from '../i18n/notice.ts'
-import { showConnectionControls } from './connection-controls'
-import type { Notice } from '../i18n/notice.ts'
-import { consistentBattleHealth } from '../domain/enemy-prototype'
-import type { EnemyCandidate, ActivePokemonCandidate, BattleTeamMember } from '../domain/enemy-prototype'
-import { BattlePokemon } from './BattlePokemon'
-import { BattleTypeMatchup } from './BattleTypeMatchup'
-import { BattleTeam } from './BattleTeam'
-import { useBattlePokemon } from '../hooks/useBattlePokemon'
-import { consistentStatStages } from '../domain/battle-stat-stages'
-import { emptyBattleSession, updateBattleSession } from '../domain/battle-session'
-import './EnemyPrototype.css'
-interface EnemySnapshot {
-  status: string
-  message: string
-  candidates: EnemyCandidate[]
-  updatedAt: string | null
-  activeCandidates?: ActivePokemonCandidate[]
-  activeMessage?: string
-  enemyVitalsCandidates?: EnemyCandidate[]
-  battleTeam?: BattleTeamMember[] | null
-  battleActive?: boolean | null
-}
+import { generationVRules } from '../domain/type-rules'
+import { getSavePokemon } from '../api/pokeapi'
+import { TYPES } from '../models/pokemon'
+import type { PokemonType } from '../models/pokemon'
+import type { CombatService } from '../models/combat'
+import type { BattleConnection } from '../models/combat'
+import { StatsContext } from './stats-context'
+import { BattleScreen } from './BattleScreen'
+import { readBlackBattle, normalizeBlackBattle } from '../games/black/battle-source'
+import type { BlackBattleSnapshot } from '../games/black/battle-source'
+import { animatedBattleSprite } from '../sources/battle-sprites'
 
-export interface BattleConnection { status: string; message: string; inBattle: boolean }
+export type { BattleConnection } from '../models/combat'
 
+// Black's composition boundary: the shared screen never accesses its endpoint or APIs.
 export function EnemyPrototype({ onConnectionChange }: { onConnectionChange?: (connection: BattleConnection) => void }) {
   const { t } = useTranslation()
-  const [snapshot, setSnapshot] = useState<EnemySnapshot | null>(null)
-  const [error, setError] = useState<Notice>(null)
-  const [session, setSession] = useState(emptyBattleSession)
-  const connectionStatus = error ? 'error' : snapshot?.status ?? 'waiting'
-  const snapshotMessage = snapshot ? t(`enemyPrototype.messages.${snapshot.message}`, { defaultValue: snapshot.message }) : null
-  const connectionMessage = noticeText(t, error) || snapshotMessage || t('app.battleWaitingMessage')
+  const openStats = useContext(StatsContext)
+  const [state, setState] = useState<{ snapshot: BlackBattleSnapshot | null; error: string | null }>({ snapshot: null, error: null })
   useEffect(() => {
     const controller = new AbortController()
     let timer: ReturnType<typeof setTimeout>
     async function poll() {
       try {
-        const response = await fetch('/enemy-api/snapshot', { signal: controller.signal })
-        if (!response.ok) throw new KeyedError('enemyPrototype.errors.prototypeUnavailable')
-        const next = await response.json() as EnemySnapshot
-        if (!Array.isArray(next.candidates) || typeof next.message !== 'string') throw new KeyedError('enemyPrototype.errors.invalidResponse')
-        if (!controller.signal.aborted) {
-          setSnapshot(next)
-          setSession(previous => updateBattleSession(previous, next))
-          setError(null)
-        }
+        const snapshot = await readBlackBattle(controller.signal)
+        if (!controller.signal.aborted) setState({ snapshot, error: null })
       } catch (cause) {
-        if (!controller.signal.aborted) { setSnapshot(null); setError(toNotice(cause, 'enemyPrototype.errors.readFailed')) }
+        if (!controller.signal.aborted) setState({ snapshot: null, error: cause instanceof Error && ['prototypeUnavailable', 'invalidResponse'].includes(cause.message) ? cause.message : 'readFailed' })
       }
       if (!controller.signal.aborted) timer = setTimeout(poll, 2000)
     }
     void poll()
     return () => { controller.abort(); clearTimeout(timer) }
   }, [])
-  const candidates = snapshot?.status === 'ready' ? snapshot.candidates : []
-  const candidate = session.enemy
-  const inBattle = session.inBattle
-  useEffect(() => {
-    onConnectionChange?.({ status: connectionStatus, message: connectionMessage, inBattle })
-  }, [onConnectionChange, connectionStatus, connectionMessage, inBattle])
-  const activeCandidate = session.own
-  const enemyIdentity = candidate ? `${candidate.personality}:${candidate.trainerId}:${candidate.speciesId}:${candidate.form}` : null
-  const ownData = useBattlePokemon(activeCandidate)
-  const enemyData = useBattlePokemon(candidate)
-  const ownHealth = consistentBattleHealth(activeCandidate, snapshot?.activeCandidates ?? [])
-  const enemyHealth = consistentBattleHealth(candidate, snapshot?.enemyVitalsCandidates ?? [])
-  const ownStages = consistentStatStages(activeCandidate, snapshot?.activeCandidates ?? [])
-  const enemyStages = consistentStatStages(candidate, candidates)
-  const disconnected = Boolean(error) || snapshot?.status === 'error'
-  return <section className="panel battle-panel" aria-labelledby="enemy-prototype-title">
-    <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
-    <div role="status" className={`enemy-prototype-status ${candidate ? 'detected' : ''}`}>
-      <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : snapshot?.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
-      <span>{noticeText(t, error) || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : snapshot?.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : snapshotMessage || t('enemyPrototype.detail.connecting'))}</span>
-    </div>
-    {(disconnected || snapshot?.status === 'waiting') && <div className="enemy-prototype-controls"><button onClick={showConnectionControls}>{t('connectionIndicator.goToControlsButton')}</button></div>}
-    {candidate && <div className="battle-participants">
-      {activeCandidate ? <BattlePokemon candidate={activeCandidate} pokemon={ownData.pokemon} error={ownData.error} health={ownHealth} stages={ownStages} own /> : <div className="battle-participant own-participant"><h3 className="battle-participant-title">{t('enemyPrototype.ownTitle')}</h3><div className="battle-participant-empty"><strong>{t('enemyPrototype.toBeConfirmed')}</strong><p className="hint">{snapshot?.activeMessage ? t('enemyPrototype.detail.activeReadFailed') : t('enemyPrototype.noActiveReading')}</p></div></div>}
-      <BattlePokemon candidate={candidate} pokemon={enemyData.pokemon} error={enemyData.error} health={enemyHealth} stages={enemyStages} />
-      <BattleTypeMatchup own={ownData.pokemon} enemy={enemyData.pokemon} direction="outgoing" />
-      <BattleTypeMatchup own={ownData.pokemon} enemy={enemyData.pokemon} direction="incoming" />
-    </div>}
-    {candidate && <BattleTeam key={enemyIdentity} members={session.team} active={activeCandidate} enemy={enemyData.pokemon} />}
-    <details className="battle-reading-details"><summary>{t('enemyPrototype.detailsSummary')}</summary>
-      <p className="hint">{t('enemyPrototype.hints.overview')}</p>
-      <p className="hint">{t('enemyPrototype.hints.multiplier')}</p>
-      <p className="hint">{t('enemyPrototype.hints.weaknesses')}</p>
-      <p className="hint">{t('enemyPrototype.hints.strengths')}</p>
-    </details>
-  </section>
+  const reading = useMemo(() => ({ ...(state.snapshot ? normalizeBlackBattle(state.snapshot) : { status: state.error ? 'error' : 'waiting', active: null, own: null, enemy: null, team: null }),
+    message: state.error ? t(`enemyPrototype.errors.${state.error}`) : state.snapshot ? t(`enemyPrototype.messages.${state.snapshot.message}`, { defaultValue: state.snapshot.message }) : t('app.battleWaitingMessage') }), [state, t])
+  const service = useMemo<CombatService>(() => ({ resolve: async (speciesId, form, signal) => {
+    const pokemon = await getSavePokemon(speciesId, form, signal)
+    return { ...pokemon, animatedSprite: animatedBattleSprite(pokemon.sprite) }
+  }, onStatistics: openStats ? (member, pokemon) => openStats({ ...pokemon,
+    types: pokemon.types.filter((type): type is PokemonType => TYPES.some(t => t === type)), form: member.form }) : undefined }), [openStats])
+  return <BattleScreen reading={reading} service={service} rules={generationVRules} onConnectionChange={onConnectionChange} />
 }

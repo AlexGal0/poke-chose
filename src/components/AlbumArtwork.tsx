@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export function AlbumArtwork({ id, sprite }: { id: number; sprite: string | null }) {
+export function AlbumArtwork({ sprite, animatedSprite }: { id: number; sprite: string | null; animatedSprite: string | null }) {
   const [failed, setFailed] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   useEffect(() => {
@@ -9,6 +9,6 @@ export function AlbumArtwork({ id, sprite }: { id: number; sprite: string | null
     media.addEventListener('change', update)
     return () => media.removeEventListener('change', update)
   }, [])
-  const src = reducedMotion || failed ? sprite : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`
+  const src = reducedMotion || failed ? sprite : animatedSprite ?? sprite
   return src ? <img src={src} alt="" width="192" height="192" onError={() => setFailed(true)} /> : null
 }

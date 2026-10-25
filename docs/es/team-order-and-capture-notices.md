@@ -1,0 +1,7 @@
+# Orden del equipo y avisos compactos
+
+`ReorderGrid` comparte la transición de posición entre el equipo de Black, el de X y las reservas de combate. Compara la identidad de cada ejemplar entre lecturas y anima solo los desplazamientos de miembros existentes durante 420 ms. La primera lectura y las actualizaciones de PS sin cambio de orden no inician movimientos. Las identidades duplicadas se omiten para evitar atribuir una tarjeta al ejemplar equivocado. Se respeta movimiento reducido y se cancelan animaciones al ocultar o desmontar la cuadrícula.
+
+Los avisos de zona única y mejora posterior de probabilidad en el atlas se muestran como un pin ámbar y una flecha verde. `EncounterNotice` conserva el texto traducido al pasar el cursor, enfocar con teclado o tocar. Escape cierra el aviso. Los detalles desplegables de zonas alternativas siguen disponibles. El componente Black ya utilizaba iconos y conserva esa composición.
+
+Validación del 23 de octubre de 2026: se recibió la nueva lectura real del equipo con Azurill primero después del intercambio del usuario. No se capturó el instante de 420 ms del desplazamiento. En Ruta 4 se abrió el aviso de zona única; en Ruta 2 se comprobaron los dos colores y el texto de mayor probabilidad. En 390×844 se abrió el aviso táctil sin desbordamiento horizontal. Las 346 pruebas existentes pasaron, además de lint y build. Evidencia en `artifacts/shared-combat/capture-icon-tooltip.png` y `capture-icons-mobile.png`. Sin escrituras a la partida ni a la memoria de Citra.

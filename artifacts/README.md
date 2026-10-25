@@ -1,6 +1,6 @@
 # Curated validation screenshots
 
-This directory keeps 25 final or distinct validation captures. The 2026-10-17 cleanup removed intermediate layouts, duplicate previews, obsolete browser scripts and HTML harnesses. Historical documentation retains filenames as provenance; removed captures and commands are not current verification evidence. Ignored local browser profiles and research subdirectories were not cleaned.
+This directory keeps curated final or distinct validation captures. The 2026-10-17 cleanup removed intermediate layouts, duplicate previews, obsolete browser scripts and HTML harnesses. Historical documentation retains filenames as provenance; removed captures and commands are not current verification evidence. Ignored local browser profiles and research subdirectories were not cleaned.
 
 | Retained files | Purpose and recorded source |
 | --- | --- |
@@ -20,3 +20,9 @@ This directory keeps 25 final or distinct validation captures. The 2026-10-17 cl
 Keep only captures documenting a final interface or a distinct failure/accessibility state needed by documentation or review. Replace superseded evidence rather than accumulating every iteration. Do not add browser profiles, saves, memory dumps, temporary HTML, or machine-specific automation here. Test fixtures belong in `tests/`; reusable checks belong in `scripts/`.
 
 No browser checks were performed during this cleanup. These images remain historical evidence, not proof of the current build.
+
+## Pokémon X integration (2026-10-25)
+
+The `x-*`, `game-selection-square-*`, `egg-hatching-bar-*`, `gender-*` and `daycare-*` PNG captures document the X delivery. The October 25 change record distinguishes real Citra/save readings from synthetic fixtures. These captures precede the final PR integration smoke check; do not present them as new emulator validation of the merge.
+
+Temporary harnesses and test output are ignored locally. The PR preparation also checked both manual workspaces, the Black evolution view and album, and the X connection popover after integrating master.

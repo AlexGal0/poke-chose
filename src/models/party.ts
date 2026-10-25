@@ -19,6 +19,7 @@ export interface SavedPokemonData {
   moveIds: [number, number, number, number]
   form: number
   isEgg: boolean
+  hatchCyclesRemaining?: number
   nickname?: string | null
   // Stored Gen V nature index (0–24); absent in older snapshots.
   natureId?: number
@@ -81,6 +82,7 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
   const pokemon = (member: SavedPokemonData) => member && typeof member === 'object' && integer(member.personality, 0, 0xffffffff) &&
     integer(member.trainerId, 0, 0xffffffff) && integer(member.speciesId, 1, 649) && integer(member.heldItemId, 0, 65535) &&
     integer(member.abilityId, 0, 255) && integer(member.form, 0, 31) && typeof member.isEgg === 'boolean' &&
+    (member.hatchCyclesRemaining === undefined || member.isEgg && integer(member.hatchCyclesRemaining, 0, 255)) &&
     (member.natureId === undefined || integer(member.natureId, 0, 24)) &&
     (member.gender === undefined || ['male', 'female', 'genderless'].includes(member.gender)) &&
     (member.experience === undefined || integer(member.experience, 0, 0xffffffff)) &&
@@ -113,7 +115,7 @@ export function boxesEqual(a: readonly SavedBoxPokemon[] | null, b: readonly Sav
     return member.box === other.box && member.slot === other.slot && member.personality === other.personality &&
       member.trainerId === other.trainerId && member.speciesId === other.speciesId && member.heldItemId === other.heldItemId &&
       member.abilityId === other.abilityId && member.form === other.form && member.isEgg === other.isEgg && (member.nickname ?? null) === (other.nickname ?? null) &&
-      member.natureId === other.natureId && member.gender === other.gender && member.experience === other.experience &&
+      member.natureId === other.natureId && member.gender === other.gender && member.experience === other.experience && member.hatchCyclesRemaining === other.hatchCyclesRemaining &&
       member.moveIds.every((move, moveIndex) => move === other.moveIds[moveIndex])
   })
 }
@@ -124,7 +126,7 @@ export function partiesEqual(a: readonly SavedPartyMember[] | null, b: readonly 
     return member.slot === other.slot && member.personality === other.personality && member.trainerId === other.trainerId &&
       member.speciesId === other.speciesId && member.level === other.level && member.heldItemId === other.heldItemId &&
       member.currentHp === other.currentHp && member.maxHp === other.maxHp && member.experience === other.experience &&
-      member.natureId === other.natureId && member.gender === other.gender && currentStatsEqual(member.currentStats, other.currentStats) &&
+      member.natureId === other.natureId && member.gender === other.gender && member.hatchCyclesRemaining === other.hatchCyclesRemaining && currentStatsEqual(member.currentStats, other.currentStats) &&
       member.abilityId === other.abilityId && member.form === other.form && member.isEgg === other.isEgg && (member.nickname ?? null) === (other.nickname ?? null) &&
       member.moveIds.every((move, moveIndex) => move === other.moveIds[moveIndex])
   })

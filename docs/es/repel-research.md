@@ -31,7 +31,7 @@ Comandos de terminal: `label <acción realizada>`, `sample` (fuerza un registro 
 
 Referencias revisadas y herramienta preparada. La dirección, el byte concreto y la codificación del tipo siguen pendientes de validación con acciones reales del usuario. Pruebas sintéticas verifican concordancia de anclas, límites, cambios e inestabilidad; no sustituyen esa validación.
 
-Validación de esta preparación: `npm test` (241 pruebas correctas), `npm run lint` y `npm run build` correctos, con el aviso existente de tamaño del bundle. El arranque y cierre con `quit` se comprobaron en el puerto temporal 3004 sin conectar a GDB.
+Validación de esta preparación: `npm test` (241 pruebas correctas), `npm run lint` y `npm run build` correctos, con el aviso existente de tamaño del bundle. El arranque y cierre con `quit` se comprobaron en el puerto temporal 15304 sin conectar a GDB.
 
 El usuario confirmó repelentes máximos disponibles y ningún efecto activo. Se sustituyó temporalmente el bridge general por la herramienta en 3002, conservando los otros servicios; la solicitud de conexión devolvió 202 pero la fuente terminó en `connectFailed`. No se obtuvo una muestra inicial. Se pidió al usuario guardar su progreso, hacer Reset y volver a la partida antes de reintentar. Las comprobaciones con repelente real siguen pendientes.
 

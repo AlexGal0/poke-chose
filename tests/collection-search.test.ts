@@ -56,3 +56,11 @@ test('collection type tags ignore case and accents, using exact Spanish or Engli
   assert.equal(tags(electric, 'elect'), false)
   assert.equal(tags(electric, 'agua'), false)
 })
+
+test('shared collection search supports Gen VI Fairy and nickname/type intersections', () => {
+  const pokemon = { id: 280, name: 'ralts', nickname: 'Mi Estrella', types: ['psychic', 'fairy'] }
+  const label = (type: string) => ({ psychic: 'Psíquico', fairy: 'Hada' })[type] ?? type
+  assert.equal(matchesCollectionTags(pokemon, 'mi hada psiquico', label), true)
+  assert.equal(matchesCollectionTags(pokemon, '#280 fairy', label), true)
+  assert.equal(matchesCollectionTags(pokemon, 'ralts fighting', label), false)
+})

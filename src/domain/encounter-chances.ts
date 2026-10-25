@@ -1,6 +1,6 @@
-import type { BlackEncounterDetail } from '../models/encounters.ts'
+import type { EncounterDetail } from '../models/encounters.ts'
 
-export function encounterChances(details: readonly BlackEncounterDetail[]) {
+export function encounterChances(details: readonly EncounterDetail[]) {
   const groups = new Map<string, { key: string; area: string; method: string; conditions: string[]; chance: number }>()
   for (const detail of details) {
     if (detail.method === 'npc-trade' || typeof detail.chance !== 'number' || !Number.isFinite(detail.chance) || detail.chance < 0 || detail.chance > 100) continue

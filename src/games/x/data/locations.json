@@ -1,0 +1,952 @@
+[
+  {
+    "id": 587,
+    "name": "vaniville-town",
+    "names": {
+      "es": "Pueblo Boceto",
+      "en": "Vaniville Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 588,
+    "name": "kalos-route-1",
+    "names": {
+      "es": "Ruta 1",
+      "en": "Route 1"
+    },
+    "areas": []
+  },
+  {
+    "id": 589,
+    "name": "vaniville-pathway",
+    "names": {
+      "es": "Sendero Boceto",
+      "en": "Vaniville Pathway"
+    },
+    "areas": []
+  },
+  {
+    "id": 590,
+    "name": "aquacorde-town",
+    "names": {
+      "es": "Pueblo Acuarela",
+      "en": "Aquacorde Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 591,
+    "name": "kalos-route-2",
+    "names": {
+      "es": "Ruta 2",
+      "en": "Route 2"
+    },
+    "areas": []
+  },
+  {
+    "id": 592,
+    "name": "avance-trail",
+    "names": {
+      "es": "Vía del Avance",
+      "en": "Avance Trail"
+    },
+    "areas": []
+  },
+  {
+    "id": 593,
+    "name": "santalune-forest",
+    "names": {
+      "es": "Bosque de Novarte",
+      "en": "Santalune Forest"
+    },
+    "areas": []
+  },
+  {
+    "id": 594,
+    "name": "kalos-route-3",
+    "names": {
+      "es": "Ruta 3",
+      "en": "Route 3"
+    },
+    "areas": []
+  },
+  {
+    "id": 595,
+    "name": "ouvert-way",
+    "names": {
+      "es": "Senda Despejada",
+      "en": "Ouvert Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 596,
+    "name": "santalune-city",
+    "names": {
+      "es": "Ciudad Novarte",
+      "en": "Santalune City"
+    },
+    "areas": []
+  },
+  {
+    "id": 597,
+    "name": "kalos-route-4",
+    "names": {
+      "es": "Ruta 4",
+      "en": "Route 4"
+    },
+    "areas": []
+  },
+  {
+    "id": 598,
+    "name": "parterre-way",
+    "names": {
+      "es": "Senda del Parterre",
+      "en": "Parterre Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 599,
+    "name": "lumiose-city",
+    "names": {
+      "es": "Ciudad Luminalia",
+      "en": "Lumiose City"
+    },
+    "areas": []
+  },
+  {
+    "id": 600,
+    "name": "prism-tower",
+    "names": {
+      "es": "Torre Prisma",
+      "en": "Prism Tower"
+    },
+    "areas": []
+  },
+  {
+    "id": 601,
+    "name": "lysandre-labs",
+    "names": {
+      "es": "Laboratorios Lysson",
+      "en": "Lysandre Labs"
+    },
+    "areas": []
+  },
+  {
+    "id": 602,
+    "name": "kalos-route-5",
+    "names": {
+      "es": "Ruta 5",
+      "en": "Route 5"
+    },
+    "areas": []
+  },
+  {
+    "id": 603,
+    "name": "versant-road",
+    "names": {
+      "es": "Vía Repecho",
+      "en": "Versant Road"
+    },
+    "areas": []
+  },
+  {
+    "id": 604,
+    "name": "camphrier-town",
+    "names": {
+      "es": "Pueblo Vánitas",
+      "en": "Camphrier Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 605,
+    "name": "shabboneau-castle",
+    "names": {
+      "es": "Castillo Caduco",
+      "en": "Shabboneau Castle"
+    },
+    "areas": []
+  },
+  {
+    "id": 606,
+    "name": "kalos-route-6",
+    "names": {
+      "es": "Ruta 6",
+      "en": "Route 6"
+    },
+    "areas": []
+  },
+  {
+    "id": 607,
+    "name": "palais-lane",
+    "names": {
+      "es": "Alameda del Palacio",
+      "en": "Palais Lane"
+    },
+    "areas": []
+  },
+  {
+    "id": 608,
+    "name": "parfum-palace",
+    "names": {
+      "es": "Palacio Cénit",
+      "en": "Parfum Palace"
+    },
+    "areas": []
+  },
+  {
+    "id": 609,
+    "name": "kalos-route-7",
+    "names": {
+      "es": "Ruta 7",
+      "en": "Route 7"
+    },
+    "areas": []
+  },
+  {
+    "id": 610,
+    "name": "riviere-walk",
+    "names": {
+      "es": "Paseo de la Ribera",
+      "en": "Rivière Walk"
+    },
+    "areas": []
+  },
+  {
+    "id": 611,
+    "name": "cyllage-city",
+    "names": {
+      "es": "Ciudad Relieve",
+      "en": "Cyllage City"
+    },
+    "areas": []
+  },
+  {
+    "id": 612,
+    "name": "kalos-route-8",
+    "names": {
+      "es": "Ruta 8",
+      "en": "Route 8"
+    },
+    "areas": []
+  },
+  {
+    "id": 613,
+    "name": "muraille-coast",
+    "names": {
+      "es": "Muralla Costera",
+      "en": "Muraille Coast"
+    },
+    "areas": []
+  },
+  {
+    "id": 614,
+    "name": "ambrette-town",
+    "names": {
+      "es": "Pueblo Petroglifo",
+      "en": "Ambrette Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 615,
+    "name": "kalos-route-9",
+    "names": {
+      "es": "Ruta 9",
+      "en": "Route 9"
+    },
+    "areas": []
+  },
+  {
+    "id": 616,
+    "name": "spikes-passage",
+    "names": {
+      "es": "Paso de Rhyhorn",
+      "en": "Spikes Passage"
+    },
+    "areas": []
+  },
+  {
+    "id": 617,
+    "name": "battle-chateau",
+    "names": {
+      "es": "Bastión Batalla",
+      "en": "Battle Chateau"
+    },
+    "areas": []
+  },
+  {
+    "id": 618,
+    "name": "kalos-route-10",
+    "names": {
+      "es": "Ruta 10",
+      "en": "Route 10"
+    },
+    "areas": []
+  },
+  {
+    "id": 619,
+    "name": "menhir-trail",
+    "names": {
+      "es": "Camino Menhires",
+      "en": "Menhir Trail"
+    },
+    "areas": []
+  },
+  {
+    "id": 620,
+    "name": "geosenge-town",
+    "names": {
+      "es": "Pueblo Crómlech",
+      "en": "Geosenge Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 621,
+    "name": "kalos-route-11",
+    "names": {
+      "es": "Ruta 11",
+      "en": "Route 11"
+    },
+    "areas": []
+  },
+  {
+    "id": 622,
+    "name": "miroir-way",
+    "names": {
+      "es": "Senda Reflejos",
+      "en": "Miroir Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 623,
+    "name": "reflection-cave",
+    "names": {
+      "es": "Cueva Reflejos",
+      "en": "Reflection Cave"
+    },
+    "areas": []
+  },
+  {
+    "id": 624,
+    "name": "shalour-city",
+    "names": {
+      "es": "Ciudad Yantra",
+      "en": "Shalour City"
+    },
+    "areas": []
+  },
+  {
+    "id": 625,
+    "name": "tower-of-mastery",
+    "names": {
+      "es": "Torre Maestra",
+      "en": "Tower of Mastery"
+    },
+    "areas": []
+  },
+  {
+    "id": 626,
+    "name": "kalos-route-12",
+    "names": {
+      "es": "Ruta 12",
+      "en": "Route 12"
+    },
+    "areas": []
+  },
+  {
+    "id": 627,
+    "name": "fourrage-road",
+    "names": {
+      "es": "Vereda del Heno",
+      "en": "Fourrage Road"
+    },
+    "areas": []
+  },
+  {
+    "id": 628,
+    "name": "coumarine-city",
+    "names": {
+      "es": "Ciudad Témpera",
+      "en": "Coumarine City"
+    },
+    "areas": []
+  },
+  {
+    "id": 629,
+    "name": "kalos-route-13",
+    "names": {
+      "es": "Ruta 13",
+      "en": "Route 13"
+    },
+    "areas": []
+  },
+  {
+    "id": 630,
+    "name": "lumiose-badlands",
+    "names": {
+      "es": "Páramo de Luminalia",
+      "en": "Lumiose Badlands"
+    },
+    "areas": []
+  },
+  {
+    "id": 631,
+    "name": "kalos-route-14",
+    "names": {
+      "es": "Ruta 14",
+      "en": "Route 14"
+    },
+    "areas": []
+  },
+  {
+    "id": 632,
+    "name": "laverre-nature-trail",
+    "names": {
+      "es": "Arboleda Romantis",
+      "en": "Laverre Nature Trail"
+    },
+    "areas": []
+  },
+  {
+    "id": 633,
+    "name": "laverre-city",
+    "names": {
+      "es": "Ciudad Romantis",
+      "en": "Laverre City"
+    },
+    "areas": []
+  },
+  {
+    "id": 634,
+    "name": "poke-ball-factory",
+    "names": {
+      "es": "Fábrica Poké Balls",
+      "en": "Poké Ball Factory"
+    },
+    "areas": []
+  },
+  {
+    "id": 635,
+    "name": "kalos-route-15",
+    "names": {
+      "es": "Ruta 15",
+      "en": "Route 15"
+    },
+    "areas": []
+  },
+  {
+    "id": 636,
+    "name": "brun-way",
+    "names": {
+      "es": "Sendero Hojarasca",
+      "en": "Brun Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 637,
+    "name": "dendemille-town",
+    "names": {
+      "es": "Pueblo Fresco",
+      "en": "Dendemille Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 638,
+    "name": "kalos-route-16",
+    "names": {
+      "es": "Ruta 16",
+      "en": "Route 16"
+    },
+    "areas": []
+  },
+  {
+    "id": 639,
+    "name": "melancolie-path",
+    "names": {
+      "es": "Senda Melancolía",
+      "en": "Mélancolie Path"
+    },
+    "areas": []
+  },
+  {
+    "id": 640,
+    "name": "frost-cavern",
+    "names": {
+      "es": "Gruta Helada",
+      "en": "Frost Cavern"
+    },
+    "areas": []
+  },
+  {
+    "id": 641,
+    "name": "kalos-route-17",
+    "names": {
+      "es": "Ruta 17",
+      "en": "Route 17"
+    },
+    "areas": []
+  },
+  {
+    "id": 642,
+    "name": "mamoswine-road",
+    "names": {
+      "es": "Sendero Mamoswine",
+      "en": "Mamoswine Road"
+    },
+    "areas": []
+  },
+  {
+    "id": 643,
+    "name": "anistar-city",
+    "names": {
+      "es": "Ciudad Fluxus",
+      "en": "Anistar City"
+    },
+    "areas": []
+  },
+  {
+    "id": 644,
+    "name": "kalos-route-18",
+    "names": {
+      "es": "Ruta 18",
+      "en": "Route 18"
+    },
+    "areas": []
+  },
+  {
+    "id": 645,
+    "name": "vallee-etroite-way",
+    "names": {
+      "es": "Senda Valle Angosto",
+      "en": "Vallée Étroite Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 646,
+    "name": "couriway-town",
+    "names": {
+      "es": "Pueblo Mosaico",
+      "en": "Couriway Town"
+    },
+    "areas": []
+  },
+  {
+    "id": 647,
+    "name": "kalos-route-19",
+    "names": {
+      "es": "Ruta 19",
+      "en": "Route 19"
+    },
+    "areas": []
+  },
+  {
+    "id": 648,
+    "name": "grande-vallee-way",
+    "names": {
+      "es": "Senda del Gran Valle",
+      "en": "Grande Vallée Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 649,
+    "name": "snowbelle-city",
+    "names": {
+      "es": "Ciudad Fractal",
+      "en": "Snowbelle City"
+    },
+    "areas": []
+  },
+  {
+    "id": 650,
+    "name": "kalos-route-20",
+    "names": {
+      "es": "Ruta 20",
+      "en": "Route 20"
+    },
+    "areas": []
+  },
+  {
+    "id": 651,
+    "name": "winding-woods",
+    "names": {
+      "es": "Bosque Errantes",
+      "en": "Winding Woods"
+    },
+    "areas": []
+  },
+  {
+    "id": 652,
+    "name": "pokemon-village",
+    "names": {
+      "es": "Villa Pokémon",
+      "en": "Pokémon Village"
+    },
+    "areas": []
+  },
+  {
+    "id": 653,
+    "name": "kalos-route-21",
+    "names": {
+      "es": "Ruta 21",
+      "en": "Route 21"
+    },
+    "areas": []
+  },
+  {
+    "id": 654,
+    "name": "derniere-way",
+    "names": {
+      "es": "Vía Ultimia",
+      "en": "Dernière Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 655,
+    "name": "kalos-route-22",
+    "names": {
+      "es": "Ruta 22",
+      "en": "Route 22"
+    },
+    "areas": []
+  },
+  {
+    "id": 656,
+    "name": "detourner-way",
+    "names": {
+      "es": "Vía Desvío",
+      "en": "Détourner Way"
+    },
+    "areas": []
+  },
+  {
+    "id": 657,
+    "name": "kalos-victory-road",
+    "names": {
+      "es": "Calle Victoria",
+      "en": "Victory Road"
+    },
+    "areas": []
+  },
+  {
+    "id": 658,
+    "name": "kalos-pokemon-league",
+    "names": {
+      "es": "Liga Pokémon",
+      "en": "Pokémon League"
+    },
+    "areas": []
+  },
+  {
+    "id": 659,
+    "name": "kiloude-city",
+    "names": {
+      "es": "Ciudad Batik",
+      "en": "Kiloude City"
+    },
+    "areas": []
+  },
+  {
+    "id": 660,
+    "name": "battle-maison",
+    "names": {
+      "es": "Mansión Batalla",
+      "en": "Battle Maison"
+    },
+    "areas": []
+  },
+  {
+    "id": 661,
+    "name": "azure-bay",
+    "names": {
+      "es": "Bahía Azul",
+      "en": "Azure Bay"
+    },
+    "areas": []
+  },
+  {
+    "id": 662,
+    "name": "dendemille-gate",
+    "names": {
+      "es": "Acceso a Fresco",
+      "en": "Dendemille Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 663,
+    "name": "couriway-gate",
+    "names": {
+      "es": "Acceso a Mosaico",
+      "en": "Couriway Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 664,
+    "name": "ambrette-gate",
+    "names": {
+      "es": "Acceso a Petroglifo",
+      "en": "Ambrette Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 665,
+    "name": "lumiose-gate",
+    "names": {
+      "es": "Acceso a Luminalia",
+      "en": "Lumiose Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 666,
+    "name": "shalour-gate",
+    "names": {
+      "es": "Acceso a Yantra",
+      "en": "Shalour Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 667,
+    "name": "coumarine-gate",
+    "names": {
+      "es": "Acceso a Témpera",
+      "en": "Coumarine Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 668,
+    "name": "laverre-gate",
+    "names": {
+      "es": "Acceso a Romantis",
+      "en": "Laverre Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 669,
+    "name": "anistar-gate",
+    "names": {
+      "es": "Acceso a Fluxus",
+      "en": "Anistar Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 670,
+    "name": "snowbelle-gate",
+    "names": {
+      "es": "Acceso a Fractal",
+      "en": "Snowbelle Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 671,
+    "name": "glittering-cave",
+    "names": {
+      "es": "Cueva Brillante",
+      "en": "Glittering Cave"
+    },
+    "areas": []
+  },
+  {
+    "id": 672,
+    "name": "connecting-cave",
+    "names": {
+      "es": "Gruta Tierraunida",
+      "en": "Connecting Cave"
+    },
+    "areas": []
+  },
+  {
+    "id": 673,
+    "name": "zubat-roost",
+    "names": {
+      "es": "Escondrijo Zubat",
+      "en": "Zubat Roost"
+    },
+    "areas": []
+  },
+  {
+    "id": 674,
+    "name": "kalos-power-plant",
+    "names": {
+      "es": "Central de Kalos",
+      "en": "Kalos Power Plant"
+    },
+    "areas": []
+  },
+  {
+    "id": 675,
+    "name": "team-flare-secret-hq",
+    "names": {
+      "es": "Guarida Team Flare",
+      "en": "Team Flare Secret HQ"
+    },
+    "areas": []
+  },
+  {
+    "id": 676,
+    "name": "terminus-cave",
+    "names": {
+      "es": "Cueva Desenlace",
+      "en": "Terminus Cave"
+    },
+    "areas": []
+  },
+  {
+    "id": 677,
+    "name": "lost-hotel",
+    "names": {
+      "es": "Hotel Desolación",
+      "en": "Lost Hotel"
+    },
+    "areas": []
+  },
+  {
+    "id": 678,
+    "name": "chamber-of-emptiness",
+    "names": {
+      "es": "Estancia Vacua",
+      "en": "Chamber of Emptiness"
+    },
+    "areas": []
+  },
+  {
+    "id": 679,
+    "name": "sea-spirits-den",
+    "names": {
+      "es": "Cueva Talasia",
+      "en": "Sea Spirit’s Den"
+    },
+    "areas": []
+  },
+  {
+    "id": 680,
+    "name": "friend-safari",
+    "names": {
+      "es": "Safari Amistad",
+      "en": "Friend Safari"
+    },
+    "areas": []
+  },
+  {
+    "id": 681,
+    "name": "blazing-chamber",
+    "names": {
+      "es": "Sala de las Llamas",
+      "en": "Blazing Chamber"
+    },
+    "areas": []
+  },
+  {
+    "id": 682,
+    "name": "flood-chamber",
+    "names": {
+      "es": "Sala de la Esclusa",
+      "en": "Flood Chamber"
+    },
+    "areas": []
+  },
+  {
+    "id": 683,
+    "name": "ironworks-chamber",
+    "names": {
+      "es": "Sala del Metal",
+      "en": "Ironworks Chamber"
+    },
+    "areas": []
+  },
+  {
+    "id": 684,
+    "name": "dragonmark-chamber",
+    "names": {
+      "es": "Sala del Draco",
+      "en": "Dragonmark Chamber"
+    },
+    "areas": []
+  },
+  {
+    "id": 685,
+    "name": "radiant-chamber",
+    "names": {
+      "es": "Sala de la Luz",
+      "en": "Radiant Chamber"
+    },
+    "areas": []
+  },
+  {
+    "id": 686,
+    "name": "pokemon-league-gate",
+    "names": {
+      "es": "Acceso Liga Pokémon",
+      "en": "Pokémon League Gate"
+    },
+    "areas": []
+  },
+  {
+    "id": 687,
+    "name": "lumiose-station",
+    "names": {
+      "es": "Estación Luminalia",
+      "en": "Lumiose Station"
+    },
+    "areas": []
+  },
+  {
+    "id": 688,
+    "name": "kiloude-station",
+    "names": {
+      "es": "Estación Batik",
+      "en": "Kiloude Station"
+    },
+    "areas": []
+  },
+  {
+    "id": 689,
+    "name": "ambrette-aquarium",
+    "names": {
+      "es": "Acuario Petroglifo",
+      "en": "Ambrette Aquarium"
+    },
+    "areas": []
+  },
+  {
+    "id": 690,
+    "name": "unknown-dungeon",
+    "names": {
+      "es": "Mazmorra Rara",
+      "en": "Unknown Dungeon"
+    },
+    "areas": []
+  },
+  {
+    "id": 1056,
+    "name": "roaming-kalos",
+    "names": {
+      "en": "Kalos (Roaming)"
+    },
+    "areas": []
+  },
+  {
+    "id": 1121,
+    "name": "kalos-berry-fields",
+    "names": {},
+    "areas": []
+  }
+]

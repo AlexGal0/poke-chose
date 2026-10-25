@@ -1,0 +1,24 @@
+.atlas-progress { color: var(--success-text); font-size: 13px; }
+.encounter-atlas .capture-identity img { flex-shrink: 0; object-fit: contain; }
+.atlas-gender { margin-left: 8px; color: var(--text-muted); font-size: 12px; }
+.encounter-atlas .types { justify-content: flex-start; margin: 12px 0; }
+.encounter-atlas .atlas-chances { padding-right: 0; margin-top: 14px; }
+.atlas-chance { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 5px 10px; margin-top: 9px; font-size: 12px; }
+.atlas-chance meter, .atlas-chance small { grid-column: 1 / -1; width: 100%; }
+.atlas-chance small { color: var(--text-muted); line-height: 1.6; }
+.atlas-alternatives button { font-size: 12px; padding: 4px 8px; }
+.atlas-evolution-hint { width: 100%; min-height: 40px; display: flex; align-items: center; gap: 8px; font-size: 11px; line-height: 1.5; text-align: left; margin-top: 12px; }
+.atlas-evolution-hint svg { flex-shrink: 0; color: var(--accent-text, #a1e1c7); }
+.encounter-atlas .capture-subzone { scroll-margin-top: 20px; }
+.encounter-atlas .capture-list > li { display: grid; grid-template-rows: subgrid; grid-row: span 7; align-items: start; row-gap: 10px; }
+.encounter-atlas .capture-list > li > div { padding-right: 0; }
+.encounter-atlas .capture-list .capture-identity { align-items: start; padding-right: 36px; }
+.capture-sprite-slot { display: grid; place-items: center; width: 64px; height: 64px; flex: 0 0 64px; color: var(--text-muted, #9caabb); }
+.encounter-atlas .types, .encounter-atlas .atlas-chances, .encounter-atlas .knowledge-actions, .encounter-atlas .capture-list details { margin: 0; }
+.encounter-atlas .atlas-insights { align-self: end; }
+.atlas-insights > :first-child { margin-top: 0; }
+.atlas-obtaining .encounter-methods { margin-top: 0; }
+@media (min-width: 641px) and (max-width: 1000px) { .encounter-atlas .capture-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .encounter-atlas .zone-controls .zone-select, .encounter-atlas .zone-controls .zone-search { flex-basis: 100%; width: 100%; min-width: 0; }
+}

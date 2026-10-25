@@ -2,16 +2,42 @@
 
 # PokéChose
 
-Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro**. PokéChose funciona en el navegador y puede leer tu partida de melonDS sin modificarla.
+Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro o Pokémon X**. PokéChose funciona en el navegador y ofrece fuentes manuales, de guardado y de memoria de solo lectura, según el juego.
 
-Puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. El catálogo y el análisis utilizan las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
+En Negro puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. Ese espacio utiliza las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
 
 ## Funciones
 
-- **Evoluciones pendientes:** separa intercambios y objetos para especies poseídas cuya siguiente evolución falta en la Pokédex. Filtra Teselia/Nacional/todas y compara los objetos necesarios con bolsa y objetos equipados del último save, incluso al usar la colección en vivo.
-- **Detalles de obtención:** pulsa la imagen de un Pokémon del catálogo para consultar encuentros de Negro, intercambios NPC, requisitos de evolución e instrucciones especiales con fuentes. No comprueba tu progreso ni la elegibilidad de eventos históricos.
+La pantalla inicial separa **Black** y **X**. X ya permite colección y equipo
+manual independientes, catálogo y análisis de tipos Gen VI y fichas con
+estadísticas base históricas, movimientos por nivel de X/Y y métodos evolutivos
+compatibles. También incluye capturas por zona con 66 destinos del recorrido de X, con
+niveles, métodos, porcentajes, filtros de equipo y subzonas. X utiliza el mismo selector Manual / Save / En vivo y orden de pestañas que Black.
+Save lee el `main` de Citra automáticamente mediante el puente local; las imágenes
+de especies desconocidas siguen ocultas. Configura `x-save.config.local.json`
+una sola vez y usa el iniciador habitual o `npm run bridge:x`. Save incluye los seis
+miembros del equipo, las 31 cajas y el balance de tipos Gen VI. Los nombres y sprites
+de los ejemplares se resuelven con un catálogo público local. X también ofrece equipo y balance en Citra en vivo (experimental), con Conectar/Desconectar y sondeo cada dos segundos. Inicia el servicio con `npm run bridge:x-live` o el lanzador habitual. La Pokédex también se lee en vivo: habilita imágenes de especies vistas o capturadas y marcas de captura basadas solo en capturado. Citra en vivo también lee las 31 cajas al conectar y cada dos minutos, con Actualizar colección para adelantar la lectura. Conserva la última colección válida con fecha y aviso ante errores. El perfil se valida contra la sesión local de X; otras revisiones pueden no ser compatibles. Consulta el
+[lector de Pokédex](docs/es/x-save-pokedex.md) y el
+[alcance y las validaciones](docs/es/game-workspaces.md).
 
-- **Guardería:** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/es/daycare-research.md).
+Black y X comparten pantalla y ciclo de combate: apertura automática, botón flotante, conservación de la pelea durante cambios de Pokémon y regreso a la vista anterior con sus filtros. X también sigue la ubicación del personaje en Capturas con Citra en vivo; elegir una zona manual pausa el seguimiento. El catálogo distingue Pokédex regional y nacional, incluyendo especies de generaciones anteriores. La aventura elegida se recuerda durante el día local, incluso tras recargar o reiniciar. Consulta la [arquitectura, decisiones de diseño y límites actuales](docs/es/architecture.md).
+
+### Guardería, huevos y estado de la partida
+
+- **Guardería de Black y X:** pantalla compartida con dos espacios, género individual, nivel, EXP y estado del huevo. X admite Save y Citra en vivo con el perfil local validado. Las lecturas antiguas se identifican como tales.
+- **Huevo pendiente:** aviso flotante que abre la guardería desde cualquier pestaña. Solo aparece con una lectura vigente y no depende de que carguen las evoluciones.
+- **Eclosión en X:** las tarjetas de huevos muestran ciclos restantes, porcentaje y barra de progreso. En el equipo incluyen un rango aproximado de pasos sin bonificaciones; en cajas indican que el huevo debe pasar al equipo para avanzar. Black todavía no expone este contador.
+- **Géneros en Capturas:** barra única azul/rosa, proporcional a los porcentajes base del juego. Cada adaptador calcula sus probabilidades; la presentación solo las redondea. No se muestran valores de 0 % y las especies sin género conservan su símbolo.
+- **Conexión:** botón compartido para Manual, Save y En vivo, con estado, fechas y acceso a controles. Las cajas de X se muestran aparte y no afectan al color del botón.
+
+Consulta el [resumen de cambios del 25 de octubre](docs/es/changes-2026-10-25.md) para contratos, validaciones y límites; la [guardería de X](docs/es/x-daycare.md) contiene el formato y la evidencia técnica.
+
+### Funciones de Black
+
+Las funciones siguientes describen el espacio de Black.
+
+- **Guardería (Black):** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
 
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
 - **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
@@ -166,7 +192,7 @@ La colección manual, el equipo y las preferencias se guardan en el navegador. P
 | Las cajas muestran datos anteriores | Espera la próxima revisión o pulsa Actualizar colección en modo en vivo. |
 | El tema o la colección no se conservan | Usa la misma dirección, navegador y perfil; revisa los avisos de almacenamiento. |
 | No cargan datos de una especie | Comprueba internet y pulsa Reintentar. Los datos ya consultados se reutilizan desde caché. |
-| Un puerto está ocupado | Los puertos web 15300/15400 son fijos; cierra la instancia web anterior o resuelve el conflicto. El lanzador reutiliza lectores compatibles en 15301–15303. |
+| Un puerto está ocupado | Los puertos web 15300/15400 son fijos; cierra la instancia web anterior o resuelve el conflicto. El lanzador reutiliza lectores compatibles en 15301–15305. |
 
 ## Alcance y limitaciones
 
@@ -196,13 +222,15 @@ Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos te
 
 Los servicios escuchan en `127.0.0.1`: save en **15301**, en vivo en **15302** y combate en **15303**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
 
-La web utiliza **http://127.0.0.1:15300** en desarrollo (incluidos el lanzador de Windows y el acceso directo del escritorio) y **http://127.0.0.1:15400** para la vista previa de producción. Ambos puertos son fijos: si están ocupados, el inicio falla en lugar de elegir otro silenciosamente. Cierra la instancia anterior o resuelve el conflicto antes de reintentar. El acceso directo utiliza la configuración del proyecto y no necesita cambiar su destino.
-
-Reinicia el lanzador y Vite después de actualizar. Antes la web usaba 5173/4173 y los lectores 3001–3003. Los datos del navegador de esas direcciones antiguas permanecen allí; no se migran a los nuevos puertos. Debes volver a configurar colección y equipo manuales, preferencias y caché en la nueva dirección. Los datos de save/live se pueden leer de nuevo al reconectar. Si definiste `SAVE_BRIDGE_PORT` o `LIVE_BRIDGE_PORT`, esas variables siguen teniendo prioridad; los puertos GDB de melonDS siguen siendo 3333/3334.
-
-Antes de entregar cambios de código, ejecuta `npm test`, `npm run lint` y `npm run build`. Los conteos de pruebas y controles visuales de los registros de sesión son históricos y no certifican el estado actual. Consulta el [mantenimiento documental](docs/doc-translation-audit.md) y las [capturas seleccionadas](artifacts/README.md).
+La última entrega de código registrada aprobó **394 pruebas**, lint y build. El [resumen del 25 de octubre](docs/es/changes-2026-10-25.md) distingue las comprobaciones con partidas reales, los fixtures y los pendientes. Esta consolidación documental no repite las pruebas ni una instalación nueva.
 
 ## Documentación técnica
+
+- [Guardería, huevos, géneros y conexión: estado consolidado](docs/es/changes-2026-10-25.md) ([English](docs/changes-2026-10-25.md)).
+- [Guardería y eclosión de X](docs/es/x-daycare.md), [proporciones de género](docs/es/encounter-gender-research.md) e [indicador de conexión](docs/es/connection-indicator.md): contratos, adaptadores, reglas y evidencia.
+- [Arquitectura y decisiones de diseño actuales](docs/es/architecture.md): capas, contratos compartidos, fuentes, persistencia, diferencias V/VI y deuda técnica.
+- [Seguimiento de zonas de X](docs/es/x-location.md): lectura validada, mapas, pausa manual y recuperación.
+- [Combate compartido](docs/es/x-battle.md), [paridad de colección](docs/es/collection-functional-parity.md) y [motor de capturas](docs/es/capture-zone-preparation.md): implementación y evidencia de cada extracción.
 
 Para preparar una publicación en GitHub, consulta [preparación del repositorio](docs/es/github-preparation.md). Las configuraciones locales, partidas, ROMs, perfiles de navegador y salidas de investigación están excluidas; las plantillas y capturas seleccionadas permanecen disponibles.
 
@@ -219,10 +247,12 @@ Para preparar una publicación en GitHub, consulta [preparación del repositorio
 - [Nombres y enlaces del catálogo](docs/es/catalog-names-validation.md)
 - [Validación de integración](docs/es/live-integration-validation.md) y [barras y objetos](docs/es/team-vitals-validation.md)
 
-Los documentos de investigación y validación en `docs/es/` son registros históricos de una sesión de desarrollo concreta (capturas, conteos de pruebas y fecha incluidos), no documentación viva de la funcionalidad actual; ver [auditoría de traducción de documentación](docs/doc-translation-audit.md) para el detalle de qué se tradujo y por qué. Las guías de contribución en `AGENTS.md`, incluida la sección de localización (`src/i18n/`), ya están en inglés.
+Las notas detalladas distinguen el estado actual de los registros históricos de validación; los recuentos y capturas conservan la fecha de su entrega. Consulta la [auditoría de traducción de documentación](docs/doc-translation-audit.md) para el alcance de las traducciones anteriores. Las guías de contribución en `AGENTS.md`, incluida la sección de localización (`src/i18n/`), están en inglés.
 
 ## Datos y créditos
 
 Datos y sprites de [PokéAPI](https://pokeapi.co/docs/v2). Enlaces y referencias de especies, zonas y métodos de obtención de [WikiDex](https://www.wikidex.net/wiki/WikiDex). Emulación mediante [melonDS](https://github.com/melonDS-emu/melonDS).
 
 PokéChose es un proyecto independiente de apoyo a la partida. Pokémon y sus elementos pertenecen a sus respectivos titulares.
+
+La preparación del PR integra master actual, incluidos los puertos web fijos 15300/15400. Los lectores save/live de X usan ahora 15304/15305; reinicia los servicios locales tras actualizar. La integración completa pasa 404 pruebas, lint y build. La comprobación de navegador cubre ambos espacios manuales, evoluciones pendientes/álbum de Negro y detalles de conexión de X; el registro de cambios conserva la evidencia real previa de Citra.

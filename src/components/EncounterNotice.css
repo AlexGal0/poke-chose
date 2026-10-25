@@ -1,0 +1,9 @@
+.encounter-notice { position: relative; display: inline-flex; }
+.encounter-notice > button { display: grid; place-items: center; width: 30px; height: 30px; padding: 5px; border-radius: 7px; cursor: help; }
+.encounter-notice.unique > button { color: var(--warning-text, #f0cf85); background: var(--warning-surface, #39321e); border: 1px solid var(--warning-border, #a48a55); }
+.encounter-notice.later > button { color: var(--accent-text, #a1e1c7); background: var(--accent-surface, #243b32); border: 1px solid var(--accent-border, #487b63); }
+.encounter-notice > button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.encounter-notice-tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; z-index: 12; width: 240px; max-width: 65vw; padding: 10px; border: 1px solid var(--border-strong, #526779); border-radius: 7px; background: var(--surface-inset, #101820); color: var(--text, #e1eaf2); font-size: 11px; line-height: 1.6; text-align: left; box-shadow: 0 5px 16px #0006; pointer-events: none; }
+.encounter-notice:hover .encounter-notice-tooltip, .encounter-notice:focus-within .encounter-notice-tooltip, .encounter-notice.open .encounter-notice-tooltip { display: block; }
+.atlas-notices { display: flex; gap: 7px; align-items: center; margin-bottom: 8px; }
+.atlas-notices:empty { display: none; }

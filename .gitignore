@@ -33,7 +33,7 @@ coverage/
 *.bin
 
 # Local research output and browser profiles.
-# Keep the top-level screenshots, HTML fixtures and browser check scripts.
+# Keep curated screenshots; exclude local review logs and temporary harnesses.
 /experiments/melonds-live/artifacts/
 /artifacts/*/
 
@@ -68,3 +68,8 @@ Desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+/artifacts/*.txt
+/artifacts/*-check.html
+/artifacts/*-check.tsx
+/artifacts/*-api-fixture.json

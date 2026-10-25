@@ -1,3 +1,4 @@
+import { GenerationBadge } from './GenerationBadge'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getCatalog, getPokemon } from '../api/pokeapi'
@@ -32,6 +33,7 @@ function CatalogCard({ entry, collected, caught, onAdd, readOnly, acquisition, o
   const status = collected ? readOnly ? t('catalog.card.status.inTeamOrBoxes') : t('catalog.card.status.inCollection') : caught ? t('catalog.card.status.everCaught') : caught === null ? t('catalog.card.status.noPokedexData') : t('catalog.card.status.notCaught')
   if (!pokemon) return <article className={`pokemon-card loading-card ${captured ? 'captured' : ''}`}>
     {wikiLink}
+    <GenerationBadge speciesId={entry.id} />
     <span className="dex-number">#{entry.id}</span><h3>{pokemonDisplayName(entry.name)}</h3>
     {(readOnly || collected) && <p className="catalog-capture-state">{status}</p>}
     {error ? <><p>{t('catalog.card.loadError')}</p><button onClick={() => { setError(false); setAttempt(a => a + 1) }}>{t('common.retry')}</button></> : <p role="status">{t('catalog.card.loading')}</p>}

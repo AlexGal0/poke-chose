@@ -2,6 +2,7 @@
 .daycare-floating-alert > span { font-size: 26px; }
 .daycare-floating-alert > strong { font-size: 17px; font-variant-numeric: tabular-nums; }
 .daycare-floating-alert-soon { background: #795d25; border-color: #eac56a; color: #fff5d6; }
+.daycare-floating-alert-egg { background: #795d25; border-color: #eac56a; color: #fff5d6; }
 .daycare-floating-alert:hover { filter: brightness(1.15); }
 .daycare-floating-alert:focus-visible { outline: 3px solid var(--text, #edf4f8); outline-offset: 4px; }
 body:has(dialog[open]) .daycare-floating-alert { display: none; }

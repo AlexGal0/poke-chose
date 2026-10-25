@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getSpeciesGender } from '../api/gender'
 import type { SpeciesGender } from '../domain/gender'
-import { genderLabel } from '../i18n/gender.ts'
+import { genderLabel, genderDistributionLabel } from '../i18n/gender.ts'
+import { GenderDistributionText } from './GenderDistributionText'
 import './GenderIcon.css'
 import { GenderSymbol } from './GenderSymbol'
 
-export function GenderIcon({ speciesId }: { speciesId: number }) {
-  const { t } = useTranslation()
+export function GenderIcon({ speciesId, showDistribution = false }: { speciesId: number; showDistribution?: boolean }) {
+  const { t, i18n } = useTranslation()
   const [result, setResult] = useState<{ id: number; gender: SpeciesGender | null } | null>(null)
   const [attempt, setAttempt] = useState(0)
   useEffect(() => {
@@ -21,9 +22,10 @@ export function GenderIcon({ speciesId }: { speciesId: number }) {
   }, [speciesId, attempt])
   const loaded = result?.id === speciesId
   const gender = loaded ? result.gender : null
-  const label = gender ? genderLabel(t, gender.kind) : loaded ? t('genderIcon.unconfirmed') : t('genderIcon.loading')
+  const distribution = showDistribution ? gender?.distribution : null
+  const label = distribution ? genderDistributionLabel(t, distribution, i18n.language) : gender ? genderLabel(t, gender.kind) : loaded ? t('genderIcon.unconfirmed') : t('genderIcon.loading')
   return <button type="button" className={`gender-icon gender-${gender?.kind ?? 'unknown'}`} aria-label={label} title={label} onClick={() => { if (!gender) setAttempt(value => value + 1) }}>
-    <GenderSymbol kind={gender?.kind} loading={!loaded} />
+    <span aria-hidden="true">{distribution ? <GenderDistributionText distribution={distribution} /> : <GenderSymbol kind={gender?.kind} loading={!loaded} />}</span>
     <span className="gender-tooltip" role="tooltip">{label}</span>
   </button>
 }

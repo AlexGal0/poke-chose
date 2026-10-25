@@ -1,0 +1,30 @@
+.family-tree-scroll { overflow-x: auto; padding: 20px 4px; margin: 16px 0; border-block: 1px solid var(--border, #35404e); }
+.family-tree-scroll:focus-visible { outline: 2px solid var(--accent, #83dcb8); outline-offset: 3px; }
+.family-tree, .family-children { list-style: none; padding: 0; margin: 0; }
+.family-branch { display: flex; align-items: center; width: max-content; gap: 14px; }
+.family-children { display: flex; flex-direction: column; gap: 24px; }
+.family-card { position: relative; box-sizing: border-box; width: 170px; flex: 0 0 170px; padding: 14px; border: 1px solid var(--border, #35404e); border-radius: 14px; background: var(--surface-soft, var(--surface, #171e27)); text-align: center; }
+.family-card-selected { border: 2px solid var(--accent, #83dcb8); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #83dcb8) 12%, transparent); }
+.family-card-top { display: flex; justify-content: space-between; gap: 6px; color: var(--text-muted, #9caabb); font-size: 10px; }
+.family-artwork { height: 88px; display: grid; place-items: center; margin: 6px 0; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--accent, #83dcb8) 10%, transparent), transparent 70%); }
+.family-artwork img { width: 88px; height: 88px; object-fit: contain; image-rendering: pixelated; }
+.family-undiscovered { display: grid; place-items: center; width: 64px; height: 64px; border: 1px dashed var(--border, #35404e); border-radius: 50%; font-size: 30px; color: var(--text-muted, #9caabb); }
+.family-card h3 { margin: 0 0 10px; font-size: 15px; overflow-wrap: anywhere; }
+.family-types { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; min-height: 20px; }
+.family-current { display: block; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border, #35404e); font-size: 10px; color: var(--accent-text, #a1e1c7); }
+.family-transition { display: flex; align-items: center; width: 118px; flex: 0 0 118px; gap: 6px; }
+.family-arrow { color: var(--accent-text, #a1e1c7); font-size: 24px; }
+.family-requirements { flex: 1; min-width: 0; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.family-condition-label { color: var(--text-muted, #9caabb); font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.family-requirements p { margin: 5px 0; }
+.family-or { display: block; color: var(--text-muted, #9caabb); font-size: 10px; margin: 8px 0; }
+@media (max-width: 640px) {
+  .family-tree-scroll { overflow-x: visible; }
+  .family-branch { flex-direction: column; width: 100%; gap: 16px; }
+  .family-children { width: 100%; gap: 28px; border-left: 1px solid var(--border, #35404e); padding-left: 12px; box-sizing: border-box; }
+  .family-card { width: min(100%, 240px); flex-basis: auto; }
+  .family-artwork { height: 96px; }
+  .family-artwork img { width: 88px; height: 88px; }
+  .family-transition { width: min(100%, 240px); flex-basis: auto; }
+  .family-arrow { transform: rotate(90deg); margin-right: 8px; }
+}

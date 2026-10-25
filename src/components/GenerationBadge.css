@@ -1,0 +1,3 @@
+.generation-badge { position: absolute; right: 9px; bottom: 7px; font-size: 10px; line-height: 1; font-weight: 600; letter-spacing: .06em; color: var(--text-muted, #a5b5c7); opacity: .8; pointer-events: auto; }
+.generation-badge.current-generation { color: var(--accent, #83dcb8); opacity: 1; font-weight: 800; }
+.pokemon-card:has(> .generation-badge), .capture-list > li:has(> .generation-badge) { padding-bottom: 28px; }

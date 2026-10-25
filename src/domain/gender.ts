@@ -1,4 +1,6 @@
-export interface SpeciesGender { kind: 'both' | 'male' | 'female' | 'genderless'; icon: string }
+import type { GenderDistribution } from '../models/gender-distribution.ts'
+
+export interface SpeciesGender { kind: 'both' | 'male' | 'female' | 'genderless'; icon: string; distribution?: GenderDistribution | null }
 
 export type IndividualGender = 'male' | 'female' | 'genderless'
 

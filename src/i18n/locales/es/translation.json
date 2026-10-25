@@ -1,4 +1,25 @@
 {
+  "genderRatio": {
+    "summary": "Proporción base aproximada: macho {{male}}, hembra {{female}}. Sin modificadores de encuentro."
+  },
+  "eggHatching": {
+    "percent": "{{percent}} % completado",
+    "progressLabel": "Progreso de eclosión",
+    "progressHint": "Referencia: ciclos iniciales de la especie.",
+    "title": "Eclosión",
+    "soon": "A punto de eclosionar",
+    "cycles_one": "{{count}} ciclo restante",
+    "cycles_other": "{{count}} ciclos restantes",
+    "unavailable": "Progreso no disponible en esta lectura.",
+    "steps": "≈ {{min}}–{{max}} pasos",
+    "estimateHint": "Sin bonificaciones de eclosión. No se conoce el avance dentro del ciclo actual.",
+    "boxHint": "Pon el huevo en el equipo para que avance."
+  },
+  "evolutionProgress": {
+    "remaining_one": "Falta {{count}} nivel para evolucionar. Ver evolución.",
+    "remaining": "Faltan {{count}} niveles para evolucionar. Ver evolución.",
+    "reached": "Nivel de evolución alcanzado. Sube un nivel y revisa los requisitos de evolución."
+  },
   "nature": {
     "heading": "Naturaleza",
     "unavailable": "No disponible",
@@ -41,13 +62,23 @@
     "radarDescription": "Gráfica de seis ejes. Todos usan la misma escala, de 0 a {{max}}, compartida con las barras.",
     "radarBaseMissing": "Perfil base no disponible.",
     "radarCurrentMissing": "Perfil actual no disponible: faltan estadísticas leídas.",
-    "radarLabels": { "hp": "PS", "attack": "Ataque", "defense": "Defensa", "special-attack": "At. Esp.", "special-defense": "Def. Esp.", "speed": "Velocidad" },
+    "radarLabels": {
+      "hp": "PS",
+      "attack": "Ataque",
+      "defense": "Defensa",
+      "special-attack": "At. Esp.",
+      "special-defense": "Def. Esp.",
+      "speed": "Velocidad"
+    },
     "strengthsHeading": "Destacan por su base",
     "strengthsHint": "Los dos valores base más altos, incluyendo empates.",
     "strength": "Estadística base destacada",
     "comparisonHint": "Compara los valores base de la especie con las estadísticas actuales leídas de tu Pokémon.",
     "comparisonAria": "Comparación de estadísticas base y actuales",
-    "series": { "base": "Base", "current": "Actual" },
+    "series": {
+      "base": "Base",
+      "current": "Actual"
+    },
     "comparisonBoxHint": "La caja no incluye estadísticas actuales. Se muestran los valores base sin calcular los ausentes.",
     "maxHpHint": "La barra de PS actuales representa los PS máximos leídos.",
     "individualEyebrow": "Ejemplar · Black/White",
@@ -129,8 +160,6 @@
     "label": "Tema",
     "options": {
       "base": "Original",
-      "halo": "Halo: Combat Evolved",
-      "halloween": "Halloween",
       "gameboyColor": "Game Boy Color",
       "aqua2000": "Aqua 2000",
       "terminal": "Terminal ASCII",
@@ -139,7 +168,9 @@
       "classicHtml": "HTML clásico",
       "pokemon": "Pokémon",
       "pokemonDark": "Pokémon oscuro",
-      "fiesta": "Fiesta 🎉"
+      "fiesta": "Fiesta 🎉",
+      "halo": "Halo: Combat Evolved",
+      "halloween": "Halloween"
     },
     "saveFailed": "No se pudo guardar el tema en este navegador."
   },
@@ -152,6 +183,7 @@
     "saveFailed": "No se pudo guardar el idioma en este navegador."
   },
   "types": {
+    "fairy": "Hada",
     "normal": "Normal",
     "fire": "Fuego",
     "water": "Agua",
@@ -175,6 +207,8 @@
     "wikiTitle": "Consultar en WikiDex",
     "retry": "Reintentar",
     "speciesCount": "{{count}} especies",
+    "speciesCount_one": "{{count}} especie",
+    "speciesCount_other": "{{count}} especies",
     "previousPage": "← Anterior",
     "nextPage": "Siguiente →",
     "hpAbbr": "PS",
@@ -315,8 +349,9 @@
     "searchAriaLabel": "Buscar Pokémon por nombre",
     "searchPlaceholder": "Buscar por nombre, ej. oshawott",
     "scopeAriaLabel": "Catálogo de Pokémon",
-    "scopeUnova": "Teselia · Gen V",
-    "scopeAll": "Todas · Gen I–V",
+    "scopeUnova": "Pokédex regional · Teselia",
+    "scopeRegional": "Pokédex regional · {{region}}",
+    "scopeAll": "Pokédex nacional · Gen I–V",
     "hintReadOnly": "Verde: Pokémon en tu equipo/cajas o capturados alguna vez según la Pokédex, aunque los hayas evolucionado o liberado. Cambia a Manual para gestionar tu colección manual.",
     "hintManual": "Verde: Pokémon de tu colección manual. Añade los que tienes disponibles en tu partida. Una entrada por especie.",
     "hint2ReadOnly": "Las imágenes se revelan al ver o capturar una especie según tu Pokédex. Pasa el cursor, toca o enfoca los iconos para consultar sus formas de obtención en Black. Pueden existir varias vías; ❔ indica información sin confirmar. Pulsa la imagen del Pokémon para abrir los detalles de obtención en Negro.",
@@ -374,7 +409,7 @@
     "paginationAriaLabel": "Páginas de colección sincronizada"
   },
   "enemyPrototype": {
-    "eyebrow": "COMBATE / PROTOTIPO 5",
+    "eyebrow": "COMBATE / LECTURA EN VIVO",
     "heading": "Pokémon en combate",
     "experimentalBadge": "Experimental",
     "errors": {
@@ -413,13 +448,17 @@
     "noActiveReading": "Aún no hay una lectura válida del Pokémon en el campo.",
     "detailsSummary": "Información de la lectura y los multiplicadores",
     "hints": {
-      "overview": "Tu Pokémon activo, el rival y la salud de tu equipo en combates individuales. Lectura experimental de melonDS.",
+      "overview": "Tu Pokémon activo, el rival y la salud de tu equipo en combates individuales. Lectura experimental del emulador conectado.",
       "multiplier": "Cada multiplicador corresponde a un ataque de ese tipo contra los tipos del defensor. No incluye STAB, movimientos, habilidades ni objetos.",
-      "weaknesses": "Las debilidades muestran todos los tipos que hacen daño supereficaz a ese Pokémon en Generación V, aunque el oponente no tenga ese tipo.",
+      "weaknesses": "Las debilidades muestran todos los tipos que hacen daño supereficaz a ese Pokémon en la generación {{generation}}, aunque el oponente no tenga ese tipo.",
       "strengths": "Las fortalezas muestran resistencias (0.5× o 0.25×) e inmunidades (0×) por tipo. Los cambios de estadísticas se conservan durante lecturas transitorias y se actualizan al confirmarse una nueva lectura."
     }
   },
   "connectionIndicator": {
+    "saveReader": "Lector de guardado",
+    "liveReader": "Lector en vivo",
+    "boxesReader": "Cajas",
+    "readerUpdatedAt": "Última lectura: {{time}}",
     "label": {
       "manual": "Modo manual",
       "connected": "Lectores conectados",
@@ -428,7 +467,7 @@
       "waiting": "Esperando conexión"
     },
     "statusAria": "Estado de conexión: {{label}}. Ver detalles",
-    "manualHint": "Tu equipo y colección se guardan en este navegador. Selecciona melonDS para conectar un lector.",
+    "manualHint": "Tu equipo y colección manuales se guardan en este navegador. Selecciona Save o En vivo para conectar una fuente.",
     "sourceLive": "Equipo y colección",
     "sourceSave": "Save de melonDS",
     "sourceStatus": "{{source}}: {{status}}",
@@ -543,7 +582,9 @@
     },
     "connectError": "No se pudo conectar.",
     "liveHint": "Conecta el lector general y el de combate con un solo botón. Tras Reset o reabrir melonDS, pulsa Reconectar lectores. Cada lector muestra su propio estado.",
-    "saveHint": "Configura <configFile>save.config.local.json</configFile> y ejecuta <bridgeCommand>npm run bridge</bridgeCommand>. Se sincroniza cuando el juego guarda en el .sav. El equipo manual se conserva."
+    "saveHint": "Configura <configFile>save.config.local.json</configFile> y ejecuta <bridgeCommand>npm run bridge</bridgeCommand>. Se sincroniza cuando el juego guarda en el .sav. El equipo manual se conserva.",
+    "sourceSaveFor": "Save de {{emulator}}",
+    "sourceLiveFor": "{{emulator}} en vivo (experimental)"
   },
   "sources": {
     "connectingBridge": "Conectando con el bridge local…",
@@ -583,6 +624,40 @@
         "stopping": "Deteniendo el lector; se conservan los últimos datos.",
         "paused": "Lectura en pausa. Pulsa Reconectar para reanudar; se conservan los últimos datos."
       }
+    },
+    "xSave": {
+      "hint": "El guardado se lee automáticamente al guardar en Citra. Configura main una sola vez en x-save.config.local.json y usa el iniciador habitual o npm run bridge:x. Incluye Pokédex, equipo y las 31 cajas.",
+      "messages": {
+        "waiting": "Esperando una lectura válida del guardado de X…",
+        "unconfigured": "Falta configurar la ruta del archivo main de X.",
+        "ready": "Pokédex, equipo y cajas de X sincronizados con el guardado.",
+        "missing": "No se encuentra main. Se reintentará automáticamente.",
+        "readError": "No se pudo validar el guardado. Se conserva la última lectura válida y se reintentará.",
+        "connectionLost": "No hay conexión con el puente de X. Comprueba que el iniciador esté abierto; la conexión se reintentará automáticamente."
+      }
+    },
+    "xLive": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "controlError": "No se pudo completar la acción. Comprueba que el iniciador esté abierto y reintenta.",
+      "hint": "Lectura experimental de equipo y Pokédex cada dos segundos; las 31 cajas se revisan al conectar y cada dos minutos. Puedes adelantar su lectura con Actualizar colección. Todo se lee de memoria, sin guardar. Perfil de X validado localmente; otras versiones pueden no ser compatibles. Las marcas de captura y las imágenes respetan la Pokédex.",
+      "messages": {
+        "pressConnect": "Pulsa Conectar para iniciar la lectura de Citra.",
+        "connecting": "Conectando con Citra…",
+        "ready": "Equipo y Pokédex actualizados desde la memoria de Citra.",
+        "readError": "No se pudo obtener una lectura estable de equipo y Pokédex. Se conserva la última lectura válida.",
+        "profileMismatch": "La sesión no coincide con el perfil de X validado. Se conserva el último equipo, sin aceptar datos nuevos.",
+        "disconnected": "Lectura detenida. Se conservan los últimos datos válidos como referencia.",
+        "connectionLost": "Sin conexión con el puente de Citra. Comprueba que el iniciador esté abierto."
+      },
+      "refreshCollection": "Actualizar colección",
+      "boxesLastReading": "Última lectura válida de cajas: {{time}}",
+      "boxStatus": {
+        "waiting": "Esperando la primera lectura de las cajas. Conecta Citra en vivo para consultar tu colección.",
+        "reading": "Leyendo las 31 cajas… Se conserva la última colección mientras termina.",
+        "ready": "Cajas sincronizadas con la memoria de Citra. Se revisan cada dos minutos o al pulsar Actualizar colección.",
+        "error": "No hay una lectura actual de las cajas. Se conserva la última colección válida, si existe; comprueba la conexión y vuelve a actualizar."
+      }
     }
   },
   "encounterOpportunity": {
@@ -611,25 +686,126 @@
     "unknownLabel": "{{method}}",
     "unknownDescription": "Método registrado por PokéAPI: {{method}}.",
     "list": {
-      "walk": { "label": "Caminar · hierba / suelo", "description": "Caminar por hierba normal o por el suelo de una cueva o interior." },
-      "dark-grass": { "label": "Hierba oscura", "description": "Caminar por hierba oscura; pueden aparecer dos Pokémon a la vez." },
-      "grass-spots": { "label": "Hierba que se mueve", "description": "Entrar en un punto de hierba que se está moviendo." },
-      "cave-spots": { "label": "Nube de polvo", "description": "Entrar en una nube de polvo en una cueva." },
-      "bridge-spots": { "label": "Sombra en un puente", "description": "Acercarse a una sombra que aparece sobre un puente." },
-      "surf": { "label": "Surf", "description": "Desplazarse por el agua usando Surf." },
-      "surf-spots": { "label": "Surf · agua que se mueve", "description": "Usar Surf en un punto de agua que se está moviendo." },
-      "old-rod": { "label": "Pesca · Caña Vieja", "description": "Pescar con la Caña Vieja." },
-      "good-rod": { "label": "Pesca · Caña Buena", "description": "Pescar con la Caña Buena." },
-      "super-rod": { "label": "Pesca · Supercaña", "description": "Pescar con la Supercaña en agua normal." },
-      "super-rod-spots": { "label": "Pesca · agua que se mueve", "description": "Pescar con la Supercaña en un punto de agua que se está moviendo." },
-      "gift": { "label": "Regalo", "description": "Recibir un Pokémon como regalo." },
-      "gift-egg": { "label": "Huevo de regalo", "description": "Recibir un huevo como regalo." },
-      "static": { "label": "Encuentro fijo", "description": "Un Pokémon situado en un lugar concreto, en vez de un encuentro aleatorio." },
-      "npc-trade": { "label": "Intercambio con personaje", "description": "Obtener un Pokémon mediante un intercambio con un personaje del juego." },
-      "roaming-grass": { "label": "Errante · hierba", "description": "Encontrar en la hierba un Pokémon que se desplaza entre zonas." },
-      "roaming-water": { "label": "Errante · agua", "description": "Encontrar en el agua un Pokémon que se desplaza entre zonas." },
-      "rock-smash": { "label": "Golpe Roca", "description": "Romper una roca usando Golpe Roca." },
-      "headbutt": { "label": "Golpe Cabeza", "description": "Golpear un árbol usando Golpe Cabeza." }
+      "walk": {
+        "label": "Caminar · hierba / suelo",
+        "description": "Caminar por hierba normal o por el suelo de una cueva o interior."
+      },
+      "dark-grass": {
+        "label": "Hierba oscura",
+        "description": "Caminar por hierba oscura; pueden aparecer dos Pokémon a la vez."
+      },
+      "grass-spots": {
+        "label": "Hierba que se mueve",
+        "description": "Entrar en un punto de hierba que se está moviendo."
+      },
+      "cave-spots": {
+        "label": "Nube de polvo",
+        "description": "Entrar en una nube de polvo en una cueva."
+      },
+      "bridge-spots": {
+        "label": "Sombra en un puente",
+        "description": "Acercarse a una sombra que aparece sobre un puente."
+      },
+      "surf": {
+        "label": "Surf",
+        "description": "Desplazarse por el agua usando Surf."
+      },
+      "surf-spots": {
+        "label": "Surf · agua que se mueve",
+        "description": "Usar Surf en un punto de agua que se está moviendo."
+      },
+      "old-rod": {
+        "label": "Pesca · Caña Vieja",
+        "description": "Pescar con la Caña Vieja."
+      },
+      "good-rod": {
+        "label": "Pesca · Caña Buena",
+        "description": "Pescar con la Caña Buena."
+      },
+      "super-rod": {
+        "label": "Pesca · Supercaña",
+        "description": "Pescar con la Supercaña en agua normal."
+      },
+      "super-rod-spots": {
+        "label": "Pesca · agua que se mueve",
+        "description": "Pescar con la Supercaña en un punto de agua que se está moviendo."
+      },
+      "gift": {
+        "label": "Regalo",
+        "description": "Recibir un Pokémon como regalo."
+      },
+      "gift-egg": {
+        "label": "Huevo de regalo",
+        "description": "Recibir un huevo como regalo."
+      },
+      "static": {
+        "label": "Encuentro fijo",
+        "description": "Un Pokémon situado en un lugar concreto, en vez de un encuentro aleatorio."
+      },
+      "npc-trade": {
+        "label": "Intercambio con personaje",
+        "description": "Obtener un Pokémon mediante un intercambio con un personaje del juego."
+      },
+      "roaming-grass": {
+        "label": "Errante · hierba",
+        "description": "Encontrar en la hierba un Pokémon que se desplaza entre zonas."
+      },
+      "roaming-water": {
+        "label": "Errante · agua",
+        "description": "Encontrar en el agua un Pokémon que se desplaza entre zonas."
+      },
+      "rock-smash": {
+        "label": "Golpe Roca",
+        "description": "Romper una roca usando Golpe Roca."
+      },
+      "headbutt": {
+        "label": "Golpe Cabeza",
+        "description": "Golpear un árbol usando Golpe Cabeza."
+      },
+      "yellow-flowers": {
+        "label": "Flores amarillas",
+        "description": "Encuentros al caminar entre flores amarillas."
+      },
+      "red-flowers": {
+        "label": "Flores rojas",
+        "description": "Encuentros al caminar entre flores rojas."
+      },
+      "purple-flowers": {
+        "label": "Flores moradas",
+        "description": "Encuentros al caminar entre flores moradas."
+      },
+      "horde": {
+        "label": "Horda",
+        "description": "Encuentro con varios Pokémon. Su tabla es independiente de los encuentros individuales."
+      },
+      "rough-terrain": {
+        "label": "Terreno escarpado",
+        "description": "Encuentros al atravesar terreno escarpado."
+      },
+      "rustling-bush-ambush": {
+        "label": "Emboscada en arbustos",
+        "description": "Un Pokémon salta desde un arbusto que se mueve."
+      },
+      "ceiling-ambush": {
+        "label": "Emboscada desde el techo",
+        "description": "Un Pokémon cae desde el techo de una cueva."
+      },
+      "ground-ambush": {
+        "label": "Emboscada desde el suelo",
+        "description": "Un Pokémon aparece desde el suelo."
+      },
+      "trash-can-ambush": {
+        "label": "Papelera",
+        "description": "Revisa papeleras; algunas especies dependen del día o del progreso."
+      },
+      "sky-ambush": {
+        "label": "Emboscada aérea",
+        "description": "Un Pokémon se acerca desde el aire."
+      },
+      "berry-trees": {
+        "label": "Árboles de bayas",
+        "description": "Encuentros asociados al tipo de árbol de bayas."
+      }
     }
   },
   "encounterSeasons": {
@@ -752,7 +928,7 @@
     "healthAria": "Puntos de salud de {{name}}",
     "heading": "Salud de tu equipo",
     "waitingReading": "Esperando una lectura del equipo en combate…",
-    "legend": "↑ Ventaja · ↓ Desventaja · ↕ Ambos supereficaces · = Neutral · Solo tipos, Gen V",
+    "legend": "↑ Ventaja · ↓ Desventaja · ↕ Ambos supereficaces · = Neutral · Solo tipos, Gen {{generation}}",
     "matchup": {
       "advantage": "Ventaja por tipos",
       "disadvantage": "Desventaja por tipos",
@@ -939,12 +1115,13 @@
     "notDiscovered": "Pokémon aún no descubierto",
     "fainted": "Debilitado",
     "movesAria": "Ver movimientos por nivel de {{name}}",
-    "movesButton": "☷ Movimientos"
+    "movesButton": "☷ Movimientos",
+    "originGeneration": "Generación de origen: {{number}}"
   },
   "fieldMoves": {
     "label": "Movimientos de campo (MT/MO)",
     "all": "Sin filtro",
-    "hint": "Selecciona uno o varios: debe poder aprender todos mediante MT/MO en Black/White, aunque no los tenga equipados. Se excluyen los huevos.",
+    "hint": "Selecciona uno o varios: debe poder aprender todos mediante MT/MO en el juego elegido, aunque no los tenga equipados. Se excluyen los huevos.",
     "loading": "Consultando compatibilidad…",
     "error": "No se pudo comprobar toda la colección. Los resultados pueden estar incompletos.",
     "retry": "Reintentar",
@@ -956,11 +1133,15 @@
       "waterfall": "Cascada · MO05",
       "dive": "Buceo · MO06",
       "flash": "Destello · MT70",
-      "dig": "Excavar · MT28"
+      "dig": "Excavar · MT28",
+      "rock-smash": "Golpe Roca · MT94"
     }
   },
   "readerConnections": {
-    "short": { "general": "General", "battle": "Combate" },
+    "short": {
+      "general": "General",
+      "battle": "Combate"
+    },
     "generalDisconnectedDetail": "No hay una lectura en vivo activa. Reconecta los lectores.",
     "general": "Lector general",
     "battle": "Lector de combate",
@@ -978,6 +1159,9 @@
     }
   },
   "daycare": {
+    "floatingEgg": "Huevo disponible para recoger. Abrir guardería.",
+    "sourceUnavailable": "La fuente seleccionada no ofrece datos de guardería. Selecciona una fuente compatible o actualiza el puente local.",
+    "evolutionLoadError": "No se pudo abrir la evolución. Vuelve a intentarlo.",
     "title": "Guardería",
     "manual": "Selecciona el lector de save para consultar la guardería de tu partida.",
     "saveHint": "Datos del último guardado. Guarda en el juego para actualizar los espacios, niveles y huevo.",
@@ -1024,6 +1208,317 @@
     "staleDetail": "El valor puede haber cambiado. Se actualizará al recuperar la lectura.",
     "lastReading": "Última lectura: {{time}}"
   },
+  "games": {
+    "choose": "Elige tu aventura",
+    "description": "Selecciona el juego que vas a acompañar. Cada aventura tiene sus propios datos y funciones.",
+    "generation": "Generación {{number}}",
+    "names": {
+      "black": "Pokémon Black",
+      "x": "Pokémon X"
+    },
+    "regions": {
+      "unova": "Teselia",
+      "kalos": "Kalos"
+    },
+    "status": {
+      "black": "Aventura disponible",
+      "x": "Manual y Save de Citra disponibles"
+    },
+    "enter": "Entrar",
+    "change": "Cambiar juego",
+    "loading": "Abriendo tu aventura…",
+    "isolationHint": "Tu colección de Black se conserva. Las funciones de X se habilitarán a medida que estén listas.",
+    "preparationDescription": "Estamos preparando esta aventura para ofrecer las mismas funciones que en Black. Aquí puedes ver los módulos que se irán habilitando.",
+    "modulesHeading": "Tu espacio de juego",
+    "moduleUnavailable": "Estos módulos todavía no están disponibles para este juego. No se conectarán lectores ni se cargarán datos de otra aventura.",
+    "pending": "Próximamente",
+    "modules": {
+      "team": "Equipo",
+      "catalog": "Catálogo",
+      "collection": "Mi colección",
+      "captures": "Capturas",
+      "analysis": "Análisis de equipo",
+      "types": "Tabla de tipos",
+      "evolutions": "Evoluciones",
+      "moves": "Movimientos",
+      "statistics": "Estadísticas",
+      "daycare": "Guardería",
+      "save": "Equipo y cajas desde save",
+      "live": "Memoria en vivo",
+      "battle": "Combate",
+      "location": "Ubicación",
+      "repel": "Repelente"
+    }
+  },
+  "manualWorkspace": {
+    "description": "Tu aventura empieza aquí. Organiza tu colección y prepara tu equipo manual.",
+    "introduced": "Introducidos en Gen {{number}}",
+    "national": "Nacional · hasta Gen {{number}}",
+    "catalogHint": "Catálogo de especies, no una lista de capturas disponibles en Kalos. Incluye especies transferibles y de evento. Se muestra la variedad predeterminada; las formas alternativas llegarán más adelante.",
+    "pendingHeading": "En desarrollo",
+    "pendingHint": "Estas funciones todavía no tienen soporte para este juego."
+  },
+  "typeRules": {
+    "count": "{{count}} tipos",
+    "coverage": "{{count}} / {{total}} tipos",
+    "reference": "REFERENCIA / GENERACIÓN {{number}}",
+    "caption": "Multiplicadores de daño en Generación {{number}}: filas atacantes y columnas defensoras",
+    "hint": "Reglas de Generación {{number}}. Filas: tipo atacante. Columnas: tipo defensor. Cada cruce indica el multiplicador contra un solo tipo."
+  },
+  "speciesKnowledge": {
+    "movesCaption": "Movimientos por nivel de {{name}} en {{version}}",
+    "actions": {
+      "stats": "Estadísticas",
+      "moves": "Movimientos",
+      "evolution": "Evoluciones"
+    },
+    "open": {
+      "stats": "Ver estadísticas de {{name}}",
+      "moves": "Ver movimientos de {{name}}",
+      "evolution": "Ver evoluciones de {{name}}"
+    },
+    "close": "Cerrar ficha",
+    "views": "Contenido de la ficha",
+    "loading": "Consultando datos…",
+    "loadError": "No se pudieron cargar los datos.",
+    "statsHint": "Estadísticas base de Generación {{number}}, para la variedad predeterminada. No son los valores de un ejemplar ni incluyen megaevoluciones.",
+    "movesHint": "Movimientos por nivel de {{version}}, con tipo y PP de esa versión. No representan los movimientos conocidos por tu ejemplar. Las descripciones, cuando existen, corresponden a esa misma entrega.",
+    "evolutionHint": "Familia y requisitos evolutivos compatibles con {{version}}. Las distintas líneas de requisitos son alternativas.",
+    "evolutionLimit": "Solo se muestran especies y métodos compatibles con esta generación y región. No incluye megaevoluciones ni formas regionales. Las condiciones adicionales que no se pueden interpretar se indican sin confirmar.",
+    "noBranches": "No hay ramas evolutivas confirmadas para este juego en los datos disponibles.",
+    "conditions": {
+      "level": "Subir al nivel {{level}} o superior",
+      "levelUp": "Subir de nivel",
+      "trade": "Intercambiar",
+      "item": "Usar {{name}}",
+      "heldItem": "Llevar equipado {{name}}",
+      "friendship": "Amistad alta",
+      "beauty": "Belleza mínima: {{value}}",
+      "affection": "Afecto mínimo: {{value}} corazones en Poké Recreo",
+      "female": "Hembra",
+      "male": "Macho",
+      "day": "De día",
+      "night": "De noche",
+      "knownMove": "Conocer {{name}}",
+      "knownType": "Conocer un movimiento de tipo {{name}}",
+      "partySpecies": "Tener a {{name}} en el equipo",
+      "partyType": "Tener un Pokémon de tipo {{name}} en el equipo",
+      "tradeSpecies": "Intercambiar por {{name}}",
+      "location": "En {{name}}",
+      "mossRock": "Cerca de la roca musgo",
+      "iceRock": "Cerca de la roca hielo",
+      "specialRock": "Cerca de la roca especial",
+      "attackLess": "Ataque menor que Defensa",
+      "attackEqual": "Ataque igual a Defensa",
+      "attackGreater": "Ataque mayor que Defensa",
+      "rain": "Lluvia en el mundo exterior; no basta con provocarla en combate",
+      "upsideDown": "Con la consola invertida al subir de nivel",
+      "shed": "Nincada evoluciona al nivel 20 o superior: dejar un hueco en el equipo y una Poké Ball en la bolsa para obtener Shedinja",
+      "wurmple": "La rama depende de un valor interno del ejemplar; no se puede elegir",
+      "unconfirmed": "Condición adicional sin confirmar"
+    },
+    "stage": "Etapa {{number}}",
+    "requirements": "Requisitos"
+  },
+  "encounterAtlas": {
+    "description": "Explora los Pokémon disponibles en cada zona y elige tu ruta de captura. Puedes seleccionar una zona o seguir la ubicación cuando la fuente lo permita.",
+    "followHint": "Activa Seguir ubicación para cambiar de zona con el personaje. Elegir una zona manualmente pausa el seguimiento; las lecturas incompletas conservan la última zona confirmada.",
+    "detectedZone": "Ubicación detectada: {{zone}}.",
+    "unknownZone": "La ubicación actual aún no tiene una correspondencia confirmada. Se conserva la zona seleccionada.",
+    "collectionHint": "Las marcas de captura proceden de la Pokédex de la fuente seleccionada. Las imágenes solo se muestran para especies vistas o capturadas.",
+    "speciesSearch": "Buscar Pokémon en esta zona",
+    "method": "Método de encuentro",
+    "allMethods": "Todos los métodos",
+    "probabilityHint": "Los porcentajes corresponden a cada método, subzona y condición; no son la probabilidad de éxito de una Poké Ball. Los filtros de equipo no comprueban tu progreso en la historia.",
+    "hordeHint": "En hordas, el porcentaje describe la tabla de hordas; no se suma al de la hierba normal. Usa Dulce Aroma o Miel cuando sea posible para provocar una horda.",
+    "safariHint": "Safari Amistad: se muestran todas las especies posibles por tipo. Cada amigo ofrece solo un subconjunto; la tercera casilla tiene requisitos adicionales. Estas tablas no garantizan qué safari tienes disponible.",
+    "noMatches": "No hay Pokémon que coincidan con estos filtros. Prueba otro método, equipo o búsqueda.",
+    "unconfirmedArea": "Sector {{number}} · nombre sin verificar",
+    "betterElsewhere": "Mayor probabilidad en otras zonas",
+    "shinyLocked": "No puede aparecer variocolor",
+    "source": "Datos de {{game}}: {{count}} localidades del recorrido. Actualización: {{date}}. Encuentros de PokéAPI y obtenciones especiales verificadas; no se comprueba el progreso de la historia.",
+    "areas": {
+      "kalos-victory-road-outside": "Exterior",
+      "terminus-cave-1f": "Planta baja",
+      "terminus-cave-b1f-left": "Sótano 1 · izquierda",
+      "terminus-cave-b1f-right": "Sótano 1 · derecha",
+      "terminus-cave-b2f": "Sótano 2",
+      "terminus-cave-zygardes-chamber": "Cámara de Zygarde"
+    },
+    "varieties": {
+      "basculin-red-striped": "Basculin · raya roja",
+      "basculin-blue-striped": "Basculin · raya azul",
+      "pumpkaboo-average": "Pumpkaboo · tamaño normal",
+      "pumpkaboo-small": "Pumpkaboo · tamaño pequeño",
+      "pumpkaboo-large": "Pumpkaboo · tamaño grande",
+      "pumpkaboo-super": "Pumpkaboo · tamaño extragrande",
+      "zygarde-50": "Zygarde · Forma 50 %",
+      "pyroar-male": "Pyroar · forma macho"
+    },
+    "conditions": {
+      "trash-can-type-thursday": "Papelera de los jueves",
+      "trash-can-type-daily": "Papelera diaria",
+      "story-progress-hall-of-fame": "Tras entrar en el Hall de la Fama",
+      "trash-can-type-tuesday": "Papelera de los martes",
+      "starter-chespin": "Inicial elegido: Chespin",
+      "other-found-11-times-roaming": "Tras 11 encuentros errantes",
+      "starter-fennekin": "Inicial elegido: Fennekin",
+      "starter-froakie": "Inicial elegido: Froakie",
+      "friend-safari-slot-3": "Safari Amistad · casilla 3",
+      "friend-safari-slot-1": "Safari Amistad · casilla 1",
+      "friend-safari-slot-2": "Safari Amistad · casilla 2",
+      "berry-tree-type-red": "Árbol de bayas rojas",
+      "berry-tree-type-blue": "Árbol de bayas azules",
+      "berry-tree-type-purple": "Árbol de bayas moradas",
+      "berry-tree-type-green": "Árbol de bayas verdes",
+      "berry-tree-type-yellow": "Árbol de bayas amarillas",
+      "berry-tree-type-pink": "Árbol de bayas rosas"
+    },
+    "details": "Detalles del encuentro",
+    "names": {
+      "kalos-berry-fields": "Huerto de bayas",
+      "roaming-kalos": "Kalos · encuentros errantes"
+    },
+    "zonePlaceholder": "Ruta, bosque, cueva o ciudad",
+    "speciesPlaceholder": "Nombre o número de la Pokédex",
+    "caughtInZone": "Pokédex de esta zona: {{caught}} / {{total}} especies capturadas con los filtros de acceso actuales.",
+    "progressFilter": "Estado en la Pokédex",
+    "progressFilters": {
+      "all": "Todas las especies",
+      "pending": "Pendientes de capturar",
+      "caught": "Capturadas",
+      "seen": "Vistas sin capturar"
+    },
+    "progressStates": {
+      "caught": "✓ Capturado · Pokédex",
+      "seen": "Visto · sin capturar",
+      "unseen": "Sin registrar en la Pokédex"
+    },
+    "npcTrades": "Intercambios con personajes",
+    "requestedPokemon": "Entrega: {{name}}.",
+    "anyPokemon": "cualquier Pokémon",
+    "noRecordedObtaining": "No hay obtenciones de Pokémon registradas para esta localidad. Puedes continuar el recorrido.",
+    "specialNotes": {
+      "santalune": "En la casa al suroeste de la Escuela de Entrenadores.",
+      "cyllage": "En el Centro Pokémon.",
+      "snowbelle": "En la casa al suroeste del puente del norte.",
+      "diantha": "Dianta, en el Café Soleil. Solo después de la Liga; incluye Gardevoirita.",
+      "shauna-650": "Xana, después de la Liga. Disponible si elegiste Fennekin.",
+      "shauna-653": "Xana, después de la Liga. Disponible si elegiste Froakie.",
+      "shauna-656": "Xana, después de la Liga. Disponible si elegiste Chespin.",
+      "kalosStarter": "Elección inicial: solo uno de los tres.",
+      "kantoStarter": "El profesor Ciprés permite elegir solo uno de los tres.",
+      "lucario": "Corelia lo entrega tras el combate de megaevolución.",
+      "lapras": "Regalo del personaje junto al acceso a la ruta.",
+      "fossil": "Elige un fósil en la Cueva Brillante y revívelo en el laboratorio de Pueblo Petroglifo.",
+      "hotelMagikarp": "Montañero itinerante de los hoteles. Habla con él varios días para desbloquear el intercambio.",
+      "hotelEevee": "Turista itinerante de los hoteles. Habla con ella varios días para desbloquear el intercambio."
+    },
+    "uniqueZone": "Única zona de encuentro natural en los datos disponibles",
+    "betterLater": "Hay una zona posterior con mayor probabilidad para el mismo método y condiciones.",
+    "evolveOwned": "Evolución desde: {{names}}",
+    "evolutionRetry": "Reintentar pista de evolución",
+    "dexLookupHint": "Registro global de la partida, incluidas especies obtenidas por evolución o intercambio. Esta consulta no indica encuentros salvajes en la zona seleccionada."
+  },
+  "workspaceRules": {
+    "description": "Organiza tu equipo y consulta tu aventura con la fuente Manual, Save o En vivo, según el soporte del juego.",
+    "saveTeamPending": "El equipo de este guardado todavía no tiene lector. Se mantiene separado del equipo manual.",
+    "saveCollectionPending": "La lectura de cajas de este juego todavía no está disponible. Tu colección manual se conserva en el modo Manual.",
+    "saveTeamUnavailable": "Lectura pendiente",
+    "capturesManualHint": "Selecciona Save para consultar la Pokédex de tu partida de {{game}}."
+  },
+  "savedRoster": {
+    "loading": "Preparando equipo y cajas…",
+    "waiting": "Esperando una lectura de equipo y cajas. Si el lector estaba abierto, reinícialo para cargar la nueva versión.",
+    "resolveError": "No se pudo interpretar una especie o forma del guardado. No se usa el equipo manual como sustituto.",
+    "stale": "Mostrando la última lectura válida del equipo y las cajas. Comprueba la conexión con Citra.",
+    "details": "Datos del ejemplar",
+    "detailsError": "No se pudieron resolver los nombres de este ejemplar.",
+    "boxStatsUnavailable": "El registro de caja no contiene nivel ni estadísticas actuales.",
+    "ability": "Habilidad",
+    "item": "Objeto equipado",
+    "moves": "Movimientos actuales",
+    "search": "Especie, número o apodo"
+  },
+  "sourceCapabilities": {
+    "partyWaiting": "Esperando datos válidos de equipo de la fuente seleccionada.",
+    "boxesUnavailable": "Esta fuente todavía no lee cajas. El equipo está disponible arriba; usa Save para consultar el equipo y las cajas guardados.",
+    "pokedexUnavailable": "Esta fuente todavía no lee la Pokédex. Usa Save para las capturas por zona basadas en el guardado.",
+    "partyStale": "Mostrando la última lectura válida. Comprueba la conexión con Citra.",
+    "collectionWaiting": "Esperando una colección válida de la fuente seleccionada."
+  },
+  "individualDetails": {
+    "itemUnavailable": "Objeto sin confirmar",
+    "itemLoading": "Objeto: …",
+    "movesUnavailable": "Esta fuente todavía no proporciona los datos de los movimientos conocidos.",
+    "knownMoves": "Movimientos conocidos",
+    "learnset": "Por nivel",
+    "movesViews": "Datos de movimientos",
+    "missing": "El ejemplar ya no está disponible en esta fuente. Vuelve a abrir su ficha desde la colección actual.",
+    "stale": "Mostrando la última lectura válida del ejemplar.",
+    "statsHint": "Estadísticas base y valores leídos del ejemplar. La naturaleza y la habilidad corresponden a ese Pokémon.",
+    "ppHint": "PP base del movimiento. No se están leyendo los PP restantes ni los aumentos de PP del ejemplar.",
+    "power": "Potencia",
+    "accuracy": "Precisión",
+    "movesHint": "Movimientos conocidos del ejemplar y aprendizaje por nivel en {{version}}."
+  },
+  "teamAnalysis": {
+    "alternatives": "Alternativas de tu colección",
+    "alternativesHint": "Ejemplares fuera del equipo que resisten debilidades compartidas o añaden cobertura STAB. Compara las opciones y revisa el balance al sustituir un miembro. Solo se consideran tipos.",
+    "collectionStale": "Las alternativas usan la última colección válida; comprueba la sincronización de las cajas.",
+    "collectionUnavailable": "La colección todavía no está disponible en esta fuente. El análisis del equipo sigue funcionando.",
+    "search": "Filtrar alternativas de la colección",
+    "results_one": "{{count}} alternativa con los filtros actuales",
+    "results_other": "{{count}} alternativas con los filtros actuales",
+    "resists": "Resiste o es inmune a debilidades compartidas: {{types}}.",
+    "addsCoverage": "Añade cobertura STAB potencial contra: {{types}}.",
+    "noMatches": "Ninguna alternativa coincide con estos filtros.",
+    "noAlternatives": "Ningún ejemplar disponible fuera del equipo aporta estas mejoras de tipos con los filtros actuales.",
+    "limit": "Se muestran las seis primeras opciones. Usa los filtros para explorar las demás.",
+    "stale": "Análisis de la última lectura válida del equipo. Comprueba la conexión antes de tomar decisiones.",
+    "memberCount_one": "{{count}} Pokémon en el análisis",
+    "memberCount_other": "{{count}} Pokémon en el análisis",
+    "includeFainted": "Incluir debilitados",
+    "faintedIncluded_one": "{{count}} debilitado incluido",
+    "faintedIncluded_other": "{{count}} debilitados incluidos",
+    "faintedExcluded_one": "{{count}} debilitado excluido",
+    "faintedExcluded_other": "{{count}} debilitados excluidos",
+    "eggsExcluded_one": "{{count}} huevo excluido",
+    "eggsExcluded_other": "{{count}} huevos excluidos",
+    "emptySelection": "No hay Pokémon disponibles con esta selección. Los huevos se excluyen siempre; puedes incluir a los debilitados para revisar el balance completo."
+  },
+  "battleAdapter": {
+    "levelUnavailable": "Nivel del rival sin lectura confirmada",
+    "ownUnavailable": "El ejemplar activo todavía no se puede identificar de forma única.",
+    "scope": "Combate individual experimental. Tipos base del ejemplar y cobertura STAB potencial; no simula movimientos, habilidades, objetos ni transformaciones. Transformaciones y combates dobles pendientes.",
+    "stale": "La lectura de combate está detenida o desconectada. Se conserva la última sesión como referencia.",
+    "unconfirmed": "Todavía no hay una lectura de combate confirmada.",
+    "inactive": "Fuera de combate. Entra en una pelea individual para ver los participantes."
+  },
+  "battleShared": {
+    "partial": "Lectura temporalmente incompleta. Se mantiene la sesión y la última información confirmada."
+  },
+  "secretAlbum": {
+    "trigger": "Mantén pulsada la Poké Ball para abrir el álbum; con teclado, pulsa Intro",
+    "title": "Álbum de {{region}}",
+    "loading": "Preparando tus cartas…",
+    "loadFailed": "Algunas cartas no se pudieron cargar.",
+    "openCard": "Ampliar la carta de {{name}}",
+    "openSeenCard": "{{name}}: visto, aún no capturado. Ampliar carta",
+    "cardLoading": "Carta {{number}} pendiente de cargar",
+    "locked": "Carta {{number}}: Pokémon aún no descubierto",
+    "back": "Volver al mosaico",
+    "description": "Notas de la Pokédex",
+    "noDescription": "No se pudo obtener una descripción para esta carta.",
+    "loadingDescription": "Buscando su historia…",
+    "eyebrow": "Una colección de pequeñas maravillas",
+    "subtitle": "Cada encuentro, un recuerdo. Cada carta, una historia por descubrir.",
+    "progress": "{{count}} / {{total}} capturados",
+    "close": "Cerrar álbum",
+    "hint": "Recorre las cartas y pulsa una para verla de cerca. Esc para volver.",
+    "edition": "Pokémon Negro · Edición Teselia",
+    "region": "Teselia · Generación V"
+  },
   "pokedexScope": {
     "unova": {
       "label": "Teselia",
@@ -1034,30 +1529,12 @@
       "description": "Pertenece a la Pokédex nacional, pero no a la de Teselia de Negro/Blanco."
     }
   },
-  "secretAlbum": {
-    "trigger": "Mantén pulsada la Poké Ball para abrir el álbum de Teselia; con teclado, pulsa Intro",
-    "eyebrow": "Una colección de pequeñas maravillas",
-    "title": "El álbum de Teselia",
-    "subtitle": "Cada encuentro, un recuerdo. Cada carta, una historia por descubrir.",
-    "progress": "{{count}} / {{total}} capturados",
-    "close": "Cerrar álbum",
-    "hint": "Recorre las cartas y pulsa una para verla de cerca. Esc para volver.",
-    "loading": "Preparando tus cartas…",
-    "loadFailed": "Algunas cartas no se pudieron cargar.",
-    "openCard": "Ampliar la carta de {{name}}",
-    "openSeenCard": "{{name}}: visto, aún no capturado. Ampliar carta",
-    "cardLoading": "Carta {{number}} pendiente de cargar",
-    "locked": "Carta {{number}}: Pokémon aún no descubierto",
-    "back": "Volver al mosaico",
-    "edition": "Pokémon Negro · Edición Teselia",
-    "description": "Notas de la Pokédex",
-    "noDescription": "No se pudo obtener una descripción para esta carta.",
-    "loadingDescription": "Buscando su historia…",
-    "region": "Teselia · Generación V"
-  },
   "evolutionRequirements": {
     "eyebrow": "El siguiente paso de tu colección",
-    "summary": { "species": "Especies por descubrir", "items": "Tipos de objetos necesarios" },
+    "summary": {
+      "species": "Especies por descubrir",
+      "items": "Tipos de objetos necesarios"
+    },
     "planning": "Cómo planificar tus evoluciones",
     "title": "Evoluciones pendientes",
     "scope": "Filtrar por Pokédex",
