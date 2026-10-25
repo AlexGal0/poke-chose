@@ -7,7 +7,7 @@ x-save.config.example.json como plantilla, o mediante CITRA_X_SAVE_PATH
 (que tiene prioridad). El iniciador habitual incluye el nuevo servicio.
 También puedes ejecutar npm run bridge:x y npm run dev por separado.
 
-El puente escucha únicamente en 127.0.0.1:3004; X_SAVE_BRIDGE_PORT permite
+El puente escucha únicamente en 127.0.0.1:15304; X_SAVE_BRIDGE_PORT permite
 cambiar el puerto y debe coincidir en el puente y Vite. Las rutas son
 /x-save-api/events (SSE) y /x-save-api/health. No existen endpoints para cambiar
 rutas, subir archivos ni escribir guardados. La configuración local está

@@ -1,5 +1,7 @@
 *Versión en español: [es/save-format.md](es/save-format.md)*
 
+> Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.
+
 # Black/White save reading
 
 An in-house, read-only implementation of the documented binary format. No PKHeX code (GPL-3.0) is integrated or copied; it was consulted to cross-check offsets and algorithms. Fixtures are synthetic, created within this project, with no personal saves or game binaries.
@@ -61,7 +63,7 @@ Each box contains 30 consecutive 136-byte slots from its start. The padding up t
 
 `fs.watch` observes the directory and filters by filename to support atomic replacements. Debounce: 300 ms. Opens are exclusively `open(path, 'r')`; two reads 120 ms apart must match and keep the same size, dates, and file identity. Retries: 500, 1000, and 2000 ms. On a persistent error or missing watcher, it recovers every 5 seconds; during normal operation there is no polling. Results from reads superseded by a newer event are discarded.
 
-The bridge listens on `127.0.0.1:3001` and exposes GET `/save-api/events` over SSE and GET `/save-api/health` to identify the local service. It emits initial state on connect, relevant changes, and error/recovery states; it compares party, boxes, and both Pokédex sets separately. A change exclusive to boxes or flags does emit an update; a write with no relevant change does not. A heartbeat every 15 seconds keeps the connection alive. Vite proxies it in development and preview. There is no endpoint to modify the save or pick arbitrary files from a web page.
+The bridge listens on `127.0.0.1:15301` and exposes GET `/save-api/events` over SSE and GET `/save-api/health` to identify the local service. It emits initial state on connect, relevant changes, and error/recovery states; it compares party, boxes, and both Pokédex sets separately. A change exclusive to boxes or flags does emit an update; a write with no relevant change does not. A heartbeat every 15 seconds keeps the connection alive. Vite proxies it in development and preview. There is no endpoint to modify the save or pick arbitrary files from a web page.
 
 React keeps the last valid team on file errors, disconnection, or PokéAPI failures. EventSource reconnects and static resolution retries automatically. The Manual/melonDS choice is kept locally. The imported team is recovered from the bridge on reload; it is never turned into the manual collection.
 

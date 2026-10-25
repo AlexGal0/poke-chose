@@ -49,7 +49,7 @@ Manual data remains isolated by game and from external readings; historical Blac
 
 Domain identifiers stay locale-free. Presentation helpers map them through mirrored Spanish/English resources; localized caches include locale. Bridges emit stable message codes translated by the frontend. Protocol changes require restarting the affected service after updating both sides.
 
-Readers are local and read-only. No save/memory writes or gameplay commands are issued. X save uses port 3004 and live uses 3005 behind Vite's proxy. Live connection is explicit; party/Pokédex polling is two seconds, boxes on connection/every two minutes/on refresh. Profile checks, stable reads and snapshot validation guard against transient or incompatible memory. Partial battle/location failures do not block other data; retained data is marked stale. Local configuration, saves, ROMs and dumps remain outside version control.
+Readers are local and read-only. No save/memory writes or gameplay commands are issued. X save uses port 15304 and live uses 15305 behind Vite's proxy. Live connection is explicit; party/Pokédex polling is two seconds, boxes on connection/every two minutes/on refresh. Profile checks, stable reads and snapshot validation guard against transient or incompatible memory. Partial battle/location failures do not block other data; retained data is marked stale. Local configuration, saves, ROMs and dumps remain outside version control.
 
 ## Remaining boundaries and evidence
 

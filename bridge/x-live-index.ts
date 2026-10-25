@@ -1,6 +1,6 @@
 import { createXLiveBridge } from './citra/live-party-server.ts'
 
-const port = Number(process.env.X_LIVE_BRIDGE_PORT ?? 3005)
+const port = Number(process.env.X_LIVE_BRIDGE_PORT ?? 15305)
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Invalid X_LIVE_BRIDGE_PORT')
 const bridge = createXLiveBridge()
 bridge.server.on('error', error => { console.error('[x-live]', error.message); process.exitCode = 1; void bridge.close().catch(() => {}) })

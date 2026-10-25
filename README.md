@@ -48,9 +48,10 @@ The features below describe the Black workspace.
 - **Captures by zone:** check Black's encounters, levels, methods, and chances; filter by Surf and Super Rod access. The Pokédex marks species as ever caught even if you've since evolved or released them.
 - **Evolutions:** open each family's tree with its Generation V requirements.
 - **Moves:** check level-up learnsets in Black/White, with localized names and descriptions, type, category, and PP.
+- **Statistics:** inspect Generation V species base stats and, when available, the specimen’s read values, with a comparison table and radar. Missing individual stats are not estimated. See [statistics](docs/pokemon-statistics.md).
 - **Your team's data:** shows level, held item, HP, and experience progress when available from the save.
 - **Live reading and experimental battle view:** follow the team, boxes, and Pokédex without saving; in battle, check your active Pokémon, the opponent, their HP, and type-advantage references.
-- **Four themes:** Original, Pokémon, Dark Pokémon, and Party 🎉. The selection saves automatically.
+- **Twelve themes:** Original, Pokémon, Pokémon (dark), Fiesta 🎉, Game Boy Color, Aqua 2000, Classic HTML, Neon, Terminal ASCII, Windows XP, Halo: Combat Evolved, and Halloween. The selection saves automatically.
 - **Language:** switch between Spanish and English with the header selector. The interface translates instantly, with no reload; Spanish is the default language and your choice is saved automatically.
 - **Local storage:** keeps your manual collection and team, preferences, and cache in the browser. No accounts, no database.
 
@@ -80,7 +81,7 @@ npm ci
 npm run dev
 ```
 
-Open the address Vite shows and select **Manual** under **Team source**. You don't need any configuration files.
+Open **http://127.0.0.1:15300** and select **Manual** under **Team source**. You don't need any configuration files.
 
 **With melonDS and the Windows launcher:**
 
@@ -132,7 +133,7 @@ For this option, use the compatible game and emulator setup described in the req
 
 Team, HP, experience, and the Pokédex are polled roughly every **3 seconds**, plus however long the read takes. Boxes are checked every **2 minutes**; you can trigger an earlier read with **Update collection** in **My Collection**. The service never writes to the emulator's memory or the save.
 
-An optional floating Repel indicator shows the game's remaining steps in the upper-right corner. Set `repelStepsAddress` only after validating the counter for your ROM; the example leaves it disabled (`null`). Address `0x0223D69D` was verified with Repels, Super Repels, and Max Repels in Spanish Black IRBS revision 0 on melonDS 1.1. The general reader samples it using its existing connection. Invalid readings retain the last count as out of date; a confirmed zero hides the indicator. No steps are estimated, and this feature is available only in live mode. See [research and validation](docs/repel-research.md) for evidence and pending checks.
+An optional floating Repel indicator shows the game's remaining steps in the upper-right corner. Set `repelStepsAddress` only after validating the counter for your ROM; the example leaves it disabled (`null`). Address `0x0223D69D` was verified with Repels, Super Repels, and Max Repels in Spanish Black IRBS revision 0 on melonDS 1.1. The general reader samples it using its existing connection. Invalid readings retain the last count as out of date; a confirmed zero hides the indicator. No steps are estimated, and this feature is available only in live mode. See [research and validation](docs/es/repel-research.md) for evidence and pending checks.
 
 Repel updates use a 500 ms timer by default on the same GDB connection, with small Repel-only events. Run `npm run repel:normal` to restore general polling immediately, or `npm run repel:fast` to return to 500 ms, without reconnecting melonDS. These commands change the session setting; restarting restores the configuration. Optional `repelPollMs` in local configuration accepts 500–3000 ms (default 500) or `null` to persist general polling. Long team/box reads may delay the counter because all memory reads are serialized. These commands do not change the team or box polling intervals. Polling continues at zero to detect the next Repel automatically; only the indicator disappears.
 
@@ -169,9 +170,15 @@ In the catalog, icons explain the acquisition routes in Black. The magnifying gl
 
 Press **Evolutions** to check a family and its requirements, or **Moves** to see level-up learnsets in Black/White. The move list doesn't include TMs/HMs, tutors, or breeding. Sprites are revealed once a species is seen or caught in your Pokédex; in Manual, once you add it to your collection.
 
+### Secret Unova album
+
+Hold the header's Poké Ball for about 750 ms (or press Enter while focused) to open all 156 regional cards in a fullscreen mosaic without scrolling. Caught Pokémon appear in color, seen but uncaught Pokémon in grayscale, and unknown Pokémon as question marks. In manual mode, your collection determines which species are known.
+
+Select a known card to expand it with an animated sprite and a description in the selected language. Mosaic cards remain static. On return, the simple card flies back to its slot. Escape returns to the mosaic and, from there, closes the album; holding a mosaic card also closes it. Reduced motion preferences are respected. Descriptions prefer Black/White within each language; if those editions lack a translation, another edition is used before falling back to English.
+
 ### Choose a theme and keep your data
 
-The header's **Theme** selector offers **Original**, **Pokémon**, **Dark Pokémon**, and **Party 🎉**. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
+The header's **Theme** selector offers the twelve themes listed above. The selection saves as soon as you change it and is restored on reload. It also applies to dialogs and battle.
 
 The manual collection, team, and preferences are saved in the browser. To get them back, use the same browser, profile, and address: `localhost` and `127.0.0.1`, or different ports, have separate storage. They don't sync across devices. Clearing site data removes what was saved; a private window may discard it on close. If saving isn't possible, the interface shows a notice.
 
@@ -186,7 +193,7 @@ The manual collection, team, and preferences are saved in the browser. To get th
 | The boxes show stale data | Wait for the next check, or press Update collection in live mode. |
 | The theme or collection isn't kept | Use the same address, browser, and profile; check the storage notices. |
 | A species' data won't load | Check your internet connection and press Retry. Already-fetched data is reused from cache. |
-| A port is in use | Close your previous instance if you no longer need it. The launcher reuses compatible services and warns if another program is using the port. |
+| A port is in use | Web ports 15300/15400 are fixed; close the previous web instance or resolve the conflict. The launcher reuses compatible reader services on 15301–15305. |
 
 ## Scope and limitations
 
@@ -204,6 +211,7 @@ React + TypeScript + Vite, with React Compiler. Run commands from the folder tha
 | --- | --- |
 | `npm ci` | Install dependencies from the lockfile |
 | `npm run dev` | Start only the interface |
+| `npm start` | Start the interface and local services, and open the browser (same as the Windows launcher) |
 | `npm run dev:save` | Start the interface plus the save, live-reading, and battle services; requires `live.config.local.json` |
 | `npm test` | Run the Node tests |
 | `npm run lint` | Check the code with ESLint |
@@ -213,7 +221,7 @@ React + TypeScript + Vite, with React Compiler. Run commands from the folder tha
 
 To read only the `.sav` without starting the live and battle readers, use two terminals: `npm run bridge` and `npm run dev`. The live and battle services can also be started separately with `npm run bridge:live` and `npm run bridge:battle`.
 
-The services listen on `127.0.0.1`: save on **3001**, live on **3002**, and battle on **3003**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
+The services listen on `127.0.0.1`: save on **15301**, live on **15302**, and battle on **15303**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
 The latest recorded code delivery passed **394 tests**, lint and build. The [October 25 summary](docs/changes-2026-10-25.md) separates real-save/emulator checks, fixtures and remaining coverage. This documentation consolidation does not repeat the checks or a fresh installation.
 
@@ -226,6 +234,12 @@ The latest recorded code delivery passed **394 tests**, lint and build. The [Oct
 
 To prepare a GitHub release, see [repository preparation](docs/es/github-preparation.md) *(Spanish, historical record)*. Local configurations, saves, ROMs, browser profiles, and research outputs are excluded; templates and selected screenshots remain available.
 
+- [Species and individual statistics](docs/pokemon-statistics.md) (English)
+- [Field move compatibility filter](docs/field-moves.md) (English)
+- [Shared reader controls](docs/reader-connections.md) (English)
+- [Day Care research](docs/es/daycare-research.md), [Repel research](docs/es/repel-research.md), and [evolution inventory](docs/es/inventory-research.md) (Spanish session records)
+- [Team reorder validation](docs/es/team-reorder-animation.md) and [evolution planning record](docs/es/evolution-requirements.md) (Spanish session records)
+- [Curated screenshots and retention policy](artifacts/README.md)
 - [Data sources and adapters](docs/data-sources.md) ([Español](docs/es/data-sources.md))
 - [Save format and read-only access](docs/save-format.md) ([Español](docs/es/save-format.md))
 - [Live-reading configuration, intervals, and recovery](docs/live-reading.md) ([Español](docs/es/live-reading.md))
@@ -242,3 +256,5 @@ Detailed notes distinguish current behavior from historical validation records; 
 Data and sprites from [PokéAPI](https://pokeapi.co/docs/v2). Species, zone, and acquisition-method links and references from [WikiDex](https://www.wikidex.net/wiki/WikiDex). Emulation via [melonDS](https://github.com/melonDS-emu/melonDS).
 
 PokéChose is an independent, unofficial companion project. Pokémon and its assets belong to their respective rights holders.
+
+PR preparation integrates current master, including fixed web ports 15300/15400. X save/live readers now use 15304/15305; restart local services after updating. The full integration passes 404 tests, lint and build. Browser smoke checks covered both manual workspaces, Black pending evolutions/album and X connection details; the earlier change record retains the real Citra evidence.

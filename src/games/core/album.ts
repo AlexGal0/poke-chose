@@ -4,6 +4,7 @@ export interface AlbumService {
   speciesIds: readonly number[]
   edition: string
   region: string
+  columns?: { landscape: number; portrait: number }
   get(id: number, signal?: AbortSignal): Promise<ManualPokemon>
   description(id: number, locale: string, signal?: AbortSignal): Promise<string | null>
   animation(pokemon: ManualPokemon): string | null

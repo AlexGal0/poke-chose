@@ -6,7 +6,8 @@ export function WorkspaceTabs({ active, onChange, collectionCount, live = false,
   active: ActiveTab; onChange: (tab: ActiveTab) => void; collectionCount: number | null; live?: boolean; available?: Partial<Record<ActiveTab, boolean>>
 }) {
   const { t } = useTranslation()
-  const tabs: readonly ActiveTab[] = live ? [...WORKSPACE_TAB_ORDER, 'battle'] : WORKSPACE_TAB_ORDER
+  const workspace: readonly ActiveTab[] = available.evolutions ? [...WORKSPACE_TAB_ORDER, 'evolutions'] : WORKSPACE_TAB_ORDER
+  const tabs: readonly ActiveTab[] = live ? [...workspace, 'battle'] : workspace
   return <div id="workspace" className="tabs" role="tablist" aria-label={t('app.tabs.ariaLabel')} onKeyDown={event => {
     const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)'))
     const current = buttons.indexOf(document.activeElement as HTMLButtonElement)
@@ -16,7 +17,7 @@ export function WorkspaceTabs({ active, onChange, collectionCount, live = false,
     if (next >= 0) { event.preventDefault(); buttons[next].focus(); buttons[next].click() }
   }}>
     {tabs.map(tab => <button id={`${tab}-tab`} key={tab} role="tab" aria-selected={active === tab} aria-controls="workspace-panel" disabled={available[tab] === false} onClick={() => onChange(tab)}>
-      {t(`app.tabs.${tab}`)}{tab === 'collection' && <> <span>{collectionCount ?? '…'}</span></>}
+      {t(tab === 'evolutions' ? 'evolutionRequirements.title' : `app.tabs.${tab}`)}{tab === 'collection' && <> <span>{collectionCount ?? '…'}</span></>}
     </button>)}
   </div>
 }

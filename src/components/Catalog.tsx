@@ -6,6 +6,7 @@ import type { CatalogEntry, Pokemon } from '../models/pokemon'
 import type { PokedexState } from '../models/pokedex'
 import { PokemonCard } from './PokemonCard'
 import { AcquisitionIcons } from './AcquisitionIcons'
+import { AcquisitionDetailsDialog } from './AcquisitionDetailsDialog'
 import { getAcquisitionTags } from '../api/acquisition'
 import type { AcquisitionTag } from '../domain/acquisition'
 import './Catalog.css'
@@ -15,7 +16,7 @@ const PAGE_SIZE = 12
 
 interface AcquisitionState { tags?: AcquisitionTag[]; error?: boolean }
 
-function CatalogCard({ entry, collected, caught, onAdd, readOnly, acquisition, onRetryAcquisition }: { entry: CatalogEntry; collected: boolean; caught: boolean | null; onAdd: (pokemon: Pokemon) => void; readOnly: boolean; acquisition?: AcquisitionState; onRetryAcquisition: () => void }) {
+function CatalogCard({ entry, collected, caught, onAdd, readOnly, acquisition, onRetryAcquisition, onDetails }: { entry: CatalogEntry; collected: boolean; caught: boolean | null; onAdd: (pokemon: Pokemon) => void; readOnly: boolean; acquisition?: AcquisitionState; onRetryAcquisition: () => void; onDetails: () => void }) {
   const { t } = useTranslation()
   const [pokemon, setPokemon] = useState<Pokemon | null>(null)
   const [error, setError] = useState(false)
@@ -37,7 +38,7 @@ function CatalogCard({ entry, collected, caught, onAdd, readOnly, acquisition, o
     {(readOnly || collected) && <p className="catalog-capture-state">{status}</p>}
     {error ? <><p>{t('catalog.card.loadError')}</p><button onClick={() => { setError(false); setAttempt(a => a + 1) }}>{t('common.retry')}</button></> : <p role="status">{t('catalog.card.loading')}</p>}
   </article>
-  return <PokemonCard pokemon={{ ...pokemon, name: pokemonDisplayName(entry.name) }} captured={captured} showGender showMoves tools={wikiLink}>
+  return <PokemonCard pokemon={{ ...pokemon, name: pokemonDisplayName(entry.name) }} captured={captured} showGender showMoves tools={wikiLink} onSpriteClick={onDetails}>
     <AcquisitionIcons tags={acquisition?.tags} error={acquisition?.error} onRetry={onRetryAcquisition} />
     {readOnly ? <p className="catalog-capture-state" role="status">{status}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>{collected ? t('catalog.card.status.inCollection') : t('catalog.card.addButton')}</button>}
   </PokemonCard>
@@ -48,6 +49,7 @@ export function Catalog({ collection, onAdd, readOnly = false, pokedex = null }:
   const [catalog, setCatalog] = useState<CatalogEntry[]>([])
   const [query, setQuery] = useState('')
   const [scope, setScope] = useState('unova')
+  const [details, setDetails] = useState<CatalogEntry | null>(null)
   const [page, setPage] = useState(0)
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
@@ -91,8 +93,9 @@ export function Catalog({ collection, onAdd, readOnly = false, pokedex = null }:
     <p className="hint">{readOnly ? t('catalog.hintReadOnly') : t('catalog.hintManual')}</p>
     <p className="hint">{readOnly ? t('catalog.hint2ReadOnly') : t('catalog.hint2Manual')}</p>
     {error ? <div role="alert" className="empty">{t(error)} <button onClick={() => { setError(''); setAttempt(a => a + 1) }}>{t('common.retry')}</button></div> : catalog.length === 0 ? <p className="empty" role="status">{t('catalog.loadingCatalog')}</p> : filtered.length === 0 ? <p className="empty">{t('catalog.noMatches')}</p> : <>
-      <div className="pokemon-grid">{filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(entry => <CatalogCard key={entry.id} entry={entry} collected={collection.some(p => p.id === entry.id)} caught={readOnly && pokedex ? pokedex.caughtSpeciesIds.has(entry.id) : null} onAdd={onAdd} readOnly={readOnly} acquisition={acquisition[entry.id]} onRetryAcquisition={() => setAcquisitionAttempt(value => value + 1)} />)}</div>
+      <div className="pokemon-grid">{filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE).map(entry => <CatalogCard key={entry.id} entry={entry} collected={collection.some(p => p.id === entry.id)} caught={readOnly && pokedex ? pokedex.caughtSpeciesIds.has(entry.id) : null} onAdd={onAdd} readOnly={readOnly} onDetails={() => setDetails(entry)} acquisition={acquisition[entry.id]} onRetryAcquisition={() => setAcquisitionAttempt(value => value + 1)} />)}</div>
       <nav className="pagination" aria-label={t('catalog.paginationAriaLabel')}><button disabled={page === 0} onClick={() => setPage(p => p - 1)}>{t('common.previousPage')}</button><span>{page + 1} / {pages}</span><button disabled={page + 1 >= pages} onClick={() => setPage(p => p + 1)}>{t('common.nextPage')}</button></nav>
     </>}
+    {details && <AcquisitionDetailsDialog key={details.id} entry={details} onClose={() => setDetails(null)} />}
   </section>
 }

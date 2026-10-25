@@ -91,7 +91,7 @@ X marca sus cajas con `affectsSummary: false`: se muestran con fecha independien
 
 ## Lecturas, seguridad de datos y recuperación
 
-Los puentes son locales, de solo lectura y con controles de acceso de origen. No se escriben saves, memoria ni comandos de juego. Citra se consulta por RPC UDP; el servicio live publica por SSE en el puerto local 3005 y el save de X usa 3004, detrás del proxy de Vite. La conexión live es explícita. Equipo y Pokédex se consultan cada dos segundos; las 31 cajas al conectar, cada dos minutos o mediante refresco.
+Los puentes son locales, de solo lectura y con controles de acceso de origen. No se escriben saves, memoria ni comandos de juego. Citra se consulta por RPC UDP; el servicio live publica por SSE en el puerto local 15305 y el save de X usa 15304, detrás del proxy de Vite. La conexión live es explícita. Equipo y Pokédex se consultan cada dos segundos; las 31 cajas al conectar, cada dos minutos o mediante refresco.
 
 Los snapshots validan límites y formatos del juego. Las lecturas estables y la comprobación del perfil evitan tratar bytes transitorios como datos válidos. Un fallo parcial de ubicación o combate no bloquea el resto. Los últimos datos válidos llevan fecha y aviso cuando están desactualizados; nunca se presentan como confirmación reciente. Las configuraciones locales, saves, ROMs y volcados no pertenecen al control de versiones.
 

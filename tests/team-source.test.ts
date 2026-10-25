@@ -66,6 +66,10 @@ test('save adapter resolves static data once per species/form and preserves dupl
     assert.deepEqual(result.map(p => [p.id, p.name, p.level, p.types]), [[502, 'dewott', 20, ['water']], [502, 'dewott', 30, ['water']]])
     assert.notEqual(result[0].instanceKey, result[1].instanceKey)
     assert.deepEqual(result.map(member => member.nickname), ['Azul', 'Mar'])
+    const distinct = party.map((member, index) => ({ ...member, personality: index + 100 }))
+    const before = await resolveParty(distinct, new AbortController().signal)
+    const reordered = await resolveParty([...distinct].reverse().map((member, slot) => ({ ...member, slot })), new AbortController().signal)
+    assert.deepEqual(reordered.map(member => member.instanceKey), before.map(member => member.instanceKey).reverse(), 'individual keys must follow the Pokémon when its party slot changes')
     const manual = { collection: [{ id: 502, name: 'dewott', types: ['water'] as const, sprite: null }], teamIds: [502] }
     assert.equal(manualTeam({ ...manual, collection: [{ ...manual.collection[0], types: ['water'] }] })[0].id, 502)
   } finally { globalThis.fetch = original }

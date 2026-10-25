@@ -183,7 +183,7 @@ Referencia adicional: [PokeStreamer-Tools, distribución y dirección de equipo]
 
 La fuente **Citra en vivo (experimental)** ya tiene Conectar/Desconectar y publica
 el equipo al balance de tipos Gen VI. `npm run bridge:x-live` inicia el servicio
-local en `127.0.0.1:3005`; Vite lo presenta mediante `/x-live-api`. El iniciador
+local en `127.0.0.1:15305`; Vite lo presenta mediante `/x-live-api`. El iniciador
 habitual también lo incluye. Abrir la aplicación no inicia lecturas RPC: hace
 falta pulsar Conectar. La frecuencia es de dos segundos más el tiempo de lectura.
 Desconectar o cerrar el último suscriptor detiene el sondeo.

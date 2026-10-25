@@ -7,11 +7,11 @@ const open = process.argv.includes('--open')
 const processes = []
 try {
   const services = [
-    { name: 'x-live', port: Number(process.env.X_LIVE_BRIDGE_PORT ?? 3005), file: 'bridge/x-live-index.ts' },
-    { name: 'x-save', port: Number(process.env.X_SAVE_BRIDGE_PORT ?? 3004), file: 'bridge/x-index.ts' },
-    { name: 'live', port: Number(process.env.LIVE_BRIDGE_PORT ?? 3002), file: 'bridge/live-index.mjs' },
-    { name: 'save', port: Number(process.env.SAVE_BRIDGE_PORT ?? 3001), file: 'bridge/index.ts' },
-    { name: 'enemy', port: 3003, file: 'experiments/melonds-live/watch-enemy.mjs', args: ['--battle', '--wait'] },
+    { name: 'x-live', port: Number(process.env.X_LIVE_BRIDGE_PORT ?? 15305), file: 'bridge/x-live-index.ts' },
+    { name: 'x-save', port: Number(process.env.X_SAVE_BRIDGE_PORT ?? 15304), file: 'bridge/x-index.ts' },
+    { name: 'live', port: Number(process.env.LIVE_BRIDGE_PORT ?? 15302), file: 'bridge/live-index.mjs' },
+    { name: 'save', port: Number(process.env.SAVE_BRIDGE_PORT ?? 15301), file: 'bridge/index.ts' },
+    { name: 'enemy', port: 15303, file: 'experiments/melonds-live/watch-enemy.mjs', args: ['--battle', '--wait'] },
   ]
   const existing = await Promise.all(services.map(service => bridgeRunning(service.port, service.name)))
   for (const [index, service] of services.entries()) {

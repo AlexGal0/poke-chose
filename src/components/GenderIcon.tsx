@@ -5,6 +5,7 @@ import type { SpeciesGender } from '../domain/gender'
 import { genderLabel, genderDistributionLabel } from '../i18n/gender.ts'
 import { GenderDistributionText } from './GenderDistributionText'
 import './GenderIcon.css'
+import { GenderSymbol } from './GenderSymbol'
 
 export function GenderIcon({ speciesId, showDistribution = false }: { speciesId: number; showDistribution?: boolean }) {
   const { t, i18n } = useTranslation()
@@ -24,7 +25,7 @@ export function GenderIcon({ speciesId, showDistribution = false }: { speciesId:
   const distribution = showDistribution ? gender?.distribution : null
   const label = distribution ? genderDistributionLabel(t, distribution, i18n.language) : gender ? genderLabel(t, gender.kind) : loaded ? t('genderIcon.unconfirmed') : t('genderIcon.loading')
   return <button type="button" className={`gender-icon gender-${gender?.kind ?? 'unknown'}`} aria-label={label} title={label} onClick={() => { if (!gender) setAttempt(value => value + 1) }}>
-    <span aria-hidden="true">{distribution ? <GenderDistributionText distribution={distribution} /> : gender?.icon ?? (loaded ? '?' : '…')}</span>
+    <span aria-hidden="true">{distribution ? <GenderDistributionText distribution={distribution} /> : <GenderSymbol kind={gender?.kind} loading={!loaded} />}</span>
     <span className="gender-tooltip" role="tooltip">{label}</span>
   </button>
 }

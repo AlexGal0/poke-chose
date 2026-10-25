@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "node scripts/start-save.mjs --open",
     "repel:fast": "node scripts/repel-poll.mjs fast",
     "repel:normal": "node scripts/repel-poll.mjs normal",
     "dev": "vite",

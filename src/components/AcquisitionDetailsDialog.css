@@ -1,0 +1,28 @@
+.acquisition-details-dialog { width: min(680px, calc(100vw - 32px)); max-height: 85dvh; overflow: auto; padding: 24px; border: 1px solid var(--border, #35404e); border-radius: 14px; background: var(--surface, #18212c); color: var(--text, #edf4f8); }
+.acquisition-details-dialog::backdrop { background: rgb(0 0 0 / 65%); }
+.acquisition-details-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.acquisition-details-dialog section { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border, #35404e); }
+.acquisition-details-dialog p { line-height: 1.6; margin: 10px 0; }
+.acquisition-details-dialog li { margin: 10px 0; overflow-wrap: anywhere; }
+.acquisition-details-dialog ul { padding-left: 20px; }
+:root .pokemon-card .sprite.sprite-button { border: 0; background: transparent; box-shadow: none; padding: 0; cursor: pointer; }
+:root .pokemon-card .sprite.sprite-button:hover { background: var(--surface-hover, #344352); box-shadow: none; }
+@media (max-width: 540px) { .acquisition-details-dialog { padding: 16px; } }
+.acquisition-zones { display: grid; gap: 14px; margin-top: 14px; }
+.acquisition-zone { min-width: 0; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; }
+.acquisition-zone h4 { display: flex; align-items: center; gap: 8px; margin: 0; padding: 12px 14px; background: var(--surface-raised, var(--surface)); border-bottom: 1px solid var(--border); font-size: 15px; }
+.acquisition-zone h4 > span { color: var(--success-text); font-size: 20px; }
+.acquisition-area { padding: 12px; }
+.acquisition-area + .acquisition-area { border-top: 1px solid var(--border); }
+.acquisition-area h5 { margin: 0 0 10px; font-size: 12px; color: var(--text-muted); }
+.acquisition-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.acquisition-method { min-width: 0; padding: 10px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-inset, var(--surface)); }
+.acquisition-method-heading { display: flex; align-items: center; gap: 7px; font-size: 12px; }
+.acquisition-encounter { margin-top: 9px; font-size: 12px; }
+.acquisition-encounter + .acquisition-encounter { border-top: 1px solid var(--border); padding-top: 8px; }
+.acquisition-encounter-values { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-variant-numeric: tabular-nums; }
+.acquisition-chance { display: flex; align-items: center; gap: 5px; color: var(--success-text); }
+.acquisition-chance > span { width: 28px; height: 4px; border-radius: 3px; overflow: hidden; background: var(--border); }
+.acquisition-chance i { display: block; height: 100%; background: currentColor; }
+.acquisition-details-dialog .acquisition-conditions { margin: 5px 0 0; color: var(--text-muted); font-size: 11px; overflow-wrap: anywhere; }
+@media (max-width: 540px) { .acquisition-methods { grid-template-columns: 1fr; } }

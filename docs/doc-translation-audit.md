@@ -37,3 +37,15 @@ These are point-in-time development logs, feasibility assessments, or maintainer
 ## Maintaining this audit
 
 When a new `docs/*.md` file is added, write it in English at `docs/<name>.md` by default. If it documents current, implemented behavior where a Spanish version is also worth keeping, add it at `docs/es/<name>.md` and cross-link both files at the top (`*Versión en español: [es/<file>.md](es/<file>.md)*` in the English file / `*English version: [../<file>.md](../<file>.md)*` in the Spanish one), then add a row to the translated table above. If it's a dated session log, feasibility note, or maintainer-only procedure that will only ever be written in Spanish, put it directly under `docs/es/` and add it to the historical table instead with a one-line reason — don't leave Spanish-only content at the `docs/` root.
+
+## Documentation inventory update — 2026-10-17
+
+The English implementation guides `pokemon-statistics.md`, `field-moves.md`, and `reader-connections.md` currently have no Spanish mirror; both READMEs link them explicitly as English guides. Their appended validation notes describe historical sessions.
+
+Spanish development records now live in `docs/es/`: `daycare-research.md`, `repel-research.md`, `inventory-research.md`, `team-reorder-animation.md`, and `evolution-requirements.md` (formerly under `docs/plans/`). Location records `player-location-development.md` and `rom-locations.md` also remain Spanish-only. Current Day Care, Repel, and evolution behavior is summarized in both READMEs. New work should follow the language convention above.
+
+Screenshot retention is documented in [the artifact inventory](../artifacts/README.md). Cleanup does not repeat or certify historical visual validations. Session records may mention removed captures or obsolete harness commands as provenance.
+
+### Checks performed for this update
+
+On 2026-10-17, all local Markdown links in the root guides, `docs/`, and the artifact inventory resolved; `git diff --check`, `npm run lint`, and `npm run build` passed. The build still reports a JavaScript chunk over 500 kB. `npm test` passed all 264 tests outside the sandbox; the sandboxed runs had 16 failures involving localhost HTTP and temporary-file replacement. No application code changed. No fresh browser, responsive-layout, emulator, or real-save checks were performed.

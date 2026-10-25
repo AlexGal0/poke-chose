@@ -1,0 +1,4 @@
+.pokedex-scope-badge { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 28px; height: 28px; padding: 0; border: 1px solid var(--border, #35404e); border-radius: 6px; vertical-align: middle; }
+.pokedex-scope-unova { color: var(--success-text, #85d9ba); }
+.pokedex-scope-national { color: var(--accent, #9bc7ff); }
+.capture-list .pokedex-scope-badge { margin-left: 5px; }

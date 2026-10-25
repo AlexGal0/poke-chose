@@ -41,14 +41,16 @@ Las funciones siguientes describen el espacio de Black.
 
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
 - **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
+- **Filtro de movimientos de campo:** en Mi colección, combina Corte, Vuelo, Surf, Fuerza, Cascada, Buceo, Destello y Excavar. Los resultados deben poder aprender todos los seleccionados mediante MT/MO en Black/White. Se combina con nombre, tipo y caja; excluye huevos. No comprueba movimientos aprendidos, máquinas poseídas ni progreso. Consulta la [guía técnica](docs/field-moves.md) (inglés).
 - **Balance de tipos:** identifica debilidades compartidas, resistencias, inmunidades y cobertura ofensiva potencial por STAB.
 - **Tabla de tipos:** matriz interactiva de los 17 tipos de Generación V, con multiplicadores y desplazamiento horizontal en móvil.
 - **Capturas por zona:** consulta encuentros de Negro, niveles, métodos y porcentajes; filtra por acceso a Surf y Supercaña. La Pokédex marca las especies capturadas alguna vez, aunque ya las hayas evolucionado o liberado.
 - **Evoluciones:** abre el árbol de cada familia con sus requisitos de Generación V.
 - **Movimientos:** consulta el aprendizaje por nivel en Black/White, con nombres y descripciones en español, tipo, categoría y PP.
+- **Estadísticas:** consulta valores base de la especie en Generación V y, cuando están disponibles, valores leídos del ejemplar, con tabla comparativa y radar. No se estiman estadísticas individuales ausentes. Consulta la [guía técnica](docs/pokemon-statistics.md) (inglés).
 - **Datos de tu equipo:** muestra nivel, objeto equipado, PS y progreso de experiencia cuando están disponibles en la partida.
 - **Lectura en vivo y combate experimental:** sigue el equipo, las cajas y la Pokédex sin guardar; en combate, consulta tu Pokémon activo, el rival, sus PS y referencias de ventaja por tipos.
-- **Cuatro temas:** Original, Pokémon, Pokémon oscuro y Fiesta 🎉. La selección se guarda automáticamente.
+- **Doce temas:** Original, Pokémon, Pokémon oscuro, Fiesta 🎉, Game Boy Color, Aqua 2000, Classic HTML, Neón, Terminal ASCII, Windows XP, Halo: Combat Evolved y Halloween. La selección se guarda automáticamente.
 - **Idioma:** cambia entre español e inglés con el selector de la cabecera. La interfaz se traduce al instante, sin recargar; español es el idioma por defecto y la elección se guarda automáticamente.
 - **Guardado local:** conserva la colección y el equipo manuales, preferencias y caché en el navegador. Sin cuentas ni base de datos.
 
@@ -78,7 +80,7 @@ npm ci
 npm run dev
 ```
 
-Abre la dirección que muestre Vite y selecciona **Manual** en **Origen del equipo**. No necesitas archivos de configuración.
+Abre **http://127.0.0.1:15300** y selecciona **Manual** en **Origen del equipo**. No necesitas archivos de configuración.
 
 **Con melonDS y el lanzador de Windows:**
 
@@ -125,12 +127,16 @@ Para esta opción utiliza la configuración de juego y emulador compatible descr
 2. En las opciones de depuración **GDB** de melonDS, activa el servidor para **ARM7 en el puerto 3334**. Para la vista de combate, activa también **ARM9 en el puerto 3333**.
 3. Desmarca **Break on startup** para que el juego no quede detenido al iniciar. Si melonDS requiere reiniciar para aplicar las opciones, conserva primero tu progreso.
 4. Abre Pokémon Negro y entra a tu partida.
-5. Inicia PokéChose con **Iniciar PokeChose.cmd**, selecciona **melonDS en vivo (experimental)** y pulsa **Conectar lector**.
-6. Para consultar al rival, abre **Combate** y pulsa **Conectar combate**. Es un lector separado y utiliza la conexión ARM9.
+5. Inicia PokéChose con **Iniciar PokeChose.cmd**, selecciona **melonDS en vivo (experimental)** y utiliza el control compartido para conectar los lectores.
+6. Para consultar al rival, abre **Combate** y comprueba el estado del lector de combate en ese mismo control. Es un lector separado y utiliza la conexión ARM9.
 
 El equipo, los PS, la experiencia y la Pokédex se consultan aproximadamente cada **3 segundos**, más el tiempo que tarda la lectura. Las cajas se revisan cada **2 minutos**; puedes adelantar su lectura con **Actualizar colección** en **Mi colección**. El servicio no escribe la memoria del emulador ni el save.
 
-Tras un Reset, reapertura del emulador o pérdida de conexión, utiliza **Reconectar lector** y, si corresponde, **Reconectar combate**. **Pausar lectura** detiene el sondeo del lector principal. Cambiar de origen no lo pausa automáticamente: pulsa ese botón si quieres detenerlo en segundo plano.
+Un indicador flotante opcional muestra los pasos reales restantes del repelente en la esquina superior derecha. Activa `repelStepsAddress` solo para una dirección validada para tu ROM; la plantilla lo deja desactivado (`null`). En Negro español IRBS revisión 0 se verificó `0x0223D69D`. No se estiman pasos; las lecturas inválidas conservan el último dato como desactualizado y un cero confirmado oculta el indicador.
+
+El repelente se consulta cada 500 ms por defecto, en la misma conexión GDB. `npm run repel:normal` restaura el sondeo general y `npm run repel:fast` vuelve a 500 ms sin reconectar. Son ajustes de sesión; `repelPollMs` permite persistir 500–3000 ms o `null` para usar el ciclo general. Las lecturas largas pueden retrasarlo y el sondeo continúa a cero para detectar el siguiente uso. Consulta la [investigación](docs/es/repel-research.md).
+
+Tras un Reset, reapertura del emulador o pérdida de conexión, utiliza el control compartido para reconectar los lectores. Cada conexión se completa de forma independiente; un fallo no cancela la otra. El indicador flotante muestra ambos estados y abre los mismos controles. Pausar el lector general detiene solo su sondeo; el lector de combate es independiente. Cambiar de origen no lo pausa automáticamente.
 
 No conectes otro lector al mismo puerto GDB mientras PokéChose lo esté usando. Si el emulador acepta la conexión pero no responde, conserva tu progreso, reinicia la partida en melonDS y vuelve a conectar. Más detalles: [lectura en vivo](docs/es/live-reading.md) y [vista de combate](docs/es/enemy-prototype.md).
 
@@ -163,9 +169,15 @@ En el catálogo, los iconos explican las formas de obtención en Negro. La lupa 
 
 Pulsa **Evoluciones** para consultar una familia y sus requisitos, o **Movimientos** para ver el aprendizaje por nivel en Black/White. El listado de movimientos no incluye MT/MO, tutores ni crianza. Los sprites se revelan cuando una especie está vista o capturada en tu Pokédex; en Manual, al añadirla a tu colección.
 
+### Álbum secreto de Teselia
+
+Mantén pulsada la Poké Ball del encabezado durante unos 750 ms (o pulsa Intro con el icono enfocado) para abrir las 156 cartas regionales a pantalla completa, sin scroll. Los capturados aparecen a color, los vistos sin capturar en blanco y negro y los desconocidos con una interrogación. En modo manual, la colección determina cuáles conoces.
+
+Pulsa una carta conocida para ampliar su ficha con un sprite animado y una descripción en el idioma elegido. Las cartas del mosaico son estáticas. Al volver, su versión simple regresa a la casilla. Escape vuelve al mosaico y, desde este, cierra el álbum; también puedes cerrarlo manteniendo pulsada una carta. Se respeta la preferencia de movimiento reducido. Las descripciones priorizan Negro/Blanco dentro de cada idioma; si no hay traducción para esas ediciones, se consulta otra edición antes de recurrir al inglés.
+
 ### Elegir un tema y conservar tus datos
 
-El selector **Tema** de la cabecera ofrece **Original**, **Pokémon**, **Pokémon oscuro** y **Fiesta 🎉**. La selección se guarda al cambiarla y se restaura al recargar. Se aplica también a diálogos y combate.
+El selector **Tema** de la cabecera ofrece los doce temas indicados arriba. La selección se guarda al cambiarla y se restaura al recargar. Se aplica también a diálogos y combate.
 
 La colección manual, el equipo y las preferencias se guardan en el navegador. Para recuperarlos, usa el mismo navegador, perfil y dirección: `localhost` y `127.0.0.1`, o puertos distintos, tienen almacenamientos separados. No se sincronizan entre dispositivos. Borrar los datos del sitio elimina lo guardado; una ventana privada puede descartarlo al cerrarse. Si no se puede guardar, la interfaz muestra un aviso.
 
@@ -175,12 +187,12 @@ La colección manual, el equipo y las preferencias se guardan en el navegador. P
 | --- | --- |
 | El lanzador se cierra o indica que falta un archivo | Comprueba Node.js 22.15 o posterior y que exista `live.config.local.json` junto a `package.json`. Lee el error de la terminal. |
 | No aparece la partida en modo Save | Revisa `savePath`, el formato RAW de 512 KiB y que hayas guardado dentro del juego. Reinicia los servicios después de cambiar la ruta. |
-| El lector en vivo no conecta | Revisa GDB ARM7 3334, la edición compatible, la partida abierta y el botón Conectar lector. |
-| Combate no muestra al rival | Revisa GDB ARM9 3333 y Conectar combate. La vista es experimental y requiere una lectura confirmada. |
+| El lector en vivo no conecta | Revisa GDB ARM7 3334, la edición compatible, la partida abierta y el control compartido de conexión. |
+| Combate no muestra al rival | Revisa GDB ARM9 3333 y el estado del lector de combate en los controles compartidos. La vista es experimental y requiere una lectura confirmada. |
 | Las cajas muestran datos anteriores | Espera la próxima revisión o pulsa Actualizar colección en modo en vivo. |
 | El tema o la colección no se conservan | Usa la misma dirección, navegador y perfil; revisa los avisos de almacenamiento. |
 | No cargan datos de una especie | Comprueba internet y pulsa Reintentar. Los datos ya consultados se reutilizan desde caché. |
-| Un puerto está ocupado | Cierra tu instancia anterior si ya no la necesitas. El lanzador reutiliza servicios compatibles y avisa si otro programa ocupa el puerto. |
+| Un puerto está ocupado | Los puertos web 15300/15400 son fijos; cierra la instancia web anterior o resuelve el conflicto. El lanzador reutiliza lectores compatibles en 15301–15305. |
 
 ## Alcance y limitaciones
 
@@ -198,6 +210,7 @@ React + TypeScript + Vite, con React Compiler. Ejecuta los comandos desde la car
 | --- | --- |
 | `npm ci` | Instalar las dependencias del lockfile |
 | `npm run dev` | Iniciar solo la interfaz |
+| `npm start` | Iniciar interfaz y servicios locales y abrir el navegador (igual que el lanzador de Windows) |
 | `npm run dev:save` | Iniciar interfaz y servicios de save, lectura en vivo y combate; requiere `live.config.local.json` |
 | `npm test` | Ejecutar las pruebas de Node |
 | `npm run lint` | Comprobar el código con ESLint |
@@ -207,7 +220,7 @@ React + TypeScript + Vite, con React Compiler. Ejecuta los comandos desde la car
 
 Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos terminales: `npm run bridge` y `npm run dev`. Los servicios en vivo y combate también pueden iniciarse por separado con `npm run bridge:live` y `npm run bridge:battle`.
 
-Los servicios escuchan en `127.0.0.1`: save en **3001**, en vivo en **3002** y combate en **3003**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
+Los servicios escuchan en `127.0.0.1`: save en **15301**, en vivo en **15302** y combate en **15303**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
 
 La última entrega de código registrada aprobó **394 pruebas**, lint y build. El [resumen del 25 de octubre](docs/es/changes-2026-10-25.md) distingue las comprobaciones con partidas reales, los fixtures y los pendientes. Esta consolidación documental no repite las pruebas ni una instalación nueva.
 
@@ -221,6 +234,10 @@ La última entrega de código registrada aprobó **394 pruebas**, lint y build. 
 
 Para preparar una publicación en GitHub, consulta [preparación del repositorio](docs/es/github-preparation.md). Las configuraciones locales, partidas, ROMs, perfiles de navegador y salidas de investigación están excluidas; las plantillas y capturas seleccionadas permanecen disponibles.
 
+- [Estadísticas de especie y ejemplar](docs/pokemon-statistics.md), [filtro de movimientos de campo](docs/field-moves.md) y [controles compartidos de lectores](docs/reader-connections.md) (inglés)
+- [Guardería](docs/es/daycare-research.md), [repelentes](docs/es/repel-research.md) e [inventario para evoluciones](docs/es/inventory-research.md) (registros de desarrollo)
+- [Validación del orden del equipo](docs/es/team-reorder-animation.md) y [planificación de evoluciones](docs/es/evolution-requirements.md) (registros de desarrollo)
+- [Capturas seleccionadas y política de conservación](artifacts/README.md) (inglés)
 - [Fuentes de datos y adaptadores](docs/es/data-sources.md) ([English](docs/data-sources.md))
 - [Formato del save y acceso de solo lectura](docs/es/save-format.md) ([English](docs/save-format.md))
 - [Configuración, intervalos y recuperación de la lectura en vivo](docs/es/live-reading.md) ([English](docs/live-reading.md))
@@ -237,3 +254,5 @@ Las notas detalladas distinguen el estado actual de los registros históricos de
 Datos y sprites de [PokéAPI](https://pokeapi.co/docs/v2). Enlaces y referencias de especies, zonas y métodos de obtención de [WikiDex](https://www.wikidex.net/wiki/WikiDex). Emulación mediante [melonDS](https://github.com/melonDS-emu/melonDS).
 
 PokéChose es un proyecto independiente de apoyo a la partida. Pokémon y sus elementos pertenecen a sus respectivos titulares.
+
+La preparación del PR integra master actual, incluidos los puertos web fijos 15300/15400. Los lectores save/live de X usan ahora 15304/15305; reinicia los servicios locales tras actualizar. La integración completa pasa 404 pruebas, lint y build. La comprobación de navegador cubre ambos espacios manuales, evoluciones pendientes/álbum de Negro y detalles de conexión de X; el registro de cambios conserva la evidencia real previa de Citra.

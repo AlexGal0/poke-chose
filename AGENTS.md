@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-PokéChose is a React and TypeScript application powered by Vite, with React Compiler enabled. It organizes Pokémon collections and teams and analyzes type effectiveness using Generation V rules. It supports a browser-only manual mode and a read-only local melonDS save bridge for Pokémon Black.
+PokéChose is a React and TypeScript application powered by Vite, with React Compiler enabled. It organizes Pokémon collections and teams and analyzes type effectiveness using Generation V rules. It supports browser-only manual mode, a read-only local save bridge, and experimental live and battle readers for Pokémon Black.
 
 - `src/main.tsx` mounts the application with `EvolutionProvider`; `src/App.tsx` composes the interface and manages manual collection, team source, and tabs.
 - `src/components/` contains the catalog, Pokémon cards, collection search, save synchronization, capture checklist, evolution dialog, and team analysis.
@@ -13,9 +13,9 @@ PokéChose is a React and TypeScript application powered by Vite, with React Com
 - `src/assets/` holds imported images and SVGs. `public/` holds assets referenced directly by URL, such as `/favicon.svg`.
 - Root configuration includes `vite.config.ts`, `tsconfig*.json`, and `eslint.config.js`. `index.html` is the HTML entry point.
 - `bridge/` contains save parsing, Pokédex extraction, stable reads, file watching, and the local SSE server.
-- `scripts/start-save.mjs` starts Vite and the bridge together. `Iniciar PokeChose.cmd` provides a Windows launcher.
+- `scripts/start-save.mjs` starts Vite and the save, live, and battle services together; the battle reader requires `live.config.local.json`. `Iniciar PokeChose.cmd` provides a Windows launcher.
 - `tests/` contains Node test suites; `tests/helpers/save-fixture.ts` generates synthetic saves.
-- `docs/save-format.md` documents save parsing; `README.md` describes setup, features, limitations, and validation. `artifacts/` contains screenshots from previous checks.
+- `docs/save-format.md` documents save parsing; `README.md` describes setup, features, limitations, and validation. `artifacts/` contains a minimal curated set of screenshots; see `artifacts/README.md` for retention and provenance.
 - Production output goes to `dist/`.
 
 ## Build, Test, and Development Commands
@@ -23,20 +23,23 @@ PokéChose is a React and TypeScript application powered by Vite, with React Com
 Run commands from the project root. The README and Windows launcher require Node.js 22.15 or later for the save bridge and tests, which use Node's experimental TypeScript stripping.
 
 - `npm ci`: install dependencies using the existing `package-lock.json`.
-- `npm run dev`: start the Vite development server with hot module replacement.
+- `npm run dev`: start Vite with hot module replacement at `http://127.0.0.1:15300` (strict port).
 - `npm test`: run `tests/*.test.ts` using Node's built-in test runner and `--experimental-strip-types`.
 - `npm run bridge`: start the read-only local save bridge.
-- `npm run dev:save`: start the bridge and Vite development server together.
+- `npm start`: start Vite and all local readers, and open the browser.
+- `npm run dev:save`: start Vite and the save, live, and battle services; requires `live.config.local.json`.
+- `npm run bridge:live`: start only the experimental live reader.
+- `npm run bridge:battle`: start only the experimental battle reader.
 - `npm run build`: run TypeScript project checks and generate the production bundle.
 - `npm run lint`: check source files with ESLint.
-- `npm run preview`: serve the production bundle locally after building.
-- `npm run preview:save`: start the bridge and production preview together after building.
+- `npm run preview`: serve the production bundle at `http://127.0.0.1:15400` after building (strict port).
+- `npm run preview:save`: start all local readers and production preview after building; requires `live.config.local.json`.
 - On Windows, double-click `Iniciar PokeChose.cmd` to start development mode with the bridge and open the browser. The launcher installs dependencies if Vite is absent.
 
 ## Save Integration & Domain Rules
 
 - Configure the save path in `save.config.local.json`, using `save.config.example.json` as a template, or through `MELONDS_SAVE_PATH`, which takes precedence. `.gitignore` excludes the local configuration and `*.sav` files.
-- The bridge binds to `127.0.0.1`, defaults to port 3001, and accepts `SAVE_BRIDGE_PORT`. Vite proxies `/save-api` in development and preview; use the same bridge port for both processes.
+- The bridge binds to `127.0.0.1`, defaults to port 15301, and accepts `SAVE_BRIDGE_PORT`. Vite proxies `/save-api` in development and preview; use the same bridge port for both processes.
 - The supported save format is Pokémon Black RAW `.sav`, 512 KiB. Preserve read-only access: the application must not modify the user's save.
 - Manual collection and team data persist in localStorage under `poke-chose:bw:v1`. Save mode reads the party, the 24 PC boxes, and Pokédex flags; manual data remains separate.
 - Capture checklists use Pokédex caught flags, not seen flags or current party/box contents. Surf and Super Rod access filters are configured separately in localStorage.

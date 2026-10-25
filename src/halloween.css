@@ -1,0 +1,51 @@
+:root[data-theme='halloween'] {
+  color-scheme: dark;
+  --page: #100c19;
+  --surface: #1c1427;
+  --surface-raised: #291d38;
+  --surface-inset: #15101f;
+  --surface-hover: #392647;
+  --border: #59416f;
+  --border-strong: #aa81ce;
+  --text: #fff3df;
+  --text-muted: #d1bbdf;
+  --text-faint: #b69ac9;
+  --accent: #f59b42;
+  --accent-text: #ffba70;
+  --accent-surface: #3d251c;
+  --accent-border: #bd7338;
+  --primary-surface: #e9953e;
+  --primary-border: #ffc17c;
+  --primary-hover: #ffb05d;
+  --success-text: #c7ec91;
+  --success-surface: #25311f;
+  --success-border: #6d9147;
+  --warning-text: #ffcb85;
+  --warning-surface: #3c2a1c;
+  --warning-border: #a8733c;
+  --danger-text: #ffb4b9;
+  --danger-surface: #3d1f30;
+  --danger-border: #a45c78;
+  background-image: radial-gradient(ellipse at 0% 0%, #f59b421c, transparent 55%), radial-gradient(ellipse at 100% 25%, #9255c92b, transparent 60%);
+  background-attachment: fixed;
+}
+
+:root[data-theme='halloween'] .site-header { border-bottom: 2px solid #f59b42; background: linear-gradient(100deg, #f59b420b, #9255c910); }
+:root[data-theme='halloween'] .brand > span:last-child,
+:root[data-theme='halloween'] h1 span { color: #f59b42; }
+:root[data-theme='halloween'] .brand { text-shadow: 0 0 16px #f59b4226; }
+:root[data-theme='halloween'] .eyebrow { color: #c5a0f2; letter-spacing: 2px; }
+:root[data-theme='halloween'] .panel { border-top: 2px solid #aa81ce; box-shadow: 0 12px 30px #0004; background: linear-gradient(145deg, #9255c90b, transparent 50%), var(--surface); }
+:root[data-theme='halloween'] .primary { color: #211323; font-weight: 700; background: linear-gradient(#ffb05d, #e9953e); }
+:root[data-theme='halloween'] .primary:hover:not(:disabled) { background: var(--primary-hover); }
+:root[data-theme='halloween'] .tabs button[aria-selected=true] { box-shadow: inset 0 -2px 0 #f59b42, 0 0 14px #f59b4215; }
+:root[data-theme='halloween'] .pokemon-card:nth-child(3n + 1) { border-top: 2px solid #f59b42; }
+:root[data-theme='halloween'] .pokemon-card:nth-child(3n + 2) { border-top: 2px solid #c5a0f2; }
+:root[data-theme='halloween'] .pokemon-card:nth-child(3n) { border-top: 2px solid #c7ec91; }
+:root[data-theme='halloween'] .pokeball { border-color: #c5a0f2; background: linear-gradient(#f59b42 43%, #c5a0f2 43%, #c5a0f2 55%, #241731 55%); box-shadow: 0 0 12px #f59b4226; }
+:root[data-theme='halloween'] .pokeball::after { border-color: #c5a0f2; background: #c7ec91; }
+
+@media (min-width: 641px) and (max-width: 980px) {
+  :root[data-theme='halloween'] .site-header { flex-wrap: wrap; gap: 16px; }
+  :root[data-theme='halloween'] .header-controls { flex: 1 1 100%; flex-wrap: wrap; }
+}

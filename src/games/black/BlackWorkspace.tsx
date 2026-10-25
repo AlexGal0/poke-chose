@@ -50,6 +50,9 @@ import { MovesProvider } from "../../components/MovesProvider";
 import { StatsProvider } from '../../components/StatsProvider'
 import { ThemeSelector } from '../../components/ThemeSelector'
 import { LocaleSelector } from '../../components/LocaleSelector'
+import { SecretAlbum } from '../../components/SecretAlbum'
+import { EvolutionRequirements } from '../../components/EvolutionRequirements'
+import { blackAlbum } from './album'
 import { BlackDaycare } from './BlackDaycare'
 import { DaycareAlertButton } from '../../components/DaycareAlertButton'
 import { WorkspaceTabs } from '../../components/WorkspaceTabs'
@@ -116,10 +119,9 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
   return (
     <DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
       <header className={`site-header ${battleView ? 'battle-header' : ''}`}>
-        <a className="brand" href="#">
-          <span className="pokeball" aria-hidden="true" />
+        <div className="brand-lockup"><SecretAlbum service={blackAlbum} owned={source === 'manual' ? new Set(state.collection.map(pokemon => pokemon.id)) : saveTeam.pokedex?.caughtSpeciesIds ?? new Set<number>()} seen={discovered} /><a className="brand" href="#">
           Poké<span>Chose</span>
-        </a>
+        </a></div>
         <div className="header-controls">
           <button className="change-game" onClick={onChangeGame}>{t('games.change')}</button>
           <LocaleSelector />
@@ -229,7 +231,7 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
                 : t('app.team.hint.editable')}
           </p>
         </section>
-        <WorkspaceTabs active={tab} onChange={navigation.selectTab} collectionCount={source !== 'manual' && saveTeam.collection === null ? null : collection.length} live={source === 'live'} />
+        <WorkspaceTabs active={tab} onChange={navigation.selectTab} collectionCount={source !== 'manual' && saveTeam.collection === null ? null : collection.length} live={source === 'live'} available={{ evolutions: true }} />
         <div
           id="workspace-panel"
           role="tabpanel"
@@ -284,6 +286,7 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
                       selected={state.teamIds.includes(pokemon.id)}
                       tools={<IndividualGenderIcon pokemon={pokemon} />}
                       showMoves
+                      showPokedexScope
                     >
                       <CollectionDetails pokemon={pokemon} />
                       <button
@@ -318,6 +321,7 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
           </div>
           <div hidden={tab !== "types"}><TypeChart rules={generationVRules} /></div>
           <div hidden={tab !== 'daycare'}>{tab === 'daycare' && <BlackDaycare state={saveTeam} source={source} />}</div>
+          <div hidden={tab !== 'evolutions'}>{tab === 'evolutions' && <EvolutionRequirements collection={collection} caught={saveTeam.pokedex} manual={source === 'manual'} stale={source !== 'manual' && (!saveTeam.connected || saveTeam.error || saveTeam.collectionError)} />}</div>
           {source === 'live' && <div hidden={tab !== 'battle'}><EnemyPrototype onConnectionChange={setBattleConnection} /></div>}
         </div>
       </main>

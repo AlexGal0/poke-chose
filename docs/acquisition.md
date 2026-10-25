@@ -1,5 +1,7 @@
 *Versión en español: [es/acquisition.md](es/acquisition.md)*
 
+> Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.
+
 # Acquisition and discovery icons
 
 The icons describe ways to obtain a species in Pokémon Black, not the origin of the user's own specimen or its immediate availability. Several icons can be shown at once. The personal Surf/Super Rod filter is never used to decide whether a species can be caught in the game.

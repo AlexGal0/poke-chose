@@ -1,5 +1,7 @@
 # Detección de ubicación — primera entrega
 
+> Conservación de evidencias (2026-10-17): se retiraron capturas intermedias y arneses de navegador mencionados en este registro. Los nombres y comandos son referencias históricas; no implican archivos disponibles ni comprobaciones ejecutables. Consulta la selección en `artifacts/README.md`. La limpieza no repitió las verificaciones visuales.
+
 Trabajo del issue #5 en `codex/5-detect-player-location`.
 
 El parser devuelve `position` con el identificador interno de mapa y coordenadas

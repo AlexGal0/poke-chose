@@ -10,8 +10,8 @@ import { AlbumArtwork } from './AlbumArtwork'
 import './SecretAlbum.css'
 
 
-function mosaicColumns(width: number, height: number) {
-  return width >= height ? 24 : 13
+function mosaicColumns(width: number, height: number, service: AlbumService) {
+  return width >= height ? service.columns?.landscape ?? 24 : service.columns?.portrait ?? 13
 }
 
 function tilt(event: PointerEvent<HTMLButtonElement>) {
@@ -48,17 +48,17 @@ function Album({ owned, seen, onClose, service }: { owned: ReadonlySet<number>; 
   const detailHeading = useRef<HTMLHeadingElement>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); closeTimer.current = null }
-  const [columns, setColumns] = useState(() => mosaicColumns(window.innerWidth, window.innerHeight))
+  const [columns, setColumns] = useState(() => mosaicColumns(window.innerWidth, window.innerHeight, service))
   const known = new Set([...owned, ...seen])
   const knownKey = regionalIds.filter(id => known.has(id)).join(',')
   const descriptionKey = `${selected?.id}:${i18n.language}:${attempt}`
   useEffect(() => {
     const viewport = window.visualViewport
-    const resize = () => setColumns(mosaicColumns(viewport?.width ?? window.innerWidth, viewport?.height ?? window.innerHeight))
+    const resize = () => setColumns(mosaicColumns(viewport?.width ?? window.innerWidth, viewport?.height ?? window.innerHeight, service))
     window.addEventListener('resize', resize)
     viewport?.addEventListener('resize', resize)
     return () => { window.removeEventListener('resize', resize); viewport?.removeEventListener('resize', resize) }
-  }, [])
+  }, [service])
   useEffect(() => {
     const element = dialog.current!
     const previous = document.activeElement as HTMLElement | null
@@ -117,7 +117,7 @@ function Album({ owned, seen, onClose, service }: { owned: ReadonlySet<number>; 
     returnTimer.current = setTimeout(finishReturn, 250)
   }
   return createPortal(<dialog ref={dialog} className="secret-album" aria-labelledby="album-title" onCancel={event => { event.preventDefault(); if (selected) returnToGrid(); else onClose() }}>
-    <h2 id="album-title" className="album-sr-only">{t('secretAlbum.title')}</h2>
+    <h2 id="album-title" className="album-sr-only">{t('secretAlbum.title', { region: service.region })}</h2>
     <div className="album-sr-only" inert={selected !== null}>
       {loadState === 'loading' && <span role="status">{t('secretAlbum.loading')}</span>}
     </div>

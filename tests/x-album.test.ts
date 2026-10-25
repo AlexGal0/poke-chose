@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { albumDescription } from '../src/games/core/album.ts'
+import { blackAlbum } from '../src/games/black/album.ts'
 import { xAlbum } from '../src/games/x/album.ts'
 import { xCatalogRules } from '../src/games/x/catalog.ts'
 import { discoveredSpecies } from '../src/domain/discovery.ts'
@@ -42,4 +43,16 @@ test('discovery reveals seen and caught without turning seen species into captur
   assert.deepEqual([...known].sort((a, b) => a - b), [1, 650])
   assert.equal(caughtSpeciesIds.has(1), false)
   assert.equal(discoveredSpecies(null).size, 0)
+})
+
+
+test('shared album adapters retain separate regional rosters and mosaic sizes', () => {
+  assert.equal(blackAlbum.speciesIds.length, 156)
+  assert.equal(blackAlbum.speciesIds[0], 494)
+  assert.equal(blackAlbum.speciesIds.at(-1), 649)
+  assert.deepEqual(blackAlbum.columns, { landscape: 13, portrait: 6 })
+  assert.ok(!blackAlbum.speciesIds.includes(700))
+  assert.ok(xAlbum.speciesIds.includes(700))
+  assert.equal(blackAlbum.region, 'Unova')
+  assert.equal(xAlbum.region, 'Kalos')
 })

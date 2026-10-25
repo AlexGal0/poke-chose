@@ -19,7 +19,7 @@ async function configuredPath() {
   return resolve(path)
 }
 try {
-  const port = Number(process.env.X_SAVE_BRIDGE_PORT ?? 3004)
+  const port = Number(process.env.X_SAVE_BRIDGE_PORT ?? 15304)
   if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('X_SAVE_BRIDGE_PORT inválido.')
   const bridge = createPokedexBridge(await configuredPath(), 'x-save', xSaveReader)
   bridge.server.on('error', error => { console.error('[x-save]', error.message); process.exitCode = 1; void bridge.close().catch(() => {}) })

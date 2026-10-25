@@ -8,6 +8,7 @@ import type { CurrentStats } from '../domain/stats.ts'
 import type { IndividualGender } from '../domain/gender.ts'
 import { isRepelReading } from './repel.ts'
 import type { RepelReading } from './repel.ts'
+import { isInventory, type InventoryItem } from './inventory.ts'
 
 export interface SavedPokemonData {
   personality: number
@@ -56,6 +57,7 @@ export interface DaycareState {
   eggAvailable: boolean
 }
 export interface PokemonSnapshot {
+  inventory?: InventoryItem[] | null
   daycare?: DaycareState | null
   // Optional for compatibility with bridges that do not read position yet.
   position?: PlayerPosition | null
@@ -87,6 +89,7 @@ export function isSaveSnapshot(value: unknown): value is SaveSnapshot {
     (member.nickname == null || (typeof member.nickname === 'string' && member.nickname.length <= 10 && member.nickname.trim().length > 0 && [...member.nickname].every(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) !== 127))) &&
     Array.isArray(member.moveIds) && member.moveIds.length === 4 && member.moveIds.every(id => integer(id, 0, 65535))
   return ['waiting', 'ready', 'missing', 'error'].includes(snapshot.status) && typeof snapshot.message === 'string' &&
+    (snapshot.inventory == null || isInventory(snapshot.inventory)) &&
     (snapshot.daycare == null || (typeof snapshot.daycare.eggAvailable === 'boolean' &&
       Array.isArray(snapshot.daycare.slots) && snapshot.daycare.slots.length === 2 &&
       snapshot.daycare.slots.every(member => member === null || (pokemon(member) && !member.isEgg &&
