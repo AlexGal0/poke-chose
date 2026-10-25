@@ -1,0 +1,5 @@
+.roster-card-tools { display: flex; align-items: center; gap: 6px; }
+.pokemon-card.saved-roster-card .roster-card-tools .evolution-progress { min-height: 28px; margin: 0; padding: 2px 4px; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--text-muted, #9caabb); transition: color .15s, text-shadow .15s; }
+.pokemon-card.saved-roster-card .roster-card-tools .evolution-progress:hover,
+.pokemon-card.saved-roster-card .roster-card-tools .evolution-progress:focus-visible { border: 0; background: transparent; box-shadow: none; outline: none; filter: none; color: var(--accent, #85d9ba); text-shadow: 0 0 8px color-mix(in srgb, currentColor 45%, transparent); }
+.pokemon-card.saved-roster-card .roster-card-tools .evolution-progress:focus-visible { text-decoration: underline; text-underline-offset: 4px; }

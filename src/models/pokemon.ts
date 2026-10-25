@@ -10,4 +10,4 @@ export interface Pokemon {
   nickname?: string | null
 }
 export interface CatalogEntry { id: number; name: string }
-export interface CollectionState { collection: Pokemon[]; teamIds: number[] }
+export interface CollectionState<T = Pokemon> { collection: T[]; teamIds: number[] }

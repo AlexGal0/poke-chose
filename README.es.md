@@ -2,13 +2,42 @@
 
 # PokéChose
 
-Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro**. PokéChose funciona en el navegador y puede leer tu partida de melonDS sin modificarla.
+Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro o Pokémon X**. PokéChose funciona en el navegador y ofrece fuentes manuales, de guardado y de memoria de solo lectura, según el juego.
 
-Puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. El catálogo y el análisis utilizan las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
+En Negro puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. Ese espacio utiliza las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
 
 ## Funciones
 
-- **Guardería:** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
+La pantalla inicial separa **Black** y **X**. X ya permite colección y equipo
+manual independientes, catálogo y análisis de tipos Gen VI y fichas con
+estadísticas base históricas, movimientos por nivel de X/Y y métodos evolutivos
+compatibles. También incluye capturas por zona con 66 destinos del recorrido de X, con
+niveles, métodos, porcentajes, filtros de equipo y subzonas. X utiliza el mismo selector Manual / Save / En vivo y orden de pestañas que Black.
+Save lee el `main` de Citra automáticamente mediante el puente local; las imágenes
+de especies desconocidas siguen ocultas. Configura `x-save.config.local.json`
+una sola vez y usa el iniciador habitual o `npm run bridge:x`. Save incluye los seis
+miembros del equipo, las 31 cajas y el balance de tipos Gen VI. Los nombres y sprites
+de los ejemplares se resuelven con un catálogo público local. X también ofrece equipo y balance en Citra en vivo (experimental), con Conectar/Desconectar y sondeo cada dos segundos. Inicia el servicio con `npm run bridge:x-live` o el lanzador habitual. La Pokédex también se lee en vivo: habilita imágenes de especies vistas o capturadas y marcas de captura basadas solo en capturado. Citra en vivo también lee las 31 cajas al conectar y cada dos minutos, con Actualizar colección para adelantar la lectura. Conserva la última colección válida con fecha y aviso ante errores. El perfil se valida contra la sesión local de X; otras revisiones pueden no ser compatibles. Consulta el
+[lector de Pokédex](docs/es/x-save-pokedex.md) y el
+[alcance y las validaciones](docs/es/game-workspaces.md).
+
+Black y X comparten pantalla y ciclo de combate: apertura automática, botón flotante, conservación de la pelea durante cambios de Pokémon y regreso a la vista anterior con sus filtros. X también sigue la ubicación del personaje en Capturas con Citra en vivo; elegir una zona manual pausa el seguimiento. El catálogo distingue Pokédex regional y nacional, incluyendo especies de generaciones anteriores. La aventura elegida se recuerda durante el día local, incluso tras recargar o reiniciar. Consulta la [arquitectura, decisiones de diseño y límites actuales](docs/es/architecture.md).
+
+### Guardería, huevos y estado de la partida
+
+- **Guardería de Black y X:** pantalla compartida con dos espacios, género individual, nivel, EXP y estado del huevo. X admite Save y Citra en vivo con el perfil local validado. Las lecturas antiguas se identifican como tales.
+- **Huevo pendiente:** aviso flotante que abre la guardería desde cualquier pestaña. Solo aparece con una lectura vigente y no depende de que carguen las evoluciones.
+- **Eclosión en X:** las tarjetas de huevos muestran ciclos restantes, porcentaje y barra de progreso. En el equipo incluyen un rango aproximado de pasos sin bonificaciones; en cajas indican que el huevo debe pasar al equipo para avanzar. Black todavía no expone este contador.
+- **Géneros en Capturas:** barra única azul/rosa, proporcional a los porcentajes base del juego. Cada adaptador calcula sus probabilidades; la presentación solo las redondea. No se muestran valores de 0 % y las especies sin género conservan su símbolo.
+- **Conexión:** botón compartido para Manual, Save y En vivo, con estado, fechas y acceso a controles. Las cajas de X se muestran aparte y no afectan al color del botón.
+
+Consulta el [resumen de cambios del 25 de octubre](docs/es/changes-2026-10-25.md) para contratos, validaciones y límites; la [guardería de X](docs/es/x-daycare.md) contiene el formato y la evidencia técnica.
+
+### Funciones de Black
+
+Las funciones siguientes describen el espacio de Black.
+
+- **Guardería (Black):** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
 
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
 - **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
@@ -180,9 +209,15 @@ Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos te
 
 Los servicios escuchan en `127.0.0.1`: save en **3001**, en vivo en **3002** y combate en **3003**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
 
-La última validación de código registrada aprobó **167 pruebas**, lint y build. Se comprobaron los cuatro temas a 1280, 390 y 320 px y los nombres, búsqueda y enlaces del catálogo con datos sintéticos. Esta reorganización del README solo revisó documentación y enlaces; no repitió pruebas de código ni una instalación nueva.
+La última entrega de código registrada aprobó **394 pruebas**, lint y build. El [resumen del 25 de octubre](docs/es/changes-2026-10-25.md) distingue las comprobaciones con partidas reales, los fixtures y los pendientes. Esta consolidación documental no repite las pruebas ni una instalación nueva.
 
 ## Documentación técnica
+
+- [Guardería, huevos, géneros y conexión: estado consolidado](docs/es/changes-2026-10-25.md) ([English](docs/changes-2026-10-25.md)).
+- [Guardería y eclosión de X](docs/es/x-daycare.md), [proporciones de género](docs/es/encounter-gender-research.md) e [indicador de conexión](docs/es/connection-indicator.md): contratos, adaptadores, reglas y evidencia.
+- [Arquitectura y decisiones de diseño actuales](docs/es/architecture.md): capas, contratos compartidos, fuentes, persistencia, diferencias V/VI y deuda técnica.
+- [Seguimiento de zonas de X](docs/es/x-location.md): lectura validada, mapas, pausa manual y recuperación.
+- [Combate compartido](docs/es/x-battle.md), [paridad de colección](docs/es/collection-functional-parity.md) y [motor de capturas](docs/es/capture-zone-preparation.md): implementación y evidencia de cada extracción.
 
 Para preparar una publicación en GitHub, consulta [preparación del repositorio](docs/es/github-preparation.md). Las configuraciones locales, partidas, ROMs, perfiles de navegador y salidas de investigación están excluidas; las plantillas y capturas seleccionadas permanecen disponibles.
 
@@ -195,7 +230,7 @@ Para preparar una publicación en GitHub, consulta [preparación del repositorio
 - [Nombres y enlaces del catálogo](docs/es/catalog-names-validation.md)
 - [Validación de integración](docs/es/live-integration-validation.md) y [barras y objetos](docs/es/team-vitals-validation.md)
 
-Las guías anteriores sin enlace en inglés son registros históricos de una sesión de desarrollo concreta (capturas, conteos de pruebas y fecha incluidos), no documentación viva de la funcionalidad actual; ver [auditoría de traducción de documentación](docs/doc-translation-audit.md) para el detalle de qué se tradujo y por qué. Las guías de contribución en `AGENTS.md`, incluida la sección de localización (`src/i18n/`), ya están en inglés.
+Las notas detalladas distinguen el estado actual de los registros históricos de validación; los recuentos y capturas conservan la fecha de su entrega. Consulta la [auditoría de traducción de documentación](docs/doc-translation-audit.md) para el alcance de las traducciones anteriores. Las guías de contribución en `AGENTS.md`, incluida la sección de localización (`src/i18n/`), están en inglés.
 
 ## Datos y créditos
 

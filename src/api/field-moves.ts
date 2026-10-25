@@ -19,7 +19,7 @@ export function getFieldMoves(resource: string): Promise<FieldMove[]> {
 async function loadFieldMoves(resource: string): Promise<FieldMove[]> {
   const key = `field-moves-bw-v1-${resource}`
   const cached = readCache<FieldMove[]>(key)
-  if (Array.isArray(cached) && cached.every(move => FIELD_MOVES.includes(move))) return cached
+  if (Array.isArray(cached) && cached.every(move => FIELD_MOVES.some(allowed => allowed === move))) return cached
   const data = await request<LearnsetResponse>(`pokemon/${encodeURIComponent(resource)}`)
   const result = blackWhiteFieldMoves(data)
   writeCache(key, result)

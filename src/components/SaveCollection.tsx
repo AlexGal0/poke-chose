@@ -6,24 +6,18 @@ import { CollectionDetails } from './CollectionDetails'
 import { IndividualGenderIcon } from './IndividualGenderIcon'
 import { CollectionSearch } from './CollectionSearch'
 import { FieldMoveFilter } from './FieldMoveFilter'
-import { useFieldMoveFilter } from '../hooks/useFieldMoveFilter'
-import { matchesCollectionLocation, matchesCollectionTags } from '../domain/collection-search'
-import { typeLabel } from '../i18n/types.ts'
-import type { CollectionLocationFilter } from '../domain/collection-search'
-import { refreshLiveBoxes } from '../sources/live'
+import { useCollectionBrowser } from '../hooks/useCollectionBrowser'
+import type { FieldMoveService } from '../domain/field-moves'
 import { noticeText, toNotice } from '../i18n/notice.ts'
 import type { Notice } from '../i18n/notice.ts'
 import './SaveCollection.css'
 
-const PAGE_SIZE = 12
-
-export function SaveCollection({ state, live = false }: { state: TeamSourceState; live?: boolean }) {
+export function SaveCollection({ state, live = false, boxCount, types, fieldMoveService, refresh }: {
+  state: TeamSourceState; live?: boolean; boxCount: number; types: readonly string[]; fieldMoveService: FieldMoveService; refresh: () => Promise<unknown>
+}) {
   const { t } = useTranslation()
-  const [query, setQuery] = useState('')
-  const [location, setLocation] = useState<CollectionLocationFilter>('all')
-  const [page, setPage] = useState(0)
-  const [boxColors] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 6)))
-  const [boxTextures] = useState(() => Array.from({ length: 24 }, () => Math.floor(Math.random() * 4)))
+  const [boxColors] = useState(() => Array.from({ length: boxCount }, () => Math.floor(Math.random() * 6)))
+  const [boxTextures] = useState(() => Array.from({ length: boxCount }, () => Math.floor(Math.random() * 4)))
   const [refreshing, setRefreshing] = useState(false)
   const [refreshMessage, setRefreshMessage] = useState<Notice>(null)
   const [refreshError, setRefreshError] = useState(false)
@@ -32,7 +26,7 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
     setRefreshMessage(null)
     setRefreshError(false)
     try {
-      await refreshLiveBoxes()
+      await refresh()
       setRefreshMessage({ key: 'saveCollection.refresh.success' })
     } catch (cause) {
       setRefreshError(true)
@@ -40,13 +34,8 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
     } finally { setRefreshing(false) }
   }
   const collection = state.collection
-  const locationCollection = collection?.filter(pokemon => matchesCollectionLocation(pokemon, location)) ?? []
-  const fieldMoves = useFieldMoveFilter(locationCollection)
-  const filtered = locationCollection.filter(pokemon => matchesCollectionTags(pokemon, query, type => typeLabel(t, type)) && fieldMoves.matches(pokemon))
-  const boxCounts = Array.from({ length: 24 }, (_, box) => collection?.filter(pokemon => matchesCollectionLocation(pokemon, box)).length ?? 0)
-  const partyCount = collection?.filter(pokemon => pokemon.location === 'party').length ?? 0
-  const pages = Math.ceil(filtered.length / PAGE_SIZE)
-  const currentPage = Math.min(page, Math.max(0, pages - 1))
+  const browser = useCollectionBrowser(collection ?? [], boxCount, fieldMoveService, type => t(`types.${type}`))
+  const { query, setQuery, location, setLocation, setPage, fieldMoves, boxCounts, partyCount, pages, currentPage, locationRows: locationCollection, rows: filtered } = browser
   return <section className="panel collection-panel" aria-labelledby="collection-title">
     <div className="section-heading"><div><span className="eyebrow">{t('saveCollection.eyebrow')}</span><h2 id="collection-title">{t('app.collection.heading')}</h2></div>{collection !== null && <span className="count">{t('saveCollection.header.count', { count: collection.length })}</span>}</div>
     <p className="hint">{live ? t('saveCollection.hintLive') : t('saveCollection.hintSave')}</p>
@@ -69,10 +58,10 @@ export function SaveCollection({ state, live = false }: { state: TeamSourceState
         </div>
       </details>
       <p className="hint" role="status">{t('saveCollection.boxFilter.filteredCount', { filtered: filtered.length, total: collection.length })}</p>
-      <CollectionSearch collection={locationCollection} query={query} onChange={next => { setQuery(next); setPage(0) }} />
-      <FieldMoveFilter selected={fieldMoves.selected} onChange={move => { fieldMoves.setSelected(move); setPage(0) }} loading={fieldMoves.loading} error={fieldMoves.error} onRetry={fieldMoves.retry} />
+      <CollectionSearch types={types} collection={locationCollection} query={query} onChange={setQuery} />
+      <FieldMoveFilter moves={fieldMoveService.moves} selected={fieldMoves.selected} onChange={fieldMoves.setSelected} loading={fieldMoves.loading} error={fieldMoves.error} onRetry={fieldMoves.retry} />
       {collection.length === 0 ? <p className="empty">{t('saveCollection.emptyCollection')}</p> : !locationCollection.length ? <p className="empty">{location === 'party' ? t('saveCollection.emptyParty') : t('saveCollection.emptyBox')}</p> : !filtered.length ? (!fieldMoves.loading && !fieldMoves.error && <p className="empty">{t('saveCollection.noMatches')}</p>) : <>
-        <div className="pokemon-grid">{filtered.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE).map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves tools={<IndividualGenderIcon pokemon={pokemon} />}>
+        <div className="pokemon-grid">{browser.visibleRows.map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves tools={<IndividualGenderIcon pokemon={pokemon} />}>
           <CollectionDetails pokemon={pokemon} />
           <div className="save-member-info">{pokemon.location === 'party' ? t('saveCollection.memberPartySlot', { slot: pokemon.slot + 1 }) : t('saveCollection.memberBoxSlot', { box: pokemon.box! + 1, slot: pokemon.slot + 1 })}{pokemon.isEgg && <small>{t('app.team.eggLabel')}</small>}</div>
         </PokemonCard>)}</div>

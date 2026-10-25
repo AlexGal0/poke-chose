@@ -2,13 +2,43 @@
 
 # PokéChose
 
-Organize your collection, put together a team of up to six Pokémon, and check their strengths and weaknesses while playing **Pokémon Black**. PokéChose runs in the browser and can read your melonDS save without modifying it.
+Organize your collection, put together a team of up to six Pokémon, and check their strengths and weaknesses while playing **Pokémon Black or Pokémon X**. PokéChose runs in the browser with manual, read-only save and live-memory sources, depending on the game.
 
-You can use it manually, sync it with a save file, or enable live reading. The catalog and analysis use **Black/White, Generation V** rules; in-game integration is implemented for **Pokémon Black**.
+In Black, you can use it manually, sync it with a save file, or enable live reading. That workspace uses **Black/White, Generation V** rules; in-game integration is implemented for **Pokémon Black**.
 
 ## Features
 
-- **Day Care:** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
+The opening screen separates **Black** and **X**. X currently supports a separate
+manual collection/team, the Gen VI catalog and type analysis, and species details
+with Gen VI base statistics, X/Y level-up moves and compatible evolution methods.
+X also provides an encounter atlas with 66 journey destinations, levels, methods,
+chances, equipment filters and subareas.
+X uses the same Manual / Save / Live source selector and tab order as Black.
+Save reads the configured Citra `main` automatically through the local bridge;
+unknown species images stay hidden. Configure `x-save.config.local.json` once
+and use the normal launcher or `npm run bridge:x`. Save includes the six party
+members, all 31 boxes and Gen VI type analysis. Saved Pokémon names and sprites
+are resolved using a local public catalog. X also offers experimental live party reading and type analysis, with Connect/Disconnect and a two-second polling interval. Start `npm run bridge:x-live` or use the normal launcher. Live Pokédex reading enables images for seen or caught species and capture marks based only on caught flags. Citra live also reads all 31 boxes on connection and every two minutes. Refresh collection checks sooner; errors retain the last valid collection with its timestamp and a notice. The profile is checked against the locally validated X session; other revisions may not be compatible.
+See the [save reader](docs/es/x-save-pokedex.md) and the
+[game workspace notes](docs/es/game-workspaces.md) for scope and validation.
+
+Black and X share the battle screen and lifecycle: automatic entry, floating shortcut, continuity during Pokémon switches, and return to the previous view with its filters. X also supports live location following in Captures; choosing a zone manually pauses following. Its catalog offers regional and National Pokédex scopes, including earlier-generation species. The selected adventure survives reloads and restarts during the current local day. See [architecture and design decisions](docs/architecture.md) for the current boundaries and limitations.
+
+### Day Care, Eggs and source status
+
+- **Black and X Day Care:** a shared screen with two slots, individual gender, level, EXP and Egg availability. X supports Save and Citra live with the locally validated profile. Retained old readings are marked stale.
+- **Egg notification:** a floating shortcut opens Day Care from any tab when a current reading confirms an Egg is ready. It does not depend on evolution metadata loading.
+- **X hatching progress:** Egg cards show remaining cycles, a percentage and a progress bar. Party cards include an estimated step range without bonuses; boxed Eggs explain that they must join the party to advance. Black does not yet expose this counter.
+- **Gender ratios in Captures:** one proportional blue/pink bar with base percentages calculated by each game adapter and rounded by shared presentation. Zero-percent entries are hidden; genderless species retain their symbol.
+- **Connection status:** a shared Manual/Save/Live indicator with reader states, timestamps and access to controls. X boxes remain informational and never affect the button's color.
+
+See the [October 25 delivery summary](docs/changes-2026-10-25.md) for contracts, validation and limits, and the [X Day Care record](docs/es/x-daycare.md) for format details and evidence.
+
+### Black workspace
+
+The features below describe the Black workspace.
+
+- **Day Care (Black):** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
 
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
 - **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
@@ -185,9 +215,14 @@ To read only the `.sav` without starting the live and battle readers, use two te
 
 The services listen on `127.0.0.1`: save on **3001**, live on **3002**, and battle on **3003**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
-The last recorded code validation passed **167 tests**, lint, and build. The four themes were checked at 1280, 390, and 320 px, along with catalog names, search, and links using synthetic data. This README reorganization only reviewed documentation and links; it did not re-run code tests or a fresh install.
+The latest recorded code delivery passed **394 tests**, lint and build. The [October 25 summary](docs/changes-2026-10-25.md) separates real-save/emulator checks, fixtures and remaining coverage. This documentation consolidation does not repeat the checks or a fresh installation.
 
 ## Technical documentation
+
+- [Day Care, Eggs, gender ratios and connection status](docs/changes-2026-10-25.md) ([Español](docs/es/changes-2026-10-25.md)): consolidated delivery state.
+- [X Day Care and hatching](docs/es/x-daycare.md), [gender proportions](docs/es/encounter-gender-research.md) and [connection indicator](docs/es/connection-indicator.md): detailed contracts, adapters, rules and evidence in Spanish.
+- [Current architecture and design decisions](docs/architecture.md): shared behavior, composition boundaries, sources, persistence and remaining coupling ([Español](docs/es/architecture.md)).
+- [X location following](docs/es/x-location.md), [shared battle](docs/es/x-battle.md), [collection parity](docs/es/collection-functional-parity.md) and [capture engine](docs/es/capture-zone-preparation.md): implementation and validation records in Spanish.
 
 To prepare a GitHub release, see [repository preparation](docs/es/github-preparation.md) *(Spanish, historical record)*. Local configurations, saves, ROMs, browser profiles, and research outputs are excluded; templates and selected screenshots remain available.
 
@@ -200,7 +235,7 @@ To prepare a GitHub release, see [repository preparation](docs/es/github-prepara
 - [Catalog names and links](docs/es/catalog-names-validation.md) *(Spanish, historical record)*
 - [Integration validation](docs/es/live-integration-validation.md) and [bars and items](docs/es/team-vitals-validation.md) *(Spanish, historical records)*
 
-The guides above with no English link are historical records of one specific development session (screenshots, test-pass counts, and dates included), not a living description of current behavior; see the [documentation translation audit](docs/doc-translation-audit.md) for what was translated and why. The contributor guide in `AGENTS.md`, including its Localization section (`src/i18n/`), is already in English.
+Detailed notes distinguish current behavior from historical validation records; test counts and screenshots retain their delivery dates. See the [documentation translation audit](docs/doc-translation-audit.md) for the scope of earlier translations. The contributor guide in `AGENTS.md`, including its Localization section (`src/i18n/`), is in English.
 
 ## Data and credits
 

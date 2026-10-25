@@ -1,0 +1,18 @@
+.gender-badge { display: inline-flex; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0; min-width: 24px; min-height: 24px; padding: 2px 4px; box-sizing: border-box; border: 1px solid var(--border, #35404e); border-radius: 20px; color: var(--text-muted, #9caabb); background: var(--surface, #171e27); vertical-align: middle; }
+.gender-badge-male { color: var(--gender-male, #a5c9ff); }
+.gender-badge-female { color: var(--gender-female, #f5b5d5); }
+.roster-card-heading { display: flex; align-items: center; justify-content: space-between; min-height: 28px; }
+.roster-card-heading .dex-number { position: static; }
+.saved-roster-name { min-height: 94px; display: flex; flex-direction: column; justify-content: start; gap: 4px; padding-top: 8px; }
+.saved-roster-name h3, .saved-roster-name h3.pokemon-nickname { margin: 0; line-height: 1.3; }
+.saved-roster-name .pokemon-species-name { margin: 0; min-height: 14px; }
+.saved-roster-card .saved-identity { justify-content: center; min-height: 28px; margin: 8px 0; }
+.saved-roster-card .types { min-height: 24px; }
+.saved-roster-card .roster-condition { min-height: 20px; margin: 4px 0 0; font-size: 11px; color: var(--text-muted, #9caabb); }
+.saved-roster-card .knowledge-actions { margin-top: auto; padding-top: 14px; }
+.capture-name-line { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; min-height: 28px; }
+.roster-held-item { margin: 2px 0 0; min-height: 30px; font-size: 10px; line-height: 1.5; color: var(--text-muted, #9caabb); overflow-wrap: anywhere; }
+.saved-roster-card.fainted { border: 2px solid var(--danger, #dc7881); padding: 12px 9px; background: color-mix(in srgb, var(--surface-raised, #1d2631) 90%, #bd3048); }
+.saved-roster-card.fainted .sprite img { filter: grayscale(.8); opacity: .6; }
+.saved-roster-card.fainted .roster-condition { color: var(--danger-text, #ffb8c1); font-weight: 700; }
+.saved-roster-card.fainted .hp-bar { outline: 1px solid var(--danger, #dc7881); outline-offset: 2px; }

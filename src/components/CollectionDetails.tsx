@@ -4,6 +4,7 @@ import { getExperienceLevels } from '../api/experience'
 import { levelFromExperience } from '../domain/experience'
 import type { StatsPokemon } from './stats-context'
 import './CollectionDetails.css'
+import { BlackEvolutionProgress } from './BlackEvolutionProgress'
 
 export function CollectionDetails({ pokemon }: { pokemon: StatsPokemon }) {
   const { t } = useTranslation()
@@ -22,5 +23,6 @@ export function CollectionDetails({ pokemon }: { pokemon: StatsPokemon }) {
   if (pokemon.isEgg) return null
   return <div className="collection-details">
     <span>{level == null ? t('saveCollection.levelUnavailable') : t('saveCollection.memberLevel', { level })}</span>
+    <BlackEvolutionProgress speciesId={pokemon.speciesId ?? pokemon.id} level={level} />
   </div>
 }

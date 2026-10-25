@@ -1,19 +1,21 @@
-import type { Pokemon } from '../models/pokemon'
+import type { CombatParticipant, CombatSpecies, CombatService } from '../models/combat'
+import { pokemonDisplayName } from '../domain/pokemon-names'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ActivePokemonCandidate, BattleHealth } from '../domain/enemy-prototype'
+import type { BattleHealth } from '../domain/enemy-prototype'
 import { updateBattleHealthDisplay } from '../domain/battle-health-display'
 import { DiscoveryContext } from './discovery-context'
-import { PokemonCard } from './PokemonCard'
+import { PokemonCardFrame } from './PokemonCardFrame'
+import { BattleSprite } from './BattleSprite'
 import { BattleHealthBar } from './BattleHealthBar'
 import { BattleStatStages } from './BattleStatStages'
 import type { BattleStatStages as StatStages } from '../domain/battle-stat-stages'
 import { updateStatStagesDisplay } from '../domain/battle-stat-stages'
 
-export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null }: { candidate: ActivePokemonCandidate; pokemon?: Pokemon | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
+export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null, service }: { service: CombatService; candidate: CombatParticipant; pokemon?: CombatSpecies | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
   const { t } = useTranslation()
   const { speciesId } = candidate
-  const identity = `${candidate.personality}:${candidate.trainerId}:${speciesId}:${candidate.form}`
+  const identity = `${candidate.identity}:${candidate.form}`
   const [display, setDisplay] = useState(() => ({ identity, health, hit: 0, damageFraction: 0 }))
   const nextDisplay = updateBattleHealthDisplay(display, identity, health)
   if (nextDisplay !== display) setDisplay(nextDisplay)
@@ -40,10 +42,10 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>
       {pokemon ? <DiscoveryContext.Provider value={new Set([pokemon.id])}>
-        <PokemonCard pokemon={{ ...pokemon, form: candidate.form, nickname: own ? candidate.nickname : undefined }} showEvolution={false} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
-          <p className="hint">{t('app.team.level', { level: candidate.level })}</p>
+        <PokemonCardFrame sprite={<BattleSprite pokemon={pokemon} fainted={shownHealth?.currentHp === 0} />} pokemon={{ ...pokemon, nickname: own ? candidate.nickname : undefined }} tools={service.onStatistics ? <button type="button" className="stats-icon" onClick={() => service.onStatistics?.(candidate, pokemon)} aria-label={t('statistics.buttonAria', { name: pokemonDisplayName(pokemon.name) })} title={t('statistics.button')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M5 20V10h3v10M11 20V4h3v16M17 20v-7h3v7M3 20h19" /></svg></button> : undefined} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
+          <p className="hint">{candidate.level === null ? t('battleAdapter.levelUnavailable') : t('app.team.level', { level: candidate.level })}</p>
           <BattleHealthBar health={shownHealth} />
-        </PokemonCard>
+        </PokemonCardFrame>
       </DiscoveryContext.Provider> : <div className="battle-participant-empty"><strong>{t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</strong><p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p></div>}
     </div>
   </div>

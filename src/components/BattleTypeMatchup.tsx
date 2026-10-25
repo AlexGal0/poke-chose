@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next'
-import type { Pokemon } from '../models/pokemon'
-import { battleWeaknesses, battleResistances } from '../domain/battle-type-matchup'
+import type { TypeRules } from '../domain/type-analysis'
+import { battleDefenses } from '../domain/battle-engine'
 import { TypeBadge } from './TypeBadge'
 
-export function BattleTypeMatchup({ own, enemy, direction }: { own: Pokemon | null; enemy: Pokemon | null; direction: 'outgoing' | 'incoming' }) {
+export function BattleTypeMatchup({ own, enemy, direction, rules }: { rules: TypeRules; own: { types: readonly string[] } | null; enemy: { types: readonly string[] } | null; direction: 'outgoing' | 'incoming' }) {
   const { t } = useTranslation()
   const participant = direction === 'outgoing' ? own : enemy
   const opponent = direction === 'outgoing' ? enemy : own
-  const weaknesses = participant ? battleWeaknesses(participant.types) : null
-  const resistances = participant ? battleResistances(participant.types) : null
+  const defenses = participant ? battleDefenses(rules, participant.types) : null
+  const weaknesses = defenses?.weaknesses ?? null
+  const resistances = defenses?.resistances ?? null
   function renderTypes(rows: typeof weaknesses, empty: string) {
     return rows ? rows.length ? rows.map(row => {
       const matched = opponent?.types.includes(row.type) ?? false

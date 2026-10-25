@@ -4,6 +4,7 @@ import { request } from './pokeapi.ts'
 import { writeCache } from '../storage/local.ts'
 import { speciesGender } from '../domain/gender.ts'
 import type { SpeciesGender } from '../domain/gender.ts'
+import { blackGenderDistribution } from '../games/black/gender.ts'
 
 const pending = new Map<number, Promise<SpeciesGender | null>>()
 
@@ -17,7 +18,8 @@ export function getSpeciesGender(speciesId: number): Promise<SpeciesGender | nul
       species = await request<EvolutionSpecies>(`pokemon-species/${speciesId}`)
       writeCache(`evolution-v1-pokemon-species/${speciesId}`, species)
     }
-    return speciesGender(species.gender_rate)
+    const gender = speciesGender(species.gender_rate)
+    return gender ? { ...gender, distribution: blackGenderDistribution(species.gender_rate!) } : null
   }
   const promise = load().finally(() => pending.delete(speciesId))
   pending.set(speciesId, promise)

@@ -1,40 +1,37 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getSavePokemon } from '../api/pokeapi'
-import { getExperienceLevels } from '../api/experience'
 import type { ExperienceLevel } from '../api/experience'
 import { experienceProgress, levelFromExperience } from '../domain/experience'
-import type { SavedDaycarePokemon } from '../models/party'
-import type { Pokemon } from '../models/pokemon'
-import type { TeamSourceState } from '../sources/team'
+import type { DaycarePokemon, DaycareReading, DaycareService } from '../games/core/daycare'
 import './Daycare.css'
 import { DaycareEvolution } from './DaycareEvolution'
+import { GenderBadge } from '../games/core/GenderBadge'
 
-function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
+function OccupiedSlot({ member, service, onOpenEvolution }: { member: DaycarePokemon; service: DaycareService; onOpenEvolution: (speciesId: number) => void }) {
   const { t, i18n } = useTranslation()
   const [attempt, setAttempt] = useState(0)
-  const [result, setResult] = useState<{ key: string; pokemon: Pokemon | null; levels: ExperienceLevel[] | null } | null>(null)
+  const [result, setResult] = useState<{ service: DaycareService; key: string; pokemon: { name: string; sprite: string | null } | null; levels: ExperienceLevel[] | null } | null>(null)
   const key = `${member.speciesId}-${member.form}`
   useEffect(() => {
     const controller = new AbortController()
     void Promise.allSettled([
-      getSavePokemon(member.speciesId, member.form, controller.signal),
-      getExperienceLevels(member.speciesId, controller.signal),
+      service.resolve(member.speciesId, member.form, controller.signal),
+      service.experienceLevels(member.speciesId, controller.signal),
     ]).then(([pokemon, levels]) => {
       if (controller.signal.aborted) return
-      setResult({ key, pokemon: pokemon.status === 'fulfilled' ? pokemon.value : null,
+      setResult({ service, key, pokemon: pokemon.status === 'fulfilled' ? pokemon.value : null,
         levels: levels.status === 'fulfilled' ? levels.value : null })
     })
     return () => controller.abort()
-  }, [key, member.speciesId, member.form, attempt])
-  const current = result?.key === key ? result : null
-  const totalExperience = member.experience + member.gainedExperience
+  }, [key, member.speciesId, member.form, attempt, service])
+  const current = result?.key === key && result.service === service ? result : null
+  const totalExperience = member.experience
   const level = current?.levels ? levelFromExperience(totalExperience, current.levels) : null
   const progress = level != null && current?.levels ? experienceProgress(level, totalExperience, current.levels) : null
   return <>
-    <DaycareEvolution speciesId={member.speciesId} level={level} stepsRemaining={progress?.remaining ?? null} />
+    <DaycareEvolution service={service} onOpenEvolution={onOpenEvolution} speciesId={member.speciesId} level={level} stepsRemaining={progress?.remaining ?? null} />
     {current?.pokemon?.sprite && <img className="daycare-sprite" src={current.pokemon.sprite} alt="" />}
-    <h3>{member.nickname ?? current?.pokemon?.name ?? t('daycare.species', { id: member.speciesId })}</h3>
+    <div className="daycare-name"><h3>{member.nickname ?? current?.pokemon?.name ?? t('daycare.species', { id: member.speciesId })}</h3><GenderBadge kind={member.gender} /></div>
     {member.nickname && current?.pokemon && <p>{current.pokemon.name}</p>}
     <strong className="daycare-level">{level != null ? t('daycare.level', { level }) : t(current ? 'daycare.levelUnavailable' : 'daycare.loading')}</strong>
     {progress && <div className="daycare-experience">
@@ -46,21 +43,21 @@ function OccupiedSlot({ member }: { member: SavedDaycarePokemon }) {
   </>
 }
 
-export function Daycare({ state, source }: { state: TeamSourceState; source: 'manual' | 'save' | 'live' }) {
+export function Daycare({ reading, service, hint, onOpenEvolution }: { reading: DaycareReading; service: DaycareService; hint: string; onOpenEvolution: (speciesId: number) => void }) {
   const { t } = useTranslation()
-  const data = source === 'manual' ? null : state.daycare
+  const data = reading.available ? reading.data : null
   return <section className="daycare" aria-labelledby="daycare-title">
     <header className="daycare-header">
-      <div><h2 id="daycare-title">{t('daycare.title')}</h2><p>{t(source === 'manual' ? 'daycare.manual' : source === 'save' ? 'daycare.saveHint' : 'daycare.liveHint')}</p></div>
+      <div><h2 id="daycare-title">{t('daycare.title')}</h2><p>{hint}</p></div>
       <span className={`daycare-egg ${data?.eggAvailable ? 'daycare-egg-ready' : ''}`}>
         <span aria-hidden="true">🥚</span> {t(data ? data.eggAvailable ? 'daycare.eggReady' : 'daycare.noEgg' : 'daycare.eggUnknown')}
       </span>
     </header>
-    {source !== 'manual' && state.daycareStale && <p role="status" className="daycare-notice">{t(data ? 'daycare.stale' : 'daycare.unavailable')}</p>}
+    {reading.available && reading.stale && <p role="status" className="daycare-notice">{t(data ? 'daycare.stale' : 'daycare.unavailable')}</p>}
     <div className="daycare-slots">
       {[0, 1].map(slot => <article className="daycare-slot" key={slot} aria-label={t('daycare.slot', { number: slot + 1 })}>
         <span className="daycare-slot-label">{t('daycare.slot', { number: slot + 1 })}</span>
-        {!data ? <p className="daycare-empty">{t('daycare.unknown')}</p> : data.slots[slot] ? <OccupiedSlot member={data.slots[slot]} /> : <p className="daycare-empty">{t('daycare.empty')}</p>}
+        {!data ? <p className="daycare-empty">{t('daycare.unknown')}</p> : data.slots[slot] ? <OccupiedSlot member={data.slots[slot]} service={service} onOpenEvolution={onOpenEvolution} /> : <p className="daycare-empty">{t('daycare.empty')}</p>}
       </article>)}
     </div>
   </section>

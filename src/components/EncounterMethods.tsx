@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import type { BlackEncounterDetail } from '../models/encounters'
+import type { EncounterDetail } from '../models/encounters'
 import { encounterMethods } from '../domain/encounter-methods'
 import { methodDescription, methodLabel } from '../i18n/encounter-methods.ts'
 
-export function EncounterMethods({ details }: { details: BlackEncounterDetail[] }) {
+export function EncounterMethods({ details }: { details: EncounterDetail[] }) {
   const { t } = useTranslation()
   return <div className="encounter-methods" role="group" aria-label={t('encounterMethods.groupAria')}>
     {encounterMethods(details).map(({ method, icon }) =>

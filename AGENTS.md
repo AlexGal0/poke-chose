@@ -42,6 +42,20 @@ Run commands from the project root. The README and Windows launcher require Node
 - Capture checklists use Pokédex caught flags, not seen flags or current party/box contents. Surf and Super Rod access filters are configured separately in localStorage.
 - Keep Generation V rules: 17 types, no Fairy, and Steel resists Ghost and Dark. Current analysis uses defensive types and potential offensive STAB coverage; it does not simulate moves, abilities, or held-item effects. Eggs are excluded from analysis.
 
+## Game Adapters & Incremental Decoupling
+
+Favor reusable screens that can consume another game's adapter without changes to their presentation logic. Apply this direction incrementally to the feature being developed; it is not a requirement to migrate existing screens or redesign the application before delivering a focused change.
+
+- Use `src/games/core/` contracts and shared domain models when they fit. Shared screens should receive normalized data, services, rules and capabilities through props or context. Keep concrete adapter selection in game workspaces or other composition boundaries.
+- Keep game-specific species limits, type rules, version groups, forms, map identifiers, encounter ordering and save formats in game rules or adapters. Existing Black/Generation V requirements apply to Black; do not extend those assumptions to other games through shared models or validators.
+- Distinguish a game adapter from a data source: switching between manual input, a save file and emulator memory does not by itself switch game rules. Keep normalization, validation and species resolution consistent with the selected game throughout the data flow.
+- Prefer explicit capabilities for the behavior a screen needs (for example, reading Pokédex, party or boxes). A source may support only some of these. Shared UI should handle unavailable data explicitly rather than infer support from a game or source name.
+- Game-specific screens and workflows are valid when behavior meaningfully differs. Share the stable parts; do not force every game into one workspace or add a universal adapter, plugin framework or speculative abstractions. Extend a contract when a concrete feature requires it.
+- For new shared code, avoid direct imports of game-specific APIs or embedded bridge endpoints in presentation components; place access behind an appropriate service, source or hook. When touching existing coupled code, extract the smallest useful boundary if it supports the task. Unrelated legacy dependencies can remain; a local fix does not require a broad refactor.
+- Before duplicating a screen for another game, check whether an existing contract can serve it with different data or rules. Some duplication is acceptable when extracting a shared abstraction would obscure different behavior or expand the task substantially.
+- When changing a shared contract or game-sensitive logic, add focused tests for the affected behavior. Where multiple adapters already use the contract, cover their relevant differences (such as Gen V versus Gen VI types). Do not implement a second adapter solely to validate a small change.
+- Mention material remaining coupling or deliberate exceptions in the change summary, with a brief reason. Resolve routine tradeoffs autonomously within the authorized scope; these guidelines do not introduce an additional approval step.
+
 ## Localization (i18n)
 
 PokéChose ships Spanish and English UI text through `src/i18n/` (i18next + react-i18next). Keep the domain layer locale-free and add new strings through the existing presentation-mapping pattern rather than branching on language inside components or `src/domain/`.

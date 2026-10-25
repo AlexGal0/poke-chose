@@ -1,0 +1,3 @@
+.capture-filters { display: flex; align-items: end; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+.capture-filters > label { display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+@media (max-width: 640px) { .capture-filters > label { width: 100%; } }

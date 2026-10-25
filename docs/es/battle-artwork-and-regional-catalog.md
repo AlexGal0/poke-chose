@@ -1,0 +1,13 @@
+# Animaciones y alcance del catálogo
+
+Los participantes de combate comparten `BattleSprite`: animación frontal local, ejemplar propio reflejado horizontalmente y rival sin reflejar. Las reservas, colección y catálogo conservan sus imágenes estáticas. Al debilitarse un participante se usa su imagen estática y el estilo de debilitado. La preferencia `prefers-reduced-motion` selecciona también la imagen estática. Si una animación falla al cargar, se utiliza la imagen estática disponible.
+
+Las composiciones de Black y X resuelven el recurso animado a partir del ID de variedad del sprite normalizado. El manifiesto solo contiene archivos descargados; no se supone que un ID de especie identifica cualquier forma. La pantalla compartida no contiene condiciones de juego. La protección de especies no descubiertas sigue en `PokemonCardFrame`.
+
+`scripts/update-battle-sprites.mjs` descarga un catálogo público fijo de [PokéAPI Sprites / Showdown](https://github.com/PokeAPI/sprites/tree/master/sprites/pokemon/other/showdown), sin utilizar saves, equipo ni lecturas del emulador. Guarda 911 archivos GIF, aproximadamente 70 MiB, en `public/battle-sprites/`; solo se cargan los recursos de los participantes visibles. La procedencia y los derechos de los recursos corresponden a los indicados en el [repositorio de origen](https://github.com/PokeAPI/sprites). No se añaden dependencias.
+
+El contexto de generación del juego seleccionado permite que todas las insignias resalten exclusivamente la generación de origen coincidente. No altera ni traduce los identificadores del dominio.
+
+El catálogo de X ofrece Pokédex regional y nacional. El adaptador proporciona 457 IDs de las Pokédex central, costera y montañosa de Kalos, incluidas especies anteriores a la generación VI. La nacional conserva sus 721 especies. La pertenencia regional no indica capturabilidad salvaje ni depende de las capturas del usuario. `scripts/update-regional-dex.mjs` genera la lista desde [pokedexes.csv y pokemon_dex_numbers.csv de PokéAPI](https://github.com/PokeAPI/pokeapi/tree/master/data/v2/csv). Black conserva su composición existente y sus ámbitos regional de Teselia y nacional.
+
+Validación del 23 de octubre de 2026: 346 pruebas correctas; UI real de X con Riolu frente a Skitty, ambos GIF locales cargados y, tras corregir la orientación indicada por el usuario, solo el ejemplar propio reflejado. En 390×844 no hubo desbordamiento horizontal. Se verificaron 457/721 especies en los filtros, Riolu en regional y el color VI frente al color neutro de III/IV en el equipo. La opción del sistema de movimiento reducido y el respaldo tras un fallo de red no se activaron manualmente durante esta comprobación. Evidencia de escritorio en `artifacts/shared-combat/animated-front.png`.

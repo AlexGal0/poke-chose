@@ -1,21 +1,20 @@
 import { useTranslation } from 'react-i18next'
-import { TYPES, type Pokemon, type PokemonType } from '../models/pokemon'
 import { collectionTags, normalizeTag } from '../domain/collection-search'
 import { typeLabel } from '../i18n/types.ts'
 
-export function CollectionSearch({ collection, query, onChange }: { collection: Pokemon[]; query: string; onChange: (query: string) => void }) {
+export function CollectionSearch({ collection, query, onChange, types, searchLabel, placeholder }: { collection: readonly { types: readonly string[] }[]; types: readonly string[]; searchLabel?: string; placeholder?: string; query: string; onChange: (query: string) => void }) {
   const { t } = useTranslation()
   const tags = collectionTags(query)
-  const availableTypes = TYPES.filter(type => collection.some(pokemon => pokemon.types.includes(type)))
+  const availableTypes = types.filter(type => collection.some(pokemon => pokemon.types.includes(type)))
   // Recognizes both the stable slug (inserted by the type buttons, stable across locale
   // switches) and the current-locale label (typed manually), so button state stays
   // consistent with matchesCollectionTags regardless of how the tag got there.
-  const matchesType = (tag: string, type: PokemonType) => normalizeTag(tag) === type || normalizeTag(tag) === normalizeTag(typeLabel(t, type))
+  const matchesType = (tag: string, type: string) => normalizeTag(tag) === type || normalizeTag(tag) === normalizeTag(typeLabel(t, type))
   return <div className="collection-search">
-    <label className="search"><span aria-hidden="true">⌕</span><input type="search" aria-label={t('collectionSearch.searchAria')} placeholder={t('collectionSearch.placeholder')} value={query} onChange={event => onChange(event.target.value)} /></label>
+    <label className="search"><span aria-hidden="true">⌕</span><input type="search" aria-label={searchLabel ?? t('collectionSearch.searchAria')} placeholder={placeholder ?? t('collectionSearch.placeholder')} value={query} onChange={event => onChange(event.target.value)} /></label>
     <p className="hint">{t('collectionSearch.hint')}</p>
     {tags.length > 0 && <div className="collection-tags" aria-label={t('collectionSearch.activeTagsAria')}>{tags.map((tag, index) => {
-      const type = TYPES.find(type => matchesType(tag, type))
+      const type = types.find(type => matchesType(tag, type))
       const label = type ? typeLabel(t, type) : tag
       return <button key={`${index}:${tag}`} className={type ? `active type type-${type}` : 'active'} aria-label={t('collectionSearch.removeTagAria', { tag: label })} onClick={() => onChange(tags.filter((_, position) => position !== index).join(' '))}>{label} <span aria-hidden="true">×</span></button>})}<button onClick={() => onChange('')}>{t('collectionSearch.clear')}</button></div>}
     <div className="collection-tags" aria-label={t('collectionSearch.filterByTypeAria')}>{availableTypes.map(type => {

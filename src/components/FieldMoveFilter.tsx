@@ -1,19 +1,19 @@
 import { useTranslation } from 'react-i18next'
 import { useId } from 'react'
-import { FIELD_MOVES } from '../domain/field-moves'
 import type { FieldMove } from '../domain/field-moves'
 import { fieldMoveLabel } from '../i18n/field-moves'
 import './FieldMoveFilter.css'
 
-export function FieldMoveFilter({ selected, onChange, loading, error, onRetry }: {
-  selected: FieldMove[]; onChange: (moves: FieldMove[]) => void; loading: boolean; error: boolean; onRetry: () => void
+export function FieldMoveFilter({ selected, onChange, loading, error, onRetry, moves }: {
+  selected: FieldMove[]; onChange: (moves: FieldMove[]) => void; loading: boolean; error: boolean; onRetry: () => void; moves: readonly FieldMove[]
 }) {
   const { t } = useTranslation()
   const labelId = useId()
   return <div className="field-move-filter">
     <p className="field-move-label" id={labelId}>{t('fieldMoves.label')}</p>
+    <p className="hint">{t('fieldMoves.hint')}</p>
     <div className="field-move-buttons" role="group" aria-labelledby={labelId}>
-      {FIELD_MOVES.map(move => {
+      {moves.map(move => {
         const checked = selected.includes(move)
         const label = fieldMoveLabel(t, move)
         return <button key={move} type="button" className="field-move-button" data-move={move} aria-label={label} title={label} aria-pressed={checked} onClick={() => onChange(checked ? selected.filter(value => value !== move) : [...selected, move])}>
@@ -36,6 +36,7 @@ function FieldMoveIcon({ move }: { move: FieldMove }) {
     dive: <><path d="M3 5c3-3 5 3 8 0s5 3 10 0M12 9v12m-4-4 4 4 4-4M3 13v7m18-7v7" /></>,
     flash: <><path d="m13 2-8 12h6l-1 8 9-13h-6zM3 3l2 2m14 14 2 2M2 9h2m16 6h2" /></>,
     dig: <><path d="m13 4 3-2 5 5-2 3zM16 7l-7 7m-4-3 8 8-4 3-7-7zM15 22h7M19 18h2" /></>,
+    'rock-smash': <><path d="m3 16 4-6 7-1 6 6-2 6H5zM12 2l-2 8 5-3-2 8M2 5l3 2m16-3-3 3" /></>,
   }
   return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{shapes[move]}</svg>
 }

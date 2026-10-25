@@ -2,8 +2,15 @@ import type { LearnsetResponse } from './moves.ts'
 import { statsResource } from './stats.ts'
 
 export const FIELD_MOVES = ['cut', 'fly', 'surf', 'strength', 'waterfall', 'dive', 'flash', 'dig'] as const
-export type FieldMove = typeof FIELD_MOVES[number]
+export const FIELD_MOVE_IDS = [...FIELD_MOVES, 'rock-smash'] as const
+export type FieldMove = typeof FIELD_MOVE_IDS[number]
 export type FieldMovePokemon = { id: number; form?: number; isEgg?: boolean }
+export interface FieldMoveService {
+  id: string
+  moves: readonly FieldMove[]
+  resource(pokemon: FieldMovePokemon): string
+  load(resource: string): Promise<FieldMove[]>
+}
 
 export function fieldMoveResource(pokemon: FieldMovePokemon): string {
   return statsResource(pokemon.id, pokemon.form ?? 0)

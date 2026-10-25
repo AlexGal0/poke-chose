@@ -5,6 +5,7 @@ import { getExperienceLevels } from '../api/experience'
 import type { ExperienceLevel } from '../api/experience'
 import { experienceProgress } from '../domain/experience'
 import './TeamVitals.css'
+import { BlackEvolutionProgress } from './BlackEvolutionProgress'
 
 export function TeamVitals({ speciesId, member }: { speciesId: number; member?: SavedPartyMember }) {
   const { t, i18n } = useTranslation()
@@ -24,6 +25,7 @@ export function TeamVitals({ speciesId, member }: { speciesId: number; member?: 
   const exp = member?.experience !== undefined && table?.speciesId === speciesId
     ? experienceProgress(member.level, member.experience, table.levels) : null
   return <div className="team-vitals">
+    <BlackEvolutionProgress speciesId={speciesId} level={member?.level} />
     <div className="vital-label"><span>{t('common.hpAbbr')}</span><span>{hpKnown ? `${member.currentHp} / ${member.maxHp}` : t('teamVitals.noData')}</span></div>
     <progress className={`vital-bar hp-bar ${hpRatio <= 0.2 ? 'low' : hpRatio <= 0.5 ? 'medium' : ''} ${hpKnown ? '' : 'unavailable'}`} aria-label={t('common.hpAria')} aria-valuetext={hpKnown ? t('teamVitals.valueOfMax', { current: member.currentHp, max: member.maxHp }) : t('teamVitals.noHpData')} value={hpKnown ? member.currentHp : 0} max={hpKnown ? member.maxHp : 1} />
     <div className="vital-label"><span>EXP</span><span>{exp ? member?.level === 100 ? t('teamVitals.maxLevel') : t('teamVitals.remainingToLevelUp', { count: exp.remaining.toLocaleString(i18n.language) }) : t('teamVitals.noData')}</span></div>

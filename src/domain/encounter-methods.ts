@@ -1,4 +1,4 @@
-import type { BlackEncounterDetail } from '../models/encounters.ts'
+import type { EncounterDetail } from '../models/encounters.ts'
 
 // PokéAPI uses walk for ordinary grass and cave floors alike.
 // Labels/descriptions live in the encounterMethods.* translation keys; this
@@ -24,6 +24,17 @@ const icons: Record<string, string> = {
   'roaming-water': '🐾',
   'rock-smash': '🪨',
   headbutt: '🌳',
+  'yellow-flowers': '🌼',
+  'red-flowers': '🌺',
+  'purple-flowers': '🪻',
+  horde: '🐾',
+  'rough-terrain': '🪨',
+  'rustling-bush-ambush': '🌿',
+  'ceiling-ambush': '⬇️',
+  'ground-ambush': '⬆️',
+  'trash-can-ambush': '🗑️',
+  'sky-ambush': '🪽',
+  'berry-trees': '🍓',
 }
 
 export function isKnownEncounterMethod(method: string): boolean {
@@ -34,6 +45,6 @@ export function encounterMethodIcon(method: string): string {
   return isKnownEncounterMethod(method) ? icons[method] : '🔎'
 }
 
-export function encounterMethods(details: readonly BlackEncounterDetail[]) {
+export function encounterMethods(details: readonly EncounterDetail[]) {
   return [...new Set(details.map(detail => detail.method))].map(method => ({ method, icon: encounterMethodIcon(method) }))
 }

@@ -1,4 +1,4 @@
-// Internal Black map identifier, not a PokéAPI location ID.
+// Internal game map identifier, resolved by the selected adapter, not a PokéAPI ID.
 export interface PlayerPosition {
   mapId: number
   // A live map field may be known before its coordinate structure is identified.
