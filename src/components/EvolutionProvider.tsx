@@ -1,3 +1,4 @@
+import { BreedingOnlyBadge } from './BreedingOnlyBadge'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +15,7 @@ function EvolutionBranch({ node, tree, currentId }: { node: EvolutionNode; tree:
   const methods = [...new Set(node.methods.map(method => evolutionMethodLabel(t, evolutionMethodFacts(method, node.speciesId, tree.labels))))]
   return <div className="evolution-branch">
     {methods.length > 0 && <div className="evolution-relation"><span aria-hidden="true">→</span>{methods.map((method, index) => <p key={method}>{index > 0 && <strong>{t('evolutionDialog.orBranch')}</strong>}{method}</p>)}</div>}
-    <div className={`evolution-card ${node.speciesId === currentId ? 'current' : ''}`}><PokemonCard pokemon={tree.pokemon[node.speciesId]} showEvolution={false}>{node.speciesId === currentId && <small>{t('evolutionDialog.queriedSpecies')}</small>}</PokemonCard></div>
+    <div className={`evolution-card ${node.speciesId === currentId ? 'current' : ''}`}><PokemonCard pokemon={tree.pokemon[node.speciesId]} showEvolution={false}>{node.children.length > 0 && <BreedingOnlyBadge speciesId={node.speciesId} />}{node.speciesId === currentId && <small>{t('evolutionDialog.queriedSpecies')}</small>}</PokemonCard></div>
     {node.children.length > 0 && <div className="evolution-children">{node.children.map(child => <EvolutionBranch key={child.speciesId} node={child} tree={tree} currentId={currentId} />)}</div>}
   </div>
 }

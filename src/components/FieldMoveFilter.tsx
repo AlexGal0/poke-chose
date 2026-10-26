@@ -11,7 +11,6 @@ export function FieldMoveFilter({ selected, onChange, loading, error, onRetry, m
   const labelId = useId()
   return <div className="field-move-filter">
     <p className="field-move-label" id={labelId}>{t('fieldMoves.label')}</p>
-    <p className="hint">{t('fieldMoves.hint')}</p>
     <div className="field-move-buttons" role="group" aria-labelledby={labelId}>
       {moves.map(move => {
         const checked = selected.includes(move)

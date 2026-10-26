@@ -26,3 +26,16 @@ No browser checks were performed during this cleanup. These images remain histor
 The `x-*`, `game-selection-square-*`, `egg-hatching-bar-*`, `gender-*` and `daycare-*` PNG captures document the X delivery. The October 25 change record distinguishes real Citra/save readings from synthetic fixtures. These captures precede the final PR integration smoke check; do not present them as new emulator validation of the merge.
 
 Temporary harnesses and test output are ignored locally. The PR preparation also checked both manual workspaces, the Black evolution view and album, and the X connection popover after integrating master.
+
+## Follow-up delivery (2026-10-26)
+
+| Retained files | Purpose and recorded source |
+| --- | --- |
+| `box-picker-{desktop,mobile}.png` | Final searchable box selector and responsive layout; read-only collection UI. |
+| `acquisition-contract-black-{desktop,mobile}.png` | Shared acquisition dialog with public PokéAPI/cache data, including language and mobile checks. |
+| `x-acquisition-fossil-desktop.png`, `x-acquisition-mobile.png` | X acquisition routes from the local atlas and public metadata/cache; no memory validation implied. |
+| `evolution-breeding-badge-x.png` | Pichu breeding marker from acquisition metadata, not the player's save. |
+| `session-reconnect-x.png` | Reconnect control with a real read-only Citra session. |
+| `x-trainer-battle-helioptile.png` | Real Citra individual trainer battle: Helioptile level 25, 25/61 HP. |
+
+See `docs/es/changes-2026-10-26.md` for the delivery scope. Earlier untracked layout captures are not part of this curated delivery. No new browser checks were performed while preparing this documentation and commit; these records describe the checks performed during implementation.

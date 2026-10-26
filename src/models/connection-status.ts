@@ -17,3 +17,8 @@ export interface ConnectionStatus {
   readers: readonly ConnectionReaderStatus[]
   message?: string
 }
+
+export interface ConnectionActions {
+  reconnect: () => Promise<unknown>
+  busy: boolean
+}

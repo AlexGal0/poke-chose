@@ -22,13 +22,13 @@ export function useLivePartySource(source: ReturnType<typeof createLivePartySour
     setBusy(false)
     setError(false)
   }
-  async function control(action: 'connect' | 'disconnect' | 'refresh') {
-    if (!enabled || busy) return
+  async function control(action: 'connect' | 'disconnect' | 'refresh' | 'reconnect') {
+    if (!enabled || busy) return false
     const token = generation.current
     setBusy(true)
     setError(false)
-    try { await source.control(action) }
-    catch { if (token === generation.current) setError(true) }
+    try { await source.control(action); return true }
+    catch { if (token === generation.current) setError(true); return false }
     finally { if (token === generation.current) setBusy(false) }
   }
   return { snapshot: enabled && current.enabled ? current.snapshot : emptyLivePartySnapshot(), busy, error, control }

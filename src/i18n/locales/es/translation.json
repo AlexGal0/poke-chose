@@ -252,7 +252,8 @@
       "collection": "Mi colección",
       "analysis": "Balance de tipos",
       "types": "Tabla de tipos",
-      "battle": "Combate"
+      "battle": "Combate",
+      "development": "En desarrollo"
     },
     "collection": {
       "eyebrow": "03 / TUS COMPAÑEROS",
@@ -396,7 +397,17 @@
     "locationParty": "Equipo ({{count}})",
     "locationBox": "Caja {{number}} ({{count}})",
     "boxFilter": {
-      "filteredCount": "{{filtered}} / {{total}} ejemplares"
+      "filteredCount": "{{filtered}} / {{total}} ejemplares",
+      "navigation": "Navegar por las cajas",
+      "previous": "Caja anterior",
+      "next": "Caja siguiente",
+      "search": "Buscar caja",
+      "searchHint": "Introduce un número del 1 al {{count}}.",
+      "all": "Todas las cajas y equipo",
+      "party": "Equipo",
+      "box": "Caja {{number}}",
+      "searchPlaceholder": "Buscar caja…",
+      "noResults": "No se encontraron cajas."
     },
     "emptyCollection": "No hay Pokémon en el equipo ni en las cajas.",
     "emptyParty": "No hay Pokémon en el equipo.",
@@ -477,7 +488,10 @@
     "battleDisconnected": "desconectado",
     "battleWaiting": "esperando conexión",
     "lastReading": "Última lectura del equipo: {{time}}",
-    "goToControlsButton": "Ir a controles de conexión"
+    "goToControlsButton": "Ir a controles de conexión",
+    "reconnect": "Reconectar",
+    "reconnecting": "Reconectando…",
+    "reconnectFailed": "No se pudo reconectar. Revisa el emulador e inténtalo de nuevo."
   },
   "evolutionDialog": {
     "orBranch": "O bien: ",
@@ -488,7 +502,8 @@
     "loadError": "No se pudo cargar la evolución. Comprueba tu conexión con PokéAPI.",
     "readingHint": "Lee el árbol de izquierda a derecha. Cada relación muestra cómo evoluciona a la especie siguiente en Black/White. Las ramas alternativas se muestran una debajo de otra.",
     "scrollAria": "Familia evolutiva; desplaza horizontalmente para ver todas las etapas",
-    "noEvolutionsHint": "Esta especie no tiene evoluciones ni preevoluciones en Generación V."
+    "noEvolutionsHint": "Esta especie no tiene evoluciones ni preevoluciones en Generación V.",
+    "breedingOnly": "Por cría: sin encuentro local directo registrado. Puede requerir incienso o padres compatibles."
   },
   "encounterChances": {
     "describeBase": "{{method}}: {{chance}}% · {{area}}",
@@ -1600,5 +1615,28 @@
       "tornadus": "Tras la octava medalla, habla con la recepcionista del acceso a Ruta 10. Ve a la casa de Ruta 7 durante la tormenta y escucha a la anciana. Al salir, Tornadus comienza a recorrer Teselia al nivel 40; los paneles de las puertas ayudan a localizar la tormenta.",
       "landorus": "Lleva a Tornadus y Thundurus juntos en el equipo al Santuario Abundancia. En Negro, Thundurus debe venir de otra partida compatible: no es el errante de esta versión."
     }
+  },
+  "xAcquisition": {
+    "group": "Formas de obtención en Pokémon X",
+    "open": "Ver cómo obtener {{name}} en Pokémon X",
+    "hint": "Datos de Pokémon X: encuentros de Kalos y evoluciones de Generación VI. Los regalos y los intercambios pueden requerir progreso o elecciones previas.",
+    "loading": "Consultando obtención en Pokémon X…",
+    "noEncounters": "No hay encuentros directos de X registrados para esta especie. Esto no demuestra que sea imposible obtenerla.",
+    "anyPokemon": "cualquier Pokémon compatible con este intercambio",
+    "routes": {
+      "capture": "Capturable en Pokémon X. Consulta zonas, métodos y condiciones.",
+      "static": "Encuentro fijo en Pokémon X; puede depender del progreso o del Pokémon inicial elegido.",
+      "gift": "Regalo en Pokémon X; puede depender de una elección o del progreso.",
+      "egg": "Huevo de regalo registrado en Pokémon X.",
+      "fossil": "Revivir un fósil en Pokémon X. Consulta las instrucciones y la elección de fósil.",
+      "npc-trade": "Intercambio con un personaje de Pokémon X. Consulta lo que solicita y sus condiciones.",
+      "evolution": "Evolución compatible con Generación VI. Necesitas su preevolución y cumplir los requisitos.",
+      "trade-evolution": "Evolución por intercambio en Generación VI; puede requerir un objeto o una especie concreta.",
+      "breed": "Cría con padres compatibles. Algunas especies requieren condiciones adicionales o incienso.",
+      "unknown": "Obtención sin confirmar: las fuentes no cubren todas las vías. La ausencia de encuentros no implica que requiera transferencia."
+    }
+  },
+  "captureFilters": {
+    "saveFailed": "No se pudieron guardar los filtros en este navegador."
   }
 }

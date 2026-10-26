@@ -13,6 +13,7 @@ async function cachedRequest<T>(path: string, signal?: AbortSignal): Promise<T> 
 }
 
 export interface EvolutionSpecies {
+  is_baby?: boolean
   evolution_chain: { url: string } | null
   varieties?: { is_default: boolean; pokemon: EvolutionResource }[]
   egg_groups?: EvolutionResource[]

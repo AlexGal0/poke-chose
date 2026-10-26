@@ -119,6 +119,8 @@ test('X live HTTP bridge requires local JSON controls and stops when its last SS
     assert.equal((await post('connect')).status, 200)
     await until(() => bridge.controller.snapshot.status === 'ready')
     assert.ok(reads > 0)
+    assert.equal((await post('reconnect')).status, 200)
+    await until(() => bridge.controller.snapshot.status === 'ready')
     assert.equal((await post('disconnect')).status, 200)
     assert.equal(bridge.controller.snapshot.enabled, false)
     assert.equal((await post('connect')).status, 200)

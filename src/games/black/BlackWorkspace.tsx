@@ -1,3 +1,5 @@
+import { AcquisitionContext } from '../core/acquisition-context'
+import { blackAcquisition } from './acquisition'
 import { blackConnectionStatus } from './connection-status'
 import { showConnectionControls } from '../../components/connection-controls'
 import { blackDaycareReading, blackDaycareService } from './daycare'
@@ -117,7 +119,7 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
   }
 
   return (
-    <DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
+    <AcquisitionContext.Provider value={blackAcquisition}><DiscoveryContext.Provider value={discovered}><StatsProvider source={source} sourceState={saveTeam}><MovesProvider><EvolutionProvider>
       <header className={`site-header ${battleView ? 'battle-header' : ''}`}>
         <div className="brand-lockup"><SecretAlbum service={blackAlbum} owned={source === 'manual' ? new Set(state.collection.map(pokemon => pokemon.id)) : saveTeam.pokedex?.caughtSpeciesIds ?? new Set<number>()} seen={discovered} /><a className="brand" href="#">
           Poké<span>Chose</span>
@@ -241,7 +243,7 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
             <CaptureChecklist pokedex={saveTeam.pokedex} enabled={source !== "manual"} stale={saveTeam.error || !saveTeam.connected} collection={saveTeam.collection} team={saveTeam.team} position={saveTeam.position} positionStale={saveTeam.positionStale} source={source} />
           </div>
           <div hidden={tab !== "catalog"}>
-            <Catalog
+            <Catalog acquisitionService={blackAcquisition}
               collection={collection}
               onAdd={addPokemon}
               readOnly={source !== "manual"}
@@ -335,11 +337,11 @@ function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {
           />
         </span>
       </footer>
-      <ConnectionIndicator data={blackConnectionStatus(source, saveTeam, { generalStatus, battleStatus: combatStatus, generalMessage, battleMessage: combatMessage, generalLabel: t('readerConnections.general'), battleLabel: t('readerConnections.battle'), saveLabel: t('connectionIndicator.sourceSave'), saveMessage: noticeText(t, saveTeam.message) || '', manualHint: t('connectionIndicator.manualHint') })} onOpenControls={showConnectionControls} />
+      <ConnectionIndicator actions={source === 'live' ? { reconnect: readers.connect, busy: readers.busy || generalStatus === 'connecting' || combatStatus === 'connecting' } : undefined} data={blackConnectionStatus(source, saveTeam, { generalStatus, battleStatus: combatStatus, generalMessage, battleMessage: combatMessage, generalLabel: t('readerConnections.general'), battleLabel: t('readerConnections.battle'), saveLabel: t('connectionIndicator.sourceSave'), saveMessage: noticeText(t, saveTeam.message) || '', manualHint: t('connectionIndicator.manualHint') })} onOpenControls={showConnectionControls} />
       {source !== 'manual' && <DaycareAlertButton reading={blackDaycareReading(saveTeam.daycare, saveTeam.daycareStale, true)} service={blackDaycareService} onClick={() => navigation.openWorkspace('daycare')} />}
       {source === 'live' && <RepelIndicator reading={saveTeam.repel} stale={saveTeam.repelStale} />}
       {source === 'live' && <BattleShortcut inBattle={battleConnection.inBattle} viewingBattle={battleView} canReturn={canReturnFromBattle} onClick={() => toggleBattleShortcut()} />}
-    </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider>
+    </EvolutionProvider></MovesProvider></StatsProvider></DiscoveryContext.Provider></AcquisitionContext.Provider>
   );
 }
 

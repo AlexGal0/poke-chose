@@ -1,13 +1,21 @@
-import { useId } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ConnectionStatus } from '../models/connection-status'
+import type { ConnectionActions, ConnectionStatus } from '../models/connection-status'
 import { connectionStatusColor } from '../domain/connection-status'
 import { readerStatusLabel } from '../i18n/reader-status'
 import './ConnectionIndicator.css'
 import './ReaderStatus.css'
 
-export function ConnectionIndicator({ data, onOpenControls }: { data: ConnectionStatus; onOpenControls: () => void }) {
+export function ConnectionIndicator({ data, onOpenControls, actions }: { actions?: ConnectionActions; data: ConnectionStatus; onOpenControls: () => void }) {
   const { t, i18n } = useTranslation()
+  const [reconnecting, setReconnecting] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const pending = useRef(false)
+  async function reconnect() {
+    if (!actions || actions.busy || pending.current) return
+    pending.current = true; setReconnecting(true); setFailed(false)
+    try { await actions.reconnect() } catch { setFailed(true) } finally { pending.current = false; setReconnecting(false) }
+  }
   const id = useId()
   const panelId = `connection-panel-${id}`
   const titleId = `connection-title-${id}`
@@ -28,6 +36,8 @@ export function ConnectionIndicator({ data, onOpenControls }: { data: Connection
         {reader.message && <p>{reader.message}</p>}
         {reader.updatedAt && <small>{t('connectionIndicator.readerUpdatedAt', { time: new Date(reader.updatedAt).toLocaleTimeString(i18n.language) })}</small>}
       </div>)}</div>}
+      {actions && !data.manual && <button type="button" className="primary" disabled={actions.busy || reconnecting} onClick={() => { void reconnect() }}>{t(actions.busy || reconnecting ? 'connectionIndicator.reconnecting' : 'connectionIndicator.reconnect')}</button>}
+      {failed && <p className="notice" role="alert">{t('connectionIndicator.reconnectFailed')}</p>}
       <button type="button" popoverTarget={panelId} popoverTargetAction="hide" onClick={onOpenControls}>{t('connectionIndicator.goToControlsButton')}</button>
     </div>
   </>

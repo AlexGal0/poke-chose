@@ -1,3 +1,4 @@
+import { xAcquisition } from './acquisition'
 import { xConnectionStatus } from './connection-status'
 import { showConnectionControls } from '../../components/connection-controls'
 import { useTranslation } from 'react-i18next'
@@ -63,5 +64,5 @@ export default function XWorkspace({ onChangeGame }: { onChangeGame: () => void 
     liveMessage: live.error ? t('sources.xLive.controlError') : t(bridgeSnapshotMessageKey(live.snapshot.sourceId, live.snapshot.message)),
     boxesMessage: t(`sources.xLive.boxStatus.${live.snapshot.boxesStatus}`), controlError: live.error,
   })
-  return <ManualWorkspace connectionStatus={{ data: connection, onOpenControls: showConnectionControls }} daycare={{ reading: xDaycareReading(source, snapshot, live.snapshot), service: xDaycareService }} album={xAlbum} fieldMoveService={xCollectionMoves} game={game} catalog={xCatalog} storage={storage} typeRules={generationVIRules} knowledge={xKnowledge} encounters={xEncounters} initialZoneId={591} captureSource={captureSource} onChangeGame={onChangeGame} />
+  return <ManualWorkspace acquisition={xAcquisition} connectionStatus={{ actions: source === 'live' ? { reconnect: async () => { if (!await live.control('reconnect')) throw new Error('Reconnect failed') }, busy: live.busy || live.snapshot.message === 'connecting' } : undefined, data: connection, onOpenControls: showConnectionControls }} daycare={{ reading: xDaycareReading(source, snapshot, live.snapshot), service: xDaycareService }} album={xAlbum} fieldMoveService={xCollectionMoves} game={game} catalog={xCatalog} storage={storage} typeRules={generationVIRules} knowledge={xKnowledge} encounters={xEncounters} initialZoneId={591} captureSource={captureSource} onChangeGame={onChangeGame} />
 }

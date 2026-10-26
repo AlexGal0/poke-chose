@@ -22,6 +22,8 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
   const boxesPollMs = config.boxesPollMs ?? 120000
   let boxesAttemptAt = null
   let cachedBoxes = null
+  let wanted = false
+  let reconnectTimer
   let active = false
   let refreshRequest = null
   let boxesError = null
@@ -34,7 +36,15 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
     snapshot = { ...snapshot, ...next }
     for (const client of clients) client.write(`data: ${JSON.stringify(snapshot)}\n\n`)
   }
+  function retryConnection() {
+    clearTimeout(reconnectTimer)
+    if (!closed && wanted) {
+      reconnectTimer = setTimeout(() => { control = control.catch(() => {}).then(connect) }, config.reconnectMs ?? 3000)
+      reconnectTimer.unref?.()
+    }
+  }
   function stop() {
+    clearTimeout(reconnectTimer)
     generation++
     clearTimeout(timer)
     clearTimeout(repelTimer)
@@ -76,6 +86,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       if (token === generation && !closed && current.socket?.destroyed) {
         stop()
         publish({ status: 'error', message: 'connectionLost' })
+        retryConnection()
       }
     }
     scheduleRepel(token)
@@ -138,6 +149,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       if (current.socket?.destroyed) {
         stop()
         publish({ status: 'error', message: 'connectionLost' })
+        retryConnection()
         return
       }
       publish({ status: 'waiting', message: 'waitingUnstable' })
@@ -164,6 +176,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
           if (!closed && reader === connection) {
             stop()
             publish({ status: 'error', message: 'connectionLost' })
+            retryConnection()
           }
         })
       }
@@ -175,6 +188,7 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       if (token !== generation) return
       stop()
       publish({ status: 'error', message: 'connectFailed' })
+      retryConnection()
     }
   }
   async function refreshBoxesNow() {
@@ -242,8 +256,10 @@ export function createLiveBridge(config, makeReader = options => new GdbReader(o
       }
       control = control.then(async () => {
         if (closed) return
-        if (req.url === '/live-api/connect') await connect()
+        if (req.url === '/live-api/connect') { wanted = true; clearTimeout(reconnectTimer); await connect() }
         else {
+          wanted = false
+          clearTimeout(reconnectTimer)
           publish({ status: 'waiting', message: 'stopping' })
           await pause()
           publish({ status: 'waiting', message: 'paused' })

@@ -68,8 +68,8 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
   const zoneControl = useCaptureZone({ reading, validZone: id => locations.some(zone => zone.id === id), loadManual: loadEncounterZone, saveManual: saveEncounterZone, loadFollow: loadFollowLocation, saveFollow: saveFollowLocation })
   const { follow, setFollow, followSaved, zoneSaved } = zoneControl
   const selected = zoneControl.selected ?? loadEncounterZone()
-  const filters = useCaptureFilters(selected)
-  const [zoneQuery, setZoneQuery] = useState('')
+  const filters = useCaptureFilters(selected, 'poke-chose:black:capture-filters:v1')
+  const { zoneQuery, setZoneQuery } = filters
   const [result, setResult] = useState<{ locationId: number; rows: EncounterSpecies[] } | null>(null)
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
@@ -111,8 +111,7 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
   }
   return <section className="panel capture-panel" aria-labelledby="capture-title">
     <div className="section-heading"><div><span className="eyebrow">POKÉDEX / POKÉMON BLACK</span><h2 id="capture-title">{t('app.tabs.captures')}</h2></div>{checklist && <span className="count" aria-live="polite">{t('captureChecklist.header.count', { caught: checklist.caught, total: checklist.total })}</span>}</div>
-    <p className="hint">{t('captureChecklist.header.hint1')}</p>
-    <p className="hint">{t('captureChecklist.header.hint2')}</p>
+    {!filters.saved && <p className="notice" role="status">{t('captureFilters.saveFailed')}</p>}
     {!enabled ? <p className="empty">{t('captureChecklist.disabledNotice')}</p> : <>
       {pokedex && <PokedexLookup pokedex={pokedex} />}
       {position && !detected && !locationStale && <p className="hint" role="status">{t('captureChecklist.location.unknown', { map: position.mapId })}</p>}
@@ -138,14 +137,13 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
       </div>
       {!zoneSaved && <p className="notice" role="status">{t('captureChecklist.zoneSaveFailed')}</p>}
       {zoneQuery && <p className="hint" role="status">{matchingZones.length ? t('captureChecklist.zonesFoundCount', { count: matchingZones.length }) : t('captureChecklist.noZoneMatches')}</p>}
-      <p className="hint">{t('captureChecklist.zoneOrderHint')}</p>
-      <label className="search"><span aria-hidden="true">⌕</span><input type="search" aria-label={t('encounterAtlas.speciesSearch')} placeholder={t('captureChecklist.pokedexLookup.placeholder')} value={filters.query} onChange={event => filters.setQuery(event.target.value)} /></label>
+        <label className="search"><span aria-hidden="true">⌕</span><input type="search" aria-label={t('encounterAtlas.speciesSearch')} placeholder={t('captureChecklist.pokedexLookup.placeholder')} value={filters.query} onChange={event => filters.setQuery(event.target.value)} /></label>
       <CaptureFilters methods={methods} method={filters.method} onMethodChange={filters.setMethod} progress={filters.progress} onProgressChange={filters.setProgress} pokedexAvailable={pokedex !== null} />
       <fieldset className="encounter-equipment"><legend>{t('captureChecklist.equipment.legend')}</legend>
         <label><input type="checkbox" checked={access.surf} onChange={event => { const next = { ...access, surf: event.target.checked }; setAccess(next); setAccessSaved(saveEncounterAccess(next)) }} /> {t('captureChecklist.equipment.surf')}</label>
         <label><input type="checkbox" checked={access.superRod} onChange={event => { const next = { ...access, superRod: event.target.checked }; setAccess(next); setAccessSaved(saveEncounterAccess(next)) }} /> {t('captureChecklist.equipment.superRod')}</label>
       </fieldset>
-      <p className="hint">{t('captureChecklist.equipment.hint')}{allRows && allRows.length > accessibleRows.length ? ` ${t('captureChecklist.equipment.hiddenCount', { count: allRows.length - accessibleRows.length })}` : ''}</p>
+      <p className="hint">{allRows && allRows.length > accessibleRows.length ? ` ${t('captureChecklist.equipment.hiddenCount', { count: allRows.length - accessibleRows.length })}` : ''}</p>
       {!accessSaved && <p className="notice" role="status">{t('captureChecklist.equipment.filterSaveFailed')}</p>}
       {error && <p className="notice" role="alert">{t(error)} <button onClick={() => { setError(''); setAttempt(value => value + 1) }}>{t('captureChecklist.retryEncountersButton')}</button></p>}
       {!pokedex && <p className="hint">{t('captureChecklist.waitingForPokedex')}</p>}
@@ -158,7 +156,6 @@ export function CaptureChecklist({ pokedex, enabled, stale, collection, team, po
         const caught = pokedex?.caughtSpeciesIds.has(row.speciesId)
         return <li key={row.speciesId} className={caught ? 'captured' : ''} data-species-id={row.speciesId}><GenerationBadge speciesId={row.speciesId} /><a className="pokemon-wiki" href={pokemonWikiUrl(row.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(row.name) })} title={t('common.wikiTitle')}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a><div className="capture-identity">{(caught || pokedex?.seenSpeciesIds.has(row.speciesId)) && <CapturedPokemonIcon speciesId={row.speciesId} />}<div><strong className="species-name">{pokemonDisplayName(row.name)}</strong><GenderIcon speciesId={row.speciesId} showDistribution /><PokedexScopeBadge speciesId={row.speciesId} /><span className="capture-state">{!pokedex ? t('captureChecklist.status.noData') : caught ? t('captureChecklist.status.caught') : t('captureChecklist.status.notCaught')}<span className="capture-level"> {t('captureChecklist.minLevel', { level: minimumEncounterLevel(row) ?? "?" })}</span></span></div></div><EncounterMethods details={row.details} /><NpcTradeDetails details={row.details} /><div className="capture-chance-summary"><EncounterChances details={row.details} /><EncounterOpportunity speciesId={row.speciesId} locationId={selected} details={row.details} />{pokedex && !caught && ownedSpeciesIds.size > 0 && <OwnedEvolutionIcon speciesId={row.speciesId} name={row.name} ownedSpeciesIds={ownedSpeciesIds} />}</div><EvolutionButton speciesId={row.speciesId} name={row.name} compact /><details><summary>{t('captureChecklist.encountersSummary')}</summary>{row.details.map((detail, index) => <p key={index}>{areaLabel(t, detail.area)} · {methodLabel(t, detail.method)} · {t('captureChecklist.levelRange', { min: detail.minLevel, max: detail.maxLevel })}{detail.method !== "npc-trade" && detail.chance !== null ? ` · ${detail.chance}%` : ""}{detail.conditions.length ? ` · ${detail.conditions.join(', ')}` : ''}</p>)}</details></li>
       })}</ul></section>)}
-      <p className="hint">{t('captureChecklist.footerHint')}</p>
-    </>}
+      </>}
   </section>
 }

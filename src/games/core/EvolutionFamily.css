@@ -28,3 +28,5 @@
   .family-transition { width: min(100%, 240px); flex-basis: auto; }
   .family-arrow { transform: rotate(90deg); margin-right: 8px; }
 }
+
+.breeding-only-badge { display: inline-grid; place-items: center; width: 26px; height: 26px; margin-left: 4px; border-radius: 50%; background: var(--surface-raised, #273342); font-size: 17px; vertical-align: middle; }

@@ -1,3 +1,4 @@
+import { BoxNavigation } from './BoxNavigation'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TeamSourceState } from '../sources/team'
@@ -16,8 +17,6 @@ export function SaveCollection({ state, live = false, boxCount, types, fieldMove
   state: TeamSourceState; live?: boolean; boxCount: number; types: readonly string[]; fieldMoveService: FieldMoveService; refresh: () => Promise<unknown>
 }) {
   const { t } = useTranslation()
-  const [boxColors] = useState(() => Array.from({ length: boxCount }, () => Math.floor(Math.random() * 6)))
-  const [boxTextures] = useState(() => Array.from({ length: boxCount }, () => Math.floor(Math.random() * 4)))
   const [refreshing, setRefreshing] = useState(false)
   const [refreshMessage, setRefreshMessage] = useState<Notice>(null)
   const [refreshError, setRefreshError] = useState(false)
@@ -45,21 +44,12 @@ export function SaveCollection({ state, live = false, boxCount, types, fieldMove
     {state.collectionError && <p className="notice" role="alert">{t('saveCollection.resolveErrorNotice')}</p>}
     {(state.error || !state.connected) && collection !== null && <p className="notice">{t('saveCollection.staleNotice')}</p>}
     {collection === null ? <p className="empty">{t('saveCollection.waitingNotice')}</p> : <>
-      <details className="collection-box-filter">
-        <summary>{t('saveCollection.locationLabel')}: {location === 'all' ? t('saveCollection.locationAll', { count: collection.length }) : location === 'party' ? t('saveCollection.locationParty', { count: partyCount }) : t('saveCollection.locationBox', { number: location + 1, count: boxCounts[location] })}</summary>
-        <div className="collection-box-options" role="group" aria-label={t('saveCollection.locationLabel')}>
-        <div className="collection-location-shortcuts">
-          <button className="collection-location-button" aria-pressed={location === 'party'} onClick={() => { setLocation('party'); setPage(0) }}>{t('saveCollection.locationParty', { count: partyCount })}</button>
-          <button className="collection-all-button" aria-pressed={location === 'all'} onClick={() => { setLocation('all'); setPage(0) }}>{t('saveCollection.locationAll', { count: collection.length })}</button>
-        </div>
-        <div className="collection-box-grid">
-          {boxCounts.map((count, box) => <button key={box} className={`collection-location-button collection-box-color-${boxColors[box]} collection-box-texture-${boxTextures[box]}`} aria-pressed={location === box} onClick={() => { setLocation(box); setPage(0) }}>{t('saveCollection.locationBox', { number: box + 1, count })}</button>)}
-        </div>
-        </div>
-      </details>
       <p className="hint" role="status">{t('saveCollection.boxFilter.filteredCount', { filtered: filtered.length, total: collection.length })}</p>
       <CollectionSearch types={types} collection={locationCollection} query={query} onChange={setQuery} />
+    <div className="collection-browser-toolbar">
+      <BoxNavigation location={location} onChange={setLocation} boxCounts={boxCounts} partyCount={partyCount} total={collection.length} />
       <FieldMoveFilter moves={fieldMoveService.moves} selected={fieldMoves.selected} onChange={fieldMoves.setSelected} loading={fieldMoves.loading} error={fieldMoves.error} onRetry={fieldMoves.retry} />
+    </div>
       {collection.length === 0 ? <p className="empty">{t('saveCollection.emptyCollection')}</p> : !locationCollection.length ? <p className="empty">{location === 'party' ? t('saveCollection.emptyParty') : t('saveCollection.emptyBox')}</p> : !filtered.length ? (!fieldMoves.loading && !fieldMoves.error && <p className="empty">{t('saveCollection.noMatches')}</p>) : <>
         <div className="pokemon-grid">{browser.visibleRows.map(pokemon => <PokemonCard key={pokemon.instanceKey} pokemon={pokemon} selected={pokemon.location === 'party'} fainted={pokemon.location === 'party' && state.team.some(member => member.personality === pokemon.personality && member.trainerId === pokemon.trainerId && !member.isEgg && member.currentHp === 0 && (member.maxHp ?? 0) > 0)} showMoves showPokedexScope tools={<IndividualGenderIcon pokemon={pokemon} />}>
           <CollectionDetails pokemon={pokemon} />

@@ -8,6 +8,8 @@ In Black, you can use it manually, sync it with a save file, or enable live read
 
 ## Features
 
+Recent additions include searchable box navigation, shared acquisition details for Black and X, persistent capture filters, connection recovery and X trainer battles. See the [October 26 change record](docs/es/changes-2026-10-26.md) for validation and remaining limits.
+
 The opening screen separates **Black** and **X**. X currently supports a separate
 manual collection/team, the Gen VI catalog and type analysis, and species details
 with Gen VI base statistics, X/Y level-up moves and compatible evolution methods.
