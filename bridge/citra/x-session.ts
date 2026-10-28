@@ -5,7 +5,7 @@ import { CitraRpcReader } from './rpc-reader.ts'
 import { readXMemoryPokedex } from '../../src/games/x/memory-pokedex.ts'
 import { serializePokedex } from '../../src/models/pokedex.ts'
 import { readXMemoryParty } from '../../src/games/x/memory-party.ts'
-import { readXMemoryBattle } from '../../src/games/x/memory-battle.ts'
+import { readXMemoryBattleField } from '../../src/games/x/memory-battle-field.ts'
 import { readXMemoryLocation } from '../../src/games/x/memory-location.ts'
 import { readXMemoryDaycare } from '../../src/games/x/memory-daycare.ts'
 
@@ -39,7 +39,7 @@ export function createXSessionReader() {
           boxes = undefined
         }
       }
-      const battle = await readXMemoryBattle(rpc, party).catch(() => null)
+      const battle = await readXMemoryBattleField(rpc, party).catch(() => null)
       const position = await readXMemoryLocation(rpc).catch(() => null)
       const daycare = await readXMemoryDaycare(rpc).catch(() => null)
       await checkProfile()

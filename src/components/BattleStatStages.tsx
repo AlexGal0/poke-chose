@@ -4,8 +4,13 @@ import type { BattleStatStages as StatStages } from '../domain/battle-stat-stage
 import { battleStatLabel } from '../i18n/battle-stat-stages.ts'
 import './BattleStatStages.css'
 
-export function BattleStatStages({ stages }: { stages: StatStages | null }) {
+export function BattleStatStages({ stages, compact = false }: { stages: StatStages | null; compact?: boolean }) {
   const { t } = useTranslation()
+  if (compact) return <div className="battle-stage-chips" role="group" aria-label={t('battleStatStages.caption')}>
+    {!stages ? <span className="hint">{t('battleStatStages.unconfirmed')}</span> : BATTLE_STATS.every(stat => stages[stat] === 0) ? <span className="hint">{t('battleStatStages.unchanged')}</span> : BATTLE_STATS.filter(stat => stages[stat] !== 0).map(stat => <span key={stat} className={stages[stat] > 0 ? 'raised' : 'lowered'} title={battleStatLabel(t, stat)} aria-label={`${battleStatLabel(t, stat)}: ${t(stages[stat] > 0 ? 'battleStatStages.raised' : 'battleStatStages.lowered', { count: Math.abs(stages[stat]) })}`}>
+      {BATTLE_STAT_SHORT_LABELS[stat]} {stages[stat] > 0 ? '+' : '−'}{Math.abs(stages[stat])}
+    </span>)}
+  </div>
   return <div className="battle-stat-stages">
     <table>
       <caption>{t('battleStatStages.caption')}</caption>

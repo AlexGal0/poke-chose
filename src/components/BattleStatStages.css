@@ -17,3 +17,9 @@
   .battle-stat-stages thead th { font-size: 9px; }
   .battle-stat-stages caption { font-size: 11px; }
 }
+
+.battle-stage-chips { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 5px; }
+.battle-stage-chips > span { font-size: 11px; }
+.battle-stage-chips > .raised, .battle-stage-chips > .lowered { padding: 3px 6px; border: 1px solid currentColor; border-radius: 5px; }
+.battle-stage-chips .raised { color: var(--success-text, #a4dfbd); }
+.battle-stage-chips .lowered { color: var(--danger-text, #ffc1b2); }

@@ -1508,7 +1508,15 @@
     "scope": "Experimental single battle. Base individual types and potential STAB coverage; moves, abilities, items and transformations are not simulated. Transformations and double battles are pending.",
     "stale": "Battle reading is stopped or disconnected. The last session is preserved as a reference.",
     "unconfirmed": "No confirmed battle reading is available yet.",
-    "inactive": "Outside battle. Enter a single battle to see the participants."
+    "inactive": "Outside battle. Enter a single battle to see the participants.",
+    "multiScope": "Experimental single, double and horde reading for the local Pokémon X profile. Unconfirmed positions remain partial readings."
+  },
+  "battleOpponentRoster": {
+    "heading": "Opponent's team",
+    "unknown": "Total unconfirmed",
+    "total_one": "{{count}} Pokémon on the opposing team",
+    "total_other": "{{count}} Pokémon on the opposing team",
+    "lastConfirmed": "Last confirmed total"
   },
   "battleShared": {
     "partial": "The reading is temporarily incomplete. The session and last confirmed information are preserved."
@@ -1638,5 +1646,21 @@
   },
   "captureFilters": {
     "saveFailed": "Filters could not be saved in this browser."
+  },
+  "battleField": {
+    "formats": {
+      "single": "Single battle",
+      "double": "Double battle",
+      "horde": "Horde"
+    },
+    "sides": {
+      "player": "Your side",
+      "opponent": "Opponents"
+    },
+    "position": "Position {{count}}",
+    "unknownPosition": "Pokémon unconfirmed",
+    "emptyPosition": "Empty position",
+    "unknownFormat": "Battle format unconfirmed",
+    "unsupportedFormat": "This format has no available view yet"
   }
 }

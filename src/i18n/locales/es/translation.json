@@ -1508,7 +1508,15 @@
     "scope": "Combate individual experimental. Tipos base del ejemplar y cobertura STAB potencial; no simula movimientos, habilidades, objetos ni transformaciones. Transformaciones y combates dobles pendientes.",
     "stale": "La lectura de combate está detenida o desconectada. Se conserva la última sesión como referencia.",
     "unconfirmed": "Todavía no hay una lectura de combate confirmada.",
-    "inactive": "Fuera de combate. Entra en una pelea individual para ver los participantes."
+    "inactive": "Fuera de combate. Entra en una pelea individual para ver los participantes.",
+    "multiScope": "Lectura experimental de sencillos, dobles y hordas para el perfil local de Pokémon X. Los puestos no confirmados se conservan como lectura parcial."
+  },
+  "battleOpponentRoster": {
+    "heading": "Equipo rival",
+    "unknown": "Total sin confirmar",
+    "total_one": "{{count}} Pokémon en el equipo rival",
+    "total_other": "{{count}} Pokémon en el equipo rival",
+    "lastConfirmed": "Último total confirmado"
   },
   "battleShared": {
     "partial": "Lectura temporalmente incompleta. Se mantiene la sesión y la última información confirmada."
@@ -1638,5 +1646,21 @@
   },
   "captureFilters": {
     "saveFailed": "No se pudieron guardar los filtros en este navegador."
+  },
+  "battleField": {
+    "formats": {
+      "single": "Combate sencillo",
+      "double": "Combate doble",
+      "horde": "Horda"
+    },
+    "sides": {
+      "player": "Tu lado",
+      "opponent": "Rivales"
+    },
+    "position": "Puesto {{count}}",
+    "unknownPosition": "Pokémon por confirmar",
+    "emptyPosition": "Puesto vacío",
+    "unknownFormat": "Formato de combate por confirmar",
+    "unsupportedFormat": "Este formato aún no tiene una vista disponible"
   }
 }

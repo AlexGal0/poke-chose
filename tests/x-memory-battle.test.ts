@@ -40,6 +40,7 @@ test('battle reader confirms both copies, resolves the active party member and c
   const f = fixture()
   const battle = await readXMemoryBattle(f.reader, f.party)
   assert.equal(battle.active, true)
+  assert.equal(battle.opponentRosterTotal, 1)
   assert.equal(battle.own?.speciesId, 447)
   assert.equal(battle.own?.partySlot, 0)
   assert.equal(battle.enemy?.speciesId, 129)
@@ -157,11 +158,14 @@ test('trainer battles select the third rival from validated teams instead of the
   assert.equal(battle.enemy?.speciesId, 694)
   assert.equal(battle.enemy?.level, 25)
   assert.equal(battle.enemy?.partySlot, 2)
+  assert.equal(battle.opponentRosterTotal, 3)
   assert.equal(battle.enemy?.currentHp, 22, 'live field HP take precedence over roster copies')
   assert.ok(isBattleReading(battle, 721))
   // Replacing both active field copies detects the next Pokémon, not stale identity.
   for (const pointer of [0x08200400, 0x08200600]) f.memory.get(pointer)!.writeUInt16LE(210, 12)
-  assert.equal((await readXMemoryBattle(f.reader, f.party)).enemy?.partySlot, 1)
+  const replacement = await readXMemoryBattle(f.reader, f.party)
+  assert.equal(replacement.enemy?.partySlot, 1)
+  assert.equal(replacement.opponentRosterTotal, 3)
 })
 
 test('trainer team validation rejects inconsistent counts, ambiguous rivals and unstable pointer tables', async () => {

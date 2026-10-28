@@ -13,6 +13,7 @@
     "bridge:x-live": "node --experimental-strip-types bridge/x-live-index.ts",
     "probe:x-memory": "node --experimental-strip-types scripts/probe-citra-x.ts",
     "probe:x-party": "node --experimental-strip-types scripts/probe-citra-x-party.ts",
+    "probe:x-battle": "node --experimental-strip-types scripts/probe-citra-x-battle-field.ts",
     "dev:save": "node scripts/start-save.mjs",
     "preview:save": "node scripts/start-save.mjs --preview",
     "test": "node --experimental-strip-types --test tests/*.test.ts",

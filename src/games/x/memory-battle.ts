@@ -62,7 +62,7 @@ export async function readXMemoryBattle(reader: MemoryReader, party: readonly Sa
     const own = matches.length === 1 ? matches[0] : null
     if (JSON.stringify(before) !== JSON.stringify(await header())) throw new Error('X battle pointers changed')
     const identity = (p: { speciesId: number; personality: number; trainerId: number }) => `${p.speciesId}:${p.personality}:${p.trainerId}`
-    return { active: true, own: own ? { ...states[0], identity: identity(own), form: own.form, level: own.level, partySlot: own.slot, statStages: confirmedStages(0, 1) } : null,
+    return { active: true, opponentRosterTotal: teams[0].length, own: own ? { ...states[0], identity: identity(own), form: own.form, level: own.level, partySlot: own.slot, statStages: confirmedStages(0, 1) } : null,
       enemy: { ...states[2], identity: identity(enemy), form: enemy.form, level: enemy.level, partySlot: enemy.slot, statStages: confirmedStages(2, 3) } }
   }
   const first = await pass(), second = await pass()

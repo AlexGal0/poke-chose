@@ -37,17 +37,38 @@ Colección manual, equipo y preferencias permanecen separados por juego y de las
 
 ## Decisiones funcionales y visuales
 
-### Combate: una pantalla y un ciclo comunes
+### Combate: contratos y vistas compartidos
 
-`BattleScreen` sirve a Black y X. Sus adaptadores producen `CombatReading` y proporcionan resolución de especies, acción de estadísticas y `TypeRules`. `XBattle` es una frontera de composición; no conserva una segunda pantalla de combate.
+Black mantiene la ruta individual de `BattleScreen` con `CombatReading` y
+`advanceCombatSession`. X usa `FieldBattleScreen`, `FieldCombatReading` y
+`advanceFieldCombatSession` para sencillo, doble y horda. Ambas rutas comparten
+componentes de participante, PS, etapas, análisis por tipos y equipo. Cada frontera
+de juego inyecta resolución de especies, estadísticas y `TypeRules`; las vistas
+no importan lectores ni un juego concreto.
 
-`advanceCombatSession` distingue lectura incierta de salida confirmada: un hueco durante el cambio de Pokémon o una desconexión conserva la sesión y muestra su estado desactualizado. Solo una salida confirmada limpia los participantes. Esto evita que un reemplazo parezca finalizar la pelea.
+El contrato de campo distingue lados, propietarios, identidades y puestos
+ocupados, vacíos o desconocidos. La sesión conserva datos ante lecturas parciales,
+respeta reemplazos y KO y solo se limpia ante salida confirmada. Una revisión de
+sesión reinicia las selecciones entre peleas o cambios confirmados de formato.
+El formato procede del adaptador, nunca del número de supervivientes.
 
-`useBattleNavigation` comparte entrada automática, botón flotante para alternar con la vista anterior, retorno al terminar y restauración del scroll. La entrada automática encuadra a los participantes; en móvil, si ambos no caben, comienza por el activo. Se conservan los filtros de la sección anterior.
+`BattlePokemon` ofrece densidades detallada, semicompacta y compacta. Dobles y
+hordas conservan la salud del equipo sin panel de comparación ni selectores
+de rival. El análisis del combate sencillo sigue disponible y excluye huevos. Las Poké Balls
+muestran un total confirmado, sin revelar especies de las reservas. El contador
+está sobre ambos bandos para conservar su alineación.
 
-Participantes, PS, etapas, reservas y debilidades utilizan componentes comunes. El distintivo de debilitado queda a la derecha fuera del flujo para no desplazar barras. Ambos sprites son frontales: el propio se refleja horizontalmente y el rival mantiene su orientación. Las animaciones locales se limitan a participantes; debilitados, movimiento reducido o errores de carga utilizan respaldo estático.
+`useBattleNavigation` conserva entrada automática, botón flotante, vista anterior,
+filtros y restauración del scroll. La presentación contempla teclado, movimiento
+reducido, datos no disponibles y ES/EN. El motor aplica V para Black y VI para X;
+no simula daño, movimientos, habilidades ni objetos.
 
-El motor muestra efectividad y cobertura potencial por tipos/STAB, no daño exacto. Transformaciones y combates dobles son deuda acordada; habilidades y objetos no se simulan. Véanse [combate y validación](x-battle.md) y [sprites y catálogo](battle-artwork-and-regional-catalog.md).
+Las capacidades del juego y del lector son independientes. Los especiales se
+registran mediante `CombatPresentation.specialFormats` por juego e identificador;
+registrar una vista no habilita su lectura. Black doble y los especiales siguen
+pendientes; X conserva las limitaciones del perfil local y no confirma propiedad
+de aliados de otro entrenador. Véanse la [guía vigente](multi-battle.md), el
+[contrato](combat-contract.md) y la [validación](multi-battle-validation.md).
 
 ### Colección y equipo: funcionalidad compartida, composiciones propias
 
@@ -99,12 +120,12 @@ Detalles: [save X](x-save-pokedex.md), [investigación de memoria y cajas](citra
 
 ## Límites de la extracción y criterio para continuar
 
-El combate comparte pantalla y ciclo completos. Colección comparte su motor y controles, pero mantiene tarjetas/fichas y composiciones propias. Capturas comparte navegación, estado y filtrado; los avisos de oportunidades, resolución de familias y renderizadores conservan implementaciones específicas. Algunas APIs, contextos y validadores históricos de Black siguen acoplados a Gen V. Se extraerán cuando una función concreta lo requiera, preservando sus reglas y claves.
+El combate comparte contratos y componentes; Black conserva la ruta individual mientras X utiliza el campo múltiple. Colección comparte su motor y controles, pero mantiene tarjetas/fichas y composiciones propias. Capturas comparte navegación, estado y filtrado; los avisos de oportunidades, resolución de familias y renderizadores conservan implementaciones específicas. Algunas APIs, contextos y validadores históricos de Black siguen acoplados a Gen V. Se extraerán cuando una función concreta lo requiera, preservando sus reglas y claves.
 
 Para ampliar una función: identificar su contrato funcional, comprobar si existe un motor compartido, inyectar los datos/reglas necesarios y cubrir las diferencias de los adaptadores afectados. Una variante visual no debe eliminar capacidades. No habilitar un módulo solo porque exista un transporte de memoria.
 
 ## Evidencia y validación
 
-La última entrega de código registrada pasó **394 pruebas, lint y build**. El [resumen del 25 de octubre](changes-2026-10-25.md) separa evidencia real y fixtures para guardería, eclosión, géneros y conexión. La validación histórica del seguimiento contrastó acuario, exterior de Petroglifo y Ruta 8, además de pausa manual y reactivación; no se recorrieron físicamente los 360 mapas. Las notas de combate conservan sus transiciones reales y límites propios.
+La validación de combate del paso 9 pasó **481 pruebas, lint y build**; la [matriz de validación](multi-battle-validation.md) separa las comprobaciones actuales de las anteriores. Este cierre documental no repite esas pruebas. El [resumen del 25 de octubre](changes-2026-10-25.md) separa evidencia real y fixtures para guardería, eclosión, géneros y conexión. La validación histórica del seguimiento contrastó acuario, exterior de Petroglifo y Ruta 8, además de pausa manual y reactivación; no se recorrieron físicamente los 360 mapas. Las notas de combate conservan sus transiciones reales y límites propios.
 
 Esta consolidación documental no vuelve a ejecutar las comprobaciones ni implica un commit. Los recuentos anteriores de las notas detalladas son registros de su entrega, no el total actual de la suite.

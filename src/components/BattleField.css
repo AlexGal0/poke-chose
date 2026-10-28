@@ -1,0 +1,26 @@
+.battle-field { margin-top: 16px; }
+.battle-field-title { font-size: 16px; margin-bottom: 12px; }
+.battle-field > .battle-opponent-roster { margin-bottom: 12px; }
+.battle-field-sides { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.battle-field-side { min-width: 0; }
+.battle-field-side > h4 { margin: 0 0 8px; color: var(--text-muted, #b5c2d0); font-size: 13px; }
+.battle-field-positions { display: grid; gap: 10px; }
+.battle-field-double .battle-field-positions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.battle-field-horde .battle-field-side-opponent .battle-field-positions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.battle-field-horde .battle-field-sides { grid-template-columns: minmax(200px, 1fr) minmax(0, 3fr); }
+.battle-field-position { min-width: 0; }
+.battle-field-position-label { margin-bottom: 5px; font-size: 11px; color: var(--text-muted, #b5c2d0); }
+.battle-field-placeholder { border: 1px dashed var(--border-strong, #526174); border-radius: 9px; padding: 20px 10px; font-size: 13px; text-align: center; }
+.battle-field-matchups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.battle-field-matchups .battle-type-matchup { grid-template-rows: auto; grid-area: auto; }
+@media (max-width: 1200px) {
+  .battle-field-double .battle-field-sides { grid-template-columns: minmax(0, 1fr); }
+  .battle-field-horde .battle-field-side-opponent .battle-field-positions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .battle-field-sides, .battle-field-horde .battle-field-sides, .battle-field-matchups { grid-template-columns: minmax(0, 1fr); }
+  .battle-field-horde .battle-field-side-player { max-width: 360px; }
+}
+@media (max-width: 460px) {
+  .battle-field-double .battle-field-positions, .battle-field-horde .battle-field-side-opponent .battle-field-positions { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,16 +1,23 @@
 # Combate experimental de Pokémon X
 
+Integración múltiple del 27 de octubre de 2026: el lector de producción del perfil
+local de X ya publica sencillo, doble y horda. La investigación que sustenta las
+direcciones y las limitaciones está en [x-multi-battle-research.md](x-multi-battle-research.md).
+La implementación y la validación actuales se describen al final de este documento.
+
+Las secciones siguientes conservan el historial de la integración individual.
+
 Primera integración del 23 de octubre de 2026. Lectura local y de solo lectura para el perfil de X ya validado con Citra Nightly 2104.
 
 La pantalla y el ciclo actuales son compartidos con Black. Las secciones de validación conservan la secuencia de entregas, incluidas comprobaciones de la pantalla inicial luego sustituida. Véase la [guía de arquitectura y decisiones](architecture.md) para las responsabilidades y límites vigentes.
 
-## Alcance
+## Alcance de la integración individual inicial
 
 La pestaña Combate está disponible en la fuente en vivo cuando el puente anuncia la capacidad `battle`. Muestra activo, rival, PS, resistencias, debilidades y comparación STAB potencial del equipo. Las reglas se inyectan en el motor compartido: Black mantiene generación V y X utiliza VI. Las especies se resuelven localmente y su presentación respeta la Pokédex de la fuente.
 
 El nivel del rival se obtiene de su EXP leída y de la curva de crecimiento de su especie, con datos públicos locales. Las siete etapas se leen de dos copias de combate, se normalizan de 0–12 a −6…+6 y se muestran bajo los PS. La pantalla compartida conserva la última lectura válida del mismo ejemplar durante transiciones; al cambiar su identidad se reinicia esa referencia. Transformaciones y combates dobles quedan expresamente como deuda, fuera de esta entrega. No se calculan daños de movimientos ni efectos de habilidades u objetos. La validación real realizada corresponde a encuentros individuales salvajes; otras modalidades requieren investigación adicional.
 
-## Perfil y comprobaciones de memoria
+## Perfil y comprobaciones de memoria iniciales
 
 Referencias iniciales: [punteros de estadísticas](https://github.com/Hartie95/PokemonCheatPlugin/blob/master/source/battle/statsModifier.c) y [copias PK6 del rival](https://github.com/Hartie95/PokemonCheatPlugin/blob/master/source/battle/wildModifier.c). Se consultaron como datos; no se ejecutó código de ese proyecto ni se implementaron escrituras.
 
@@ -73,3 +80,73 @@ La entrada automática centra las tarjetas de los participantes, en lugar de des
 La marca de debilitado se coloca arriba a la derecha, junto al botón de estadísticas y fuera del flujo de la tarjeta, para evitar que añada altura y desplace los PS en las disposiciones de una columna. Con Skitty a 0/28 PS se midieron ambas barras a la misma altura (469.8 px) en una ventana de 900 px de ancho; no se capturó esa situación en móvil antes de que terminara la pelea.
 
 La selección de aventura se guarda con el día local del dispositivo. Recargar o reiniciar durante ese mismo día restaura el juego; en otra fecha vuelve el selector. Cambiar de juego borra la selección hasta elegir otra aventura. Se comprobó la recarga real de X; los tests cubren ambas aventuras, medianoche, datos inválidos y almacenamiento bloqueado. Suite: 344 pruebas correctas.
+
+## Integración múltiple: fase 8 (27 de octubre de 2026)
+
+`bridge/citra/x-session.ts` usa ahora `readXMemoryBattleField`. Se mantiene la
+huella del ejecutable antes y después de la sesión. El lector consulta el estado
+explícito, el selector de formato y las instrucciones de capacidad ya validadas.
+Lee las primeras 1/1, 2/2 o 1/5 entradas del orden de batalla y confirma dos
+copias por participante y dos pasadas completas, además de la estabilidad de
+las tablas. Los registros siguientes son reservas y no se muestran como activos.
+
+La identidad procede del enlace PK6 del registro, con validación de punteros,
+checksum, especie y pertenencia al equipo correspondiente. Esto permite distinguir
+rivales de la misma especie y PS máximos. El espacio original se resuelve por
+identidad, aunque el orden de combate cambie. No se usa la heurística anterior
+de especie/PS máximos para la ruta nueva. Un enlace inválido, copia discordante o
+identidad propia ajena al equipo controlado deja ese puesto desconocido. Las
+etapas discordantes dejan solo las etapas sin confirmar. No se interpreta un
+puntero nulo como vacante confirmada.
+
+`BattleReading.field` amplía el protocolo de forma opcional. El cliente valida
+formato, topología, propietarios, especies, formas, niveles, salud, etapas y
+límites de este perfil antes de consumirlo. Los payloads individuales antiguos
+siguen siendo válidos. `normalizeXFieldBattle` aporta el campo y el equipo con
+reservas; los apodos se enlazan por identidad. `XBattle` mantiene la ruta múltiple
+una vez recibido el protocolo nuevo, incluso durante una lectura nula, una salida
+o desconexión. Así no desmonta la sesión por un hueco temporal del puente.
+
+Las capacidades de X anuncian sencillo, doble y horda para este lector local.
+Black conserva su lector individual y sus reglas de generación V. No se
+implementan triples, rotatorios, transformaciones ni propiedad de compañeros de
+otro entrenador. Un selector desconocido se publica como formato no confirmado,
+sin degradarlo a sencillo. Aliados, sustituciones rivales con reservas y otras
+revisiones del ejecutable requieren validación adicional. Las fases de animación
+pueden dar lecturas parciales; se conserva la última lectura confirmada.
+
+### Comprobaciones realizadas con Citra real
+
+- Perfil confirmado por huella; primera muestra completa del doble en unos 96 ms.
+- Doble: Shelgon 40, 109/109 PS y Mienfoo 40, 99/99 PS contra Pansage y Pansear
+  10, 30/30 PS. Cuatro puestos, dos activos propios, seis miembros en el equipo
+  y dos Poké Balls rivales. Cambiar la referencia a Pansear actualizó el análisis.
+- Horda: un Shelgon propio y cinco Scraggy de nivel 5, con máximos 20/21/21/20/21.
+  Tras un KO, la entrada de combate 3 quedó en 0/20 PS; se conservaron los cinco
+  puestos y el total de cinco Poké Balls. El orden mostrado es el orden normalizado
+  de la tabla, no las coordenadas visuales del juego.
+- Sencillo salvaje posterior: Shelgon 40, 102/109 PS contra Skiddo 10, 34/34 PS;
+  dos puestos y un activo propio. El cambio de modalidad eliminó las selecciones
+  del campo anterior.
+- Datos reales a través de RPC, puente SSE, validación, adaptador y pantalla de
+  producción; sin fixtures en esta comprobación. Se verificó DOM móvil a 320
+  píxeles en doble y horda sin desbordamiento y se comprobó cambio ES/EN en sencillo.
+- Capturas inspeccionadas: `artifacts/x-double-real-integrated.png`,
+  `artifacts/x-horde-real-integrated.png` (posterior a KO) y
+  `artifacts/x-single-real-integrated.png`.
+
+Se reiniciaron los servicios locales para cargar el protocolo nuevo. No se
+modificaron memoria, saves ni la ejecución del juego: los cambios de combate los
+realizó el usuario. Los diagnósticos temporales se retiraron y no se guardaron
+dumps ni muestras de memoria. El lector individual antiguo permanece para
+compatibilidad y sus pruebas, pero el puente X actual usa el lector de campo.
+
+Las pruebas sintéticas cubren los tres formatos, identidad con especies/PS
+repetidos, dos sustituciones propias y rivales reordenados, KO, referencias
+inválidas, etapas discordantes, selector desconocido, truncamiento, cambios entre
+lecturas, validación de payload y normalización de apodos y reservas. Las
+sustituciones sintéticas no se presentan como validación real de reemplazos
+rivales con reservas.
+
+Validación final de la fase 8: `npm test` (477/477), `npm run lint` y
+`npm run build` correctos; `git diff --check` sin errores de espacios.

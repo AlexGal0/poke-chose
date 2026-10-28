@@ -6,6 +6,8 @@ Organize your collection, put together a team of up to six Pokémon, and check t
 
 In Black, you can use it manually, sync it with a save file, or enable live reading. That workspace uses **Black/White, Generation V** rules; in-game integration is implemented for **Pokémon Black**.
 
+The final multi-battle and pending collection delivery is recorded in the [October 28 summary](docs/es/changes-2026-10-28.md) (Spanish).
+
 ## Features
 
 Recent additions include searchable box navigation, shared acquisition details for Black and X, persistent capture filters, connection recovery and X trainer battles. See the [October 26 change record](docs/es/changes-2026-10-26.md) for validation and remaining limits.
@@ -26,6 +28,15 @@ See the [save reader](docs/es/x-save-pokedex.md) and the
 
 Black and X share the battle screen and lifecycle: automatic entry, floating shortcut, continuity during Pokémon switches, and return to the previous view with its filters. X also supports live location following in Captures; choosing a zone manually pauses following. Its catalog offers regional and National Pokédex scopes, including earlier-generation species. The selected adventure survives reloads and restarts during the current local day. See [architecture and design decisions](docs/architecture.md) for the current boundaries and limitations.
 
+### Single, double and horde battles
+
+X now reads all three modes with the local Citra profile. Cards switch between
+detailed, semicompact and very compact layouts, with
+team health and opposing Poké Balls that do not reveal reserves.
+Black keeps its single-battle reader; doubles, triples and rotations remain
+pending for that reader. See the [battle guide](docs/multi-battle.md) for setup,
+per-game support, limits and validation.
+
 ### Day Care, Eggs and source status
 
 - **Black and X Day Care:** a shared screen with two slots, individual gender, level, EXP and Egg availability. X supports Save and Citra live with the locally validated profile. Retained old readings are marked stale.
@@ -40,7 +51,7 @@ See the [October 25 delivery summary](docs/changes-2026-10-25.md) for contracts,
 
 The features below describe the Black workspace.
 
-- **Day Care (Black):** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/daycare-research.md).
+- **Day Care (Black):** two slots, current levels, experience progress, approximate steps to the next level, and egg availability from the save or live reader. Simple level evolutions show remaining levels and alerts within 50 steps of the required level; a floating shortcut opens Day Care. Pokémon cannot evolve while deposited. Live reading is opt-in with `daycareAddress` for the verified ROM; `daycarePollMs` defaults to 3000 and follows the general reader cycle. See [research and validation](docs/es/daycare-research.md).
 
 - **Catalog of 649 species:** browse Unova or all of generations I–V, search by name, check WikiDex, and review acquisition routes in Black.
 - **Collection and team:** add Pokémon manually and pick up to six members; with melonDS, check the team and all 24 boxes, preserving duplicate specimens and nicknames.
@@ -199,9 +210,9 @@ The manual collection, team, and preferences are saved in the browser. To get th
 
 ## Scope and limitations
 
-- The analysis uses **Generation V**: 17 types, no Fairy; Steel resists Ghost and Dark.
+- Black uses **Generation V**: 17 types, no Fairy; Steel resists Ghost and Dark. X uses **Generation VI**: 18 types, including Fairy, without those two Steel resistances.
 - It computes defensive typing and potential STAB coverage against individual types. It does not simulate actual moves, abilities, held items, weather, or every battle effect. Eggs are excluded from the analysis.
-- The catalog spans generations I–V; a species appearing there doesn't guarantee it can be caught in Black. Encounters and acquisition routes depend on available data and its local add-ons.
+- Black’s catalog spans generations I–V and X’s spans I–VI; a listed species is not necessarily obtainable in that game. Encounters and acquisition routes depend on available data and its local add-ons.
 - Live reading and battle are experimental, with compatibility limited to the configured addresses. On errors, the last valid data is kept and marked as stale.
 - Manual mode and saved-data analysis can work offline. Data not yet cached and sprites need network access. There is no service worker.
 
@@ -225,9 +236,11 @@ To read only the `.sav` without starting the live and battle readers, use two te
 
 The services listen on `127.0.0.1`: save on **15301**, live on **15302**, and battle on **15303**. Vite proxies their requests in both development and preview. Advanced options include `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT`, and `MELONDS_GDB_PORT`; check the technical documentation before changing them.
 
-The latest recorded code delivery passed **394 tests**, lint and build. The [October 25 summary](docs/changes-2026-10-25.md) separates real-save/emulator checks, fixtures and remaining coverage. This documentation consolidation does not repeat the checks or a fresh installation.
+The latest battle-code validation (step 9) passed **481 tests**, lint and build. The [validation matrix](docs/es/multi-battle-validation.md) (Spanish) separates fixtures, UI checks and real readings. This documentation closure does not repeat the suite, installation or emulator checks.
 
 ## Technical documentation
+
+- [Multi-battle guide](docs/multi-battle.md) ([Español](docs/es/multi-battle.md)): usage, support, recovery and per-game extension.
 
 - [Day Care, Eggs, gender ratios and connection status](docs/changes-2026-10-25.md) ([Español](docs/es/changes-2026-10-25.md)): consolidated delivery state.
 - [X Day Care and hatching](docs/es/x-daycare.md), [gender proportions](docs/es/encounter-gender-research.md) and [connection indicator](docs/es/connection-indicator.md): detailed contracts, adapters, rules and evidence in Spanish.
