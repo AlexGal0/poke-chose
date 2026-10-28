@@ -22,7 +22,7 @@ function participant(candidate: ActivePokemonCandidate | null, health: EnemyCand
     slot: candidate.slot ?? null, nickname: candidate.nickname, health: consistentBattleHealth(candidate, health), stages: consistentStatStages(candidate, stages) }
 }
 export function normalizeBlackBattle(snapshot: BlackBattleSnapshot) {
-  return { status: snapshot.status, active: snapshot.battleActive ?? null,
+  return { status: snapshot.status, active: snapshot.battleActive ?? null, opponentRosterTotal: null,
     enemy: participant(consistentEnemyCandidate(snapshot.candidates), snapshot.enemyVitalsCandidates ?? [], snapshot.candidates),
     own: participant(consistentOwnCandidate(snapshot.activeCandidates ?? []), snapshot.activeCandidates ?? [], snapshot.activeCandidates ?? []),
     team: snapshot.battleTeam?.map(member => ({ ...(participant(member, [member, member], [member, member]) ?? {

@@ -1,0 +1,10 @@
+.battle-health { width: 100%; min-height: 44px; margin-top: 12px; }
+.battle-health-label { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 8px; }
+.battle-health-label span { color: var(--text-muted, #b5c2d0); }
+.battle-health-bar { --hp-color: #83dcb8; display: block; appearance: none; width: 100%; height: 10px; border: 0; border-radius: 8px; overflow: hidden; background: #121a24; }
+.battle-health-bar.medium { --hp-color: #eac56a; }
+.battle-health-bar.low { --hp-color: #ef7a83; }
+.battle-health-fill { display: block; height: 100%; background: var(--hp-color); border-radius: 8px; transition: width 420ms ease-out, background-color 420ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .battle-health-fill { transition: none; }
+}

@@ -252,7 +252,8 @@
       "collection": "My collection",
       "analysis": "Type balance",
       "types": "Type chart",
-      "battle": "Battle"
+      "battle": "Battle",
+      "development": "In development"
     },
     "collection": {
       "eyebrow": "03 / YOUR COMPANIONS",
@@ -396,7 +397,17 @@
     "locationParty": "Team ({{count}})",
     "locationBox": "Box {{number}} ({{count}})",
     "boxFilter": {
-      "filteredCount": "{{filtered}} / {{total}} specimens"
+      "filteredCount": "{{filtered}} / {{total}} specimens",
+      "navigation": "Browse boxes",
+      "previous": "Previous box",
+      "next": "Next box",
+      "search": "Find box",
+      "searchHint": "Enter a number from 1 to {{count}}.",
+      "all": "All boxes and party",
+      "party": "Party",
+      "box": "Box {{number}}",
+      "searchPlaceholder": "Find a box…",
+      "noResults": "No boxes found."
     },
     "emptyCollection": "No Pokémon in the team or boxes.",
     "emptyParty": "No Pokémon in the team.",
@@ -477,7 +488,10 @@
     "battleDisconnected": "disconnected",
     "battleWaiting": "waiting for connection",
     "lastReading": "Last team reading: {{time}}",
-    "goToControlsButton": "Go to connection controls"
+    "goToControlsButton": "Go to connection controls",
+    "reconnect": "Reconnect",
+    "reconnecting": "Reconnecting…",
+    "reconnectFailed": "Could not reconnect. Check the emulator and try again."
   },
   "evolutionDialog": {
     "orBranch": "Or: ",
@@ -488,7 +502,8 @@
     "loadError": "Couldn't load the evolution. Check your connection to PokéAPI.",
     "readingHint": "Read the tree from left to right. Each relation shows how it evolves into the next species in Black/White. Alternative branches are shown one below the other.",
     "scrollAria": "Evolution family; scroll horizontally to see every stage",
-    "noEvolutionsHint": "This species has no evolutions or pre-evolutions in Generation V."
+    "noEvolutionsHint": "This species has no evolutions or pre-evolutions in Generation V.",
+    "breedingOnly": "Breeding: no direct local encounter recorded. May require Incense or compatible parents."
   },
   "encounterChances": {
     "describeBase": "{{method}}: {{chance}}% · {{area}}",
@@ -1493,7 +1508,15 @@
     "scope": "Experimental single battle. Base individual types and potential STAB coverage; moves, abilities, items and transformations are not simulated. Transformations and double battles are pending.",
     "stale": "Battle reading is stopped or disconnected. The last session is preserved as a reference.",
     "unconfirmed": "No confirmed battle reading is available yet.",
-    "inactive": "Outside battle. Enter a single battle to see the participants."
+    "inactive": "Outside battle. Enter a single battle to see the participants.",
+    "multiScope": "Experimental single, double and horde reading for the local Pokémon X profile. Unconfirmed positions remain partial readings."
+  },
+  "battleOpponentRoster": {
+    "heading": "Opponent's team",
+    "unknown": "Total unconfirmed",
+    "total_one": "{{count}} Pokémon on the opposing team",
+    "total_other": "{{count}} Pokémon on the opposing team",
+    "lastConfirmed": "Last confirmed total"
   },
   "battleShared": {
     "partial": "The reading is temporarily incomplete. The session and last confirmed information are preserved."
@@ -1600,5 +1623,44 @@
       "tornadus": "After the eighth badge, speak to the receptionist at the Route 10 gate. Visit the Route 7 house during the storm and listen to the woman. On leaving, Tornadus starts roaming Unova at level 40; gate bulletin boards help locate the storm.",
       "landorus": "Bring Tornadus and Thundurus together in your party to Abundant Shrine. In Black, Thundurus must come from another compatible game: it is not this version’s roaming Pokémon."
     }
+  },
+  "xAcquisition": {
+    "group": "Ways to obtain in Pokémon X",
+    "open": "View how to obtain {{name}} in Pokémon X",
+    "hint": "Pokémon X data: Kalos encounters and Generation VI evolutions. Gifts and NPC trades may depend on progress or earlier choices.",
+    "loading": "Loading Pokémon X acquisition details…",
+    "noEncounters": "No direct X encounters are recorded for this species. This does not prove it is unobtainable.",
+    "anyPokemon": "any Pokémon accepted for this trade",
+    "routes": {
+      "capture": "Catchable in Pokémon X. Check locations, methods and conditions.",
+      "static": "Static encounter in Pokémon X; may depend on progress or your chosen starter.",
+      "gift": "Gift in Pokémon X; may depend on a choice or story progress.",
+      "egg": "Gift Egg recorded in Pokémon X.",
+      "fossil": "Revive a fossil in Pokémon X. Check instructions and fossil choices.",
+      "npc-trade": "Trade with a character in Pokémon X. Check their request and conditions.",
+      "evolution": "Evolution supported in Generation VI. Obtain its pre-evolution and meet the requirements.",
+      "trade-evolution": "Trade evolution in Generation VI; may require an item or a particular species.",
+      "breed": "Breed compatible parents. Some species require additional conditions or Incense.",
+      "unknown": "Acquisition unconfirmed: these sources do not cover every route. Missing encounters do not imply that transfer is required."
+    }
+  },
+  "captureFilters": {
+    "saveFailed": "Filters could not be saved in this browser."
+  },
+  "battleField": {
+    "formats": {
+      "single": "Single battle",
+      "double": "Double battle",
+      "horde": "Horde"
+    },
+    "sides": {
+      "player": "Your side",
+      "opponent": "Opponents"
+    },
+    "position": "Position {{count}}",
+    "unknownPosition": "Pokémon unconfirmed",
+    "emptyPosition": "Empty position",
+    "unknownFormat": "Battle format unconfirmed",
+    "unsupportedFormat": "This format has no available view yet"
   }
 }

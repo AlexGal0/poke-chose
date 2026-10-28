@@ -13,3 +13,5 @@
 .evolution-relation { width: 110px; flex: 0 0 110px; text-align: center; color: var(--accent-text, #bcebd9); font-size: 12px; line-height: 1.5; padding: 8px 0; }
 .evolution-relation > span { font-size: 24px; }.evolution-relation p { margin: 4px 0; overflow-wrap: anywhere; }
 @media (max-width: 640px) { .evolution-dialog { padding: 16px; }.evolution-card { width: 145px; flex-basis: 145px; } }
+
+.breeding-only-badge { display: inline-grid; place-items: center; padding: 4px; border-radius: 50%; background: var(--surface-raised, #273342); font-size: 17px; }

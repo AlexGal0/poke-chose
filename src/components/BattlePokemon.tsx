@@ -11,8 +11,14 @@ import { BattleHealthBar } from './BattleHealthBar'
 import { BattleStatStages } from './BattleStatStages'
 import type { BattleStatStages as StatStages } from '../domain/battle-stat-stages'
 import { updateStatStagesDisplay } from '../domain/battle-stat-stages'
+import type { TypeRules } from '../domain/type-analysis'
+import { battleDefenses } from '../domain/battle-engine'
+import { TypeBadge } from './TypeBadge'
+import './BattlePokemon.css'
 
-export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null, service }: { service: CombatService; candidate: CombatParticipant; pokemon?: CombatSpecies | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
+export type BattlePokemonDensity = 'detailed' | 'semicompact' | 'compact'
+
+export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null, service, rules, density = 'detailed' }: { rules: TypeRules; density?: BattlePokemonDensity; service: CombatService; candidate: CombatParticipant; pokemon?: CombatSpecies | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
   const { t } = useTranslation()
   const { speciesId } = candidate
   const identity = `${candidate.identity}:${candidate.form}`
@@ -38,6 +44,29 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     ], { duration: 260 + Math.min(damageFraction, 1) * 240, easing: 'ease-out' })
     return () => animation?.cancel()
   }, [hit, damageFraction, identity])
+  const weaknesses = density === 'semicompact' && pokemon ? battleDefenses(rules, pokemon.types).weaknesses : null
+  const weaknessHeading = t(own ? 'battleTypeMatchup.ownWeaknessesHeading' : 'battleTypeMatchup.rivalWeaknessesHeading')
+  const level = candidate.level === null ? t('battleAdapter.levelUnavailable') : t('app.team.level', { level: candidate.level })
+  const nickname = own ? candidate.nickname : null
+  if (density !== 'detailed') return <div aria-label={own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')} className={`battle-participant battle-density-${density} ${own ? 'own-participant' : 'enemy-participant'}`}>
+    <div ref={cardRef} className={`battle-small-card ${shownHealth?.currentHp === 0 ? 'is-fainted' : ''}`}>
+      <div className="battle-small-sprite">{pokemon && <BattleSprite pokemon={pokemon} fainted={shownHealth?.currentHp === 0} />}</div>
+      <div className="battle-small-identity">
+        <h3>{pokemon ? nickname || pokemonDisplayName(pokemon.name) : t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</h3>
+        {pokemon && nickname && nickname !== pokemonDisplayName(pokemon.name) && <p className="battle-small-species">{pokemonDisplayName(pokemon.name)}</p>}
+        <p className="hint">{level}</p>
+        {!pokemon && <p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p>}
+        <BattleHealthBar health={shownHealth} />
+      </div>
+      {density === 'semicompact' && <>
+        <BattleStatStages stages={nextStatsDisplay.stages} compact />
+        <section className="battle-small-weaknesses" aria-label={weaknessHeading}>
+          <strong>{weaknessHeading}</strong>
+          <div>{weaknesses ? weaknesses.length ? weaknesses.map(row => <span key={row.type}><TypeBadge type={row.type} /> <b>{row.multiplier}×</b></span>) : <span className="hint">{t('battleTypeMatchup.noWeaknesses')}</span> : <span className="hint">{t('battleTypeMatchup.waitingTypes')}</span>}</div>
+        </section>
+      </>}
+    </div>
+  </div>
   return <div className={`battle-participant ${own ? 'own-participant' : 'enemy-participant'}`}>
     <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>

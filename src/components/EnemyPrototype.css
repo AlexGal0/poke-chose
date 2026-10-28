@@ -3,8 +3,8 @@
 .battle-panel h2 { font-size: 20px; margin-top: 3px; }
 .enemy-prototype-card { width: 100%; margin-top: 6px; }
 .battle-participants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'own enemy' 'own-effect enemy-effect' 'own-effect enemy-effect' 'own-effect enemy-effect' 'own-effect enemy-effect' 'own-effect enemy-effect'; gap: 10px 12px; margin-top: 12px; align-items: stretch; }
-.own-participant { grid-area: own; }
-.enemy-participant { grid-area: enemy; }
+.battle-participants > .own-participant { grid-area: own; }
+.battle-participants > .enemy-participant { grid-area: enemy; }
 .battle-type-matchup.outgoing { grid-area: own-effect; }
 .battle-type-matchup.incoming { grid-area: enemy-effect; }
 .battle-participant { display: flex; flex-direction: column; min-width: 0; }
@@ -27,16 +27,6 @@
 .enemy-prototype-card .card-actions { grid-column: 2; grid-row: 3; flex: 0; width: 100%; margin-top: 0; gap: 4px; }
 .enemy-prototype-card .card-actions > .hint { font-size: 11px; }
 .enemy-prototype-card .fainted-status { position: absolute; top: 8px; right: 44px; margin: 0; padding: 3px 8px; font-size: 10px; line-height: 1.4; }
-.battle-health { width: 100%; min-height: 44px; margin-top: 12px; }
-.battle-health-label { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 8px; }
-.battle-health-label span { color: var(--text-muted, #b5c2d0); }
-.battle-health-bar { --hp-color: #83dcb8; display: block; appearance: none; width: 100%; height: 10px; border: 0; border-radius: 8px; overflow: hidden; background: #121a24; }
-.battle-health-bar.medium { --hp-color: #eac56a; }
-.battle-health-bar.low { --hp-color: #ef7a83; }
-.battle-health-fill { display: block; height: 100%; background: var(--hp-color); border-radius: 8px; transition: width 420ms ease-out, background-color 420ms ease-out; }
-@media (prefers-reduced-motion: reduce) {
-  .battle-health-fill { transition: none; }
-}
 .enemy-prototype-status { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; padding: 8px 12px; border: 1px solid var(--border-strong, #526174); border-left: 4px solid var(--text-muted, #a5b5c7); border-radius: 7px; background: var(--surface-raised, #202a36); }
 .enemy-prototype-status strong { color: var(--text, #edf4f8); font-size: 13px; }
 .enemy-prototype-status span { color: var(--text-muted, #a5b5c7); font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }

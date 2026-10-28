@@ -16,10 +16,11 @@ export function createXLiveBridge(options: { factory?: () => PartyReader; pollMs
     if (request.method === 'GET' && request.url === '/x-live-api/health') {
       response.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ application: 'poke-chose', service: 'x-live', workspace: process.cwd() })); return
     }
-    if (request.method === 'POST' && ['/x-live-api/connect', '/x-live-api/disconnect', '/x-live-api/refresh'].includes(request.url ?? '')) {
+    if (request.method === 'POST' && ['/x-live-api/connect', '/x-live-api/disconnect', '/x-live-api/refresh', '/x-live-api/reconnect'].includes(request.url ?? '')) {
       if (request.headers['content-type'] !== 'application/json' || !clients.size) { response.writeHead(403).end(); return }
       request.resume()
-      if (request.url === '/x-live-api/connect') controller.connect()
+      if (request.url === '/x-live-api/reconnect') { controller.disconnect(); controller.connect() }
+      else if (request.url === '/x-live-api/connect') controller.connect()
       else if (request.url === '/x-live-api/refresh') controller.refresh()
       else controller.disconnect()
       response.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ ok: true })); return

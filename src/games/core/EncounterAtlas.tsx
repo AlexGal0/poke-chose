@@ -47,8 +47,7 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
   const reading = location ?? { scope: `${data.version}:unavailable`, available: false, zoneId: null, stale: true }
   const zoneControl = useCaptureZone({ reading, validZone: id => data.locations.some(zone => zone.id === id), loadManual: () => loadZone(storageKey, data, initialZoneId), saveManual: id => persistValue(storageKey, String(id)), loadFollow: () => loadCaptureFollow(followKey), saveFollow: enabled => persistValue(followKey, JSON.stringify(enabled)) })
   const { selected, zoneSaved: saved } = zoneControl
-  const [zoneQuery, setZoneQuery] = useState('')
-  const { query, setQuery, method, setMethod, progress: progressFilter, setProgress: setProgressFilter } = useCaptureFilters(selected)
+  const { query, setQuery, method, setMethod, progress: progressFilter, setProgress: setProgressFilter, zoneQuery, setZoneQuery, saved: filtersSaved } = useCaptureFilters(selected, `poke-chose:${data.version}:capture-filters:v1`)
   const equipmentKey = `poke-chose:${data.version}:encounter-access:v1`
   const [equipment, setEquipment] = useState(() => loadEncounterEquipment(equipmentKey, data.equipmentMethods ?? []))
   const [equipmentSaved, setEquipmentSaved] = useState(true)
@@ -71,7 +70,7 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
   }
   return <div className="capture-panel encounter-atlas">
     <div className="section-heading"><h2 id="encounter-atlas-title">{t('games.modules.captures')}</h2><span className="count">{t('common.speciesCount', { count: rows.length })}</span></div>
-    <p className="hint">{t('encounterAtlas.description')}</p><p className="hint">{t('encounterAtlas.collectionHint')}</p>
+    {!filtersSaved && <p className="notice" role="status">{t('captureFilters.saveFailed')}</p>}
     {pokedex && <PokedexLookup pokedex={pokedex} species={speciesCatalog?.length ? speciesCatalog : data.species} />}
     {!pokedex && <p className="hint">{t('captureChecklist.waitingForPokedex')}</p>}
     {stale && pokedex && <p className="notice" role="status">{t('captureChecklist.staleNotice')}</p>}
@@ -95,10 +94,9 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
     {!saved && <p className="notice" role="status">{t('captureChecklist.zoneSaveFailed')}</p>}
     {!zoneControl.followSaved && <p className="notice" role="status">{t('captureChecklist.location.saveFailed')}</p>}
     {reading.available && <>
-      <p className="hint">{t('encounterAtlas.followHint')}</p>
       <p className="hint" role="status">{reading.stale ? t('captureChecklist.location.stale') : reading.zoneId !== null && data.locations.some(zone => zone.id === reading.zoneId) ? t('encounterAtlas.detectedZone', { zone: label(data.locations.find(zone => zone.id === reading.zoneId)!) }) : t('encounterAtlas.unknownZone')}</p>
     </>}
-    <CollectionSearch collection={data.species.filter(p => allRows.some(row => row.speciesId === p.id))} types={types ?? [...new Set(data.species.flatMap(p => p.types))]} searchLabel={t('encounterAtlas.speciesSearch')} placeholder={t('encounterAtlas.speciesPlaceholder')} query={query} onChange={setQuery} />
+    <CollectionSearch showHint={false} collection={data.species.filter(p => allRows.some(row => row.speciesId === p.id))} types={types ?? [...new Set(data.species.flatMap(p => p.types))]} searchLabel={t('encounterAtlas.speciesSearch')} placeholder={t('encounterAtlas.speciesPlaceholder')} query={query} onChange={setQuery} />
     <CaptureFilters methods={methods} method={method} onMethodChange={setMethod} progress={progressFilter} onProgressChange={setProgressFilter} pokedexAvailable={pokedex !== null} />
     {Object.keys(equipment).length > 0 && <fieldset className="encounter-equipment"><legend>{t('captureChecklist.equipment.legend')}</legend>{Object.keys(equipment).map(value => <label key={value}><input type="checkbox" checked={equipment[value]} onChange={event => {
       const next = { ...equipment, [value]: event.target.checked }
@@ -107,7 +105,6 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
     }} />{methodLabel(t, value)}</label>)}</fieldset>}
     {allRows.length > accessibleRows.length && <p className="hint">{t('captureChecklist.equipment.hiddenCount', { count: allRows.length - accessibleRows.length })}</p>}
     {!equipmentSaved && <p className="notice" role="status">{t('captureChecklist.equipment.filterSaveFailed')}</p>}
-    <p className="hint">{t('encounterAtlas.probabilityHint')}</p>
     {rows.some(row => row.details.some(detail => detail.method === 'horde')) && <p className="hint">{t('encounterAtlas.hordeHint')}</p>}
     {zone?.noticeKey && <p className="notice">{t(zone.noticeKey)}</p>}
     {!rows.length && <p className="empty" role="status">{t(allRows.length ? 'encounterAtlas.noMatches' : 'encounterAtlas.noRecordedObtaining')}</p>}

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { collectionTags, normalizeTag } from '../domain/collection-search'
 import { typeLabel } from '../i18n/types.ts'
 
-export function CollectionSearch({ collection, query, onChange, types, searchLabel, placeholder }: { collection: readonly { types: readonly string[] }[]; types: readonly string[]; searchLabel?: string; placeholder?: string; query: string; onChange: (query: string) => void }) {
+export function CollectionSearch({ collection, query, onChange, types, searchLabel, placeholder, showHint = true }: { collection: readonly { types: readonly string[] }[]; types: readonly string[]; showHint?: boolean; searchLabel?: string; placeholder?: string; query: string; onChange: (query: string) => void }) {
   const { t } = useTranslation()
   const tags = collectionTags(query)
   const availableTypes = types.filter(type => collection.some(pokemon => pokemon.types.includes(type)))
@@ -12,7 +12,7 @@ export function CollectionSearch({ collection, query, onChange, types, searchLab
   const matchesType = (tag: string, type: string) => normalizeTag(tag) === type || normalizeTag(tag) === normalizeTag(typeLabel(t, type))
   return <div className="collection-search">
     <label className="search"><span aria-hidden="true">⌕</span><input type="search" aria-label={searchLabel ?? t('collectionSearch.searchAria')} placeholder={placeholder ?? t('collectionSearch.placeholder')} value={query} onChange={event => onChange(event.target.value)} /></label>
-    <p className="hint">{t('collectionSearch.hint')}</p>
+    {showHint && <p className="hint">{t('collectionSearch.hint')}</p>}
     {tags.length > 0 && <div className="collection-tags" aria-label={t('collectionSearch.activeTagsAria')}>{tags.map((tag, index) => {
       const type = types.find(type => matchesType(tag, type))
       const label = type ? typeLabel(t, type) : tag

@@ -1,3 +1,4 @@
+import './BattleHealthBar.css'
 import { useTranslation } from 'react-i18next'
 import type { BattleHealth } from '../domain/enemy-prototype'
 

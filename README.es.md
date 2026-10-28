@@ -2,9 +2,13 @@
 
 # PokéChose
 
+Las novedades de cajas, métodos de obtención, filtros persistentes, reconexión y combates de entrenadores en X están documentadas en el [registro del 26 de octubre](docs/es/changes-2026-10-26.md), con su validación y límites pendientes.
+
 Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro o Pokémon X**. PokéChose funciona en el navegador y ofrece fuentes manuales, de guardado y de memoria de solo lectura, según el juego.
 
 En Negro puedes usarlo manualmente, sincronizarlo con un archivo de guardado o activar la lectura en vivo. Ese espacio utiliza las reglas de **Black/White, Generación V**; la integración con partidas está implementada para **Pokémon Negro**.
+
+Entrega final de combate múltiple y mejoras pendientes de colección: [resumen del 28 de octubre](docs/es/changes-2026-10-28.md).
 
 ## Funciones
 
@@ -23,6 +27,15 @@ de los ejemplares se resuelven con un catálogo público local. X también ofrec
 
 Black y X comparten pantalla y ciclo de combate: apertura automática, botón flotante, conservación de la pelea durante cambios de Pokémon y regreso a la vista anterior con sus filtros. X también sigue la ubicación del personaje en Capturas con Citra en vivo; elegir una zona manual pausa el seguimiento. El catálogo distingue Pokédex regional y nacional, incluyendo especies de generaciones anteriores. La aventura elegida se recuerda durante el día local, incluso tras recargar o reiniciar. Consulta la [arquitectura, decisiones de diseño y límites actuales](docs/es/architecture.md).
 
+### Combates sencillos, dobles y hordas
+
+X ya lee los tres modos con el perfil local de Citra. Las tarjetas cambian
+entre detalladas, semicompactas y muy compactas, con
+salud del equipo y total rival en Poké Balls sin revelar reservas.
+Black mantiene el lector sencillo; dobles, triples y rotatorios siguen pendientes
+en ese lector. Consulta la [guía de combate](docs/es/multi-battle.md) para conectar,
+ver el soporte por juego y conocer las limitaciones y validaciones.
+
 ### Guardería, huevos y estado de la partida
 
 - **Guardería de Black y X:** pantalla compartida con dos espacios, género individual, nivel, EXP y estado del huevo. X admite Save y Citra en vivo con el perfil local validado. Las lecturas antiguas se identifican como tales.
@@ -37,7 +50,7 @@ Consulta el [resumen de cambios del 25 de octubre](docs/es/changes-2026-10-25.md
 
 Las funciones siguientes describen el espacio de Black.
 
-- **Guardería (Black):** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/daycare-research.md).
+- **Guardería (Black):** dos espacios, niveles actuales, progreso de experiencia, pasos aproximados para subir y huevo disponible desde save o lector en vivo. Las evoluciones simples por nivel muestran niveles restantes y alertas a 50 pasos o menos del nivel requerido; un botón flotante abre la guardería. Los Pokémon no evolucionan mientras están depositados. La lectura live se activa con `daycareAddress` para la ROM validada; `daycarePollMs` vale 3000 por defecto y sigue el ciclo del lector general. Consulta la [investigación y validación](docs/es/daycare-research.md).
 
 - **Catálogo de 649 especies:** explora Teselia o todas las generaciones I–V, busca por nombre, consulta WikiDex y revisa las vías de obtención en Negro.
 - **Colección y equipo:** añade Pokémon manualmente y elige hasta seis integrantes; con melonDS, consulta el equipo y las 24 cajas, conservando ejemplares duplicados y motes.
@@ -196,9 +209,9 @@ La colección manual, el equipo y las preferencias se guardan en el navegador. P
 
 ## Alcance y limitaciones
 
-- El análisis usa **Generación V**: 17 tipos, sin Hada; Acero resiste Fantasma y Siniestro.
+- Black usa **Generación V**: 17 tipos, sin Hada; Acero resiste Fantasma y Siniestro. X usa **Generación VI**: 18 tipos, con Hada y sin esas dos resistencias de Acero.
 - Calcula defensa por tipos y cobertura potencial STAB frente a tipos individuales. No simula movimientos reales, habilidades, objetos, clima ni todos los efectos del combate. Los huevos se excluyen del análisis.
-- El catálogo abarca generaciones I–V; que una especie aparezca no garantiza que se pueda capturar en Negro. Los encuentros y vías de obtención dependen de los datos disponibles y sus complementos locales.
+- El catálogo de Black abarca generaciones I–V y el de X, I–VI; que una especie aparezca no garantiza que se pueda capturar en ese juego. Los encuentros y vías de obtención dependen de los datos disponibles y sus complementos locales.
 - La lectura en vivo y el combate son experimentales, con compatibilidad limitada a las direcciones configuradas. Ante errores se conservan los últimos datos válidos y se indica cuando están desactualizados.
 - El modo manual y el análisis de datos guardados pueden funcionar sin conexión. Datos no cacheados y sprites necesitan red. No hay service worker.
 
@@ -222,9 +235,11 @@ Para leer solo el `.sav` sin arrancar los lectores en vivo y combate, usa dos te
 
 Los servicios escuchan en `127.0.0.1`: save en **15301**, en vivo en **15302** y combate en **15303**. Vite redirige sus solicitudes tanto en desarrollo como en preview. Las opciones avanzadas incluyen `MELONDS_SAVE_PATH`, `SAVE_BRIDGE_PORT`, `LIVE_BRIDGE_PORT` y `MELONDS_GDB_PORT`; consulta la documentación técnica antes de cambiarlas.
 
-La última entrega de código registrada aprobó **394 pruebas**, lint y build. El [resumen del 25 de octubre](docs/es/changes-2026-10-25.md) distingue las comprobaciones con partidas reales, los fixtures y los pendientes. Esta consolidación documental no repite las pruebas ni una instalación nueva.
+La última validación del código de combate (paso 9) aprobó **481 pruebas**, lint y build. La [matriz de validación](docs/es/multi-battle-validation.md) distingue fixtures, comprobaciones de interfaz y lecturas reales. Este cierre documental no repite la suite, una instalación ni las pruebas del emulador.
 
 ## Documentación técnica
+
+- [Guía de combate múltiple](docs/es/multi-battle.md) ([English](docs/multi-battle.md)): uso, soporte, recuperación y extensión por juego.
 
 - [Guardería, huevos, géneros y conexión: estado consolidado](docs/es/changes-2026-10-25.md) ([English](docs/changes-2026-10-25.md)).
 - [Guardería y eclosión de X](docs/es/x-daycare.md), [proporciones de género](docs/es/encounter-gender-research.md) e [indicador de conexión](docs/es/connection-indicator.md): contratos, adaptadores, reglas y evidencia.

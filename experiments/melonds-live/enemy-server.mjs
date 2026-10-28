@@ -17,6 +17,14 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
   let researching = null
   let generation = 0
   let closed = false
+  let wanted = false
+  function retryConnection() {
+    if (!closed && wanted) {
+      clearTimeout(timer)
+      timer = setTimeout(() => { void connect().catch(() => {}) }, config.reconnectMs ?? 3000)
+      timer.unref?.()
+    }
+  }
   async function sample(token) {
     const current = reader
     try {
@@ -89,6 +97,7 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
       reader = null
       snapshot = { status: 'error', message: 'disconnected', candidates: [], updatedAt: new Date().toISOString() }
       await config.onSample?.(snapshot)
+      retryConnection()
     }
   }
   async function reconnect() {
@@ -121,9 +130,10 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
     }
   }
   function connect() {
+    wanted = true
     if (researching) return researching.then(connect)
     if (!connecting) {
-      connecting = reconnect()
+      connecting = reconnect().catch(error => { retryConnection(); throw error })
       void connecting.finally(() => { connecting = null }).catch(() => {})
     }
     return connecting
@@ -177,6 +187,7 @@ export function createEnemyServer(config, makeReader = options => new GdbReader(
   })
   return { server, connect, async close() {
     closed = true
+    wanted = false
     generation++
     clearTimeout(timer)
     reader?.close()

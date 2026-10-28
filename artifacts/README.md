@@ -26,3 +26,49 @@ No browser checks were performed during this cleanup. These images remain histor
 The `x-*`, `game-selection-square-*`, `egg-hatching-bar-*`, `gender-*` and `daycare-*` PNG captures document the X delivery. The October 25 change record distinguishes real Citra/save readings from synthetic fixtures. These captures precede the final PR integration smoke check; do not present them as new emulator validation of the merge.
 
 Temporary harnesses and test output are ignored locally. The PR preparation also checked both manual workspaces, the Black evolution view and album, and the X connection popover after integrating master.
+
+## Follow-up delivery (2026-10-26)
+
+| Retained files | Purpose and recorded source |
+| --- | --- |
+| `box-picker-{desktop,mobile}.png` | Final searchable box selector and responsive layout; read-only collection UI. |
+| `acquisition-contract-black-{desktop,mobile}.png` | Shared acquisition dialog with public PokéAPI/cache data, including language and mobile checks. |
+| `x-acquisition-fossil-desktop.png`, `x-acquisition-mobile.png` | X acquisition routes from the local atlas and public metadata/cache; no memory validation implied. |
+| `evolution-breeding-badge-x.png` | Pichu breeding marker from acquisition metadata, not the player's save. |
+| `session-reconnect-x.png` | Reconnect control with a real read-only Citra session. |
+| `x-trainer-battle-helioptile.png` | Real Citra individual trainer battle: Helioptile level 25, 25/61 HP. |
+
+See `docs/es/changes-2026-10-26.md` for the delivery scope. Earlier untracked layout captures are not part of this curated delivery. No new browser checks were performed while preparing this documentation and commit; these records describe the checks performed during implementation.
+
+## Multi-battle delivery (October 27–28, 2026)
+
+| Retained file | Source and purpose |
+| --- | --- |
+| `battle-card-densities-synthetic.png` | Three reusable card densities; synthetic Shelgon data, step 5. |
+| `x-double-real-integrated.png` | Real Citra double: Shelgon/Mienfoo vs Pansage/Pansear, step 8. |
+| `x-horde-real-integrated.png` | Real five-Scraggy horde after a KO, step 8; all five positions retained. |
+| `x-single-real-integrated.png` | Real Citra single vs Skiddo, step 8. |
+
+The three real captures record source integration before the step 9 alignment
+adjustment; they are not screenshots of the final layout. Mobile DOM checks at
+320 CSS pixels were recorded during implementation; the mobile screenshot tool
+failed. Step 9 also checked horde layout at 768 CSS pixels.
+
+The two initial synthetic field-layout previews were removed during step 10
+because the final layout and real-source captures supersede them. Distinct card,
+comparison, egg and read-source evidence is retained. Earlier unrelated untracked
+captures were left untouched. No browser profiles, raw memory dumps or temporary
+harnesses were retained as part of this delivery.
+
+See [validation](../docs/es/multi-battle-validation.md), the
+[X integration record](../docs/es/x-battle.md), and the
+[current guide](../docs/multi-battle.md). Step 10 checks documentation references;
+it does not repeat the emulator or browser checks recorded by those steps.
+
+
+Final PR curation (2026-10-28) retains `battle-simplified-synthetic.png` as the
+current simplified horde and team view, without inspect or compare controls.
+The initial roster preview, selected-comparison preview, step 9 alignment preview
+and intermediate removal preview were retired; their records remain historical.
+The three real Citra images and card-density example remain distinct source and
+format evidence. Unrelated user captures were not included in this delivery.

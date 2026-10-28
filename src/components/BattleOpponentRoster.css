@@ -1,0 +1,6 @@
+.battle-opponent-roster { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-width: 0; margin-top: 12px; padding: 8px 10px; border: 1px solid var(--border, #364352); border-radius: 9px; background: var(--surface-raised, #202a36); }
+.battle-opponent-roster-label { color: var(--text-muted, #b5c2d0); font-size: 12px; }
+.battle-opponent-roster-balls { display: flex; flex-wrap: wrap; gap: 4px; color: var(--surface, #121a24); }
+.battle-opponent-roster-balls svg { flex: 0 0 18px; }
+.battle-opponent-roster-total { font-size: 12px; font-weight: 700; }
+.battle-opponent-roster .hint { margin: 0; font-size: 11px; }

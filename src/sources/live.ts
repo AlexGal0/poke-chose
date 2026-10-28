@@ -1,7 +1,10 @@
 import type { PokemonDataSource } from './data-source.ts'
 import { KeyedError } from '../i18n/notice.ts'
 
+let requested = false
+
 async function control(action: 'connect' | 'disconnect') {
+  requested = action === 'connect'
   const response = await fetch(`/live-api/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}', signal: AbortSignal.timeout(20000) })
   if (!response.ok) throw new KeyedError('sources.live.controlFailed')
 }
@@ -12,7 +15,14 @@ export const liveDataSource: PokemonDataSource = {
   reconnect: () => control('connect'),
   subscribe(notify) {
     const events = new EventSource('/live-api/events')
-    events.onerror = () => notify({ type: 'connection', connected: false, message: { key: 'sources.live.disconnected' } })
+    let transportLost = false
+    let closed = false
+    let retry: ReturnType<typeof setTimeout> | undefined
+    function restore() {
+      if (closed || !requested) return
+      void control('connect').catch(() => { if (!closed && requested) retry = setTimeout(restore, 3000) })
+    }
+    events.onerror = () => { transportLost = true; notify({ type: 'connection', connected: false, message: { key: 'sources.live.disconnected' } }) }
     events.addEventListener('repel', event => {
       let reading: unknown
       try { reading = JSON.parse((event as MessageEvent).data) } catch { reading = null }
@@ -22,9 +32,11 @@ export const liveDataSource: PokemonDataSource = {
       let snapshot: unknown
       try { snapshot = JSON.parse(event.data) } catch { snapshot = null }
       const connected = snapshot !== null && typeof snapshot === 'object' && 'status' in snapshot && snapshot.status === 'ready'
+      if (transportLost && requested && snapshot && typeof snapshot === 'object' && 'message' in snapshot && snapshot.message === 'pressConnect') restore()
+      transportLost = false
       notify({ type: 'snapshot', snapshot, connected })
     }
-    return () => events.close()
+    return () => { closed = true; clearTimeout(retry); events.close() }
   },
 }
 

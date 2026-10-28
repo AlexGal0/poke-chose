@@ -1,5 +1,5 @@
-import type { BattleStatStages } from '../domain/battle-stat-stages'
-import type { CombatObservation } from '../domain/battle-lifecycle'
+import type { BattleStatStages } from '../domain/battle-stat-stages.ts'
+import type { CombatObservation } from '../domain/battle-lifecycle.ts'
 
 export interface CombatParticipant {
   identity: string

@@ -1,7 +1,7 @@
 import { xLevelFromExperience } from '../src/games/x/experience.ts'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readXMemoryBattle, X_BATTLE_POINTERS, X_BATTLE_STATE_ADDRESS, X_BATTLE_ENEMY_COPIES, X_BATTLE_STAGES_OFFSET, decodeXBattleStages } from '../src/games/x/memory-battle.ts'
+import { readXMemoryBattle, X_BATTLE_POINTERS, X_BATTLE_STATE_ADDRESS, X_BATTLE_ENEMY_COPIES, X_BATTLE_ENEMY_PARTY_PROFILES, X_BATTLE_STAGES_OFFSET, decodeXBattleStages } from '../src/games/x/memory-battle.ts'
 import { fixturePk6 } from './helpers/x-roster-fixture.ts'
 import { readPartyPk6 } from '../src/games/x/pk6.ts'
 import { isBattleReading } from '../src/models/battle.ts'
@@ -19,7 +19,19 @@ function fixture() {
     memory.set(pointer, bytes)
     memory.set(pointer + X_BATTLE_STAGES_OFFSET, Buffer.from(i < 2 ? [7, 6, 7, 6, 6, 6, 6] : [2, 6, 6, 6, 6, 6, 6]))
   })
-  X_BATTLE_ENEMY_COPIES.forEach(p => memory.set(p, fixturePk6({ speciesId: 129 })))
+  const rival = fixturePk6({ party: true, speciesId: 129, level: 9 })
+  for (const profile of X_BATTLE_ENEMY_PARTY_PROFILES) {
+    const table = Buffer.alloc(28)
+    table.writeUInt32LE(profile.firstMember - 64, 0)
+    table[24] = 1
+    const object = Buffer.alloc(12)
+    object.writeUInt32LE(profile.firstMember, 4)
+    object.writeUInt32LE(profile.firstMember + 344, 8)
+    memory.set(profile.firstMember - 64, object)
+    memory.set(profile.tableAddress, table)
+    memory.set(profile.firstMember, rival.subarray(0, 232))
+    memory.set(profile.firstMember + 344, rival.subarray(232, 254))
+  }
   const reader = { async read(address: number, length: number) { return memory.get(address)?.subarray(0, length) ?? Buffer.alloc(length) } }
   return { memory, reader, party }
 }
@@ -28,6 +40,7 @@ test('battle reader confirms both copies, resolves the active party member and c
   const f = fixture()
   const battle = await readXMemoryBattle(f.reader, f.party)
   assert.equal(battle.active, true)
+  assert.equal(battle.opponentRosterTotal, 1)
   assert.equal(battle.own?.speciesId, 447)
   assert.equal(battle.own?.partySlot, 0)
   assert.equal(battle.enemy?.speciesId, 129)
@@ -117,4 +130,67 @@ test('X rival level uses the species growth curve and exact EXP thresholds local
   assert.equal(xLevelFromExperience(669, undefined), null)
   assert.equal(xLevelFromExperience(999, 1000), null)
   assert.equal(xLevelFromExperience(669, -1), null)
+})
+
+
+test('trainer battles select the third rival from validated teams instead of the first PK6', async () => {
+  const f = fixture()
+  const trainer = [
+    fixturePk6({ party: true, speciesId: 84, level: 24, constant: 0x11111111 }),
+    fixturePk6({ party: true, speciesId: 210, level: 24, constant: 0x22222222 }),
+    fixturePk6({ party: true, speciesId: 694, level: 25, constant: 0x33333333 }),
+  ]
+  for (const profile of X_BATTLE_ENEMY_PARTY_PROFILES) {
+    const table = Buffer.alloc(28); table[24] = trainer.length
+    trainer.forEach((bytes, slot) => {
+      const address = profile.firstMember + slot * profile.stride
+      table.writeUInt32LE(address - 64, slot * 4)
+      const object = Buffer.alloc(12)
+      object.writeUInt32LE(address, 4); object.writeUInt32LE(address + 344, 8)
+      f.memory.set(address - 64, object)
+      f.memory.set(address, bytes.subarray(0, 232))
+      f.memory.set(address + 344, bytes.subarray(232, 254))
+    })
+    f.memory.set(profile.tableAddress, table)
+  }
+  for (const pointer of [0x08200400, 0x08200600]) f.memory.get(pointer)!.writeUInt16LE(694, 12)
+  const battle = await readXMemoryBattle(f.reader, f.party)
+  assert.equal(battle.enemy?.speciesId, 694)
+  assert.equal(battle.enemy?.level, 25)
+  assert.equal(battle.enemy?.partySlot, 2)
+  assert.equal(battle.opponentRosterTotal, 3)
+  assert.equal(battle.enemy?.currentHp, 22, 'live field HP take precedence over roster copies')
+  assert.ok(isBattleReading(battle, 721))
+  // Replacing both active field copies detects the next Pokémon, not stale identity.
+  for (const pointer of [0x08200400, 0x08200600]) f.memory.get(pointer)!.writeUInt16LE(210, 12)
+  const replacement = await readXMemoryBattle(f.reader, f.party)
+  assert.equal(replacement.enemy?.partySlot, 1)
+  assert.equal(replacement.opponentRosterTotal, 3)
+})
+
+test('trainer team validation rejects inconsistent counts, ambiguous rivals and unstable pointer tables', async () => {
+  const counts = fixture()
+  counts.memory.get(X_BATTLE_ENEMY_PARTY_PROFILES[1].tableAddress)![24] = 0
+  await assert.rejects(readXMemoryBattle(counts.reader, counts.party))
+  const ambiguous = fixture()
+  for (const profile of X_BATTLE_ENEMY_PARTY_PROFILES) {
+    const table = ambiguous.memory.get(profile.tableAddress)!
+    table[24] = 2
+    table.writeUInt32LE(profile.firstMember + profile.stride - 64, 4)
+    const other = fixturePk6({ party: true, speciesId: 129, constant: 0x98765432, personality: 12345, level: 9 })
+    const object = Buffer.alloc(12)
+    object.writeUInt32LE(profile.firstMember + profile.stride, 4)
+    object.writeUInt32LE(profile.firstMember + profile.stride + 344, 8)
+    ambiguous.memory.set(profile.firstMember + profile.stride - 64, object)
+    ambiguous.memory.set(profile.firstMember + profile.stride, other.subarray(0, 232))
+    ambiguous.memory.set(profile.firstMember + profile.stride + 344, other.subarray(232, 254))
+  }
+  await assert.rejects(readXMemoryBattle(ambiguous.reader, ambiguous.party), /Unconfirmed X rival/)
+  const unstable = fixture()
+  let reads = 0
+  await assert.rejects(readXMemoryBattle({ async read(address, length) {
+    const bytes = Buffer.from(await unstable.reader.read(address, length))
+    if (address === X_BATTLE_ENEMY_PARTY_PROFILES[0].tableAddress && ++reads > 1) bytes.writeUInt32LE(0, 0)
+    return bytes
+  } }, unstable.party))
 })

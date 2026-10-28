@@ -1,0 +1,23 @@
+.battle-small-card { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 10px; width: 100%; padding: 12px; border: 1px solid var(--border, #364352); border-radius: 9px; background: var(--surface-raised, #202a36); }
+.battle-small-sprite { display: flex; align-items: center; justify-content: center; min-width: 0; }
+.battle-small-sprite img { display: block; width: 72px; height: 72px; object-fit: contain; }
+.battle-small-card.is-fainted .battle-small-sprite { filter: grayscale(1); opacity: .65; }
+.battle-small-identity { min-width: 0; }
+.battle-small-identity h3 { font-size: 17px; line-height: 1.2; overflow-wrap: anywhere; }
+.battle-small-identity > .hint { font-size: 11px; margin-top: 3px; }
+.battle-small-species { font-size: 11px; color: var(--text-muted, #b5c2d0); overflow-wrap: anywhere; }
+.battle-small-card .battle-health { margin-top: 6px; min-height: 0; }
+.battle-small-card .battle-health-label { font-size: 12px; margin-bottom: 4px; }
+.battle-small-card .battle-health-bar { height: 7px; }
+.battle-small-weaknesses { grid-column: 1 / -1; display: grid; gap: 6px; min-width: 0; border-top: 1px solid var(--border, #364352); padding-top: 8px; }
+.battle-small-weaknesses > strong { font-size: 11px; color: var(--text-muted, #b5c2d0); }
+.battle-small-weaknesses > div { display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.battle-small-weaknesses > div > span { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; }
+.battle-small-weaknesses .type { font-size: 10px; padding: 3px 5px; }
+.battle-density-compact .battle-small-card { grid-template-columns: 48px minmax(0, 1fr); gap: 8px; padding: 8px; }
+.battle-density-compact .battle-small-sprite img { width: 48px; height: 48px; }
+.battle-density-compact .battle-small-identity h3 { font-size: 14px; }
+@media (max-width: 400px) {
+  .battle-density-semicompact .battle-small-card { grid-template-columns: 56px minmax(0, 1fr); padding: 9px; gap: 8px; }
+  .battle-density-semicompact .battle-small-sprite img { width: 56px; height: 56px; }
+}
