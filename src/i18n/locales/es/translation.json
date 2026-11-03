@@ -1,4 +1,5 @@
 {
+  "battleHeldItem": {"equipped": "Objeto equipado: {{name}}", "unavailable": "Objeto equipado; nombre no disponible"},
   "genderRatio": {
     "summary": "Proporción base aproximada: macho {{male}}, hembra {{female}}. Sin modificadores de encuentro."
   },
@@ -336,7 +337,7 @@
     "retryEncountersButton": "Reintentar encuentros",
     "waitingForPokedex": "Esperando una Pokédex válida de la partida. El estado de captura todavía es desconocido.",
     "staleNotice": "Mostrando la última Pokédex válida; comprueba el estado de sincronización.",
-    "loadingEncounters": "Cargando encuentros de Black…",
+    "loadingEncounters": "Cargando encuentros…",
     "noEncountersWithAccess": "No hay encuentros con tus recursos actuales en esta zona. Habilita Surf o Supercaña si los tienes.",
     "noEncountersRegistered": "PokéAPI no registra encuentros para Pokémon Black en esta zona.",
     "minLevel": "· Nv. mín. {{level}}",
@@ -345,6 +346,10 @@
     "footerHint": "Incluye los encuentros de PokéAPI para Black y los cinco intercambios con personajes del juego original. No es una lista de todas las especies obtenibles por evolución, eventos o intercambio con otros jugadores. Los porcentajes corresponden a cada tabla/condición; no se aplican a los intercambios con personajes."
   },
   "catalog": {
+    "onlyMissingCaptures": "Solo pendientes de capturar",
+    "missingCapturesUnavailable": "Se necesita una lectura de la Pokédex para filtrar las capturas pendientes.",
+    "missingCapturesManual": "En modo manual se muestran las especies que no están en tu colección.",
+    "missingCapturesStale": "El filtro usa la última Pokédex disponible; la lectura no está actualizada.",
     "eyebrow": "01 / EXPLORA",
     "heading": "Encuentra tus Pokémon",
     "searchAriaLabel": "Buscar Pokémon por nombre",
@@ -688,6 +693,10 @@
     "label": "↗ Evoluciones"
   },
   "collectionSearch": {
+    "generationShortLabel": "Gen:",
+    "allGenerationsShort": "Todas",
+    "generationLabel": "Generación de origen",
+    "allGenerations": "Todas las generaciones",
     "searchAria": "Buscar en Mi colección por etiquetas",
     "placeholder": "Especie, mote, número o tipos",
     "hint": "Combina etiquetas con espacios o comas. Deben coincidir todas. Pulsa un tipo para añadirlo.",
@@ -857,6 +866,7 @@
       "heartgold-soulsilver": "HeartGold/SoulSilver",
       "platinum": "Platino",
       "diamond-pearl": "Diamante/Perla",
+      "black-white": "Negro/Blanco",
       "x-y": "X/Y",
       "omega-ruby-alpha-sapphire": "Rubí Omega/Zafiro Alfa",
       "emerald": "Esmeralda",
@@ -1269,7 +1279,7 @@
     "description": "Tu aventura empieza aquí. Organiza tu colección y prepara tu equipo manual.",
     "introduced": "Introducidos en Gen {{number}}",
     "national": "Nacional · hasta Gen {{number}}",
-    "catalogHint": "Catálogo de especies, no una lista de capturas disponibles en Kalos. Incluye especies transferibles y de evento. Se muestra la variedad predeterminada; las formas alternativas llegarán más adelante.",
+    "catalogHint": "Catálogo de especies, no una lista de capturas disponibles en {{region}}. Incluye especies transferibles y de evento. Se muestra la variedad predeterminada; las formas alternativas llegarán más adelante.",
     "pendingHeading": "En desarrollo",
     "pendingHint": "Estas funciones todavía no tienen soporte para este juego."
   },
@@ -1336,6 +1346,7 @@
     "requirements": "Requisitos"
   },
   "encounterAtlas": {
+    "sourceUndated": "Encuentros de {{game}}: {{count}} localidades. Datos de PokéAPI y suplementos del adaptador, sin fecha de actualización confirmada; no se comprueba el progreso de la historia.",
     "description": "Explora los Pokémon disponibles en cada zona y elige tu ruta de captura. Puedes seleccionar una zona o seguir la ubicación cuando la fuente lo permita.",
     "followHint": "Activa Seguir ubicación para cambiar de zona con el personaje. Elegir una zona manualmente pausa el seguimiento; las lecturas incompletas conservan la última zona confirmada.",
     "detectedZone": "Ubicación detectada: {{zone}}.",
@@ -1576,7 +1587,7 @@
     "required": "Necesarios: {{count}}",
     "available": "En bolsa: {{bag}} · Equipados: {{held}}",
     "missing": "Faltan {{count}}",
-    "sufficient": "Cantidad suficiente en el último save",
+    "sufficient": "Cantidad suficiente en la última lectura",
     "quantityUnknown": "Cantidad disponible desconocida",
     "noItems": "Estas evoluciones no necesitan objetos, o no hay pendientes para este filtro.",
     "allocationHint": "Objetivo: un ejemplar de cada especie pendiente. Los métodos alternativos se evalúan por objeto; no asignan automáticamente recursos. Para completar varias ramas puedes necesitar criar o capturar más preevoluciones. Retira los objetos equipados si vas a usarlos con otro Pokémon.",
@@ -1587,7 +1598,12 @@
     "emptyGroup": "Sin evoluciones pendientes conocidas en esta sección.",
     "tradeHint": "Requiere un intercambio compatible. Tener el objeto no confirma acceso al intercambio ni las demás condiciones.",
     "alternative": "También existe una ruta sin este objeto o intercambio. Consulta el árbol para sus condiciones.",
-    "viewEvolution": "Ver requisitos y árbol"
+    "viewEvolution": "Ver requisitos y árbol",
+    "inventoryUnavailable": "Las cantidades de la bolsa y los objetos equipados no están disponibles para esta fuente. Se muestran los objetos necesarios sin calcular faltantes.",
+    "kalos": "Kalos",
+    "inventoryX": "Las cantidades corresponden a la última lectura conjunta de bolsa, equipo y cajas de esta fuente. En vivo se renuevan con la colección; usa Actualizar colección para adelantar la lectura.",
+    "itemWiki": "Ver en {{site}}",
+    "itemWikiAria": "Consultar {{name}} en {{site}} (nueva pestaña)"
   },
   "acquisitionDetails": {
     "open": "Ver cómo obtener {{name}} en Pokémon Negro",

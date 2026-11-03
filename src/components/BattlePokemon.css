@@ -21,3 +21,11 @@
   .battle-density-semicompact .battle-small-card { grid-template-columns: 56px minmax(0, 1fr); padding: 9px; gap: 8px; }
   .battle-density-semicompact .battle-small-sprite img { width: 56px; height: 56px; }
 }
+
+.battle-small-card, .enemy-prototype-card { position: relative; }
+.battle-small-identity { padding-right: 30px; }
+.battle-held-item { position: absolute; z-index: 3; right: 8px; top: 8px; display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--border, #364352); border-radius: 8px; background: var(--surface-raised, #202a36); color: var(--text-muted, #b5c2d0); cursor: help; }
+.enemy-prototype-card > .battle-held-item { top: 38px; }
+.battle-held-item img { object-fit: contain; image-rendering: pixelated; }
+.battle-held-item-tooltip { display: none; position: absolute; right: 0; top: 36px; width: max-content; max-width: 190px; padding: 6px 8px; border: 1px solid var(--border, #364352); border-radius: 6px; background: var(--surface-raised, #202a36); color: var(--text, #fff); font-size: 12px; }
+.battle-held-item:hover .battle-held-item-tooltip, .battle-held-item:focus .battle-held-item-tooltip { display: block; }

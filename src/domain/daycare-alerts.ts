@@ -1,5 +1,5 @@
 import type { DaycareReading } from '../games/core/daycare.ts'
-import type { ExperienceLevel } from '../api/experience.ts'
+import type { ExperienceLevel } from './experience.ts'
 import { daycareEvolutionAlert } from './daycare-evolution.ts'
 import { experienceProgress, levelFromExperience } from './experience.ts'
 

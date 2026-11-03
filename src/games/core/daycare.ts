@@ -1,4 +1,4 @@
-import type { ExperienceLevel } from '../../api/experience.ts'
+import type { ExperienceLevel } from '../../domain/experience.ts'
 import type { IndividualGender } from '../../domain/gender.ts'
 
 // A source normalizes its stored/gained experience into a current total.

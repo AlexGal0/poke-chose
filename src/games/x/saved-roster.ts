@@ -4,7 +4,7 @@ import { xCatalogRules } from './catalog.ts'
 import type { SavedRosterService } from '../core/saved-roster.ts'
 import type { SavedPokemonData } from '../../models/party.ts'
 import type { ManualPokemon } from '../core/catalog.ts'
-import type { ExperienceLevel } from '../../api/experience.ts'
+import type { ExperienceLevel } from '../../domain/experience.ts'
 import hatchData from './data/hatch-cycles.json' with { type: 'json' }
 const publicData = async () => (await import('./roster-data.ts')).publicRosterData
 

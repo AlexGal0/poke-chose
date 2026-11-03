@@ -1,3 +1,6 @@
+import { isInventoryReading } from '../games/core/inventory.ts'
+import type { InventoryReading } from '../games/core/inventory.ts'
+import { X_INVENTORY_LIMITS } from '../games/x/inventory.ts'
 import type { PokedexSnapshot } from '../models/pokedex.ts'
 import type { SavedPartyMember, SavedBoxPokemon } from '../models/party.ts'
 import { isSavedParty, isSavedBoxes } from './saved-pokemon-validation.ts'
@@ -11,6 +14,8 @@ import type { DaycareData } from '../games/core/daycare.ts'
 export const LIVE_PARTY_MESSAGES = ['pressConnect', 'connecting', 'ready', 'readError', 'profileMismatch', 'disconnected', 'connectionLost'] as const
 export interface LivePartySnapshot {
   protocol: 3
+  inventory?: InventoryReading | null
+  inventoryStale?: boolean
   daycare?: DaycareData | null
   daycareStale?: boolean
   battle?: BattleReading | null
@@ -19,7 +24,7 @@ export interface LivePartySnapshot {
   enabled: boolean
   status: 'waiting' | 'ready' | 'error'
   message: typeof LIVE_PARTY_MESSAGES[number]
-  capabilities: { party: true; boxes: true; pokedex: true; battle?: true; location?: true; daycare?: true }
+  capabilities: { party: true; boxes: true; pokedex: true; battle?: true; location?: true; daycare?: true; inventory?: true }
   boxes: SavedBoxPokemon[] | null
   boxesStatus: 'waiting' | 'reading' | 'ready' | 'error'
   boxesUpdatedAt: string | null
@@ -27,10 +32,14 @@ export interface LivePartySnapshot {
   pokedex: PokedexSnapshot | null
   updatedAt: string | null
 }
-export const emptyLivePartySnapshot = (): LivePartySnapshot => ({ protocol: 3, sourceId: 'x-live', enabled: false, status: 'waiting', message: 'pressConnect', capabilities: { party: true, boxes: true, pokedex: true, battle: true, location: true, daycare: true }, daycare: null, daycareStale: true, position: null, boxes: null, boxesStatus: 'waiting', boxesUpdatedAt: null, party: null, pokedex: null, updatedAt: null })
+export const emptyLivePartySnapshot = (): LivePartySnapshot => ({ protocol: 3, sourceId: 'x-live', enabled: false, status: 'waiting', message: 'pressConnect', capabilities: { party: true, boxes: true, pokedex: true, battle: true, location: true, daycare: true, inventory: true }, inventory: null, inventoryStale: true, daycare: null, daycareStale: true, position: null, boxes: null, boxesStatus: 'waiting', boxesUpdatedAt: null, party: null, pokedex: null, updatedAt: null })
 export function isLivePartySnapshot(value: unknown): value is LivePartySnapshot {
   if (!value || typeof value !== 'object') return false
   const s = value as LivePartySnapshot
+  if (s.capabilities?.inventory !== undefined && s.capabilities.inventory !== true) return false
+  if (s.inventoryStale !== undefined && typeof s.inventoryStale !== 'boolean') return false
+  if (s.inventoryStale === false && s.inventory == null) return false
+  if (s.inventory != null && (s.capabilities?.inventory !== true || !isInventoryReading(s.inventory, X_INVENTORY_LIMITS))) return false
   if (s.capabilities?.daycare !== undefined && s.capabilities.daycare !== true) return false
   if (s.daycareStale !== undefined && typeof s.daycareStale !== 'boolean') return false
   if (s.daycareStale === false && s.daycare == null) return false

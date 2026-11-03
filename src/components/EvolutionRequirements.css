@@ -6,7 +6,7 @@
 .evolution-item-summary p, .evolution-requirements-group p { margin: 8px 0; line-height: 1.5; overflow-wrap: anywhere; }
 .evolution-item-summary .item-sufficient { border-color: var(--success-text, #85d9ba); }
 .evolution-item-summary .item-missing { border-color: var(--danger-text, #ff929c); }
-.evolution-item-summary .item-missing > strong:last-child { color: var(--danger-text, #ff929c); }
+.evolution-item-summary .item-missing > strong { color: var(--danger-text, #ff929c); }
 .evolution-requirements-group h3 { display: flex; align-items: center; gap: 12px; }
 .evolution-requirements-group ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; padding: 0; list-style: none; margin: 12px 0 0; }
 .evolution-requirement-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -64,3 +64,9 @@
   .requirements-overview strong { font-size: 25px; }
   .requirements-scope { width: 100%; }
 }
+
+.evolution-item-summary article { position: relative; }
+.evolution-item-summary .requirement-item-name { padding-right: 28px; }
+.requirement-item-wiki { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; color: var(--text-muted, #a5b5c7); text-decoration: none; }
+.requirement-item-wiki:hover { background: var(--surface-raised, #25303b); border-color: var(--accent, #83dcb8); }
+.requirement-item-wiki:focus-visible { outline: 2px solid var(--accent, #83dcb8); outline-offset: 3px; }

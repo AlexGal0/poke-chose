@@ -19,8 +19,8 @@ export function RosterEvolutionProgress({ pokemon, service }: { pokemon: SavedRo
   useEffect(() => {
     if (!knowledge || !enabled) return
     const controller = new AbortController()
-    knowledge.evolution({ id: speciesId, name: speciesName }, i18n.language, controller.signal).then(family => {
-      if (!controller.signal.aborted) setResult({ service: knowledge, id: speciesId, root: family.root })
+    void (knowledge.progression ? knowledge.progression({ id: speciesId, name: speciesName }, i18n.language, controller.signal) : knowledge.evolution({ id: speciesId, name: speciesName }, i18n.language, controller.signal).then(family => family.root)).then(root => {
+      if (!controller.signal.aborted) setResult({ service: knowledge, id: speciesId, root })
     }).catch(() => { /* Missing data cannot provide a countdown. */ })
     return () => controller.abort()
   }, [knowledge, enabled, speciesId, speciesName, i18n.language])

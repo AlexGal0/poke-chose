@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ExperienceLevel } from '../api/experience'
+import type { ExperienceLevel } from '../domain/experience'
 import { experienceProgress, levelFromExperience } from '../domain/experience'
 import type { DaycarePokemon, DaycareReading, DaycareService } from '../games/core/daycare'
 import './Daycare.css'

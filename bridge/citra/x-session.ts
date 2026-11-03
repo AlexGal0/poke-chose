@@ -1,3 +1,6 @@
+import { readXMemoryInventory } from '../../src/games/x/memory-inventory.ts'
+import { inventoryReading } from '../../src/games/core/inventory.ts'
+import type { InventoryReading } from '../../src/games/core/inventory.ts'
 import { readXMemoryBoxes } from '../../src/games/x/memory-boxes.ts'
 import type { SavedBoxPokemon } from '../../src/models/party.ts'
 import { createHash } from 'node:crypto'
@@ -24,6 +27,8 @@ export function createXSessionReader() {
     checkProfile,
     async read(includeBoxes = false) {
       await checkProfile()
+      const bagBefore = includeBoxes ? await readXMemoryInventory(rpc).catch(() => null) : null
+      let inventory: InventoryReading | undefined
       const party = await readXMemoryParty(rpc)
       const pokedex = serializePokedex(await readXMemoryPokedex(rpc))
       let boxes: SavedBoxPokemon[] | undefined
@@ -31,19 +36,26 @@ export function createXSessionReader() {
         try {
           boxes = await readXMemoryBoxes(rpc)
           const after = await readXMemoryParty(rpc)
-          const identity = (members: typeof party) => members.map(p => `${p.personality}:${p.trainerId}:${p.speciesId}`).join(',')
+          const identity = (members: typeof party) => members.map(p => `${p.personality}:${p.trainerId}:${p.speciesId}:${p.heldItemId}:${p.isEgg}`).join(',')
           if (identity(party) !== identity(after)) throw new Error('Party moved during X boxes read')
+          if (bagBefore) {
+            try {
+              const bagAfter = await readXMemoryInventory(rpc)
+              if (JSON.stringify(bagBefore) === JSON.stringify(bagAfter)) inventory = inventoryReading(bagAfter, [...party, ...boxes])
+            } catch { /* Bag unavailable: boxes and party remain independently useful. */ }
+          }
           await checkProfile()
         } catch (error) {
           if (error instanceof XProfileMismatch) throw error
           boxes = undefined
+          inventory = undefined
         }
       }
       const battle = await readXMemoryBattleField(rpc, party).catch(() => null)
       const position = await readXMemoryLocation(rpc).catch(() => null)
       const daycare = await readXMemoryDaycare(rpc).catch(() => null)
       await checkProfile()
-      return { party, pokedex, boxes, battle, position, daycare }
+      return { inventory, party, pokedex, boxes, battle, position, daycare }
     },
     close: () => rpc.close(),
   }

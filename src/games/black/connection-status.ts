@@ -1,8 +1,8 @@
 import type { ConnectionStatus } from '../../models/connection-status.ts'
-import type { TeamSourceState } from '../../sources/team.ts'
+import type { BlackSourceState } from './source-state.ts'
 import type { ReaderStatus } from '../../domain/reader-status.ts'
 
-export function blackConnectionStatus(source: 'manual' | 'save' | 'live', state: TeamSourceState, input: {
+export function blackConnectionStatus(source: 'manual' | 'save' | 'live', state: Pick<BlackSourceState, 'connected' | 'error' | 'updatedAt'>, input: {
   generalStatus: ReaderStatus; battleStatus: ReaderStatus; generalMessage: string; battleMessage: string
   generalLabel: string; battleLabel: string; saveLabel: string; saveMessage: string; manualHint: string
 }): ConnectionStatus {

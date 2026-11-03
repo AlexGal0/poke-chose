@@ -8,17 +8,20 @@ import type { GenderDistribution } from '../../models/gender-distribution.ts'
 export { filterCaptureProgress } from '../../domain/capture-browser.ts'
 export type { CaptureFilter } from '../../domain/capture-browser.ts'
 
-export interface NamedEncounterResource { name: string; names: { es?: string; en?: string } }
+export interface NamedEncounterResource { labelKey?: string; name: string; names: { es?: string; en?: string } }
 export interface EncounterArea extends NamedEncounterResource {
+  labelIsComplete?: boolean
   rows: (Omit<EncounterSpecies, 'details'> & { variety: string; details: (EncounterDetail & { pokemonDetails?: { never_shiny: boolean } })[] })[]
 }
 export interface EncounterZone extends NamedEncounterResource { id: number; areas: EncounterArea[]; stage?: NamedEncounterResource; noticeKey?: string }
 export interface EncounterAtlasData {
+  equipmentStorage?: { load: () => Record<string, boolean>; save: (equipment: Record<string, boolean>) => boolean }
+  equipmentGroups?: readonly { method: string; members: readonly string[] }[]
   extraSources?: { label: string; url: string }[]
   equipmentMethods?: readonly string[]
   version: string
-  retrieved: string
-  species: (ManualPokemon & { genderRate: number; genderDistribution?: GenderDistribution | null })[]
+  retrieved: string | null
+  species: (ManualPokemon & { genderRate?: number; genderDistribution?: GenderDistribution | null })[]
   locations: EncounterZone[]
 }
 
@@ -70,4 +73,8 @@ export function ownedKnowledgeAncestors(root: KnowledgeNode, speciesId: number, 
     return null
   }
   return find(root, []) ?? []
+}
+
+export interface EncounterAtlasService {
+  load(signal?: AbortSignal): Promise<EncounterAtlasData>
 }

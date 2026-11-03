@@ -1,4 +1,5 @@
 {
+  "battleHeldItem": {"equipped": "Held item: {{name}}", "unavailable": "Held item; name unavailable"},
   "genderRatio": {
     "summary": "Approximate base ratio: male {{male}}, female {{female}}. No encounter modifiers applied."
   },
@@ -336,7 +337,7 @@
     "retryEncountersButton": "Retry encounters",
     "waitingForPokedex": "Waiting for a valid Pokédex from the save. Capture status is still unknown.",
     "staleNotice": "Showing the last valid Pokédex; check the sync status.",
-    "loadingEncounters": "Loading Black's encounters…",
+    "loadingEncounters": "Loading encounters…",
     "noEncountersWithAccess": "No encounters with your current resources in this zone. Enable Surf or the Super Rod if you have them.",
     "noEncountersRegistered": "PokéAPI has no registered encounters for Pokémon Black in this zone.",
     "minLevel": "· Min. lvl. {{level}}",
@@ -345,6 +346,10 @@
     "footerHint": "Includes PokéAPI's encounters for Black and the five trades with in-game characters. It's not a list of every species obtainable by evolution, events, or trading with other players. Percentages correspond to each table/condition; they don't apply to trades with characters."
   },
   "catalog": {
+    "onlyMissingCaptures": "Only missing catches",
+    "missingCapturesUnavailable": "A Pokédex reading is required to filter missing catches.",
+    "missingCapturesManual": "Manual mode shows species that are not in your collection.",
+    "missingCapturesStale": "The filter uses the last available Pokédex; the reading is out of date.",
     "eyebrow": "01 / EXPLORE",
     "heading": "Find your Pokémon",
     "searchAriaLabel": "Search Pokémon by name",
@@ -688,6 +693,10 @@
     "label": "↗ Evolutions"
   },
   "collectionSearch": {
+    "generationShortLabel": "Gen:",
+    "allGenerationsShort": "All",
+    "generationLabel": "Origin generation",
+    "allGenerations": "All generations",
     "searchAria": "Search My collection by tags",
     "placeholder": "Species, nickname, number, or types",
     "hint": "Combine tags with spaces or commas. All must match. Tap a type to add it.",
@@ -857,6 +866,7 @@
       "heartgold-soulsilver": "HeartGold/SoulSilver",
       "platinum": "Platinum",
       "diamond-pearl": "Diamond/Pearl",
+      "black-white": "Black/White",
       "x-y": "X/Y",
       "omega-ruby-alpha-sapphire": "Omega Ruby/Alpha Sapphire",
       "emerald": "Emerald",
@@ -1269,7 +1279,7 @@
     "description": "Your adventure starts here. Organize your collection and build your manual team.",
     "introduced": "Introduced in Gen {{number}}",
     "national": "National · through Gen {{number}}",
-    "catalogHint": "A species catalog, not a list of available catches in Kalos. Includes transferable and event species. Only the default variety is shown; alternate forms will follow.",
+    "catalogHint": "A species catalog, not a list of available catches in {{region}}. Includes transferable and event species. Only the default variety is shown; alternate forms will follow.",
     "pendingHeading": "In development",
     "pendingHint": "These features are not supported for this game yet."
   },
@@ -1336,6 +1346,7 @@
     "requirements": "Requirements"
   },
   "encounterAtlas": {
+    "sourceUndated": "{{game}} encounters: {{count}} locations. PokéAPI data and adapter supplements, without a confirmed update date; story progress is not checked.",
     "description": "Explore the Pokémon available in each area and plan your catches. Select an area or follow the character when supported by the source.",
     "followHint": "Enable Follow location to change areas with the character. Selecting an area manually pauses tracking; incomplete readings keep the last confirmed area.",
     "detectedZone": "Detected location: {{zone}}.",
@@ -1576,7 +1587,7 @@
     "required": "Required: {{count}}",
     "available": "In bag: {{bag}} · Held: {{held}}",
     "missing": "Missing {{count}}",
-    "sufficient": "Enough in the latest save",
+    "sufficient": "Enough in the latest reading",
     "quantityUnknown": "Available quantity unknown",
     "noItems": "These evolutions need no items, or no pending evolutions match this filter.",
     "allocationHint": "Goal: one specimen of each missing species. Alternative methods are evaluated by item; resources are not allocated automatically. Completing several branches may require breeding or catching more predecessors. Remove held items before using them on another Pokémon.",
@@ -1587,7 +1598,12 @@
     "emptyGroup": "No known pending evolutions in this section.",
     "tradeHint": "Requires a compatible trade. Having the item does not confirm trade access or other conditions.",
     "alternative": "A route without this item or trade also exists. Check the tree for its conditions.",
-    "viewEvolution": "View requirements and tree"
+    "viewEvolution": "View requirements and tree",
+    "inventoryUnavailable": "Bag and held item quantities are unavailable for this source. Required items are shown without calculating missing quantities.",
+    "kalos": "Kalos",
+    "inventoryX": "Quantities come from this source’s last combined bag, party and box reading. Live quantities refresh with the collection; use Refresh collection to read sooner.",
+    "itemWiki": "View on {{site}}",
+    "itemWikiAria": "Look up {{name}} on {{site}} (new tab)"
   },
   "acquisitionDetails": {
     "open": "View how to obtain {{name}} in Pokémon Black",

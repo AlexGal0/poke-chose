@@ -15,7 +15,12 @@ export function decodeManualCollection(raw: string | null, rules: CatalogRules):
   } catch { return empty() }
 }
 
-export function createManualStorage(rules: CatalogRules) {
+export interface ManualCollectionStorage {
+  load(): CollectionState<ManualPokemon>
+  save(state: CollectionState<ManualPokemon>): boolean
+}
+
+export function createManualStorage(rules: CatalogRules): ManualCollectionStorage {
   const key = `poke-chose:${rules.id}:manual:v1`
   return {
     load(): CollectionState<ManualPokemon> {

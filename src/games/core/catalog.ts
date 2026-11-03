@@ -1,5 +1,8 @@
-export interface SpeciesEntry { id: number; name: string; resourceName?: string; types?: string[] }
-export interface ManualPokemon extends SpeciesEntry { types: string[]; sprite: string | null }
+import type { IndividualGender } from '../../domain/gender.ts'
+import type { GenderDistribution } from '../../models/gender-distribution.ts'
+
+export interface SpeciesEntry { id: number; name: string; resourceName?: string; form?: number; formLabelKey?: string; types?: string[] }
+export interface ManualPokemon extends SpeciesEntry { types: string[]; sprite: string | null; scope?: { id: string; labelKey: string; descriptionKey: string }; speciesGender?: IndividualGender | 'both'; genderDistribution?: GenderDistribution | null }
 export interface CatalogRules {
   id: string
   generation: number

@@ -30,12 +30,13 @@ export function createPokedexSource(sourceId: string, maxSpecies: number, connec
         try {
           const snapshot: unknown = JSON.parse(event.data)
           if (!isPokedexBridgeSnapshot(snapshot, sourceId, maxSpecies, pokemonLimits)) return
+          if (snapshot.capabilities?.inventory === true && snapshot.inventory == null && current.inventory != null) Object.assign(snapshot, { inventory: current.inventory, inventoryStale: true })
           if (snapshot.capabilities?.daycare === true && snapshot.daycare == null && current.daycare != null) Object.assign(snapshot, { daycare: current.daycare, daycareStale: true })
           emit(snapshot.pokedex === null && current.pokedex !== null
             ? { ...snapshot, pokedex: current.pokedex, updatedAt: current.updatedAt, party: current.party, boxes: current.boxes, ...(snapshot.capabilities?.daycare === true ? { daycare: current.daycare, daycareStale: true } : {}) } : snapshot)
         } catch { /* Ignore malformed/unrelated events; never reveal sprites from them. */ }
       }
-      connection.onerror = () => emit({ ...current, daycareStale: true, status: 'error', message: 'connectionLost' })
+      connection.onerror = () => emit({ ...current, inventoryStale: true, daycareStale: true, status: 'error', message: 'connectionLost' })
       return () => { closed = true; connection.close() }
     },
   }

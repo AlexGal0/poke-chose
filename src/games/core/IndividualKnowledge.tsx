@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { RosterIndividual, RosterDescription } from './saved-roster'
 import type { BaseStats, Stat } from '../../domain/stats'
-import { STATS } from '../../domain/stats'
+import { highestBaseStats, totalBaseStats, STATS } from '../../domain/stats'
 import { statLabel } from '../../i18n/stats'
 import { categoryLabel, moveDescription } from '../../i18n/moves'
 import { NatureInfo } from '../../components/NatureInfo'
@@ -35,6 +35,9 @@ export function IndividualStats({ individual, base }: { individual: RosterIndivi
   const max = Math.max(255, ...Object.values(current ?? {}))
   return <>
     <div className="individual-overview"><NatureInfo natureId={pokemon.natureId} /><p><strong>{t('savedRoster.ability')}: </strong>{description.value?.ability || '—'}</p></div>
+    <p className="hint">{t('statistics.hpReading', { current: pokemon.partyMember?.currentHp ?? t('statistics.unavailable'), max: pokemon.partyMember?.maxHp ?? t('statistics.unavailable') })}</p>
+    <p className="hint">{t('statistics.total')}: {totalBaseStats(base)} · {t('statistics.strengthsHeading')}: {highestBaseStats(base).map(stat => statLabel(t, stat)).join(' · ')}</p>
+    {description.value?.abilityError && <p role="alert">{t('savedRoster.detailsError')} <button onClick={description.retry}>{t('common.retry')}</button></p>}
     {!current && <p className="notice">{t('statistics.comparisonBoxHint')}</p>}
     <div className="knowledge-stats-layout"><div><div className="individual-stat-head"><span>{t('statistics.series.base')}</span><strong>{t('statistics.series.current')}</strong></div>
       <dl className="knowledge-stats individual-stats">{STATS.map(stat => <div key={stat} onMouseEnter={() => setActive(stat)} onMouseLeave={() => setActive(null)}>
@@ -49,7 +52,7 @@ export function IndividualStats({ individual, base }: { individual: RosterIndivi
 export function IndividualMoves({ individual }: { individual: RosterIndividual }) {
   const { t } = useTranslation()
   const description = useDescription(individual)
-  if (description.error) return <p className="notice" role="alert">{t('savedRoster.detailsError')} <button onClick={description.retry}>{t('common.retry')}</button></p>
+  if (description.error || description.value?.knownMovesError) return <p className="notice" role="alert">{t('savedRoster.detailsError')} <button onClick={description.retry}>{t('common.retry')}</button></p>
   if (!description.value) return <p role="status">{t('savedRoster.loading')}</p>
   const moves = description.value.knownMoves
   if (!moves) return <p className="notice">{t('individualDetails.movesUnavailable')}</p>

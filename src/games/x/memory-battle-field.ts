@@ -48,7 +48,7 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
     if (member.isEgg || member.speciesId !== speciesId || !maxHp || currentHp > maxHp) throw new Error('Invalid X field vitals')
     const stages = decodeXBattleStages(await exact(pointer + X_BATTLE_STAGES_OFFSET, 7))
     if (!equal(Array.from(links), Array.from(await exact(object, 12)))) throw new Error('X field PK6 links changed')
-    return { identity: identity(member), speciesId, form: member.form, level: member.level, currentHp, maxHp, stages }
+    return { heldItemId: member.heldItemId, identity: identity(member), speciesId, form: member.form, level: member.level, currentHp, maxHp, stages }
   }
   async function pass(): Promise<BattleReading> {
     const before = await header()
@@ -80,7 +80,7 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
           // Unmatched own identities may belong to an ally. Do not label them
           // as controlled player Pokémon until that ownership is researched.
           if (matches.length !== 1) { positions.push({ id, state: 'unknown' }); continue }
-          const pokemon: FieldPokemon = { identity: a.identity, speciesId: a.speciesId, form: a.form, level: a.level, ownerId: side.id, partySlot: matches[0].slot,
+          const pokemon: FieldPokemon = { heldItemId: a.heldItemId, identity: a.identity, speciesId: a.speciesId, form: a.form, level: a.level, ownerId: side.id, partySlot: matches[0].slot,
             health: { currentHp: a.currentHp, maxHp: a.maxHp }, stages: equal(a.stages, b.stages) ? a.stages : null }
           positions.push({ id, state: 'occupied', pokemon })
         }
@@ -94,7 +94,7 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
     }
     if (!equal(before, await header())) throw new Error('X field changed during read')
     const legacy = (position: CombatPosition | undefined): BattleBattler | null => position?.state === 'occupied' && position.pokemon.health ? {
-      identity: position.pokemon.identity, speciesId: position.pokemon.speciesId, form: position.pokemon.form, level: position.pokemon.level, partySlot: position.pokemon.partySlot,
+      heldItemId: position.pokemon.heldItemId, identity: position.pokemon.identity, speciesId: position.pokemon.speciesId, form: position.pokemon.form, level: position.pokemon.level, partySlot: position.pokemon.partySlot,
       ...position.pokemon.health, statStages: position.pokemon.stages,
     } : null
     return { active: true, field: result, own: legacy(result.sides[0].positions[0]), enemy: legacy(result.sides[1].positions[0]),

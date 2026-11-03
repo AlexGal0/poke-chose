@@ -1,3 +1,5 @@
+import { inventoryReading } from '../core/inventory.ts'
+import { X_INVENTORY_BLOCK, X_ITEMS_POCKET_LENGTH, readXItemsPocket } from './inventory.ts'
 import { readXPokedexFlags } from './pokedex-flags.ts'
 import type { PokedexState } from '../../models/pokedex.ts'
 import { crc16Ccitt, SavePokedexError } from '../core/save-pokedex.ts'
@@ -53,4 +55,9 @@ export function readXSaveDaycare(bytes: Uint8Array) {
   validateBlock(bytes, X_DAYCARE_BLOCK)
   return readXDaycareBlock(bytes.subarray(X_DAYCARE_BLOCK.offset, X_DAYCARE_BLOCK.offset + X_DAYCARE_BLOCK.length))
 }
-export const xSaveReader: SavePokedexReader = { ...xSavePokedexReader, parsePokemon: readXSavePokemon, parseDaycare: readXSaveDaycare }
+export function readXSaveInventory(bytes: Uint8Array, pokemon = readXSavePokemon(bytes)) {
+  readXSavePokedex(bytes)
+  validateBlock(bytes, X_INVENTORY_BLOCK)
+  return inventoryReading(readXItemsPocket(bytes.subarray(X_INVENTORY_BLOCK.offset, X_INVENTORY_BLOCK.offset + X_ITEMS_POCKET_LENGTH)), [...pokemon.party, ...pokemon.boxes])
+}
+export const xSaveReader: SavePokedexReader = { ...xSavePokedexReader, parsePokemon: readXSavePokemon, parseInventory: readXSaveInventory, parseDaycare: readXSaveDaycare }

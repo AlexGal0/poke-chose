@@ -1,7 +1,8 @@
+import type { InventoryLimits } from '../games/core/inventory.ts'
 import type { SavedPokemonData, SavedPartyMember, SavedBoxPokemon } from '../models/party.ts'
 import { isCurrentStats } from '../domain/stats.ts'
 
-export interface SavedPokemonLimits { maxSpecies: number; boxCount: number; nicknameLength: number }
+export interface SavedPokemonLimits { maxSpecies: number; boxCount: number; nicknameLength: number; inventory?: InventoryLimits }
 const integer = (value: unknown, min: number, max: number) => typeof value === 'number' && Number.isInteger(value) && value >= min && value <= max
 export function isSavedPokemon(value: unknown, limits: SavedPokemonLimits): value is SavedPokemonData {
   if (!value || typeof value !== 'object') return false

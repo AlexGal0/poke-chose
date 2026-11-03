@@ -42,3 +42,19 @@ export function getHeldItemName(gameIndex: number, locale: string): Promise<stri
   })().finally(() => pending.delete(key)))
   return pending.get(key)!
 }
+
+export async function getCombatItem(apiId: number, locale: string, signal?: AbortSignal) {
+  const key = `combat-item-${locale}-v1-${apiId}`
+  const cached = readCache<{ name: string; icon: string | null }>(key)
+  if (cached && typeof cached.name === 'string' && (cached.icon === null || typeof cached.icon === 'string')) return cached
+  const item = await request<{ name: string; names: { name: string; language: { name: string } }[]; sprites: { default: string | null } }>(`item/${apiId}`, signal)
+  const result = { name: localizedName(item.names, locale) ?? item.name, icon: item.sprites.default }
+  writeCache(key, result)
+  return result
+}
+
+export async function getBlackCombatItem(index: number, locale: string, signal?: AbortSignal) {
+  const id = (await getIndices())[index]
+  if (!id) throw new Error('Unknown Black item')
+  return getCombatItem(id, locale, signal)
+}

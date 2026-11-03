@@ -59,3 +59,12 @@ test('battle team associates field copies by individual identity after a party r
   const team = (await readOwnBattle(data.reader, data.config)).battleTeam
   assert.deepEqual(team.map((member: { speciesId: number; currentHp: number }) => [member.speciesId, member.currentHp]), [[520, 77], [502, 10], [507, 0]])
 })
+
+test('own Black reader includes held items in confirmed active copies', async () => {
+  const data = fixture()
+  const result = await readOwnBattle(data.reader, data.config)
+  assert.equal(result.activeCandidates.length, 2)
+  for (const candidate of result.activeCandidates) assert.equal(typeof candidate.heldItemId, 'number')
+  const active = result.activeCandidates[0]
+  assert.equal(result.battleTeam.find((member: { slot: number }) => member.slot === active.slot)?.heldItemId, active.heldItemId)
+})

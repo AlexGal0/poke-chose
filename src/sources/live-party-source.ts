@@ -32,12 +32,13 @@ export function createLivePartySource(connect: (url: string) => Events = openEve
       emit(current)
       let events: Events
       try { events = connect('/x-live-api/events') }
-      catch { emit({ ...current, status: 'error', message: 'connectionLost', boxesStatus: current.boxes ? 'error' : 'waiting' }); return () => { closed = true } }
+      catch { emit({ ...current, status: 'error', message: 'connectionLost', inventoryStale: true, boxesStatus: current.boxes ? 'error' : 'waiting' }); return () => { closed = true } }
       events.onmessage = event => {
         if (closed) return
         try {
           const snapshot: unknown = JSON.parse(event.data)
           if (!isLivePartySnapshot(snapshot)) return
+          if (snapshot.capabilities?.inventory === true && snapshot.inventory == null && current.inventory != null) Object.assign(snapshot, { inventory: current.inventory, inventoryStale: true })
           if (snapshot.capabilities?.daycare === true && snapshot.daycare == null && current.daycare != null) Object.assign(snapshot, { daycare: current.daycare, daycareStale: true })
           if (snapshot.boxes === null && current.boxes !== null) Object.assign(snapshot, { boxes: current.boxes, boxesUpdatedAt: current.boxesUpdatedAt, boxesStatus: 'error' })
           const resume = transportLost && wanted && !snapshot.enabled
@@ -48,7 +49,7 @@ export function createLivePartySource(connect: (url: string) => Events = openEve
           emit(snapshot.party === null && current.party !== null ? { ...snapshot, party: current.party, pokedex: current.pokedex, updatedAt: current.updatedAt } : snapshot)
         } catch { /* Malformed payloads never replace valid data. */ }
       }
-      events.onerror = () => { transportLost = true; emit({ ...current, status: 'error', message: 'connectionLost', daycareStale: true, boxesStatus: current.boxes ? 'error' : 'waiting' }) }
+      events.onerror = () => { transportLost = true; emit({ ...current, status: 'error', message: 'connectionLost', inventoryStale: true, daycareStale: true, boxesStatus: current.boxes ? 'error' : 'waiting' }) }
       return () => { closed = true; wanted = false; clearTimeout(retry); events.close() }
     },
     control,

@@ -1,3 +1,4 @@
+import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { GenerationBadge } from '../../components/GenerationBadge'
 import { EncounterNotice } from '../../components/EncounterNotice'
 import { useContext, useState } from 'react'
@@ -49,7 +50,7 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
   const { selected, zoneSaved: saved } = zoneControl
   const { query, setQuery, method, setMethod, progress: progressFilter, setProgress: setProgressFilter, zoneQuery, setZoneQuery, saved: filtersSaved } = useCaptureFilters(selected, `poke-chose:${data.version}:capture-filters:v1`)
   const equipmentKey = `poke-chose:${data.version}:encounter-access:v1`
-  const [equipment, setEquipment] = useState(() => loadEncounterEquipment(equipmentKey, data.equipmentMethods ?? []))
+  const [equipment, setEquipment] = useState(() => data.equipmentStorage?.load() ?? loadEncounterEquipment(equipmentKey, data.equipmentMethods ?? []))
   const [equipmentSaved, setEquipmentSaved] = useState(true)
   const zone = data.locations.find(zone => zone.id === selected)
   const label = (zone: EncounterZone) => encounterResourceLabel(zone, i18n.language, t)
@@ -98,10 +99,10 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
     </>}
     <CollectionSearch showHint={false} collection={data.species.filter(p => allRows.some(row => row.speciesId === p.id))} types={types ?? [...new Set(data.species.flatMap(p => p.types))]} searchLabel={t('encounterAtlas.speciesSearch')} placeholder={t('encounterAtlas.speciesPlaceholder')} query={query} onChange={setQuery} />
     <CaptureFilters methods={methods} method={method} onMethodChange={setMethod} progress={progressFilter} onProgressChange={setProgressFilter} pokedexAvailable={pokedex !== null} />
-    {Object.keys(equipment).length > 0 && <fieldset className="encounter-equipment"><legend>{t('captureChecklist.equipment.legend')}</legend>{Object.keys(equipment).map(value => <label key={value}><input type="checkbox" checked={equipment[value]} onChange={event => {
-      const next = { ...equipment, [value]: event.target.checked }
+    {Object.keys(equipment).length > 0 && <fieldset className="encounter-equipment"><legend>{t('captureChecklist.equipment.legend')}</legend>{(data.equipmentGroups?.map(group => group.method) ?? Object.keys(equipment)).map(value => <label key={value}><input type="checkbox" checked={equipment[value]} onChange={event => {
+      const next = { ...equipment, ...Object.fromEntries((data.equipmentGroups?.find(group => group.method === value)?.members ?? [value]).map(method => [method, event.target.checked])) }
       setEquipment(next)
-      setEquipmentSaved(persistValue(equipmentKey, JSON.stringify(next)))
+      setEquipmentSaved(data.equipmentStorage?.save(next) ?? persistValue(equipmentKey, JSON.stringify(next)))
     }} />{methodLabel(t, value)}</label>)}</fieldset>}
     {allRows.length > accessibleRows.length && <p className="hint">{t('captureChecklist.equipment.hiddenCount', { count: allRows.length - accessibleRows.length })}</p>}
     {!equipmentSaved && <p className="notice" role="status">{t('captureChecklist.equipment.filterSaveFailed')}</p>}
@@ -114,7 +115,7 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
         <div className="capture-subzone-heading"><h3>{encounterAreaLabel(t, area, zone, i18n.language)}</h3><span className="count">{t('common.speciesCount', { count: subzone.rows.length })}</span></div>
         <ul className="capture-list">{subzone.rows.map(row => {
           const pokemon = data.species.find(species => species.id === row.speciesId)
-          const gender = pokemon && speciesGender(pokemon.genderRate)
+          const gender = pokemon?.speciesGender ? { kind: pokemon.speciesGender } : speciesGender(pokemon?.genderRate)
           const alternatives = betterEncounterZones(row.speciesId, selected!, row.details, data.locations)
           const chances = encounterChances(row.details)
           const caught = pokedex?.caughtSpeciesIds.has(row.speciesId)
@@ -122,7 +123,7 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
             <a className="pokemon-wiki" href={pokemonWikiUrl(row.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(row.name) })}><ActionIcon kind="external" /></a>
             <GenerationBadge speciesId={row.speciesId} />
             <div className="capture-identity"><span className="capture-sprite-slot">{discovered.has(row.speciesId) && pokemon?.sprite ? <img src={pokemon.sprite} width="64" height="64" alt="" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</span><div><div className="capture-name-line"><strong className="species-name">{pokemonDisplayName(row.name)}</strong>{gender && <GenderBadge kind={gender.kind} species distribution={pokemon?.genderDistribution} />}</div>
-              <span className="capture-state">#{row.speciesId} {t('captureChecklist.minLevel', { level: minimumEncounterLevel(row) ?? '?' })}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
+              <SpeciesScopeBadge scope={pokemon?.scope} /><span className="capture-state">#{row.speciesId} {t('captureChecklist.minLevel', { level: minimumEncounterLevel(row) ?? '?' })}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
               {pokedex && <span className="capture-state">{t(caught ? 'encounterAtlas.progressStates.caught' : pokedex.seenSpeciesIds.has(row.speciesId) ? 'encounterAtlas.progressStates.seen' : 'encounterAtlas.progressStates.unseen')}</span>}
             </div></div>
             {pokemon && <div className="types">{pokemon.types.map(type => <TypeBadge type={type} key={type} />)}</div>}
@@ -150,6 +151,6 @@ export function EncounterAtlas({ data, initialZoneId, collectionIds, speciesCata
         })}</ul>
       </section>
     })}
-    <p className="hint">{t('encounterAtlas.source', { game: t(`games.names.${data.version}`), count: data.locations.length, date: new Intl.DateTimeFormat(i18n.language, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(data.retrieved)) })} <a href="https://pokeapi.co/docs/v2#location-areas" target="_blank" rel="noreferrer">PokéAPI</a>{data.extraSources?.map(source => <span key={source.url}> · <a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></span>)}</p>
+    <p className="hint">{t(data.retrieved ? 'encounterAtlas.source' : 'encounterAtlas.sourceUndated', { game: t(`games.names.${data.version}`), count: data.locations.length, date: new Intl.DateTimeFormat(i18n.language, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(data.retrieved ?? 0)) })} <a href="https://pokeapi.co/docs/v2#location-areas" target="_blank" rel="noreferrer">PokéAPI</a>{data.extraSources?.map(source => <span key={source.url}> · <a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></span>)}</p>
   </div>
 }

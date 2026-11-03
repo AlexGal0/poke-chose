@@ -37,7 +37,7 @@ export async function readEnemyBattle(reader, config) {
         !consistentEnemyCandidate([{ address: '', ...member }, { address: '', ...confirmed }])) throw new Error('La identidad del rival cambió durante la lectura.')
       const latestHealth = fieldVitals(second)
       const stableHealth = first.readUInt16LE(14) === second.readUInt16LE(14) && first.readUInt16LE(16) === second.readUInt16LE(16)
-      candidates.push({ address: `0x${address.toString(16)}`, speciesId: member.speciesId, form: member.form, level: member.level, personality: member.personality, trainerId: member.trainerId, ...(stableHealth ? latestHealth : {}), ...stableStatStages(stagesBefore, stagesAfter) })
+      candidates.push({ address: `0x${address.toString(16)}`, speciesId: member.speciesId, form: member.form, level: member.level, personality: member.personality, trainerId: member.trainerId, heldItemId: member.heldItemId === confirmed.heldItemId ? member.heldItemId : null, ...(stableHealth ? latestHealth : {}), ...stableStatStages(stagesBefore, stagesAfter) })
     } catch (error) {
       if (reader.socket?.destroyed) throw error
       candidates.push({ address: `0x${address.toString(16)}`, error: error.message })
