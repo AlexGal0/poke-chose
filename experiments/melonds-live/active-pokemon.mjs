@@ -1,7 +1,7 @@
 import { parsePk5 } from '../../bridge/parser.ts'
 import { readParty } from '../../bridge/live/party.mjs'
 import { fieldVitals } from './battle-vitals.mjs'
-import { consistentBattleHealth } from '../../src/domain/enemy-prototype.ts'
+import { consistentBattleHealth, consistentHeldItem } from '../../src/domain/enemy-prototype.ts'
 import { readBattleTables, battleRecordAddress, confirmBattleTables } from './battle-tables.mjs'
 import { readStatStageBytes, stableStatStages } from './battle-stat-stages.mjs'
 
@@ -44,7 +44,7 @@ export async function readOwnBattle(reader, config, allSlots = true) {
         if (!own) throw new Error('El Pokémon activo no pertenece a tu equipo.')
         let vitals = {}
         try { vitals = fieldVitals(first) } catch { /* Keep identity available while HP is unconfirmed. */ }
-        candidates.push({ address: `0x${address.toString(16)}`, speciesId: member.speciesId, form: member.form, level: member.level, personality: member.personality, trainerId: member.trainerId, nickname: member.nickname, slot: own.slot, battleSlot: selectedSlot, ...vitals, ...stableStatStages(stagesBefore, stagesAfter) })
+        candidates.push({ address: `0x${address.toString(16)}`, speciesId: member.speciesId, form: member.form, level: member.level, personality: member.personality, trainerId: member.trainerId, heldItemId: member.heldItemId, nickname: member.nickname, slot: own.slot, battleSlot: selectedSlot, ...vitals, ...stableStatStages(stagesBefore, stagesAfter) })
       } catch (error) {
         if (reader.socket?.destroyed) throw error
         candidates.push({ address: `0x${address.toString(16)}`, battleSlot: selectedSlot, error: error.message })
@@ -57,7 +57,7 @@ export async function readOwnBattle(reader, config, allSlots = true) {
   const battleTeam = allSlots ? party.map(member => {
     const copies = candidates.filter(candidate => candidate.personality === member.personality && candidate.trainerId === member.trainerId && candidate.speciesId === member.speciesId)
     const health = !member.isEgg && copies.length === addresses.length ? consistentBattleHealth(member, copies) : null
-    return { address: '', speciesId: member.speciesId, personality: member.personality, trainerId: member.trainerId, form: member.form, level: member.level, nickname: member.nickname, slot: member.slot, isEgg: member.isEgg, currentHp: health?.currentHp, maxHp: health?.maxHp }
+    return { heldItemId: !member.isEgg && copies.length === addresses.length ? consistentHeldItem(copies) : null, address: '', speciesId: member.speciesId, personality: member.personality, trainerId: member.trainerId, form: member.form, level: member.level, nickname: member.nickname, slot: member.slot, isEgg: member.isEgg, currentHp: health?.currentHp, maxHp: health?.maxHp }
   }) : null
   return { activeCandidates: candidates.filter(candidate => candidate.battleSlot === battleSlot), battleTeam }
 }

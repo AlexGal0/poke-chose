@@ -1,3 +1,4 @@
+import { getXCombatItem } from './combat-items'
 import { useContext, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { BattleReading, BattleBattler } from '../../models/battle'
@@ -22,7 +23,7 @@ export function XBattle({ reading, status, rules, resolve, party, onConnectionCh
   if (reading?.field && !fieldProtocol) setFieldProtocol(true)
   const fieldReading = useMemo(() => normalizeXFieldBattle(reading, status, party), [reading, status, party])
   const observation = useMemo(() => ({ ...normalizeXBattle(reading, status, party), message: status === 'error' ? t('battleAdapter.stale') : status === 'waiting' ? t('app.battleWaitingMessage') : reading == null ? t('battleAdapter.unconfirmed') : '' }), [reading, status, party, t])
-  const service = useMemo<CombatService>(() => ({ resolve: async (speciesId, form) => {
+  const service = useMemo<CombatService>(() => ({ resolveHeldItem: getXCombatItem, resolve: async (speciesId, form) => {
     const pokemon = await resolve({ speciesId, form })
     return { ...pokemon, animatedSprite: animatedBattleSprite(pokemon.sprite) }
   }, onStatistics: knowledge ? (_member, pokemon) => knowledge.open({ ...pokemon, types: [...pokemon.types] }, 'stats') : undefined }), [resolve, knowledge])

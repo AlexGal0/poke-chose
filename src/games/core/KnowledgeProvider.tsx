@@ -97,6 +97,7 @@ function KnowledgeDialog({ service, pokemon, initialView, modules, onClose, indi
     <div className="knowledge-switch" role="group" aria-label={t('speciesKnowledge.views')}>
       {KNOWLEDGE_ACTIONS.filter(([, module]) => modules[module]).map(([kind]) => <button key={kind} aria-pressed={view === kind} onClick={() => setView(kind)}>{t(`speciesKnowledge.actions.${kind}`)}</button>)}
     </div>
+    {pokemon.formLabelKey && <p className="hint">{t('statistics.form', { name: t(pokemon.formLabelKey) })}</p>}
     <p className="hint" id="knowledge-hint">{t(requestedIndividual && (view === 'stats' || view === 'moves') ? `individualDetails.${view}Hint` : `speciesKnowledge.${view}Hint`, { number: service.rules.generation, version })}</p>
     {requestedIndividual && (!individual || stale) && <p className="notice" role="status">{t(individual ? 'individualDetails.stale' : 'individualDetails.missing')}</p>}
     {requestedIndividual && view === 'moves' ? <IndividualMoveTabs key={i18n.language} individual={individual}><KnowledgeContent key={`moves-${i18n.language}`} service={service} pokemon={pokemon} view="moves" locale={i18n.language} /></IndividualMoveTabs>

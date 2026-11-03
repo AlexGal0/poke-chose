@@ -51,7 +51,13 @@ Domain identifiers stay locale-free. Presentation helpers map them through mirro
 
 Readers are local and read-only. No save/memory writes or gameplay commands are issued. X save uses port 15304 and live uses 15305 behind Vite's proxy. Live connection is explicit; party/Pokédex polling is two seconds, boxes on connection/every two minutes/on refresh. Profile checks, stable reads and snapshot validation guard against transient or incompatible memory. Partial battle/location failures do not block other data; retained data is marked stale. Local configuration, saves, ROMs and dumps remain outside version control.
 
+## Black shared-screen migration
+
+Black and X now compose `src/games/core/GameWorkspace.tsx`, using the same catalog, manual collection, saved roster, encounter atlas, knowledge dialogs, daycare, pending evolutions and analysis screens. Black supplies game-specific services and raw source normalization. Unused legacy screen providers were retired; historical APIs remain internal adapter implementations. See the [migration and validation record](es/black-migration.md). The earlier extraction boundaries below describe the state before this migration.
+
 ## Remaining boundaries and evidence
+
+The [October 30 contract follow-up](es/architecture.md#cierre-de-excepciones-de-contratos-30-de-octubre-de-2026) records the shared evolution-requirements contract used by Black and X, adapter-provided sprites, the domain-owned `ExperienceLevel` type and Black's integration with collection alternatives in shared analysis. Legacy Gen V models remain compatibility boundaries, not contracts for new games. Reader controls remain injected and source-specific. This follow-up passed 495 tests, lint and build; its Spanish record distinguishes browser checks from untested modes.
 
 Battle shares contracts and components; Black retains the individual route while X uses multi-participant fields. Collection shares its engine/controls but retains distinct cards and details. Captures shares navigation/state/filtering while opportunities, family resolution and renderers retain specific implementations. Some historical Black APIs/providers remain Gen V coupled; extract them when a concrete feature needs the boundary. A visual variant must not remove functionality, and a memory transport alone does not justify enabling a module.
 

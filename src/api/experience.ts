@@ -1,7 +1,8 @@
 import { request } from './pokeapi.ts'
 import { readCache, writeCache } from '../storage/local.ts'
 
-export interface ExperienceLevel { level: number; experience: number }
+import type { ExperienceLevel } from '../domain/experience.ts'
+export type { ExperienceLevel } from '../domain/experience.ts'
 const speciesRequests = new Map<number, Promise<ExperienceLevel[]>>()
 const growthRequests = new Map<string, Promise<ExperienceLevel[]>>()
 export async function getExperienceLevels(speciesId: number, signal?: AbortSignal): Promise<ExperienceLevel[]> {

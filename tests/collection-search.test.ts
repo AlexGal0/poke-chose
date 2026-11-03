@@ -64,3 +64,19 @@ test('shared collection search supports Gen VI Fairy and nickname/type intersect
   assert.equal(matchesCollectionTags(pokemon, '#280 fairy', label), true)
   assert.equal(matchesCollectionTags(pokemon, 'ralts fighting', label), false)
 })
+
+test('origin generation combines with location and tags and resets pagination bounds', async () => {
+  const { collectionBrowserView, matchesCollectionGeneration } = await import('../src/domain/collection-search.ts')
+  const collection = [
+    { id: 649, name: 'genesect', types: ['bug'], location: 'box' as const, box: 0 },
+    { id: 650, name: 'chespin', types: ['grass'], location: 'box' as const, box: 0 },
+    { id: 650, name: 'chespin', types: ['grass'], location: 'party' as const },
+  ]
+  const view = collectionBrowserView(collection, { generation: 6, location: 0, query: 'grass', page: 3, boxCount: 31, typeLabel: type => type })
+  assert.deepEqual(view.rows, [collection[1]])
+  assert.equal(view.currentPage, 0)
+  assert.equal(view.boxCounts[0], 2)
+  assert.equal(matchesCollectionGeneration({ id: 10001, speciesId: 1 }, 1), true)
+  assert.equal(matchesCollectionGeneration({ id: 0 }, 1), false)
+  assert.equal(matchesCollectionGeneration({ id: 650 }, null), true)
+})

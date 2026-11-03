@@ -1,3 +1,9 @@
+import { speciesGeneration } from './species-generation.ts'
+
+export function matchesCollectionGeneration(pokemon: { id: number; speciesId?: number }, generation: number | null): boolean {
+  return generation === null || speciesGeneration(pokemon.speciesId ?? pokemon.id) === generation
+}
+
 export type CollectionLocationFilter = 'all' | 'party' | number
 
 export function matchesCollectionLocation(pokemon: { location?: 'party' | 'box'; box?: number | null }, filter: CollectionLocationFilter): boolean {
@@ -10,11 +16,11 @@ export interface BrowsablePokemon {
 }
 
 export function collectionBrowserView<P extends BrowsablePokemon>(collection: readonly P[], options: {
-  location: CollectionLocationFilter; query: string; page: number; boxCount: number
+  generation?: number | null; location: CollectionLocationFilter; query: string; page: number; boxCount: number
   typeLabel: (type: string) => string; accepts?: (pokemon: P) => boolean
 }) {
   const locationRows = collection.filter(pokemon => matchesCollectionLocation(pokemon, options.location))
-  const rows = locationRows.filter(pokemon => matchesCollectionTags(pokemon, options.query, options.typeLabel) && (options.accepts?.(pokemon) ?? true))
+  const rows = locationRows.filter(pokemon => matchesCollectionGeneration(pokemon, options.generation ?? null) && matchesCollectionTags(pokemon, options.query, options.typeLabel) && (options.accepts?.(pokemon) ?? true))
   const pages = Math.ceil(rows.length / 12)
   const currentPage = Math.max(0, Math.min(options.page, pages - 1))
   return { locationRows, rows, pages, currentPage, visibleRows: rows.slice(currentPage * 12, (currentPage + 1) * 12),

@@ -1,3 +1,5 @@
+import { isInventoryReading } from '../games/core/inventory.ts'
+import type { InventoryReading } from '../games/core/inventory.ts'
 import type { PokedexSnapshot } from '../models/pokedex.ts'
 import type { SavedPartyMember, SavedBoxPokemon } from '../models/party.ts'
 import { isSavedParty, isSavedBoxes } from './saved-pokemon-validation.ts'
@@ -15,7 +17,9 @@ export interface PokedexBridgeSnapshot {
   updatedAt: string | null
   party?: SavedPartyMember[]
   boxes?: SavedBoxPokemon[]
-  capabilities?: { daycare?: true }
+  capabilities?: { daycare?: true; inventory?: true }
+  inventory?: InventoryReading | null
+  inventoryStale?: boolean
   daycare?: DaycareData | null
   daycareStale?: boolean
 }
@@ -23,6 +27,10 @@ export const emptyPokedexSnapshot = (sourceId: string): PokedexBridgeSnapshot =>
 export function isPokedexBridgeSnapshot(value: unknown, sourceId: string, maxSpecies: number, pokemonLimits?: SavedPokemonLimits): value is PokedexBridgeSnapshot {
   if (!value || typeof value !== 'object') return false
   const data = value as PokedexBridgeSnapshot
+  if (data.capabilities?.inventory !== undefined && data.capabilities.inventory !== true) return false
+  if (data.inventoryStale !== undefined && typeof data.inventoryStale !== 'boolean') return false
+  if (data.inventoryStale === false && data.inventory == null) return false
+  if (data.inventory != null && (data.capabilities?.inventory !== true || !pokemonLimits?.inventory || !isInventoryReading(data.inventory, pokemonLimits.inventory))) return false
   if (data.capabilities?.daycare !== undefined && data.capabilities.daycare !== true) return false
   if (data.daycareStale !== undefined && typeof data.daycareStale !== 'boolean') return false
   if (data.daycareStale === false && data.daycare == null) return false

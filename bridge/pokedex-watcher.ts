@@ -1,3 +1,4 @@
+import type { InventoryReading } from '../src/games/core/inventory.ts'
 import { watch } from 'node:fs'
 import type { FSWatcher } from 'node:fs'
 import { basename, dirname } from 'node:path'
@@ -27,6 +28,7 @@ export class PokedexWatcher {
     this.notify = notify
     this.snapshot = emptyPokedexSnapshot(sourceId)
     if (reader.parseDaycare) Object.assign(this.snapshot, { capabilities: { daycare: true }, daycare: null, daycareStale: true })
+    if (reader.parseInventory) Object.assign(this.snapshot, { capabilities: { ...this.snapshot.capabilities, inventory: true }, inventory: null, inventoryStale: true })
     this.options = { debounceMs: 300, recoveryMs: 5000, retryMs: [500, 1000, 2000], read: readStableFile, ...options }
   }
   start() { this.attach(); this.schedule(0); return this }
@@ -60,6 +62,11 @@ export class PokedexWatcher {
       const bytes = await this.options.read(this.path, this.reader.byteLength)
       const pokedex = serializePokedex(this.reader.parse(bytes))
       const pokemon = this.reader.parsePokemon?.(bytes)
+      let inventory: InventoryReading | null = null
+      if (this.reader.parseInventory) {
+        try { inventory = this.reader.parseInventory(bytes, pokemon) }
+        catch { /* Optional corruption must not invalidate core data or mix held counts. */ }
+      }
       let daycare: DaycareData | null = null
       if (this.reader.parseDaycare) {
         try { daycare = this.reader.parseDaycare(bytes) }
@@ -67,13 +74,13 @@ export class PokedexWatcher {
       }
       if (this.stopped || generation !== this.generation) return
       this.attempt = 0
-      const changed = JSON.stringify([pokedex, pokemon, daycare ?? this.snapshot.daycare ?? null]) !== JSON.stringify([this.snapshot.pokedex, this.snapshot.party === undefined ? undefined : { party: this.snapshot.party, boxes: this.snapshot.boxes }, this.snapshot.daycare ?? null])
-      this.publish({ ...this.snapshot, ...pokemon, ...(this.reader.parseDaycare ? { daycare: daycare ?? this.snapshot.daycare, daycareStale: daycare === null } : {}), status: 'ready', message: 'ready', pokedex, updatedAt: changed ? new Date().toISOString() : this.snapshot.updatedAt })
+      const changed = JSON.stringify([pokedex, pokemon, inventory ?? this.snapshot.inventory ?? null, daycare ?? this.snapshot.daycare ?? null]) !== JSON.stringify([this.snapshot.pokedex, this.snapshot.party === undefined ? undefined : { party: this.snapshot.party, boxes: this.snapshot.boxes }, this.snapshot.inventory ?? null, this.snapshot.daycare ?? null])
+      this.publish({ ...this.snapshot, ...pokemon, ...(this.reader.parseInventory ? { inventory: inventory ?? this.snapshot.inventory, inventoryStale: inventory === null } : {}), ...(this.reader.parseDaycare ? { daycare: daycare ?? this.snapshot.daycare, daycareStale: daycare === null } : {}), status: 'ready', message: 'ready', pokedex, updatedAt: changed ? new Date().toISOString() : this.snapshot.updatedAt })
     } catch (error) {
       if (this.stopped || generation !== this.generation) return
       if (this.attempt < this.options.retryMs.length) { this.schedule(this.options.retryMs[this.attempt++]); return }
       const missing = error instanceof Error && 'code' in error && error.code === 'ENOENT'
-      this.publish({ ...this.snapshot, ...(this.reader.parseDaycare ? { daycareStale: true } : {}), status: missing ? 'missing' : 'error', message: missing ? 'missing' : 'readError' })
+      this.publish({ ...this.snapshot, ...(this.reader.parseDaycare ? { daycareStale: true } : {}), ...(this.reader.parseInventory ? { inventoryStale: true } : {}), status: missing ? 'missing' : 'error', message: missing ? 'missing' : 'readError' })
     } finally {
       this.busy = false
       // Periodic reconciliation recovers missed filesystem events as well.

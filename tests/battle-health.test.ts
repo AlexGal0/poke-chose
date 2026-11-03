@@ -111,3 +111,10 @@ test('field opponent requires both copies and preserves identity during an HP tr
   assert.equal(consistentBattleHealth(enemy, candidates), null, 'withholds unstable HP without hiding the combat')
   await assert.rejects(readEnemyBattle(data.reader, { enemyBattleAddresses: ['0x01000000', '0x0200020c'] }), /Direcciones/)
 })
+
+test('Black field copies expose the parsed rival held item', async () => {
+  const data = fixture()
+  const readings = await readEnemyBattle(data.reader, data.config)
+  assert.equal(readings.length, 2)
+  for (const reading of readings) assert.equal(reading.heldItemId, data.candidates[0].heldItemId)
+})

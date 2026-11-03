@@ -11,6 +11,7 @@ export interface BattleBattler {
   currentHp: number
   maxHp: number
   partySlot: number | null
+  heldItemId?: number | null
   statStages?: BattleStatStages | null
 }
 export interface BattleReading {
@@ -34,6 +35,7 @@ export function isBattleField(value: unknown, maxSpecies: number): value is Comb
         position.state === 'unknown' || position.state === 'empty' || position.state === 'occupied' &&
         typeof position.pokemon.identity === 'string' && /^[0-9:]+$/.test(position.pokemon.identity) && position.pokemon.identity.length <= 128 &&
         integer(position.pokemon.speciesId, 1, maxSpecies) && integer(position.pokemon.form, 0, 31) &&
+        (position.pokemon.heldItemId == null || integer(position.pokemon.heldItemId, 0, 65535)) &&
         (position.pokemon.level === null || integer(position.pokemon.level, 1, 100)) &&
         (position.pokemon.partySlot === null || integer(position.pokemon.partySlot, 0, 5)) &&
         (position.pokemon.health === null || !!position.pokemon.health && integer(position.pokemon.health.maxHp, 1, 65535) && integer(position.pokemon.health.currentHp, 0, position.pokemon.health.maxHp)) &&
@@ -50,6 +52,7 @@ export function isBattleReading(value: unknown, maxSpecies: number): value is Ba
     (s.enemy?.partySlot != null && s.enemy.partySlot >= s.opponentRosterTotal))) return false
   const battler = (p: BattleBattler) => !!p && typeof p.identity === 'string' && /^[0-9:]+$/.test(p.identity) && p.identity.length <= 128 && integer(p.speciesId, 1, maxSpecies) && integer(p.form, 0, 31) &&
     (p.level === null || integer(p.level, 1, 100)) && integer(p.maxHp, 1, 65535) && integer(p.currentHp, 0, p.maxHp) && (p.partySlot === null || integer(p.partySlot, 0, 5)) &&
+    (p.heldItemId == null || integer(p.heldItemId, 0, 65535)) &&
     (p.statStages == null || validStatStages(p.statStages))
   return s.active === false ? s.own === null && s.enemy === null : s.active === true && (s.enemy === null && s.field !== undefined || battler(s.enemy!)) && (s.own === null || battler(s.own))
 }

@@ -17,8 +17,8 @@ export function CaptureEvolutionHint({ pokemon, owned }: { pokemon: ManualPokemo
   useEffect(() => {
     if (!service) return
     const controller = new AbortController()
-    service.evolution(pokemon, i18n.language, controller.signal).then(family => {
-      if (!controller.signal.aborted) { setResult({ id: pokemon.id, root: family.root }); setError(false) }
+    void (service.progression ? service.progression(pokemon, i18n.language, controller.signal) : service.evolution(pokemon, i18n.language, controller.signal).then(family => family.root)).then(root => {
+      if (!controller.signal.aborted) { setResult({ id: pokemon.id, root }); setError(false) }
     }).catch(() => { if (!controller.signal.aborted) setError(true) })
     return () => controller.abort()
   }, [service, pokemon, i18n.language, attempt])

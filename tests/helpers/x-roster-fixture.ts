@@ -2,12 +2,12 @@ import { xPokedexFixture, fixtureCrc } from './x-pokedex-fixture.ts'
 
 // Independently encrypt with BigInt arithmetic and write blocks in inverse order.
 const layouts = ['ABCD', 'ABDC', 'ACBD', 'ADBC', 'ACDB', 'ADCB', 'BACD', 'BADC', 'CABD', 'DABC', 'CADB', 'DACB', 'BCAD', 'BDAC', 'CBAD', 'DBAC', 'CDAB', 'DCAB', 'BCDA', 'BDCA', 'CBDA', 'DBCA', 'CDBA', 'DCBA']
-export function fixturePk6(options: { speciesId?: number; personality?: number; form?: number; constant?: number; egg?: boolean; nickname?: string; level?: number; party?: boolean; hp?: number; experience?: number; gender?: 'male' | 'female' | 'genderless'; hatchCycles?: number; handler?: number } = {}) {
+export function fixturePk6(options: { speciesId?: number; personality?: number; form?: number; constant?: number; egg?: boolean; nickname?: string; level?: number; party?: boolean; hp?: number; experience?: number; gender?: 'male' | 'female' | 'genderless'; hatchCycles?: number; handler?: number; heldItemId?: number } = {}) {
   const bytes = Buffer.alloc(options.party ? 260 : 232)
   const constant = options.constant ?? 0x12345678
   bytes.writeUInt32LE(constant, 0)
   bytes.writeUInt16LE(options.speciesId ?? 653, 8)
-  bytes.writeUInt16LE(17, 0xa)
+  bytes.writeUInt16LE(options.heldItemId ?? 17, 0xa)
   bytes.writeUInt32LE(0x11223344, 0xc)
   bytes.writeUInt32LE(options.experience ?? 1000, 0x10)
   bytes[0x14] = 66

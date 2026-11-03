@@ -1,12 +1,12 @@
 import type { ManualPokemon } from './catalog.ts'
 import type { SavedPartyMember, SavedBoxPokemon, SavedPokemonData } from '../../models/party.ts'
-import type { ExperienceLevel } from '../../api/experience.ts'
+import type { ExperienceLevel } from '../../domain/experience.ts'
 import type { BaseStats } from '../../domain/stats.ts'
 import type { KnowledgeMove } from '../../domain/species-knowledge.ts'
 import { levelFromExperience } from '../../domain/experience.ts'
 
 export type KnownRosterMove = Omit<KnowledgeMove, 'level'> & { slot: number; id: number; power: number | null; accuracy: number | null }
-export interface RosterDescription { moves: string[]; ability: string; item: string; knownMoves?: KnownRosterMove[] }
+export interface RosterDescription { itemError?: boolean; abilityError?: boolean; knownMovesError?: boolean; moves: string[]; ability: string; item: string; knownMoves?: KnownRosterMove[] }
 export interface RosterIndividual { pokemon: SavedRosterPokemon; service: SavedRosterService }
 
 export type SavedRosterPokemon = ManualPokemon & SavedPokemonData & {
@@ -44,7 +44,7 @@ export function findRosterIndividual(selected: SavedRosterPokemon, roster: reado
   const matches = roster.filter(p => !p.isEgg && p.personality === selected.personality && p.trainerId === selected.trainerId && p.speciesId === selected.speciesId)
   return matches.find(p => p.instanceKey === selected.instanceKey) ?? (matches.length === 1 ? matches[0] : undefined)
 }
-export async function resolveSavedRoster(service: SavedRosterService, party: SavedPartyMember[], boxes: SavedBoxPokemon[], signal?: AbortSignal) {
+export async function resolveSavedRoster(service: SavedRosterService, party: SavedPartyMember[], boxes: SavedBoxPokemon[] | undefined, signal?: AbortSignal) {
   const unique = new Map<string, ReturnType<SavedRosterService['resolve']>>()
   const resolve = (member: SavedPokemonData) => {
     const key = `${member.speciesId}:${member.form}`
@@ -63,6 +63,17 @@ export async function resolveSavedRoster(service: SavedRosterService, party: Sav
       instanceKey: `${location}:${box ?? ''}:${member.slot}:${member.personality}:${member.trainerId}` }
   }
   const team = await Promise.all(party.map(memberData))
-  const stored = await Promise.all(boxes.map(memberData))
-  return { party: team, collection: [...team, ...stored] }
+  const stored: SavedRosterPokemon[] | null = boxes ? new Array(boxes.length) : null
+  let next = 0
+  const workers = await Promise.allSettled(Array.from({ length: Math.min(4, boxes?.length ?? 0) }, async () => {
+    while (boxes && stored && next < boxes.length) {
+      signal?.throwIfAborted()
+      const index = next++
+      stored[index] = await memberData(boxes[index])
+    }
+  }))
+  const failure = workers.find(worker => worker.status === 'rejected')
+  if (failure?.status === 'rejected') { signal?.throwIfAborted(); return { party: team, collection: null, collectionError: true } }
+  signal?.throwIfAborted()
+  return { party: team, collection: stored ? [...team, ...stored] : null, collectionError: false }
 }

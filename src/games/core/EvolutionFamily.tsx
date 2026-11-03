@@ -1,3 +1,5 @@
+import { KnowledgeContext } from './knowledge-context'
+import { evolutionMethodLabel } from '../../i18n/evolution'
 import { BreedingOnlyBadge } from '../../components/BreedingOnlyBadge'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,9 +16,10 @@ export function EvolutionFamily({ node, selectedId, labels, pokemon = {}, stage 
   node: KnowledgeNode; selectedId: number; labels: Record<string, string>; pokemon?: Record<number, ManualPokemon>; stage?: number
 }) {
   const { t } = useTranslation()
+  const service = useContext(KnowledgeContext)?.service
   const discovered = useContext(DiscoveryContext).has(node.id)
   const appearance = pokemon[node.id]
-  const methods = [...new Set(node.methods.map(method => knowledgeFactLabel(t, knowledgeEvolutionFacts(method, node.id, labels))))]
+  const methods = [...new Set(node.methods.map(method => service?.methodFacts ? evolutionMethodLabel(t, service.methodFacts(method, node.id, labels)) : knowledgeFactLabel(t, knowledgeEvolutionFacts(method, node.id, labels))))]
   return <li className="family-branch">
     {methods.length > 0 && <div className="family-transition">
       <span className="family-arrow" aria-hidden="true">→</span>

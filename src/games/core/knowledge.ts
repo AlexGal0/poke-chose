@@ -6,6 +6,8 @@ import type { EvolutionResource } from '../../models/evolution.ts'
 import type { SpeciesEntry, ManualPokemon } from './catalog.ts'
 
 export interface KnowledgeService {
+  progression?: (entry: SpeciesEntry, locale: string, signal?: AbortSignal) => Promise<import('../../domain/species-knowledge.ts').KnowledgeNode>
+  methodFacts?: (method: import('../../domain/species-knowledge.ts').KnowledgeEvolutionDetail, targetId: number, labels: Record<string, string>) => import('../../domain/evolution.ts').EvolutionFact[]
   rules: KnowledgeRules
   stats(entry: SpeciesEntry, signal?: AbortSignal): Promise<BaseStats>
   moves(entry: SpeciesEntry, locale: string, signal?: AbortSignal): Promise<KnowledgeMove[]>

@@ -1,3 +1,4 @@
+import type { InventoryReading } from './inventory.ts'
 import type { PokedexState } from '../../models/pokedex.ts'
 import type { SavedPartyMember, SavedBoxPokemon } from '../../models/party.ts'
 import type { DaycareData } from './daycare.ts'
@@ -14,6 +15,7 @@ export interface SavePokedexReader {
   byteLength: number
   parse(bytes: Uint8Array): PokedexState
   parsePokemon?(bytes: Uint8Array): { party: SavedPartyMember[]; boxes: SavedBoxPokemon[] }
+  parseInventory?(bytes: Uint8Array, pokemon?: { party: SavedPartyMember[]; boxes: SavedBoxPokemon[] }): InventoryReading
   parseDaycare?(bytes: Uint8Array): DaycareData
 }
 

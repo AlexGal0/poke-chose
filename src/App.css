@@ -92,3 +92,8 @@ footer { display: flex; justify-content: space-between; gap: 15px; color: var(--
 .collection-tags button.type { background: var(--type-color); color: #fff; border-color: transparent; }
 .collection-tags button.type:hover { filter: brightness(1.15); }
 .collection-tags button.type.active, .collection-tags button.type[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 1px var(--type-color); }
+
+.collection-search-row { display: flex; align-items: center; gap: 10px; }
+.collection-search-row > .search { min-width: 0; }
+.generation-filter { display: flex; align-items: center; gap: 5px; flex-shrink: 0; font-size: 13px; white-space: nowrap; }
+.generation-filter select { width: auto; min-width: 0; padding: 10px 6px; }

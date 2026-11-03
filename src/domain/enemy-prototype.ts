@@ -9,6 +9,7 @@ export interface EnemyCandidate {
   trainerId?: number
   currentHp?: number
   maxHp?: number
+  heldItemId?: number | null
   statStages?: BattleStatStages
 }
 
@@ -58,4 +59,11 @@ export function consistentOwnCandidate(activeCandidates: ActivePokemonCandidate[
   if (!Number.isInteger(first.battleSlot) || first.battleSlot! < 0 || first.battleSlot! > 5 || !activeCandidates.every(candidate => candidate.battleSlot === first.battleSlot)) return null
   if (!Number.isInteger(first.slot) || first.slot! < 0 || first.slot! > 5 || !activeCandidates.every(candidate => candidate.slot === first.slot)) return null
   return first
+}
+
+// Item disagreements are a partial read gap, not a loss of opponent identity.
+export function consistentHeldItem(readings: EnemyCandidate[]): number | null {
+  const id = readings[0]?.heldItemId
+  return readings.length >= 2 && typeof id === 'number' && Number.isInteger(id) && id >= 0 && id <= 65535 &&
+    readings.every(row => row.heldItemId === id) ? id : null
 }

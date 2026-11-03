@@ -1,4 +1,4 @@
-import type { ExperienceLevel } from '../api/experience.ts'
+export interface ExperienceLevel { level: number; experience: number }
 
 export function levelFromExperience(experience: number, levels: ExperienceLevel[]): number | null {
   if (!Number.isInteger(experience) || experience < 0 || levels.length !== 100) return null

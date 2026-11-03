@@ -7,6 +7,8 @@ export interface CombatParticipant {
   form: number
   level: number | null
   slot: number | null
+  // Adapter-scoped item index: null/absent is unknown; zero confirms no item.
+  heldItemId?: number | null
   nickname?: string | null
   isEgg?: boolean
   health: { currentHp: number; maxHp: number } | null
@@ -15,7 +17,9 @@ export interface CombatParticipant {
 export interface CombatSpecies { id: number; name: string; types: readonly string[]; sprite: string | null; animatedSprite?: string | null }
 export interface CombatReading extends CombatObservation<CombatParticipant, CombatParticipant[]> { message: string }
 export interface BattleConnection { status: string; message: string; inBattle: boolean }
+export interface CombatHeldItem { name: string; icon: string | null }
 export interface CombatService {
+  resolveHeldItem?: (id: number, locale: string, signal?: AbortSignal) => Promise<CombatHeldItem>
   resolve(speciesId: number, form: number, signal?: AbortSignal): Promise<CombatSpecies>
   onStatistics?: (participant: CombatParticipant, pokemon: CombatSpecies) => void
 }

@@ -4,7 +4,7 @@ import type { SavedRosterPokemon } from '../core/saved-roster.ts'
 import type { FieldCombatReading, FieldPokemon } from '../core/combat.ts'
 
 function participant(p: BattleBattler | null): CombatParticipant | null {
-  return p ? { identity: p.identity, speciesId: p.speciesId, form: p.form, level: p.level, slot: p.partySlot, health: { currentHp: p.currentHp, maxHp: p.maxHp }, stages: p.statStages ?? null } : null
+  return p ? { heldItemId: p.heldItemId, identity: p.identity, speciesId: p.speciesId, form: p.form, level: p.level, slot: p.partySlot, health: { currentHp: p.currentHp, maxHp: p.maxHp }, stages: p.statStages ?? null } : null
 }
 
 export function normalizeXFieldBattle(reading: BattleReading | null | undefined, status: 'ready' | 'waiting' | 'error', party: readonly SavedRosterPokemon[]): FieldCombatReading {

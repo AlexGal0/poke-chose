@@ -1,3 +1,4 @@
+import { BattleHeldItem } from './BattleHeldItem'
 import type { CombatParticipant, CombatSpecies, CombatService } from '../models/combat'
 import { pokemonDisplayName } from '../domain/pokemon-names'
 import { useEffect, useRef, useState } from 'react'
@@ -50,6 +51,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
   const nickname = own ? candidate.nickname : null
   if (density !== 'detailed') return <div aria-label={own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')} className={`battle-participant battle-density-${density} ${own ? 'own-participant' : 'enemy-participant'}`}>
     <div ref={cardRef} className={`battle-small-card ${shownHealth?.currentHp === 0 ? 'is-fainted' : ''}`}>
+      <BattleHeldItem id={candidate.heldItemId} service={service} />
       <div className="battle-small-sprite">{pokemon && <BattleSprite pokemon={pokemon} fainted={shownHealth?.currentHp === 0} />}</div>
       <div className="battle-small-identity">
         <h3>{pokemon ? nickname || pokemonDisplayName(pokemon.name) : t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</h3>
@@ -70,6 +72,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
   return <div className={`battle-participant ${own ? 'own-participant' : 'enemy-participant'}`}>
     <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>
+      <BattleHeldItem id={candidate.heldItemId} service={service} />
       {pokemon ? <DiscoveryContext.Provider value={new Set([pokemon.id])}>
         <PokemonCardFrame sprite={<BattleSprite pokemon={pokemon} fainted={shownHealth?.currentHp === 0} />} pokemon={{ ...pokemon, nickname: own ? candidate.nickname : undefined }} tools={service.onStatistics ? <button type="button" className="stats-icon" onClick={() => service.onStatistics?.(candidate, pokemon)} aria-label={t('statistics.buttonAria', { name: pokemonDisplayName(pokemon.name) })} title={t('statistics.button')}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M5 20V10h3v10M11 20V4h3v16M17 20v-7h3v7M3 20h19" /></svg></button> : undefined} fainted={shownHealth?.currentHp === 0} footer={<BattleStatStages stages={nextStatsDisplay.stages} />}>
           <p className="hint">{candidate.level === null ? t('battleAdapter.levelUnavailable') : t('app.team.level', { level: candidate.level })}</p>
