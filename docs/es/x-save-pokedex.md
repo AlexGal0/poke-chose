@@ -137,3 +137,6 @@ través de un contrato pequeño, sin migrar la interfaz de Black. Los movimiento
 leídos y las estadísticas actuales se muestran en Datos del ejemplar; las consultas
 de referencia del catálogo son un flujo separado. Guardería, zona y combate de X
 siguen sin lector.
+
+
+Inventario de Pokémon X: el bolsillo Objetos y los objetos equipados del mismo save o lectura conjunta de Citra alimentan Evoluciones pendientes. En vivo se actualiza con las cajas; los fallos conservan la lectura anterior como obsoleta. Detalles en [inventario de X](x-inventory.md).

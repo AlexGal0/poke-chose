@@ -273,3 +273,10 @@ Data and sprites from [PokéAPI](https://pokeapi.co/docs/v2). Species, zone, and
 PokéChose is an independent, unofficial companion project. Pokémon and its assets belong to their respective rights holders.
 
 PR preparation integrates current master, including fixed web ports 15300/15400. X save/live readers now use 15304/15305; restart local services after updating. The full integration passes 404 tests, lint and build. Browser smoke checks covered both manual workspaces, Black pending evolutions/album and X connection details; the earlier change record retains the real Citra evidence.
+
+
+Inventario de Pokémon X: el bolsillo Objetos y los objetos equipados del mismo save o lectura conjunta de Citra alimentan Evoluciones pendientes. En vivo se actualiza con las cajas; los fallos conservan la lectura anterior como obsoleta. Detalles en [inventario de X](docs/es/x-inventory.md).
+
+Black and X now use the same `GameWorkspace` screens with game-specific adapters. See the [Black migration and validation record](docs/es/black-migration.md).
+
+See the [Pokémon X closeout review](docs/es/x-closeout.md) for the final delivery scope, current validation and remaining experimental reader limits.

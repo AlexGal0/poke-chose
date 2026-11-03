@@ -4,7 +4,7 @@
 
 PokéChose is a React and TypeScript application powered by Vite, with React Compiler enabled. It organizes Pokémon collections and teams and analyzes type effectiveness using Generation V rules. It supports browser-only manual mode, a read-only local save bridge, and experimental live and battle readers for Pokémon Black.
 
-- `src/main.tsx` mounts the application with `EvolutionProvider`; `src/App.tsx` composes the interface and manages manual collection, team source, and tabs.
+- `src/main.tsx` mounts the application with theme and localization setup; `src/App.tsx` selects game workspaces. `src/games/core/GameWorkspace.tsx` composes shared screens; Black and X inject their services, rules, capabilities and sources.
 - `src/components/` contains the catalog, Pokémon cards, collection search, save synchronization, capture checklist, evolution dialog, and team analysis.
 - `src/models/` defines Pokémon, party, Pokédex, encounter, and evolution models.
 - `src/api/` fetches and adapts PokéAPI data for Black/White; `src/domain/` contains type effectiveness, collection rules, search, encounter access, zone ordering, and evolution logic.
@@ -49,6 +49,7 @@ Run commands from the project root. The README and Windows launcher require Node
 
 Favor reusable screens that can consume another game's adapter without changes to their presentation logic. Apply this direction incrementally to the feature being developed; it is not a requirement to migrate existing screens or redesign the application before delivering a focused change.
 
+- Read `docs/es/black-migration.md` for the current shared-screen composition and compatibility boundaries. Black and X both use `GameWorkspace`; do not recreate retired screen providers when adding a game.
 - Use `src/games/core/` contracts and shared domain models when they fit. Shared screens should receive normalized data, services, rules and capabilities through props or context. Keep concrete adapter selection in game workspaces or other composition boundaries.
 - Keep game-specific species limits, type rules, version groups, forms, map identifiers, encounter ordering and save formats in game rules or adapters. Existing Black/Generation V requirements apply to Black; do not extend those assumptions to other games through shared models or validators.
 - Distinguish a game adapter from a data source: switching between manual input, a save file and emulator memory does not by itself switch game rules. Keep normalization, validation and species resolution consistent with the selected game throughout the data flow.

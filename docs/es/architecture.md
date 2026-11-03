@@ -124,7 +124,23 @@ El combate comparte contratos y componentes; Black conserva la ruta individual m
 
 Para ampliar una función: identificar su contrato funcional, comprobar si existe un motor compartido, inyectar los datos/reglas necesarios y cubrir las diferencias de los adaptadores afectados. Una variante visual no debe eliminar capacidades. No habilitar un módulo solo porque exista un transporte de memoria.
 
+## Migración de pantallas de Black
+
+Black y X componen ahora `src/games/core/GameWorkspace.tsx`. Catálogo, colección manual, equipo/cajas, atlas de capturas, fichas de conocimiento, guardería, evoluciones pendientes y análisis usan las mismas pantallas. Black aporta adaptadores y `useBlackSource` entrega identidades crudas a la resolución común. Se retiraron los proveedores y pantallas anteriores que ya no tenían consumidores. Las APIs históricas de Black permanecen dentro de sus adaptadores, con sus límites y cachés.
+
+El [registro de migración](black-migration.md) detalla compatibilidad, paridad y validación. La sección siguiente sobre excepciones describe el estado anterior a esta migración: la composición histórica de Black y sus tarjetas ya no son las fronteras vigentes.
+
 ## Evidencia y validación
+
+### Cierre de excepciones de contratos (30 de octubre de 2026)
+
+- Evoluciones pendientes dispone de `EvolutionRequirementsService` y adaptadores de Black y X; ya no es una pantalla exclusiva de Black. Véase el [contrato](evolution-requirements-contract.md). Los sprites proceden del servicio o de una función de presentación inyectada; la pantalla no consulta la API de Black como alternativa implícita.
+- `ExperienceLevel` pertenece a `src/domain/experience.ts`. Guardería, colección y adaptadores importan el tipo del dominio; la API histórica lo reexporta para compatibilidad.
+- Black pasa colección, equipo y obsolescencia al análisis compartido, incluidas las alternativas de colección y el recuento de huevos excluidos.
+- Los modelos `Pokemon`/`PokemonType` históricos siguen limitados a Gen V por compatibilidad con Black. Los contratos nuevos usan `ManualPokemon`, `AnalysisPokemon` y reglas explícitas. Un nuevo juego no debe ampliar esos tipos históricos ni reutilizar sus validadores como universales.
+- Los controles de lectores permanecen específicos e inyectados en el workspace: sus diferencias de conexión no requieren una pantalla universal. La composición histórica de Black tampoco implica que falte el contrato común.
+
+Validación de este cierre: 495 pruebas correctas fuera del aislamiento, lint y build correctos. Navegador con Vite existente: Black Save mostró 95 ejemplares y 77 alternativas; filtrar Tierra produjo 9. Se revisó la sección con override 390×844 (ancho CSS efectivo de 313 px; sección de alternativas de 259 px sin desbordamiento interno) y la presentación de evoluciones pendientes. X mostró evoluciones e inventario conservados con avisos de obsolescencia. Se usaron las lecturas reales ya disponibles, sin escribir saves ni conectar Citra. No se verificó una nueva lectura de memoria ni el modo manual. Se restauraron el viewport y la selección inicial de X.
 
 La validación de combate del paso 9 pasó **481 pruebas, lint y build**; la [matriz de validación](multi-battle-validation.md) separa las comprobaciones actuales de las anteriores. Este cierre documental no repite esas pruebas. El [resumen del 25 de octubre](changes-2026-10-25.md) separa evidencia real y fixtures para guardería, eclosión, géneros y conexión. La validación histórica del seguimiento contrastó acuario, exterior de Petroglifo y Ruta 8, además de pausa manual y reactivación; no se recorrieron físicamente los 360 mapas. Las notas de combate conservan sus transiciones reales y límites propios.
 

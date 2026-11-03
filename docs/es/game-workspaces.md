@@ -1,5 +1,7 @@
 # Selección de juego y separación de versiones
 
+Estado actual: Black y X componen `GameWorkspace`; véase la [migración de Black](black-migration.md). Las referencias siguientes a `ManualWorkspace` y a la composición anterior de Black corresponden a las etapas históricas.
+
 Guía de implementación incremental. Para la arquitectura consolidada, las decisiones vigentes y los límites pendientes, véase [Arquitectura y decisiones](architecture.md). Las validaciones de los primeros bloques que aparecen al final son registros históricos.
 
 ## Entrada y disponibilidad

@@ -1,5 +1,9 @@
 # Curated validation screenshots
 
+## Closeout curation (2026-11-03)
+
+Previously untracked `box-navigation-mobile.png`, `daycare-gender-egg-real.png`, `egg-hatching-real-{desktop,mobile}.png` and `game-covers-{desktop,mobile-black,mobile-x}.png` are retained as historical layout references. Their names alone do not establish real-source validation; their creation was not observed in this PR review. They are not fresh verification evidence. The evolution and inventory images below retain their documented implementation provenance. Current closeout checks and limits are recorded in [x-closeout](../docs/es/x-closeout.md).
+
 This directory keeps curated final or distinct validation captures. The 2026-10-17 cleanup removed intermediate layouts, duplicate previews, obsolete browser scripts and HTML harnesses. Historical documentation retains filenames as provenance; removed captures and commands are not current verification evidence. Ignored local browser profiles and research subdirectories were not cleaned.
 
 | Retained files | Purpose and recorded source |
@@ -72,3 +76,18 @@ The initial roster preview, selected-comparison preview, step 9 alignment previe
 and intermediate removal preview were retired; their records remain historical.
 The three real Citra images and card-density example remain distinct source and
 format evidence. Unrelated user captures were not included in this delivery.
+
+
+## X pending evolution items (2026-10-30)
+
+`x-evolution-items-desktop.png` and `x-evolution-items-mobile.png` show the shared requirements screen with the X adapter, real retained live collection data and the reader stopped. Inventory quantities are unavailable and collection staleness is explicit. Desktop is Spanish; mobile is English. No save writes or new emulator connection were performed. See `docs/es/evolution-requirements-contract.md` for current checks and viewport details.
+
+
+## X inventory reader (2026-10-30)
+
+`x-inventory-live-desktop.png` and `x-inventory-live-mobile.png` show real read-only Citra X quantities and missing-item states after a stable combined bag/party/box reading. Both are Spanish. No save or memory writes and no memory dumps were made. Desktop and mobile checks, synthetic recovery tests and reader limits are recorded in `docs/es/x-inventory.md`. The earlier `x-evolution-items-*` captures document the preceding implementation with quantities unavailable, not the inventory reader.
+
+
+## Evolution item wiki links (2026-10-30)
+
+`evolution-item-wiki-desktop.png` and `evolution-item-wiki-mobile.png` show the shared item cards with a small external-link icon in the top-right corner, using X's real read-only live data. Both final captures are Spanish. Checked keyboard focus, accessible item-specific names and tooltip; the preceding text-button variant also checked English Bulbapedia URLs. Spanish uses WikiDex. Mobile viewport 390×844; viewport was restored. The external wiki article load was not verified. No save or emulator writes. Validation: 495 tests, lint and build passed.
