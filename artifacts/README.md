@@ -1,5 +1,9 @@
 # Curated validation screenshots
 
+## Pokémon Y runtime (2026-11-03)
+
+`y-battle-real-desktop.png` and `y-battle-real-mobile.png` record the Y live source: Froakie level 8 at 12/24 HP against Pidgey level 3 at 15/15 HP. The user started the encounter in Citra 2. These are current UI checks, not synthetic data. Mobile override 390×844, effective CSS width and scrollWidth 375 px; override restored. See [Y validation and limits](../docs/es/y-adapter.md). No save or guest-memory writes were made.
+
 ## Closeout curation (2026-11-03)
 
 Previously untracked `box-navigation-mobile.png`, `daycare-gender-egg-real.png`, `egg-hatching-real-{desktop,mobile}.png` and `game-covers-{desktop,mobile-black,mobile-x}.png` are retained as historical layout references. Their names alone do not establish real-source validation; their creation was not observed in this PR review. They are not fresh verification evidence. The evolution and inventory images below retain their documented implementation provenance. Current closeout checks and limits are recorded in [x-closeout](../docs/es/x-closeout.md).

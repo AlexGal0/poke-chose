@@ -13,7 +13,7 @@ test('game selection survives reloads and restarts on the same local day and exp
   try {
     assert.equal(loadSelectedGame(), null)
     const evening = new Date(2026, 9, 23, 23, 50)
-    for (const game of ['black', 'x'] as const) {
+    for (const game of ['black', 'x', 'y'] as const) {
       saveSelectedGame(game, evening)
       assert.equal(loadSelectedGame(new Date(2026, 9, 23, 23, 59))?.id, game)
       assert.equal(loadSelectedGame(new Date(2026, 9, 24, 0, 0)), null)

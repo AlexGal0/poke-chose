@@ -4,7 +4,7 @@ import type { LivePartySnapshot } from '../sources/live-party-snapshot'
 import type { createLivePartySource } from '../sources/live-party-source'
 
 export function useLivePartySource(source: ReturnType<typeof createLivePartySource>, enabled: boolean) {
-  const [current, setCurrent] = useState<{ enabled: boolean; snapshot: LivePartySnapshot }>({ enabled: false, snapshot: emptyLivePartySnapshot() })
+  const [current, setCurrent] = useState<{ enabled: boolean; snapshot: LivePartySnapshot }>({ enabled: false, snapshot: emptyLivePartySnapshot(source.sourceId) })
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
   const generation = useRef(0)
@@ -18,7 +18,7 @@ export function useLivePartySource(source: ReturnType<typeof createLivePartySour
     }
   }, [enabled, source])
   if (current.enabled !== enabled) {
-    setCurrent({ enabled, snapshot: emptyLivePartySnapshot() })
+    setCurrent({ enabled, snapshot: emptyLivePartySnapshot(source.sourceId) })
     setBusy(false)
     setError(false)
   }
@@ -31,5 +31,5 @@ export function useLivePartySource(source: ReturnType<typeof createLivePartySour
     catch { if (token === generation.current) setError(true); return false }
     finally { if (token === generation.current) setBusy(false) }
   }
-  return { snapshot: enabled && current.enabled ? current.snapshot : emptyLivePartySnapshot(), busy, error, control }
+  return { snapshot: enabled && current.enabled ? current.snapshot : emptyLivePartySnapshot(source.sourceId), busy, error, control }
 }

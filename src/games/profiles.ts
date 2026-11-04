@@ -4,7 +4,7 @@ export const GAME_MODULES = [
 ] as const
 
 export type GameModule = typeof GAME_MODULES[number]
-export type GameId = 'black' | 'x'
+export type GameId = 'black' | 'x' | 'y'
 
 export interface GameProfile {
   id: GameId
@@ -26,6 +26,14 @@ export const GAME_PROFILES: readonly GameProfile[] = [
   },
   {
     id: 'x', generation: 6, region: 'kalos', symbol: 'X',
+    modules: {
+      team: true, catalog: true, collection: true, captures: true, analysis: true,
+      types: true, evolutions: true, moves: true, statistics: true, daycare: true,
+      save: true, live: true, battle: true, location: true, repel: false,
+    },
+  },
+  {
+    id: 'y', generation: 6, region: 'kalos', symbol: 'Y',
     modules: {
       team: true, catalog: true, collection: true, captures: true, analysis: true,
       types: true, evolutions: true, moves: true, statistics: true, daycare: true,

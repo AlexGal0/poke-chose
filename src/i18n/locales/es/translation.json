@@ -1,5 +1,8 @@
 {
-  "battleHeldItem": {"equipped": "Objeto equipado: {{name}}", "unavailable": "Objeto equipado; nombre no disponible"},
+  "battleHeldItem": {
+    "equipped": "Objeto equipado: {{name}}",
+    "unavailable": "Objeto equipado; nombre no disponible"
+  },
   "genderRatio": {
     "summary": "Proporción base aproximada: macho {{male}}, hembra {{female}}. Sin modificadores de encuentro."
   },
@@ -678,6 +681,40 @@
         "ready": "Cajas sincronizadas con la memoria de Citra. Se revisan cada dos minutos o al pulsar Actualizar colección.",
         "error": "No hay una lectura actual de las cajas. Se conserva la última colección válida, si existe; comprueba la conexión y vuelve a actualizar."
       }
+    },
+    "ySave": {
+      "hint": "El guardado se lee automáticamente al guardar en Citra. Configura main una sola vez en y-save.config.local.json y usa el iniciador habitual o npm run bridge:y. Incluye Pokédex, equipo y las 31 cajas.",
+      "messages": {
+        "waiting": "Esperando una lectura válida del guardado de Y…",
+        "unconfigured": "Falta configurar la ruta del archivo main de Y.",
+        "ready": "Pokédex, equipo y cajas de Y sincronizados con el guardado.",
+        "missing": "No se encuentra main. Se reintentará automáticamente.",
+        "readError": "No se pudo validar el guardado. Se conserva la última lectura válida y se reintentará.",
+        "connectionLost": "No hay conexión con el puente de Y. Comprueba que el iniciador esté abierto; la conexión se reintentará automáticamente."
+      }
+    },
+    "yLive": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "controlError": "No se pudo completar la acción. Comprueba que el iniciador esté abierto y reintenta.",
+      "hint": "Lectura experimental de equipo y Pokédex cada dos segundos; las 31 cajas se revisan al conectar y cada dos minutos. Puedes adelantar su lectura con Actualizar colección. Todo se lee de memoria, sin guardar. Perfil de Y validado localmente; otras versiones pueden no ser compatibles. Las marcas de captura y las imágenes respetan la Pokédex.",
+      "messages": {
+        "pressConnect": "Pulsa Conectar para iniciar la lectura de Citra.",
+        "connecting": "Conectando con Citra…",
+        "ready": "Equipo y Pokédex actualizados desde la memoria de Citra.",
+        "readError": "No se pudo obtener una lectura estable de equipo y Pokédex. Se conserva la última lectura válida.",
+        "profileMismatch": "La sesión no coincide con el perfil de Y validado. Se conserva el último equipo, sin aceptar datos nuevos.",
+        "disconnected": "Lectura detenida. Se conservan los últimos datos válidos como referencia.",
+        "connectionLost": "Sin conexión con el puente de Citra. Comprueba que el iniciador esté abierto."
+      },
+      "refreshCollection": "Actualizar colección",
+      "boxesLastReading": "Última lectura válida de cajas: {{time}}",
+      "boxStatus": {
+        "waiting": "Esperando la primera lectura de las cajas. Conecta Citra en vivo para consultar tu colección.",
+        "reading": "Leyendo las 31 cajas… Se conserva la última colección mientras termina.",
+        "ready": "Cajas sincronizadas con la memoria de Citra. Se revisan cada dos minutos o al pulsar Actualizar colección.",
+        "error": "No hay una lectura actual de las cajas. Se conserva la última colección válida, si existe; comprueba la conexión y vuelve a actualizar."
+      }
     }
   },
   "encounterOpportunity": {
@@ -1239,7 +1276,8 @@
     "generation": "Generación {{number}}",
     "names": {
       "black": "Pokémon Black",
-      "x": "Pokémon X"
+      "x": "Pokémon X",
+      "y": "Pokémon Y"
     },
     "regions": {
       "unova": "Teselia",
@@ -1247,12 +1285,13 @@
     },
     "status": {
       "black": "Aventura disponible",
-      "x": "Manual y Save de Citra disponibles"
+      "x": "Manual y Save de Citra disponibles",
+      "y": "Manual, Save y Citra en vivo disponibles"
     },
     "enter": "Entrar",
     "change": "Cambiar juego",
     "loading": "Abriendo tu aventura…",
-    "isolationHint": "Tu colección de Black se conserva. Las funciones de X se habilitarán a medida que estén listas.",
+    "isolationHint": "Cada juego conserva su propia colección, equipo y preferencias.",
     "preparationDescription": "Estamos preparando esta aventura para ofrecer las mismas funciones que en Black. Aquí puedes ver los módulos que se irán habilitando.",
     "modulesHeading": "Tu espacio de juego",
     "moduleUnavailable": "Estos módulos todavía no están disponibles para este juego. No se conectarán lectores ni se cargarán datos de otra aventura.",
@@ -1520,7 +1559,7 @@
     "stale": "La lectura de combate está detenida o desconectada. Se conserva la última sesión como referencia.",
     "unconfirmed": "Todavía no hay una lectura de combate confirmada.",
     "inactive": "Fuera de combate. Entra en una pelea individual para ver los participantes.",
-    "multiScope": "Lectura experimental de sencillos, dobles y hordas para el perfil local de Pokémon X. Los puestos no confirmados se conservan como lectura parcial."
+    "multiScope": "Lectura experimental de sencillos, dobles y hordas para el perfil local de {{game}}. Los puestos no confirmados se conservan como lectura parcial."
   },
   "battleOpponentRoster": {
     "heading": "Equipo rival",
@@ -1678,5 +1717,30 @@
     "emptyPosition": "Puesto vacío",
     "unknownFormat": "Formato de combate por confirmar",
     "unsupportedFormat": "Este formato aún no tiene una vista disponible"
+  },
+  "yAcquisition": {
+    "group": "Formas de obtención en Pokémon Y",
+    "open": "Ver cómo obtener {{name}} en Pokémon Y",
+    "hint": "Datos de Pokémon Y: encuentros de Kalos y evoluciones de Generación VI. Los regalos y los intercambios pueden requerir progreso o elecciones previas.",
+    "loading": "Consultando obtención en Pokémon Y…",
+    "noEncounters": "No hay encuentros directos de Y registrados para esta especie. Esto no demuestra que sea imposible obtenerla.",
+    "anyPokemon": "cualquier Pokémon compatible con este intercambio",
+    "routes": {
+      "capture": "Capturable en Pokémon Y. Consulta zonas, métodos y condiciones.",
+      "static": "Encuentro fijo en Pokémon Y; puede depender del progreso o del Pokémon inicial elegido.",
+      "gift": "Regalo en Pokémon Y; puede depender de una elección o del progreso.",
+      "egg": "Huevo de regalo registrado en Pokémon Y.",
+      "fossil": "Revivir un fósil en Pokémon Y. Consulta las instrucciones y la elección de fósil.",
+      "npc-trade": "Intercambio con un personaje de Pokémon Y. Consulta lo que solicita y sus condiciones.",
+      "evolution": "Evolución compatible con Generación VI. Necesitas su preevolución y cumplir los requisitos.",
+      "trade-evolution": "Evolución por intercambio en Generación VI; puede requerir un objeto o una especie concreta.",
+      "breed": "Cría con padres compatibles. Algunas especies requieren condiciones adicionales o incienso.",
+      "unknown": "Obtención sin confirmar: las fuentes no cubren todas las vías. La ausencia de encuentros no implica que requiera transferencia."
+    }
+  },
+  "yWorkspace": {
+    "manual": "Origen: manual",
+    "hint": "Colección y preferencias independientes de X. Las fuentes Save y En vivo requieren una partida y un perfil compatibles de Pokémon Y.",
+    "atlasHint": "Atlas público de Pokémon Y. Sin lectura de Pokédex: las capturas históricas y el progreso son desconocidos. Los ejemplares añadidos a mano solo indican tu colección manual."
   }
 }

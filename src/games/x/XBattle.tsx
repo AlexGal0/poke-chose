@@ -27,5 +27,5 @@ export function XBattle({ reading, status, rules, resolve, party, onConnectionCh
     const pokemon = await resolve({ speciesId, form })
     return { ...pokemon, animatedSprite: animatedBattleSprite(pokemon.sprite) }
   }, onStatistics: knowledge ? (_member, pokemon) => knowledge.open({ ...pokemon, types: [...pokemon.types] }, 'stats') : undefined }), [resolve, knowledge])
-  return fieldProtocol || reading?.field ? <FieldBattleScreen reading={fieldReading} service={service} rules={rules} hint={t('battleAdapter.multiScope')} onConnectionChange={onConnectionChange} /> : <BattleScreen reading={observation} service={service} rules={rules} hint={t('battleAdapter.scope')} onConnectionChange={onConnectionChange} />
+  return fieldProtocol || reading?.field ? <FieldBattleScreen reading={fieldReading} service={service} rules={rules} hint={t('battleAdapter.multiScope', { game: t('games.names.x') })} onConnectionChange={onConnectionChange} /> : <BattleScreen reading={observation} service={service} rules={rules} hint={t('battleAdapter.scope')} onConnectionChange={onConnectionChange} />
 }

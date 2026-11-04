@@ -14,6 +14,7 @@ import './games/GameSelection.css'
 const workspaces: Partial<Record<GameId, ComponentType<{ onChangeGame: () => void }>>> = {
   black: lazy(() => import('./games/black/BlackWorkspace')),
   x: lazy(() => import('./games/x/XWorkspace')),
+  y: lazy(() => import('./games/y/YWorkspace')),
 }
 
 function App() {
