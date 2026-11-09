@@ -1,3 +1,4 @@
+import type { ZoneItemsService } from './zone-items'
 import { matchesCatalogCapture } from '../../domain/catalog-capture'
 import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { GenderBadge } from './GenderBadge'
@@ -15,6 +16,7 @@ import { AcquisitionDetailsDialog } from '../../components/AcquisitionDetailsDia
 import { acquisitionText } from '../../i18n/acquisition-text'
 import { useAcquisitionRoutes } from '../../hooks/useAcquisitionRoutes'
 import { ConnectionIndicator } from '../../components/ConnectionIndicator'
+import { WorkspaceConnection } from './WorkspaceConnection'
 import type { ConnectionActions, ConnectionStatus } from '../../models/connection-status'
 import { WorkspaceDaycare } from './WorkspaceDaycare'
 import { DaycareAlertButton } from '../../components/DaycareAlertButton'
@@ -76,7 +78,7 @@ function ManualCard({ pokemon, children, action, service, captured = false, sele
   const appearance = metadata?.id === pokemon.id && metadata.service === service ? metadata.pokemon : pokemon
   return <article className={`pokemon-card${captured ? ' captured' : ''}${selected ? ' selected' : ''}`}>
     <GenerationBadge speciesId={pokemon.id} />
-    <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}>↗</a>
+    <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}><span className="roster-wiki-arrow" aria-hidden="true">↗</span><svg className="roster-wiki-search" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a>
     <span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span>
     {action ? <button type="button" className="sprite sprite-button" onClick={action.onClick} aria-label={action.label}>{discovered && pokemon.sprite
       ? <img src={pokemon.sprite} width="96" height="96" loading="lazy" alt={pokemonDisplayName(pokemon.name)} />
@@ -124,7 +126,8 @@ function WorkspaceEncounters({ data, ...props }: Omit<React.ComponentProps<typeo
   return 'load' in data ? <EncounterLoader {...props} service={data} /> : <EncounterAtlas {...props} data={data} />
 }
 
-export function GameWorkspace({ browseEncountersInManual = false, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
+export function GameWorkspace({ browseEncountersInManual = false, zoneItems, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
+  zoneItems?: ZoneItemsService
   browseEncountersInManual?: boolean
   preferences?: { loadTab: () => ActiveTab; saveTab: (tab: ActiveTab) => boolean }
   notifications?: React.ReactNode
@@ -146,6 +149,7 @@ export function GameWorkspace({ browseEncountersInManual = false, game, catalog:
   const { t } = useTranslation()
   const [state, setState] = useState(storage.load)
   const [saveFailed, setSaveFailed] = useState(false)
+  const [teamExpanded, setTeamExpanded] = useState(false)
   const [tabSaveFailed, setTabSaveFailed] = useState(false)
   const [selectedView, setSelectedView] = useState<View>(() => { const saved = preferences?.loadTab(); return saved && VIEWS.some(view => view === saved) ? saved as View : loadWorkspacePreference(`poke-chose:${game.id}:active-tab:v1`, VIEWS, 'catalog') })
   const editable = !captureSource || captureSource.mode === 'manual'
@@ -215,30 +219,35 @@ export function GameWorkspace({ browseEncountersInManual = false, game, catalog:
       <div className="brand-lockup">{album && <SecretAlbum key={sourceKey} service={album} owned={editable ? new Set(state.collection.map(pokemon => pokemon.id)) : captureSource?.pokedex?.caughtSpeciesIds ?? new Set()} seen={discovered} />}<span className="brand">Poké<span>Chose</span></span></div>
       <div className="header-controls"><button onClick={onChangeGame}>{t('games.change')}</button><LocaleSelector /><ThemeSelector /></div>
     </header>
-    <main className={battleView ? 'battle-layout' : undefined}>
+    <main className={`workspace-shell ${battleView ? 'battle-layout' : ''}`}>
       <div className="intro" hidden={battleView}><div><span className="eyebrow">{t(`games.regions.${game.region}`)} · {t('games.generation', { number: game.generation })}</span>
-        <h1>{t(`games.names.${game.id}`)}</h1><p>{t('workspaceRules.description')}</p></div>
+        <h1>{t(`games.names.${game.id}`)}</h1></div>
         <span className="save-status" role="status">{t(saveFailed || tabSaveFailed || captureSource?.saveFailed ? 'app.saveStatus.failed' : 'app.saveStatus.ok')}</span>
       </div>
       {(saveFailed || tabSaveFailed || captureSource?.saveFailed) && <p className="notice" role="alert">{t('app.storageNotice')}</p>}
-      <details className={`connection-settings ${battleView ? 'compact' : ''}`} open={!battleView}><summary>{t('app.connectionSettingsSummary')}</summary>{captureSource?.controls}</details>
-      <section className="panel" aria-labelledby="manual-team-title" hidden={battleView}>
-        <div className="section-heading"><h2 id="manual-team-title">{t('games.modules.team')}</h2><span className="count">{editable || roster?.party != null ? team.length : '…'} / 6</span></div>
+      <WorkspaceConnection key={sourceKey} source={sourceKey} status={connectionStatus?.data} actions={connectionStatus?.actions} controls={captureSource?.controls} />
+      <WorkspaceTabs live={Boolean(captureSource?.battlePanel)} active={view} collectionCount={editable ? state.collection.length : roster?.collection?.length ?? null} available={{ evolutions: Boolean(evolutionRequirements), development: true, daycare: game.modules.daycare && Boolean(daycare), analysis: game.modules.analysis && analysisAvailable, captures: game.modules.captures && Boolean(encounters) }} onChange={next => { if (VIEWS.some(view => view === next)) navigation.selectTab(next) }} />
+      <aside className={`workspace-team ${teamExpanded ? 'is-expanded' : 'is-compact'}`} aria-label={t('games.modules.team')}>
+        <div className="workspace-team-heading">
+          <h2 id="manual-team-title">{t('games.modules.team')} <span>{editable || roster?.party != null ? team.length : '…'} / 6</span></h2>
+          <button type="button" aria-expanded={teamExpanded} aria-controls="workspace-team-cards" onClick={() => setTeamExpanded(value => !value)}>{t(teamExpanded ? 'workspaceShell.compactTeam' : 'workspaceShell.expandTeam')}</button>
+        </div>
+        <section id="workspace-team-cards" aria-labelledby="manual-team-title">
         {!editable && roster?.party == null && <p className="notice" role="status">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.partyWaiting')}{roster?.error && <button onClick={roster.retry}>{t('common.retry')}</button>}</p>}
         {!editable && captureSource?.stale && roster?.party != null && <p className="notice" role="status">{t(captureSource.capabilities?.boxes === false ? 'sourceCapabilities.partyStale' : 'savedRoster.stale')}</p>}
-        <ReorderGrid key={sourceKey} className="team-grid" itemKeys={!editable && roster?.party ? roster.party.map(p => `${p.personality}:${p.trainerId}`) : team.map(p => String(p.id))}>{!editable && roster?.party ? roster.party.map(pokemon => <SavedRosterCard key={pokemon.instanceKey} pokemon={pokemon} service={roster.service} />) : team.map(pokemon => <ManualCard service={service} key={pokemon.id} pokemon={pokemon}>
+        <ReorderGrid key={sourceKey} className="team-grid" itemKeys={!editable && roster?.party ? roster.party.map(p => `${p.personality}:${p.trainerId}`) : team.map(p => String(p.id))}>{!editable && roster?.party ? roster.party.map(pokemon => <SavedRosterCard key={pokemon.instanceKey} pokemon={pokemon} service={roster.service} compact={!teamExpanded} />) : team.map(pokemon => <ManualCard service={service} key={pokemon.id} pokemon={pokemon}>
           <button onClick={() => update(toggleTeamMember(state, pokemon.id))}>{t('app.team.removeButton')}</button>
         </ManualCard>)}{Array.from({ length: 6 - team.length }, (_, index) => <button className="empty-slot" key={index} disabled={!editable}
           onClick={() => { setView('collection'); setQuery(''); document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth' }) }}>
           <span aria-hidden="true">+</span><strong>{t('app.team.emptySlotLabel', { number: team.length + index + 1 })}</strong><small>{t(editable ? 'app.team.chooseFromCollection' : roster?.party != null ? 'app.team.readOnlyMemberHint' : 'workspaceRules.saveTeamUnavailable')}</small>
         </button>)}</ReorderGrid><p className="hint">{t(editable ? team.length === 6 ? 'app.team.hint.full' : 'app.team.hint.editable' : 'app.team.hint.readOnly')}</p>
-      </section>
-      <WorkspaceTabs live={Boolean(captureSource?.battlePanel)} active={view} collectionCount={editable ? state.collection.length : roster?.collection?.length ?? null} available={{ evolutions: Boolean(evolutionRequirements), development: true, daycare: game.modules.daycare && Boolean(daycare), analysis: game.modules.analysis && analysisAvailable, captures: game.modules.captures && Boolean(encounters) }} onChange={next => { if (VIEWS.some(view => view === next)) navigation.selectTab(next) }} />
+        </section>
+      </aside>
       <section className={battleView ? undefined : 'panel'} id="workspace-panel" hidden={view === 'development'} role="tabpanel" aria-labelledby={`${view}-tab`}>
         {captureSource?.battlePanel && <div hidden={view !== 'battle'} key={sourceKey}>{captureSource.battlePanel(onBattleConnection)}</div>}
         <div hidden={view === 'battle'}>
         {!editable && <div hidden={view !== 'collection'} key={`collection:${sourceKey}`}>{captureSource?.collectionControls}{(captureSource?.collectionStale || roster?.updating) && roster?.collection && <p className="notice" role="status">{t('savedRoster.stale')}</p>}{roster?.error && <p role="alert">{t('savedRoster.resolveError')} <button onClick={roster.retry}>{t('common.retry')}</button></p>}{captureSource?.capabilities?.boxes === false ? <><h2>{t('app.tabs.collection')}</h2><p className="empty" role="status">{t('sourceCapabilities.boxesUnavailable')}</p></> : roster?.collection ? <SavedRosterCollection fieldMoveService={fieldMoveService} collection={roster.collection} service={roster.service} boxCount={roster.boxCount} types={service.rules.types} /> : <><h2>{t('app.tabs.collection')}</h2><p className="empty">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.collectionWaiting')}</p></>}</div>}
-        {encounters && capturesOpened && <div hidden={view !== 'captures'} key={`captures:${sourceKey}`}>{editable && !browseEncountersInManual ? <><h2>{t('app.tabs.captures')}</h2><p className="empty">{t('workspaceRules.capturesManualHint', { game: t(`games.names.${game.id}`) })}</p></> : !editable && captureSource?.capabilities?.pokedex === false ? <p className="empty" role="status">{t('sourceCapabilities.pokedexUnavailable')}</p> : <WorkspaceEncounters location={captureSource?.location} data={encounters} initialZoneId={initialZoneId ?? ('locations' in encounters ? encounters.locations[0]?.id ?? 0 : 0)} types={service.rules.types} speciesCatalog={entries} collectionIds={new Set([...(editable ? state.collection : roster?.collection ?? []), ...(roster?.party ?? [])].filter(p => !('isEgg' in p && p.isEgg)).map(p => p.id))} pokedex={captureSource?.pokedex ?? null} stale={captureSource?.stale} />}</div>}
+        {encounters && capturesOpened && <div hidden={view !== 'captures'} key={`captures:${sourceKey}`}>{editable && !browseEncountersInManual ? <><h2>{t('app.tabs.captures')}</h2><p className="empty">{t('workspaceRules.capturesManualHint', { game: t(`games.names.${game.id}`) })}</p></> : !editable && captureSource?.capabilities?.pokedex === false ? <p className="empty" role="status">{t('sourceCapabilities.pokedexUnavailable')}</p> : <WorkspaceEncounters items={zoneItems} location={captureSource?.location} data={encounters} initialZoneId={initialZoneId ?? ('locations' in encounters ? encounters.locations[0]?.id ?? 0 : 0)} types={service.rules.types} speciesCatalog={entries} collectionIds={new Set([...(editable ? state.collection : roster?.collection ?? []), ...(roster?.party ?? [])].filter(p => !('isEgg' in p && p.isEgg)).map(p => p.id))} pokedex={captureSource?.pokedex ?? null} stale={captureSource?.stale} />}</div>}
         {workspaceView === 'evolutions' ? evolutionRequirements && <WorkspaceEvolutionRequirements key={`evolutions:${sourceKey}`} collection={editable ? state.collection : roster?.collection ?? null} caught={captureSource?.pokedex ?? null} manual={editable} stale={!editable && Boolean(captureSource?.collectionStale || captureSource?.stale || roster?.updating || roster?.error)} service={evolutionRequirements} inventory={captureSource?.inventory} /> : workspaceView === 'daycare' ? daycare && <WorkspaceDaycare key={`daycare:${sourceKey}`} reading={daycare.reading} service={daycare.service} hint={t(editable ? 'daycare.manual' : !daycare.reading.available ? 'daycare.sourceUnavailable' : captureSource?.mode === 'save' ? 'daycare.saveHint' : 'daycare.liveHint')} /> : workspaceView === 'captures' || workspaceView === 'development' ? null : workspaceView === 'analysis' ? <Analysis key={`analysis:${sourceKey}`} team={analysisTeam} rules={typeRules} collection={analysisCollection} stale={!editable && (captureSource?.stale || roster?.updating)} collectionStale={!editable && captureSource?.collectionStale} /> : workspaceView === 'types' ? <TypeChart rules={typeRules} /> : workspaceView === 'collection' && !editable ? null : <>
         <div className="section-heading"><h2 id="manual-workspaceView-title">{t(`games.modules.${workspaceView}`)}</h2><span className="count">{t('common.speciesCount', { count: workspaceView === 'catalog' ? filtered.length : state.collection.length })}</span></div>
         <CollectionSearch searchAction={workspaceView === 'collection' ? <GenerationFilter collection={state.collection} value={collectionGeneration} onChange={setCollectionGeneration} /> : undefined} collection={workspaceView === 'catalog' ? entries.map(p => ({ types: p.types ?? [] })) : state.collection} types={service.rules.types} searchLabel={workspaceView === 'catalog' ? t('catalog.searchAriaLabel') : undefined} query={query} onChange={next => { setQuery(next); setPage(0) }} />

@@ -1,5 +1,9 @@
 # Curated validation screenshots
 
+## XY zone items (2026-11-04)
+
+`xy-zone-items-desktop.png` and `xy-zone-items-mobile.png` show the compact Y guide in Shalour City, filtered to machines: MO03/MT98, corner check/source controls, Roman generation and shops separated into compact tables. Mobile includes a test obtained highlight, removed afterward. Mobile override 390×844, effective CSS width/scrollWidth 375 px; restored afterward. The guide uses public data independently of the read-only party. Independent marks for two Stardust locations, English shop text and X's mirrored shop table were checked. Spanish and Y restored. No save or emulator writes. See [scope and provenance](../docs/es/zone-items.md).
+
 ## Pokémon Y runtime (2026-11-03)
 
 `y-battle-real-desktop.png` and `y-battle-real-mobile.png` record the Y live source: Froakie level 8 at 12/24 HP against Pidgey level 3 at 15/15 HP. The user started the encounter in Citra 2. These are current UI checks, not synthetic data. Mobile override 390×844, effective CSS width and scrollWidth 375 px; override restored. See [Y validation and limits](../docs/es/y-adapter.md). No save or guest-memory writes were made.
@@ -95,3 +99,23 @@ format evidence. Unrelated user captures were not included in this delivery.
 ## Evolution item wiki links (2026-10-30)
 
 `evolution-item-wiki-desktop.png` and `evolution-item-wiki-mobile.png` show the shared item cards with a small external-link icon in the top-right corner, using X's real read-only live data. Both final captures are Spanish. Checked keyboard focus, accessible item-specific names and tooltip; the preceding text-button variant also checked English Bulbapedia URLs. Spanish uses WikiDex. Mobile viewport 390×844; viewport was restored. The external wiki article load was not verified. No save or emulator writes. Validation: 495 tests, lint and build passed.
+
+## Shared workspace structure experiment (2026-11-09)
+
+`workspace-refresh-desktop.jpg` and `workspace-refresh-narrow.jpg` show the current shared layout in Y with real read-only collection data (six party members, 67 collection entries), Spanish. The wide capture uses Original; the current narrow and expanded captures use Pokémon dark. Preferences were restored afterward. Four frequent destinations remain visible; occasional tools return to the bar one at a time as container width increases. At full width all nine tabs are visible and Tools disappears. Preferences and Reconnect remain visible. The party keeps sprites, gender, item, level, types, HP and EXP; types use the full row; compact HP/EXP place values beside their bars, while full cards retain the complete EXP presentation. Full cards put level beside the name and generation beside location, and use a magnifier for the Wiki link. The wide layout uses more of the available screen.
+
+`workspace-team-expanded-mobile.jpg` shows the complete party card at 320 CSS pixels; `workspace-team-expanded-grid.jpg` shows the full cards in two columns at an intermediate width. `workspace-navigation-sticky.jpg` shows the navigation and Tools menu after scrolling; measured y=0 checks are recorded in `docs/es/visual-workspace-experiment.md`. No fresh emulator connection or battle validation is implied.
+
+`workspace-team-states-synthetic.jpg` retains the preceding revision's actual component with synthetic healthy, damaged, critical, fainted, unknown-HP and egg cases. Its EXP presentation predates the latest layout. It is historical layout/state evidence, not real-source or fresh health validation. The temporary local test harness is ignored and is not a production route.
+
+Alignment follow-up: `workspace-refresh-narrow.jpg` and `workspace-team-expanded-grid.jpg` show the alignment follow-up in Y using read-only live data. Compact PS/EXP share identical track edges; the four tool controls (evolution, gender, nature, Wiki) measured 28 px height with the same vertical center. These are presentation checks, not reader recovery or battle checks.
+
+## Capture screen redesign (2026-11-09)
+
+`captures-colors-dark.jpg` documents the subsequent neutral-surface color adjustment in Pokémon dark. Reader unavailable: species discovery is unknown, so images remain masked. This is current visual color evidence, not fresh source data or a captured-state screenshot. Original and dark computed styles and 384 CSS px overflow were checked. Tests: 543, lint and build passed.
+
+`captures-redesign-desktop.jpg` and `captures-redesign-narrow.jpg` show Route 12 in Y, Spanish, dark theme. They use previously received real read-only Citra data; the desktop capture explicitly shows the stale-data notice after the reader disconnected. They demonstrate independent card heights, discovery masking, per-method levels and prominent evolution actions. They do not demonstrate a fresh reader connection. See `docs/es/captures-visual-redesign.md` for current checks and limitations.
+
+Capture alignment follow-up: the two captures now show equal card heights per row, maximum width 360 CSS px and a top-right evolution icon. More data was removed; statistics/moves remain inside the knowledge dialog. The refreshed captures use real read-only Y data with the reader connected; the earlier stale-reader description refers to the preceding revision. The narrow capture is 320 CSS px. Tests: 543 passed, lint and build passed.
+
+captures-header-compact.jpg shows the header follow-up in Original at 400 CSS px with real read-only Y data. Identity starts 14 px below the card edge; evolution and Wiki controls form a right-hand column, measured without overlap. No horizontal content overflow. Tests: 543 passed; lint and build passed.

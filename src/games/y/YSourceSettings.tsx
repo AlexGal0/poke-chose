@@ -19,7 +19,6 @@ export function YSourceSettings({ source, onChange, snapshot, live }: { source: 
         </div>
         <button disabled={live.busy} onClick={() => { void live.control(live.snapshot.enabled ? 'disconnect' : 'connect') }}>{t(live.snapshot.enabled ? 'sources.yLive.disconnect' : 'sources.yLive.connect')}</button>
         {live.error && <p role="alert">{t('sources.yLive.controlError')}</p>}
-        <p className="hint">{t('sources.yLive.hint')}</p>
       </>}
       {source === 'save' && <>
         <div className={snapshot.status === 'ready' ? 'sync-status' : 'sync-error'} role="status"><strong>{t('connectionIndicator.sourceStatus', { source: 'Citra', status: t(snapshot.status === 'ready' ? 'connectionIndicator.connected' : 'connectionIndicator.noActiveReading') })}</strong>

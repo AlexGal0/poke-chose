@@ -14,7 +14,7 @@ import { KnowledgeActions } from './KnowledgeActions'
 import { RosterEvolutionProgress } from './RosterEvolutionProgress'
 import { EggHatching } from './EggHatching'
 
-export function SavedRosterCard({ pokemon, service }: { pokemon: SavedRosterPokemon; service: SavedRosterService }) {
+export function SavedRosterCard({ pokemon, service, compact = false }: { pokemon: SavedRosterPokemon; service: SavedRosterService; compact?: boolean }) {
   const { t, i18n } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
   const detailsKey = JSON.stringify([pokemon.moveIds, pokemon.abilityId, pokemon.heldItemId, i18n.language])
@@ -34,14 +34,13 @@ export function SavedRosterCard({ pokemon, service }: { pokemon: SavedRosterPoke
   const fainted = !pokemon.isEgg && hpKnown && member?.currentHp === 0
   const hpRatio = hpKnown ? member!.currentHp! / member!.maxHp! : 0
   const exp = member?.experience !== undefined && pokemon.experienceLevels ? experienceProgress(member.level, member.experience, pokemon.experienceLevels) : null
-  return <article className={`pokemon-card saved-roster-card ${fainted ? 'fainted' : ''}`}>
-    {!pokemon.isEgg && <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}>↗</a>}
+  return <article className={`pokemon-card saved-roster-card ${compact ? 'roster-compact' : ''} ${fainted ? 'fainted' : ''}`}>
     {!pokemon.isEgg && <GenerationBadge speciesId={pokemon.id} />}
-    <div className="roster-card-heading">{!pokemon.isEgg && <><span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span><div className="roster-card-tools"><RosterEvolutionProgress pokemon={pokemon} service={service} /><GenderBadge kind={pokemon.gender} /><NatureIndicator natureId={pokemon.natureId} /><SpeciesScopeBadge scope={pokemon.scope} /></div></>}</div>
+    <div className="roster-card-heading">{!pokemon.isEgg && <><span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span><div className="roster-card-tools"><RosterEvolutionProgress pokemon={pokemon} service={service} /><GenderBadge kind={pokemon.gender} /><NatureIndicator natureId={pokemon.natureId} /><SpeciesScopeBadge scope={pokemon.scope} />{!pokemon.isEgg && <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}><span className="roster-wiki-arrow" aria-hidden="true">↗</span><svg className="roster-wiki-search" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a>}</div></>}</div>
     <div className="sprite">{pokemon.isEgg ? <span aria-label={t('app.team.eggLabel')}>🥚</span> : discovered && pokemon.sprite ? <img src={pokemon.sprite} alt="" width="96" height="96" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</div>
-    <div className="saved-roster-name"><h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.isEgg ? t('app.team.eggLabel') : pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>
+    <div className="saved-roster-name"><div className="roster-name-line"><h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.isEgg ? t('app.team.eggLabel') : pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>{!pokemon.isEgg && <strong className="roster-level">{pokemon.level !== null ? t('saveCollection.memberLevel', { level: pokemon.level }) : t('saveCollection.levelUnavailable')}</strong>}</div>
     {!pokemon.isEgg && <p className="pokemon-species-name">{pokemon.nickname ? pokemonDisplayName(pokemon.name) : <span aria-hidden="true">&nbsp;</span>}</p>}
-      {!pokemon.isEgg && <p className="roster-held-item" title={detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}>{detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}</p>}{detailsError && <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button>}</div>
+      {!pokemon.isEgg && <p className={`roster-held-item ${!detailsError && details && !details.item ? 'no-held-item' : ''}`} title={detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}>{detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}</p>}{detailsError && <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button>}</div>
     {pokemon.isEgg && <EggHatching cycles={pokemon.hatchCyclesRemaining} initialCycles={pokemon.hatchCycles} stepsPerCycle={service.hatching?.stepsPerCycle} inParty={pokemon.location === 'party'} />}
     {!pokemon.isEgg && <>
       <div className="saved-identity">
@@ -49,10 +48,12 @@ export function SavedRosterCard({ pokemon, service }: { pokemon: SavedRosterPoke
       </div>
       <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
       <p className="roster-condition">{fainted ? '✕ ' + t('pokemonCard.fainted') : <span aria-hidden="true">&nbsp;</span>}</p>
-      {member && <div className="team-vitals"><div className="vital-label"><span>{t('common.hpAbbr')}</span><span>{hpKnown ? `${member.currentHp} / ${member.maxHp}` : t('teamVitals.noData')}</span></div>
-        <progress className={`vital-bar hp-bar ${hpRatio <= 0.2 ? 'low' : hpRatio <= 0.5 ? 'medium' : ''}`} aria-label={t('common.hpAria')} value={hpKnown ? member.currentHp : 0} max={hpKnown ? member.maxHp : 1} />
-        <div className="vital-label"><span>EXP</span><span>{exp ? member.level === 100 ? t('teamVitals.maxLevel') : t('teamVitals.remainingToLevelUp', { count: exp.remaining.toLocaleString(i18n.language) }) : t('teamVitals.noData')}</span></div>
-        <progress className={`vital-bar exp-bar ${exp ? '' : 'unavailable'}`} aria-label={t('teamVitals.expAria')} value={exp?.value ?? 0} max={exp?.max ?? 1} />
+      {member && <div className="team-vitals"><div className="health-progress"><div className="vital-label"><span>{t('common.hpAbbr')}</span><span>{hpKnown ? `${member.currentHp} / ${member.maxHp}` : t('teamVitals.noData')}</span></div>
+        <progress className={`vital-bar hp-bar ${!hpKnown ? 'unavailable' : hpRatio <= 0.2 ? 'low' : hpRatio <= 0.5 ? 'medium' : ''}`} aria-label={t('common.hpAria')} value={hpKnown ? member.currentHp : 0} max={hpKnown ? member.maxHp : 1} /></div>
+        <div className="experience-progress" title={exp ? member.level === 100 ? t('teamVitals.maxLevel') : t('teamVitals.remainingToLevelUp', { count: exp.remaining.toLocaleString(i18n.language) }) : t('teamVitals.noData')}>
+          <div className="vital-label"><span>EXP</span><span className="experience-remaining"><span className="experience-long">{exp ? member.level === 100 ? t('teamVitals.maxLevel') : t('teamVitals.remainingToLevelUp', { count: exp.remaining.toLocaleString(i18n.language) }) : t('teamVitals.noData')}</span><span className="experience-short" aria-hidden="true">{exp ? member.level === 100 ? t('teamVitals.maxLevel') : exp.remaining.toLocaleString(i18n.language) : '—'}</span></span></div>
+          <progress className={`vital-bar exp-bar ${exp ? '' : 'unavailable'}`} aria-label={t('teamVitals.expAria')} aria-valuetext={exp ? member.level === 100 ? t('teamVitals.maxLevel') : t('teamVitals.remainingToLevelUp', { count: exp.remaining.toLocaleString(i18n.language) }) : t('teamVitals.noData')} value={exp?.value ?? 0} max={exp?.max ?? 1} />
+        </div>
       </div>}
       <KnowledgeActions pokemon={pokemon} individual={{ pokemon, service }} />
     </>}

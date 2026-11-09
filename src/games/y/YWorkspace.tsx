@@ -1,3 +1,4 @@
+import { yZoneItems } from './zone-items'
 import { Y_INVENTORY_LIMITS } from './inventory'
 import { yEvolutionInventory } from './evolution-inventory'
 import { yEvolutionRequirements } from './evolution-requirements'
@@ -68,5 +69,5 @@ export default function YWorkspace({ onChangeGame }: { onChangeGame: () => void 
     liveMessage: live.error ? t('sources.yLive.controlError') : t(bridgeSnapshotMessageKey(live.snapshot.sourceId, live.snapshot.message)),
     boxesMessage: t(`sources.yLive.boxStatus.${live.snapshot.boxesStatus}`), controlError: live.error,
   })
-  return <GameWorkspace browseEncountersInManual evolutionRequirements={yEvolutionRequirements} acquisition={yAcquisition} connectionStatus={{ actions: source === 'live' ? { reconnect: async () => { if (!await live.control('reconnect')) throw new Error('Reconnect failed') }, busy: live.busy || live.snapshot.message === 'connecting' } : undefined, data: connection, onOpenControls: showConnectionControls }} daycare={{ reading: yDaycareReading(source, snapshot, live.snapshot), service: yDaycareService }} album={yAlbum} fieldMoveService={yCollectionMoves} game={game} catalog={yCatalog} storage={storage} typeRules={generationVIRules} knowledge={yKnowledge} encounters={yEncounters} initialZoneId={591} captureSource={captureSource} onChangeGame={onChangeGame} />
+  return <GameWorkspace zoneItems={yZoneItems} browseEncountersInManual evolutionRequirements={yEvolutionRequirements} acquisition={yAcquisition} connectionStatus={{ actions: source === 'live' ? { reconnect: async () => { if (!await live.control('reconnect')) throw new Error('Reconnect failed') }, busy: live.busy || live.snapshot.message === 'connecting' } : undefined, data: connection, onOpenControls: showConnectionControls }} daycare={{ reading: yDaycareReading(source, snapshot, live.snapshot), service: yDaycareService }} album={yAlbum} fieldMoveService={yCollectionMoves} game={game} catalog={yCatalog} storage={storage} typeRules={generationVIRules} knowledge={yKnowledge} encounters={yEncounters} initialZoneId={591} captureSource={captureSource} onChangeGame={onChangeGame} />
 }

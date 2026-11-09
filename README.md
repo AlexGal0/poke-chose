@@ -10,6 +10,8 @@ The final multi-battle and pending collection delivery is recorded in the [Octob
 
 ## Features
 
+X and Y include **Captures by zone → Items**: categorized locations, NPC gifts, purchases, TM/HM details and a manual obtained checklist. The shared contract supports future item-to-location lookup. See [scope, sources and validation](docs/es/zone-items.md) (Spanish); coverage may be incomplete and some location notes retain their original English.
+
 Recent additions include searchable box navigation, shared acquisition details for Black and X, persistent capture filters, connection recovery and X trainer battles. See the [October 26 change record](docs/es/changes-2026-10-26.md) for validation and remaining limits.
 
 The opening screen separates **Black** and **X**. X currently supports a separate
