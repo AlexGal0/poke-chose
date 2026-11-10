@@ -14,6 +14,7 @@ La comparación de exclusivos se incorpora a X/Y mediante un contrato opcional c
 | --- | --- |
 | Workspace y equipo | Navegación fija, herramientas secundarias que se incorporan como pestañas según el ancho, preferencias visibles, conexión reconocible y reconexión accesible. Resumen del equipo con sprites, género, objetos, nivel, PS y EXP; distribución ampliada sin cruces de contenido. |
 | Capturas por zona | Tarjetas alineadas con anchos contenidos; identidad y estados de captura más claros. Wiki y evolución en la esquina, con evolución accesible también para especies no poseídas. Se conservan métodos, probabilidades, niveles, acceso y detalles del encuentro. |
+| Objetos por zona (X/Y) | Se integra la guía ya incluida en el primer commit de esta rama: objetos y MT/MO por localidad, categorías, búsqueda, requisitos, tiendas y fuentes. Marcas manuales por punto y edición; no se deduce posesión a partir de la bolsa. |
 | Catálogo | Estadísticas, movimientos y evoluciones permanecen visibles. Lupa para Wiki, «?» para obtención y vías que abren el mismo detalle. Tooltips legibles y paginación adaptada a filas completas. |
 | Colección | Cabecera sin textos redundantes, actualización junto al título, filtros y navegación por cajas conservados. Fichas con identidad, ubicación y datos propios del ejemplar; sin huecos reservados para datos ausentes. |
 | Fichas de conocimiento | Cabecera y pestañas consistentes, estadísticas y movimientos más legibles, adaptación de tablas a tarjetas en ancho pequeño. Árbol evolutivo mantiene la disposición de ramas acordada y las reglas de descubrimiento. |
@@ -22,6 +23,8 @@ La comparación de exclusivos se incorpora a X/Y mediante un contrato opcional c
 | Tabla de tipos | Filtro múltiple de columnas defensoras; filas atacantes completas. Primera columna de 110 px y columnas de 80 px, sin estirar el espacio restante. Sin scroll vertical interior; navegación por teclado y selección de cruce. Resaltados neutros, marca de filtros y contraste reforzado. |
 | Combate | Entrada al inicio del panel bajo la navegación fija y retorno a la posición anterior. Activos y sus datos tienen prioridad; reserva después. Sprites e información de individuales más visibles; tarjetas alineadas en dobles, tipos y cambios de estadísticas también en hordas. Se conserva lectura parcial y reconexión. |
 | Guardería | Se elimina la superficie duplicada dentro del workspace, sin alterar sus funciones. |
+
+La guía de objetos aporta un snapshot público de 863 puntos, 345 objetos y 65 localidades, sin prometer exhaustividad. Su detalle y límites están en [Objetos por zona](zone-items.md). Explica la mayor parte del volumen de datos del primer commit; el adaptador Y queda fuera del diff al usarlo como base del PR.
 
 ## Exclusivos y obtención independiente
 
