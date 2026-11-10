@@ -1,3 +1,7 @@
+import { ExclusiveFilter } from '../../components/ExclusiveFilter'
+import { matchesExclusiveSpecies } from './acquisition'
+import { ExclusiveBadge } from '../../components/ExclusiveBadge'
+import type { AcquisitionService } from './acquisition'
 import { ZoneItems } from './ZoneItems'
 import type { ZoneItemsService } from './zone-items'
 import { SpeciesScopeBadge } from './SpeciesScopeBadge'
@@ -41,8 +45,10 @@ function loadZone(key: string, data: EncounterAtlasData, initialId: number) {
   return data.locations.some(zone => zone.id === initialId) ? initialId : data.locations[0]?.id
 }
 
-export function EncounterAtlas({ items, data, initialZoneId, collectionIds, speciesCatalog, types, pokedex = null, stale = false, location }: { items?: ZoneItemsService; data: EncounterAtlasData; initialZoneId: number; collectionIds: ReadonlySet<number>; types?: readonly string[]; speciesCatalog?: import('./catalog').SpeciesEntry[]; pokedex?: PokedexState | null; stale?: boolean; location?: CaptureLocationReading }) {
+export function EncounterAtlas({ acquisition, items, data: sourceData, initialZoneId, collectionIds, speciesCatalog, types, pokedex = null, stale = false, location }: { acquisition?: AcquisitionService; items?: ZoneItemsService; data: EncounterAtlasData; initialZoneId: number; collectionIds: ReadonlySet<number>; types?: readonly string[]; speciesCatalog?: import('./catalog').SpeciesEntry[]; pokedex?: PokedexState | null; stale?: boolean; location?: CaptureLocationReading }) {
   const { t, i18n } = useTranslation()
+  const data = { ...sourceData, locations: sourceData.locations.filter(zone => zone.access !== 'external') }
+  const [onlyExclusive, setOnlyExclusive] = useState(false)
   const [content, setContent] = useState<'pokemon' | 'items'>('pokemon')
   const discovered = useContext(DiscoveryContext)
   const access = useRef<HTMLDetailsElement>(null)
@@ -66,7 +72,7 @@ export function EncounterAtlas({ items, data, initialZoneId, collectionIds, spec
   const allowed = new Set(methods.filter(value => (method === 'all' || value === method) && equipment[value] !== false))
   const browser = captureBrowserView(allRows, { pokedex, methods: allowed, progress: progressFilter, matches: row => {
     const species = data.species.find(p => p.id === row.speciesId)
-    return Boolean(species && matchesCollectionTags(species, query, type => t(`types.${type}`)))
+    return matchesExclusiveSpecies(row.speciesId, onlyExclusive, acquisition?.exclusiveSpeciesIds) && Boolean(species && matchesCollectionTags(species, query, type => t(`types.${type}`)))
   } })
   const { rows, subzones } = browser
   const accessRows = captureBrowserView(allRows, { pokedex, methods: new Set(methods.filter(value => equipment[value] !== false)) }).accessibleRows
@@ -120,6 +126,7 @@ export function EncounterAtlas({ items, data, initialZoneId, collectionIds, spec
     </div>
     <div className="atlas-filter-bar">
     <CollectionSearch showHint={false} collection={data.species.filter(p => allRows.some(row => row.speciesId === p.id))} types={types ?? [...new Set(data.species.flatMap(p => p.types))]} searchLabel={t('encounterAtlas.speciesSearch')} placeholder={t('encounterAtlas.speciesPlaceholder')} query={query} onChange={setQuery} />
+    {acquisition?.exclusiveSpeciesIds !== undefined && <ExclusiveFilter checked={onlyExclusive} onChange={setOnlyExclusive} />}
     <CaptureFilters methods={methods} method={method} onMethodChange={setMethod} progress={progressFilter} onProgressChange={setProgressFilter} pokedexAvailable={pokedex !== null} />
     </div>
     <details className="atlas-access" ref={access}><summary>{t('captureRedesign.accessAndHelp')}{hiddenByAccess > 0 && <span>{t('captureRedesign.hiddenCount', { count: hiddenByAccess })}</span>}</summary>
@@ -132,7 +139,7 @@ export function EncounterAtlas({ items, data, initialZoneId, collectionIds, spec
     {rows.some(row => row.details.some(detail => detail.method === 'horde')) && <p className="hint">{t('encounterAtlas.hordeHint')}</p>}
     </details>
     {zone?.noticeKey && <p className="notice">{t(zone.noticeKey)}</p>}
-    <div className="atlas-results-heading"><strong>{t('captureRedesign.results', { count: rows.length })}</strong>{(query || method !== 'all' || progressFilter !== 'all') && <button onClick={() => { setQuery(''); setMethod('all'); setProgressFilter('all') }}>{t('captureRedesign.clearFilters')}</button>}</div>
+    <div className="atlas-results-heading"><strong>{t('captureRedesign.results', { count: rows.length })}</strong>{(query || onlyExclusive || method !== 'all' || progressFilter !== 'all') && <button onClick={() => { setQuery(''); setOnlyExclusive(false); setMethod('all'); setProgressFilter('all') }}>{t('captureRedesign.clearFilters')}</button>}</div>
     {!rows.length && <p className="empty" role="status">{t(allRows.length ? hiddenByAccess === allRows.length ? 'captureRedesign.noAccess' : 'encounterAtlas.noMatches' : 'encounterAtlas.noRecordedObtaining')}{hiddenByAccess > 0 && <button onClick={openAccess}>{t('captureRedesign.reviewAccess')}</button>}</p>}
     {zone && subzones.map(subzone => {
       const area = zone.areas.find(area => area.name === subzone.area)!
@@ -148,7 +155,7 @@ export function EncounterAtlas({ items, data, initialZoneId, collectionIds, spec
             <a className="pokemon-wiki" href={pokemonWikiUrl(row.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(row.name) })}><ActionIcon kind="external" /></a>
             <GenerationBadge speciesId={row.speciesId} />
             <div className="capture-identity"><span className="capture-sprite-slot">{discovered.has(row.speciesId) && pokemon?.sprite ? <img src={pokemon.sprite} width="64" height="64" alt="" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</span><div><div className="capture-name-line"><strong className="species-name">{pokemonDisplayName(row.name)}</strong>{gender && <GenderBadge kind={gender.kind} species distribution={pokemon?.genderDistribution} />}</div>
-              <SpeciesScopeBadge scope={pokemon?.scope} /><span className="capture-state">#{row.speciesId}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
+              <ExclusiveBadge service={acquisition} speciesId={row.speciesId} /><SpeciesScopeBadge scope={pokemon?.scope} /><span className="capture-state">#{row.speciesId}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
               {pokedex && <span className={`capture-state${caught ? ' capture-state-caught' : ''}`}>{t(caught ? 'encounterAtlas.progressStates.caught' : pokedex.seenSpeciesIds.has(row.speciesId) ? 'encounterAtlas.progressStates.seen' : 'encounterAtlas.progressStates.unseen')}</span>}
             </div></div>
             {pokemon && <div className="types">{pokemon.types.map(type => <TypeBadge type={type} key={type} />)}</div>}

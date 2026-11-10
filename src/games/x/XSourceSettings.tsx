@@ -31,10 +31,9 @@ export function XSourceSettings({ source, onChange, snapshot, live }: { source: 
 }
 
 export function XCollectionSettings({ live }: { live: ReturnType<typeof useLivePartySource> }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   return <div className="save-sync">
-    <p role="status" className={live.snapshot.boxesStatus === 'error' ? 'notice' : 'hint'}>{t(`sources.xLive.boxStatus.${live.snapshot.boxesStatus}`)}</p>
-    {live.snapshot.boxesUpdatedAt && <p className="hint">{t('sources.xLive.boxesLastReading', { time: new Date(live.snapshot.boxesUpdatedAt).toLocaleTimeString(i18n.language) })}</p>}
+    {live.snapshot.boxesStatus !== 'ready' && <p role="status" className={live.snapshot.boxesStatus === 'error' ? 'notice' : 'hint'}>{t(`sources.xLive.boxStatus.${live.snapshot.boxesStatus}`)}</p>}
     <button disabled={live.busy || !live.snapshot.enabled || live.snapshot.boxesStatus === 'reading'} onClick={() => { void live.control('refresh') }}>{t('sources.xLive.refreshCollection')}</button>
   </div>
 }

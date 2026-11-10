@@ -10,6 +10,7 @@ import { BattleTypeMatchup } from './BattleTypeMatchup'
 import { useBattlePokemon } from '../hooks/useBattlePokemon'
 import { showConnectionControls } from './connection-controls'
 import './EnemyPrototype.css'
+import './BattleDashboard.css'
 import type { FieldCombatReading } from '../games/core/combat'
 import type { CombatPresentation } from '../games/core/combat-presentation'
 import { BattleField } from './BattleField'
@@ -34,8 +35,8 @@ export function FieldBattleScreen({ reading, service, rules, hint, presentation,
     onConnectionChange?.({ status: reading.status, message: '', inBattle: session.inBattle })
   }, [onConnectionChange, reading.status, session.inBattle])
   return <section className="panel battle-panel" aria-label={t('enemyPrototype.heading')}>
-    <div className="section-heading"><h2>{t('enemyPrototype.heading')}</h2><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
-    {hint && <p className="hint">{hint}</p>}
+    <div className="section-heading"><h2>{t('enemyPrototype.heading')}</h2>{!hint && <span className="count">{t('enemyPrototype.experimentalBadge')}</span>}</div>
+    {hint && <details className="battle-context"><summary>{t('enemyPrototype.experimentalBadge')}</summary><p className="hint">{hint}</p></details>}
     {(reading.status !== 'ready' || session.stale) && <p className="notice" role="status">{t(reading.status === 'error' ? 'enemyPrototype.status.disconnected' : 'battleShared.partial')}</p>}
     {reading.status !== 'ready' && <button onClick={showConnectionControls}>{t('connectionIndicator.goToControlsButton')}</button>}
     {!session.inBattle && reading.status === 'ready' && reading.activity === 'inactive' ? <p role="status">{t('enemyPrototype.detail.outOfBattle')}</p> : session.field ? <BattleField key={session.revision} field={session.field} service={service} rules={rules} presentation={presentation} playerTeam={session.playerTeam} stale={session.stale} /> : <p role="status">{t('enemyPrototype.status.waitingRead')}</p>}
@@ -53,9 +54,9 @@ function SingleBattleScreen({ reading, service, rules, hint, onConnectionChange 
   useEffect(() => {
     onConnectionChange?.({ status: reading.status, message: reading.message, inBattle: session.inBattle })
   }, [onConnectionChange, reading.status, reading.message, session.inBattle])
-  return <section className="panel battle-panel" aria-labelledby="enemy-prototype-title">
-    <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div><span className="count">{t('enemyPrototype.experimentalBadge')}</span></div>
-    {hint && <p className="hint">{hint}</p>}
+  return <section className="panel battle-panel battle-panel-single" aria-labelledby="enemy-prototype-title">
+    <div className="section-heading"><div><span className="eyebrow">{t('enemyPrototype.eyebrow')}</span><h2 id="enemy-prototype-title">{t('enemyPrototype.heading')}</h2></div>{!hint && <span className="count">{t('enemyPrototype.experimentalBadge')}</span>}</div>
+    {hint && <details className="battle-context"><summary>{t('enemyPrototype.experimentalBadge')}</summary><p className="hint">{hint}</p></details>}
     <div role="status" className={`enemy-prototype-status ${candidate ? 'detected' : ''} ${disconnected ? 'stale' : ''}`} >
       <strong>{disconnected ? t('enemyPrototype.status.disconnected') : activeCandidate ? t('enemyPrototype.status.bothDetected') : candidate ? t('enemyPrototype.status.rivalDetected') : reading.status === 'ready' ? t('enemyPrototype.status.noRivalConfirmed') : t('enemyPrototype.status.waitingRead')}</strong>
       <span>{reading.message || (activeCandidate ? t('enemyPrototype.detail.ownIdentified') : candidate ? t('enemyPrototype.detail.waitingMatch') : reading.status === 'ready' ? t('enemyPrototype.detail.outOfBattle') : t('enemyPrototype.detail.connecting'))}</span>

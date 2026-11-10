@@ -1,4 +1,48 @@
 {
+  "acquisitionAvailability": {
+    "onlyExclusive": "Exclusives only",
+    "exclusive": "Exclusive to {{game}}",
+    "exclusiveHint": "Obtainable without external help in {{game}}, but not in {{counterpart}}.",
+    "fossilHint": "After entering the Hall of Fame, find the fossil with Rock Smash in Glittering Cave and revive it at the Ambrette Town laboratory. Availability depends on the edition."
+  },
+  "typeChartRefresh": {
+    "filter": "Filter columns by defending type",
+    "all": "All types",
+    "showing": "{{count}} of {{total}} columns · All attacking types",
+    "help": "Select a matchup to pin it. Use arrow keys to explore the table and Enter to pin; Escape clears the selection.",
+    "clear": "Clear selection"
+  },
+  "balanceRefresh": {
+    "members": "Analyzed team",
+    "membersNote": "Individuals included in this reading",
+    "sharedNote": "Types with two or more weak members",
+    "gaps": "{{count}} types without coverage",
+    "sections": "Type balance sections",
+    "risks": "Where to be careful",
+    "riskHint": "Choose a type to see who is weak and who can resist it.",
+    "weakMembers": "Members weak against this type",
+    "inspect": "Inspect an attacking type",
+    "onlyGaps": "Show only types without coverage",
+    "noGaps": "Your team has potential STAB coverage against every type.",
+    "defensiveHelp": "Resists shared weaknesses",
+    "offensiveHelp": "Adds coverage against"
+  },
+  "pendingStyle": {
+    "intro": "Item and trade evolutions still missing from your Pokédex.",
+    "needed": "Needed",
+    "bag": "In bag",
+    "held": "Held",
+    "stockUnknown": "Item quantity unconfirmed",
+    "stockStale": "Item in last reading: {{count}} · Unconfirmed",
+    "stockAvailable": "Item in inventory: {{count}}",
+    "stockMissing": "Item still needed"
+  },
+  "catalogRedesign": {
+    "obtain": "How to obtain",
+    "routes": "Acquisition routes",
+    "guide": "About the catalog and search",
+    "page": "Page {{page}} of {{pages}}"
+},
   "captureRedesign": {
     "followPaused": "Location tracking paused",
     "moreData": "More details",

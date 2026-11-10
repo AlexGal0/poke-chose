@@ -79,12 +79,11 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
     const inventoryKey = current?.items[name]?.inventoryKey
     return manual || inventoryKey == null || !inventory.quantities ? null : inventory.quantities[inventoryKey] ?? { bag: 0, held: 0 }
   }
-  return <section className="panel evolution-requirements" aria-labelledby="requirements-title">
+  return <section className="evolution-requirements" aria-labelledby="requirements-title">
     <div className="section-heading requirements-header"><div><span className="eyebrow">{t('evolutionRequirements.eyebrow')}</span><h2 id="requirements-title">{t('evolutionRequirements.title')}</h2></div><label className="requirements-scope">{t('evolutionRequirements.scope')}<select value={scope} onChange={event => setScope(event.target.value)}>
       {service.scopes.map(option => <option key={option.id} value={option.id}>{t(option.labelKey)}</option>)}
     </select></label></div>
-    <p className="hint">{t('evolutionRequirements.hint')}</p>
-    <p className="hint">{t(manual ? 'evolutionRequirements.manual' : service.inventoryHintKey ?? 'evolutionRequirements.inventorySave')}</p>
+    <p className="hint">{t('pendingStyle.intro')}</p>
     {!manual && inventory.stale && <p role="status" className="notice">{t(inventory.quantities ? 'evolutionRequirements.inventoryStale' : 'evolutionRequirements.inventoryUnknown')}</p>}
     {!manual && stale && <p role="status" className="notice">{t('evolutionRequirements.collectionStale')}</p>}
     {!manual && !registered && <p className="notice">{t('evolutionRequirements.noDex')}</p>}
@@ -92,11 +91,11 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
     {current && (current.failed > 0 || Object.values(current.items).some(item => !item)) && <p role="alert" className="notice">{t('evolutionRequirements.partial', { count: current.failed })} <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button></p>}
     {current && registered && <>
       <div className="requirements-overview">
-        <div><span aria-hidden="true">↗</span><strong>{new Set(rows.map(row => row.target.speciesId)).size}</strong><span>{t('evolutionRequirements.summary.species')}</span></div>
-        <div><span aria-hidden="true">⇄</span><strong>{rows.filter(row => row.group === 'trade').length}</strong><span>{t('evolutionRequirements.groups.trade')}</span></div>
-        <div><span aria-hidden="true">◇</span><strong>{needs.size}</strong><span>{t('evolutionRequirements.summary.items')}</span></div>
+        <div><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 18 18 6M7 6h11v11" /></svg></span><strong>{new Set(rows.map(row => row.target.speciesId)).size}</strong><span>{t('evolutionRequirements.summary.species')}</span></div>
+        <div><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7h18m-5-5 5 5-5 5M21 17H3m5-5-5 5 5 5" /></svg></span><strong>{rows.filter(row => row.group === 'trade').length}</strong><span>{t('evolutionRequirements.groups.trade')}</span></div>
+        <div><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3 9 9-9 9-9-9Z" /></svg></span><strong>{needs.size}</strong><span>{t('evolutionRequirements.summary.items')}</span></div>
       </div>
-      <details className="requirements-planning"><summary>{t('evolutionRequirements.planning')}</summary><p className="hint">{t('evolutionRequirements.allocationHint')}</p></details>
+      <details className="requirements-planning"><summary>{t('evolutionRequirements.planning')}</summary><p className="hint">{t('evolutionRequirements.allocationHint')}</p><p className="hint">{t(manual ? 'evolutionRequirements.manual' : service.inventoryHintKey ?? 'evolutionRequirements.inventorySave')}</p></details>
       <div className="requirements-items-heading"><h3>{t('evolutionRequirements.itemsTitle')}</h3><span className="count">{needs.size}</span></div>
       {needs.size ? <div className="evolution-item-summary">{[...needs].map(([name, required]) => {
         const label = current.items[name]?.name ?? name.replaceAll('-', ' ')
@@ -106,8 +105,8 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
         const missing = total == null ? null : Math.max(0, required - total)
         return <article key={name} className={missing === 0 && !inventory.stale ? 'item-sufficient' : missing && !inventory.stale ? 'item-missing' : ''}>
           <div className="requirement-item-name"><EvolutionItemIcon key={name} name={name} label={current.items[name]?.name ?? name.replaceAll('-', ' ')} /><strong>{current.items[name]?.name ?? name.replaceAll('-', ' ')}</strong></div>
-          <p>{t('evolutionRequirements.required', { count: required })}</p>
-          {available ? <><p>{t('evolutionRequirements.available', available)}</p><strong>{missing ? t('evolutionRequirements.missing', { count: missing }) : t('evolutionRequirements.sufficient')}</strong></> : <p>{t('evolutionRequirements.quantityUnknown')}</p>}
+          <dl className="requirement-quantities"><div><dt>{t('pendingStyle.needed')}</dt><dd>{required}</dd></div><div><dt>{t('pendingStyle.bag')}</dt><dd>{available?.bag ?? '—'}</dd></div><div><dt>{t('pendingStyle.held')}</dt><dd>{available?.held ?? '—'}</dd></div></dl>
+          {available ? <><strong>{missing ? t('evolutionRequirements.missing', { count: missing }) : t('evolutionRequirements.sufficient')}</strong></> : <p>{t('evolutionRequirements.quantityUnknown')}</p>}
           <a className="requirement-item-wiki" href={wiki.href} target="_blank" rel="noopener noreferrer" aria-label={t('evolutionRequirements.itemWikiAria', { name: label, site: wiki.site })} title={t('evolutionRequirements.itemWiki', { site: wiki.site })}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M14 3h7v7M21 3l-10 10" /><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5" /></svg></a>
         </article>
       })}</div> : <p className="hint">{t('evolutionRequirements.noItems')}</p>}
@@ -117,6 +116,9 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
         {!rows.some(row => row.group === group) && <p className="hint">{t('evolutionRequirements.emptyGroup')}</p>}
         <ul>{rows.filter(row => row.group === group).map(row => {
           const item = row.method.item ?? row.method.held_item
+          const stock = item ? quantity(item.name) : null
+          const stockCount = stock ? stock.bag + stock.held : null
+          const stockState = stockCount === null || inventory.stale ? 'unknown' : stockCount > 0 ? 'sufficient' : 'missing'
           const sourceSprite = collection.find(pokemon => pokemon.id === row.source.speciesId)?.sprite
           const targetDiscovered = discovered.has(row.target.speciesId)
           return <li key={`${row.source.speciesId}-${row.target.speciesId}-${JSON.stringify(row.method)}`}>
@@ -127,6 +129,7 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
             <div><span className={`requirement-portrait ${targetDiscovered ? '' : 'requirement-target'}`}>{targetDiscovered ? row.target.speciesId in current.sprites ? current.sprites[row.target.speciesId] ? <img src={current.sprites[row.target.speciesId]!} alt="" loading="lazy" /> : null : renderSpeciesSprite?.(row.target.speciesId) : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</span><strong>{pokemonDisplayName(row.target.name)}</strong><small>#{String(row.target.speciesId).padStart(3, '0')}</small></div>
           </div>
           <p className="requirement-method">{evolutionMethodLabel(t, service.methodFacts(row.method, row.target.speciesId, labels))}</p>
+          {item && <p className={`requirement-stock stock-${stockState}`}>{t(stockCount === null ? 'pendingStyle.stockUnknown' : inventory.stale ? 'pendingStyle.stockStale' : stockCount > 0 ? 'pendingStyle.stockAvailable' : 'pendingStyle.stockMissing', { count: stockCount ?? 0 })}</p>}
           {row.target.methods.some(method => method !== row.method && !method.item && !method.held_item && method.trigger.name !== 'trade') && <p className="hint">{t('evolutionRequirements.alternative')}</p>}
           <button className="requirement-open" onClick={() => openEvolution(row.source.speciesId)}>{t('evolutionRequirements.viewEvolution')} <span aria-hidden="true">↗</span></button>
         </li>})}</ul>

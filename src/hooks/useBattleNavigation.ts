@@ -3,14 +3,12 @@ import type { ActiveTab } from '../storage/active-tab'
 import type { BattleConnection } from '../models/combat'
 import { battleHasStarted, battleHasEnded, battleShortcutDestination } from '../domain/battle-shortcut'
 
-function centerBattlers() {
-  const participants = [...document.querySelectorAll<HTMLElement>('.battle-participant')].filter(element => element.getClientRects().length)
-  if (!participants.length) return
-  const bounds = participants.map(element => element.getBoundingClientRect())
-  const top = Math.min(...bounds.map(rect => rect.top))
-  const bottom = Math.max(...bounds.map(rect => rect.bottom))
-  // On narrow screens the stacked cards are taller than the viewport: start at the active Pokémon.
-  window.scrollTo({ top: Math.max(0, window.scrollY + top - Math.max(16, (window.innerHeight - (bottom - top)) / 2)), behavior: 'instant' })
+function showBattlePanel() {
+  const panel = [...document.querySelectorAll<HTMLElement>('.battle-panel')].find(element => element.getClientRects().length)
+  if (!panel) return
+  const navigation = document.querySelector<HTMLElement>('.workspace-navigation')
+  const offset = navigation ? navigation.getBoundingClientRect().height + 8 : 8
+  window.scrollTo({ top: Math.max(0, window.scrollY + panel.getBoundingClientRect().top - offset), behavior: 'instant' })
 }
 
 // Extracted from BlackWorkspace, including return tab, scroll and automatic entry/exit.
@@ -18,7 +16,7 @@ export function useBattleNavigation({ sourceKey, enabled, tab, onSelect, connect
   sourceKey: string; enabled: boolean; tab: ActiveTab; onSelect: (tab: ActiveTab) => void; connection: BattleConnection
 }) {
   const [returnPoint, setReturnPoint] = useState<{ sourceKey: string; tab: Exclude<ActiveTab, 'battle'>; scrollY: number } | null>(null)
-  const pendingScroll = useRef<{ tab: ActiveTab; top: number | 'battlers' | 'workspace'; sourceKey?: string } | null>(null)
+  const pendingScroll = useRef<{ tab: ActiveTab; top: number | 'battle-panel' | 'workspace'; sourceKey?: string } | null>(null)
   const confirmed = useRef({ sourceKey, active: false })
   const previous = returnPoint?.sourceKey === sourceKey ? returnPoint : null
   const battleView = enabled && tab === 'battle'
@@ -27,11 +25,11 @@ export function useBattleNavigation({ sourceKey, enabled, tab, onSelect, connect
     if (!viaShortcut) reset()
     onSelect(next)
   }
-  function toggle(focusBattlers = false) {
+  function toggle() {
     const next = battleShortcutDestination(tab, previous?.tab ?? null)
     if (tab !== 'battle') setReturnPoint({ sourceKey, tab, scrollY: window.scrollY })
     else setReturnPoint(null)
-    pendingScroll.current = { sourceKey, tab: next, top: next === 'battle' ? focusBattlers ? 'battlers' : 0 : previous?.scrollY ?? 'workspace' }
+    pendingScroll.current = { sourceKey, tab: next, top: next === 'battle' ? 'battle-panel' : previous?.scrollY ?? 'workspace' }
     setTab(next, true)
   }
   function selectTab(next: ActiveTab) {
@@ -48,13 +46,18 @@ export function useBattleNavigation({ sourceKey, enabled, tab, onSelect, connect
     if (!pending || pending.tab !== tab || (pending.sourceKey && pending.sourceKey !== sourceKey)) return
     pendingScroll.current = null
     if (pending.top === 'workspace') document.getElementById('workspace')?.scrollIntoView({ block: 'start', behavior: 'instant' })
-    else if (pending.top === 'battlers') centerBattlers()
+    else if (pending.top === 'battle-panel') showBattlePanel()
     else window.scrollTo({ top: pending.top, behavior: 'instant' })
   }, [tab, sourceKey])
+  useLayoutEffect(() => {
+    if (!battleView) return
+    const frame = requestAnimationFrame(showBattlePanel)
+    return () => cancelAnimationFrame(frame)
+  }, [battleView, sourceKey])
   const leave = useEffectEvent(() => { if (battleView) toggle() })
   const enter = useEffectEvent(() => {
-    if (!battleView) toggle(true)
-    else requestAnimationFrame(centerBattlers)
+    if (!battleView) toggle()
+    else requestAnimationFrame(showBattlePanel)
   })
   useEffect(() => {
     if (!enabled) { confirmed.current = { sourceKey, active: false }; return }

@@ -30,3 +30,6 @@
 }
 
 .breeding-only-badge { display: inline-grid; place-items: center; width: 26px; height: 26px; margin-left: 4px; border-radius: 50%; background: var(--surface-raised, #273342); font-size: 17px; vertical-align: middle; }
+.knowledge-dialog .family-requirements { font-size: 12px; }
+.knowledge-dialog .family-card { background: var(--surface-raised, #1d2631); }
+.knowledge-dialog .family-card-selected { background: var(--accent-surface, #273b36); }

@@ -1,4 +1,8 @@
+import { ExclusiveFilter } from '../../components/ExclusiveFilter'
+import { matchesExclusiveSpecies } from './acquisition'
+import { ExclusiveBadge } from '../../components/ExclusiveBadge'
 import type { ZoneItemsService } from './zone-items'
+import { catalogPageSize } from '../../components/catalog-pagination'
 import { matchesCatalogCapture } from '../../domain/catalog-capture'
 import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { GenderBadge } from './GenderBadge'
@@ -80,11 +84,10 @@ function ManualCard({ pokemon, children, action, service, captured = false, sele
     <GenerationBadge speciesId={pokemon.id} />
     <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}><span className="roster-wiki-arrow" aria-hidden="true">↗</span><svg className="roster-wiki-search" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a>
     <span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span>
-    {action ? <button type="button" className="sprite sprite-button" onClick={action.onClick} aria-label={action.label}>{discovered && pokemon.sprite
+    {action && <button type="button" className="catalog-obtain-action" aria-label={action.label} title={action.label} onClick={action.onClick}><span aria-hidden="true">?</span></button>}
+    <div className="sprite">{discovered && pokemon.sprite
       ? <img src={pokemon.sprite} width="96" height="96" loading="lazy" alt={pokemonDisplayName(pokemon.name)} />
-      : <span aria-label={t(discovered ? 'pokemonCard.spriteUnavailable' : 'pokemonCard.notDiscovered')}>?</span>}</button> : <div className="sprite">{discovered && pokemon.sprite
-      ? <img src={pokemon.sprite} width="96" height="96" loading="lazy" alt={pokemonDisplayName(pokemon.name)} />
-      : <span aria-label={t(discovered ? 'pokemonCard.spriteUnavailable' : 'pokemonCard.notDiscovered')}>?</span>}</div>}
+      : <span aria-label={t(discovered ? 'pokemonCard.spriteUnavailable' : 'pokemonCard.notDiscovered')}>?</span>}</div>
     <h3>{pokemonDisplayName(pokemon.name)}</h3>
     <div className="types">{pokemon.types.map(type => <span key={type} className={`type type-${type}`}>{t(`types.${type}`)}</span>)}</div>
     {appearance.speciesGender && <GenderBadge kind={appearance.speciesGender} species distribution={appearance.genderDistribution} />}<SpeciesScopeBadge scope={appearance.scope} /><KnowledgeActions pokemon={pokemon} />
@@ -113,12 +116,20 @@ function CatalogCard({ entry, service, collected, onAdd, readOnly = false, caugh
     {result.error ? <><p role="alert">{t('catalog.card.loadError')}</p><button onClick={() => { setResult({}); setAttempt(value => value + 1) }}>{t('common.retry')}</button></> : <p role="status">{t('catalog.card.loading')}</p>}
   </article>
   const pokemon = result.pokemon
-  return <ManualCard service={service} pokemon={pokemon} captured={collected || caught === true} action={acquisition ? { label: acquisitionText(t, acquisition.service.labels.open, { name: pokemonDisplayName(pokemon.name) }), onClick: acquisition.onDetails } : undefined}>{acquisition && <AcquisitionIcons tags={acquisition.state?.tags} error={acquisition.state?.error} onRetry={acquisition.retry} groupLabel={acquisition.service.labels.group} />}{readOnly ? <p className="catalog-capture-state">{t(collected ? 'catalog.card.status.inCollection' : caught === null ? 'catalog.card.status.noPokedexData' : caught ? 'catalog.card.status.everCaught' : 'catalog.card.status.notCaught')}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>
+  return <ManualCard service={service} pokemon={pokemon} captured={collected || caught === true} action={acquisition ? { label: acquisitionText(t, acquisition.service.labels.open, { name: pokemonDisplayName(pokemon.name) }), onClick: acquisition.onDetails } : undefined}>{acquisition && <div className="catalog-acquisition"><ExclusiveBadge service={acquisition.service} speciesId={entry.id} /><AcquisitionIcons onDetails={acquisition.onDetails} tags={acquisition.state?.tags} error={acquisition.state?.error} onRetry={acquisition.retry} groupLabel={acquisition.service.labels.group} /></div>}{readOnly ? <p className="catalog-capture-state">{t(collected ? 'catalog.card.status.inCollection' : caught === null ? 'catalog.card.status.noPokedexData' : caught ? 'catalog.card.status.everCaught' : 'catalog.card.status.notCaught')}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>
     {t(collected ? 'catalog.card.status.inCollection' : 'catalog.card.addButton')}
   </button>}</ManualCard>
 }
 
-const PAGE_SIZE = 12
+function CatalogPagination({ page, pages, onChange }: { page: number; pages: number; onChange: (page: number) => void }) {
+  const { t } = useTranslation()
+  return <nav className="pagination catalog-pagination" aria-label={t('catalog.paginationAriaLabel')}>
+    <button disabled={page === 0} onClick={() => onChange(page - 1)}>{t('common.previousPage')}</button>
+    <span aria-live="polite">{t('catalogRedesign.page', { page: page + 1, pages })}</span>
+    <button disabled={page + 1 >= pages} onClick={() => onChange(page + 1)}>{t('common.nextPage')}</button>
+  </nav>
+}
+
 const VIEWS = ['catalog', 'collection', 'analysis', 'types', 'captures', 'battle', 'daycare', 'evolutions', 'development'] as const
 type View = typeof VIEWS[number]
 
@@ -184,9 +195,24 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
   const query = workspaceView === 'collection' ? collectionQuery : catalogQuery
   function setQuery(next: string) { if (workspaceView === 'collection') setCollectionQuery(next); else setCatalogQuery(next) }
   const [acquisitionEntry, setAcquisitionEntry] = useState<SpeciesEntry | null>(null)
+  const [onlyExclusive, setOnlyExclusive] = useState(false)
   const [onlyMissingCaptures, setOnlyMissingCaptures] = useState(false)
   const [scope, setScope] = useState('regional')
-  const [page, setPage] = useState(0)
+  const [{ page, pageSize }, setPagination] = useState({ page: 0, pageSize: 12 })
+  const setPage = useCallback((next: number) => setPagination(value => ({ ...value, page: next })), [])
+  const catalogGrid = useCallback((grid: HTMLDivElement | null) => {
+    if (!grid) return
+    const measure = () => {
+      if (!grid.getBoundingClientRect().width) return
+      const columns = getComputedStyle(grid).gridTemplateColumns.split(/\s+/).length
+      const next = catalogPageSize(columns)
+      setPagination(value => value.pageSize === next ? value : { page: Math.floor(value.page * value.pageSize / next), pageSize: next })
+    }
+    const observer = new ResizeObserver(measure)
+    observer.observe(grid)
+    measure()
+    return () => observer.disconnect()
+  }, [])
   useEffect(() => {
     const controller = new AbortController()
     service.list(controller.signal).then(rows => {
@@ -208,10 +234,10 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
   const matches = (entry: SpeciesEntry) => matchesCollectionTags({ ...entry, types: entry.types ?? [] }, query, type => t(`types.${type}`))
   const catalogCaught = editable ? new Set(state.collection.map(pokemon => pokemon.id)) : captureSource?.pokedex?.caughtSpeciesIds ?? null
   const filterMissingCaptures = onlyMissingCaptures && catalogCaught !== null
-  const filtered = entries.filter(entry => (scope === 'all' || !service.rules.regionalSpeciesIds || service.rules.regionalSpeciesIds.includes(entry.id)) && matches(entry) && matchesCatalogCapture(entry.id, filterMissingCaptures, catalogCaught))
-  const pages = Math.ceil(filtered.length / PAGE_SIZE)
+  const filtered = entries.filter(entry => matchesExclusiveSpecies(entry.id, onlyExclusive, acquisition?.exclusiveSpeciesIds) && (scope === 'all' || !service.rules.regionalSpeciesIds || service.rules.regionalSpeciesIds.includes(entry.id)) && matches(entry) && matchesCatalogCapture(entry.id, filterMissingCaptures, catalogCaught))
+  const pages = Math.ceil(filtered.length / pageSize)
   const catalogPage = Math.max(0, Math.min(page, pages - 1))
-  const acquisitionRoutes = useAcquisitionRoutes(acquisition, workspaceView === 'catalog' ? filtered.slice(catalogPage * PAGE_SIZE, (catalogPage + 1) * PAGE_SIZE).map(entry => entry.id).join(',') : '')
+  const acquisitionRoutes = useAcquisitionRoutes(acquisition, workspaceView === 'catalog' ? filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => entry.id).join(',') : '')
   const pending = GAME_MODULES.filter(module => !game.modules[module])
 
   return <AcquisitionContext.Provider value={acquisition}><DiscoveryContext.Provider value={discovered}><KnowledgeProvider key={captureSource?.mode ?? 'manual'} service={knowledge} game={game} individuals={roster?.collection ?? roster?.party ?? []} stale={captureSource?.stale} >
@@ -227,7 +253,7 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
       {(saveFailed || tabSaveFailed || captureSource?.saveFailed) && <p className="notice" role="alert">{t('app.storageNotice')}</p>}
       <WorkspaceConnection key={sourceKey} source={sourceKey} status={connectionStatus?.data} actions={connectionStatus?.actions} controls={captureSource?.controls} />
       <WorkspaceTabs live={Boolean(captureSource?.battlePanel)} active={view} collectionCount={editable ? state.collection.length : roster?.collection?.length ?? null} available={{ evolutions: Boolean(evolutionRequirements), development: true, daycare: game.modules.daycare && Boolean(daycare), analysis: game.modules.analysis && analysisAvailable, captures: game.modules.captures && Boolean(encounters) }} onChange={next => { if (VIEWS.some(view => view === next)) navigation.selectTab(next) }} />
-      <aside className={`workspace-team ${teamExpanded ? 'is-expanded' : 'is-compact'}`} aria-label={t('games.modules.team')}>
+      <aside hidden={battleView} className={`workspace-team ${teamExpanded ? 'is-expanded' : 'is-compact'}`} aria-label={t('games.modules.team')}>
         <div className="workspace-team-heading">
           <h2 id="manual-team-title">{t('games.modules.team')} <span>{editable || roster?.party != null ? team.length : '…'} / 6</span></h2>
           <button type="button" aria-expanded={teamExpanded} aria-controls="workspace-team-cards" onClick={() => setTeamExpanded(value => !value)}>{t(teamExpanded ? 'workspaceShell.compactTeam' : 'workspaceShell.expandTeam')}</button>
@@ -243,31 +269,32 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
         </button>)}</ReorderGrid><p className="hint">{t(editable ? team.length === 6 ? 'app.team.hint.full' : 'app.team.hint.editable' : 'app.team.hint.readOnly')}</p>
         </section>
       </aside>
-      <section className={battleView ? undefined : 'panel'} id="workspace-panel" hidden={view === 'development'} role="tabpanel" aria-labelledby={`${view}-tab`}>
+      <section className={battleView ? undefined : `panel${workspaceView === 'catalog' ? ' catalog-workspace' : workspaceView === 'collection' ? ' collection-workspace' : ''}`} id="workspace-panel" hidden={view === 'development'} role="tabpanel" aria-labelledby={`${view}-tab`}>
         {captureSource?.battlePanel && <div hidden={view !== 'battle'} key={sourceKey}>{captureSource.battlePanel(onBattleConnection)}</div>}
         <div hidden={view === 'battle'}>
-        {!editable && <div hidden={view !== 'collection'} key={`collection:${sourceKey}`}>{captureSource?.collectionControls}{(captureSource?.collectionStale || roster?.updating) && roster?.collection && <p className="notice" role="status">{t('savedRoster.stale')}</p>}{roster?.error && <p role="alert">{t('savedRoster.resolveError')} <button onClick={roster.retry}>{t('common.retry')}</button></p>}{captureSource?.capabilities?.boxes === false ? <><h2>{t('app.tabs.collection')}</h2><p className="empty" role="status">{t('sourceCapabilities.boxesUnavailable')}</p></> : roster?.collection ? <SavedRosterCollection fieldMoveService={fieldMoveService} collection={roster.collection} service={roster.service} boxCount={roster.boxCount} types={service.rules.types} /> : <><h2>{t('app.tabs.collection')}</h2><p className="empty">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.collectionWaiting')}</p></>}</div>}
-        {encounters && capturesOpened && <div hidden={view !== 'captures'} key={`captures:${sourceKey}`}>{editable && !browseEncountersInManual ? <><h2>{t('app.tabs.captures')}</h2><p className="empty">{t('workspaceRules.capturesManualHint', { game: t(`games.names.${game.id}`) })}</p></> : !editable && captureSource?.capabilities?.pokedex === false ? <p className="empty" role="status">{t('sourceCapabilities.pokedexUnavailable')}</p> : <WorkspaceEncounters items={zoneItems} location={captureSource?.location} data={encounters} initialZoneId={initialZoneId ?? ('locations' in encounters ? encounters.locations[0]?.id ?? 0 : 0)} types={service.rules.types} speciesCatalog={entries} collectionIds={new Set([...(editable ? state.collection : roster?.collection ?? []), ...(roster?.party ?? [])].filter(p => !('isEgg' in p && p.isEgg)).map(p => p.id))} pokedex={captureSource?.pokedex ?? null} stale={captureSource?.stale} />}</div>}
+        {!editable && <div hidden={view !== 'collection'} key={`collection:${sourceKey}`}>{(!roster?.collection || captureSource?.capabilities?.boxes === false) && captureSource?.collectionControls}{(captureSource?.collectionStale || roster?.updating) && roster?.collection && <p className="notice" role="status">{t('savedRoster.stale')}</p>}{roster?.error && <p role="alert">{t('savedRoster.resolveError')} <button onClick={roster.retry}>{t('common.retry')}</button></p>}{captureSource?.capabilities?.boxes === false ? <><h2>{t('app.tabs.collection')}</h2><p className="empty" role="status">{t('sourceCapabilities.boxesUnavailable')}</p></> : roster?.collection ? <SavedRosterCollection controls={captureSource?.collectionControls} fieldMoveService={fieldMoveService} collection={roster.collection} service={roster.service} boxCount={roster.boxCount} types={service.rules.types} /> : <><h2>{t('app.tabs.collection')}</h2><p className="empty">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.collectionWaiting')}</p></>}</div>}
+        {encounters && capturesOpened && <div hidden={view !== 'captures'} key={`captures:${sourceKey}`}>{editable && !browseEncountersInManual ? <><h2>{t('app.tabs.captures')}</h2><p className="empty">{t('workspaceRules.capturesManualHint', { game: t(`games.names.${game.id}`) })}</p></> : !editable && captureSource?.capabilities?.pokedex === false ? <p className="empty" role="status">{t('sourceCapabilities.pokedexUnavailable')}</p> : <WorkspaceEncounters acquisition={acquisition} items={zoneItems} location={captureSource?.location} data={encounters} initialZoneId={initialZoneId ?? ('locations' in encounters ? encounters.locations[0]?.id ?? 0 : 0)} types={service.rules.types} speciesCatalog={entries} collectionIds={new Set([...(editable ? state.collection : roster?.collection ?? []), ...(roster?.party ?? [])].filter(p => !('isEgg' in p && p.isEgg)).map(p => p.id))} pokedex={captureSource?.pokedex ?? null} stale={captureSource?.stale} />}</div>}
         {workspaceView === 'evolutions' ? evolutionRequirements && <WorkspaceEvolutionRequirements key={`evolutions:${sourceKey}`} collection={editable ? state.collection : roster?.collection ?? null} caught={captureSource?.pokedex ?? null} manual={editable} stale={!editable && Boolean(captureSource?.collectionStale || captureSource?.stale || roster?.updating || roster?.error)} service={evolutionRequirements} inventory={captureSource?.inventory} /> : workspaceView === 'daycare' ? daycare && <WorkspaceDaycare key={`daycare:${sourceKey}`} reading={daycare.reading} service={daycare.service} hint={t(editable ? 'daycare.manual' : !daycare.reading.available ? 'daycare.sourceUnavailable' : captureSource?.mode === 'save' ? 'daycare.saveHint' : 'daycare.liveHint')} /> : workspaceView === 'captures' || workspaceView === 'development' ? null : workspaceView === 'analysis' ? <Analysis key={`analysis:${sourceKey}`} team={analysisTeam} rules={typeRules} collection={analysisCollection} stale={!editable && (captureSource?.stale || roster?.updating)} collectionStale={!editable && captureSource?.collectionStale} /> : workspaceView === 'types' ? <TypeChart rules={typeRules} /> : workspaceView === 'collection' && !editable ? null : <>
         <div className="section-heading"><h2 id="manual-workspaceView-title">{t(`games.modules.${workspaceView}`)}</h2><span className="count">{t('common.speciesCount', { count: workspaceView === 'catalog' ? filtered.length : state.collection.length })}</span></div>
-        <CollectionSearch searchAction={workspaceView === 'collection' ? <GenerationFilter collection={state.collection} value={collectionGeneration} onChange={setCollectionGeneration} /> : undefined} collection={workspaceView === 'catalog' ? entries.map(p => ({ types: p.types ?? [] })) : state.collection} types={service.rules.types} searchLabel={workspaceView === 'catalog' ? t('catalog.searchAriaLabel') : undefined} query={query} onChange={next => { setQuery(next); setPage(0) }} />
+        <div className="workspace-search-controls"><CollectionSearch showHint={workspaceView !== 'catalog'} searchAction={workspaceView === 'collection' ? <GenerationFilter collection={state.collection} value={collectionGeneration} onChange={setCollectionGeneration} /> : undefined} collection={workspaceView === 'catalog' ? entries.map(p => ({ types: p.types ?? [] })) : state.collection} types={service.rules.types} searchLabel={workspaceView === 'catalog' ? t('catalog.searchAriaLabel') : undefined} query={query} onChange={next => { setQuery(next); setPage(0) }} />
         {workspaceView === 'collection' && <FieldMoveFilter moves={fieldMoveService.moves} selected={manualFieldMoves.selected} onChange={manualFieldMoves.setSelected} loading={manualFieldMoves.loading} error={manualFieldMoves.error} onRetry={manualFieldMoves.retry} />}<div className="search-row">
           {workspaceView === 'catalog' && <select aria-label={t('catalog.scopeAriaLabel')} value={scope} onChange={event => { setScope(event.target.value); setPage(0) }}>
             <option value="regional">{t('catalog.scopeRegional', { region: t(`games.regions.${game.region}`) })}</option><option value="all">{t('manualWorkspace.national', { number: game.generation })}</option>
           </select>}
+          {workspaceView === 'catalog' && acquisition?.exclusiveSpeciesIds !== undefined && <ExclusiveFilter checked={onlyExclusive} onChange={next => { setOnlyExclusive(next); setPage(0) }} />}
           {workspaceView === 'catalog' && <label className="catalog-missing-filter"><input type="checkbox" checked={filterMissingCaptures} disabled={catalogCaught === null} onChange={event => { setOnlyMissingCaptures(event.target.checked); setPage(0) }} />{t('catalog.onlyMissingCaptures')}</label>}
-        </div>
+        </div></div>
         {workspaceView === 'catalog' ? <>
-          <p className="hint">{t('manualWorkspace.catalogHint', { region: t(`games.regions.${game.region}`) })}</p>
+          <details className="catalog-guide"><summary>{t('catalogRedesign.guide')}</summary><p className="hint">{t('collectionSearch.hint')}</p><p className="hint">{t('manualWorkspace.catalogHint', { region: t(`games.regions.${game.region}`) })}</p></details>
           {catalogCaught === null && <p className="hint">{t('catalog.missingCapturesUnavailable')}</p>}
           {filterMissingCaptures && editable && <p className="hint">{t('catalog.missingCapturesManual')}</p>}
           {filterMissingCaptures && !editable && captureSource?.stale && <p className="notice">{t('catalog.missingCapturesStale')}</p>}
           {catalogError ? <p className="empty" role="alert">{t('catalog.loadError')} <button onClick={() => { setCatalogError(false); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>
             : entries.length === 0 ? <p className="empty" role="status">{t('catalog.loadingCatalog')}</p>
               : filtered.length === 0 ? <p className="empty">{t('catalog.noMatches')}</p>
-                : <><div className="pokemon-grid">{filtered.slice(catalogPage * PAGE_SIZE, (catalogPage + 1) * PAGE_SIZE).map(entry => <CatalogCard key={entry.id} entry={entry} service={service} acquisition={acquisition ? { service: acquisition, state: acquisitionRoutes.get(entry.id), retry: acquisitionRoutes.retry, onDetails: () => setAcquisitionEntry(entry) } : undefined}
+                : <><CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /><div className="pokemon-grid" ref={catalogGrid}>{filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => <CatalogCard key={entry.id} entry={entry} service={service} acquisition={acquisition ? { service: acquisition, state: acquisitionRoutes.get(entry.id), retry: acquisitionRoutes.retry, onDetails: () => setAcquisitionEntry(entry) } : undefined}
                   collected={editable ? state.collection.some(p => p.id === entry.id) : roster?.collection?.some(p => !p.isEgg && p.id === entry.id) ?? false} readOnly={!editable} caught={captureSource?.pokedex?.caughtSpeciesIds.has(entry.id) ?? null} onAdd={pokemon => update(addToCollection(state, pokemon))} />)}</div>
-                  <nav className="pagination" aria-label={t('catalog.paginationAriaLabel')}><button disabled={catalogPage === 0} onClick={() => setPage(catalogPage - 1)}>{t('common.previousPage')}</button><span>{catalogPage + 1} / {pages}</span><button disabled={catalogPage + 1 >= pages} onClick={() => setPage(catalogPage + 1)}>{t('common.nextPage')}</button></nav></>}
+                  <CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /></>}
         </> : state.collection.length === 0 ? <div className="empty"><p>{t('app.collection.emptyIntro')}</p><button onClick={() => setView('catalog')}>{t('app.collection.exploreCatalogButton')}</button></div>
           : <div className="pokemon-grid">{state.collection.filter(p => matches(p) && matchesCollectionGeneration(p, collectionGeneration) && manualFieldMoves.matches(p)).map(pokemon => <ManualCard service={service} selected={state.teamIds.includes(pokemon.id)} key={pokemon.id} pokemon={pokemon}>
             <button className="primary" disabled={!state.teamIds.includes(pokemon.id) && team.length === 6} onClick={() => update(toggleTeamMember(state, pokemon.id))}>

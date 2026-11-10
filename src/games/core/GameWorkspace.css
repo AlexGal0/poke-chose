@@ -5,8 +5,6 @@
 .type-fairy { --type-color: #a74078; background: var(--type-color); }
 .saved-identity { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
 
-.catalog-missing-filter { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
-.catalog-missing-filter input { margin: 0; flex-shrink: 0; }
 
 /* Layout and density are independent from theme colors. */
 .workspace-shell {
@@ -285,3 +283,87 @@
 .workspace-team .roster-card-tools > .gender-badge, .workspace-team .roster-card-tools > .nature-trigger, .workspace-team .roster-card-tools > .pokedex-scope-badge { width: 28px; height: 28px; min-width: 28px; min-height: 28px; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; }
 .workspace-team .roster-card-tools > .pokemon-wiki { position: static; width: 28px; height: 28px; min-height: 28px; padding: 0; margin: 0; flex-shrink: 0; border-radius: 7px; }
 .workspace-team .roster-compact .roster-card-tools > :not(.gender-badge) { display: none; }
+/* Catalog consultation keeps all three knowledge actions explicit. */
+.catalog-workspace .workspace-search-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(180px, .45fr); gap: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border, #34404e); }
+.catalog-workspace .workspace-search-controls .collection-search { margin: 0; min-width: 0; }
+.catalog-workspace .workspace-search-controls .search-row { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 14px; margin: 0; }
+.catalog-workspace .search-row select { width: 100%; }
+.catalog-workspace .collection-tags { margin-top: 10px; }
+.catalog-guide { margin: 12px 0; color: var(--text-muted, #aab6c5); font-size: 12px; }
+.catalog-guide summary { cursor: pointer; width: fit-content; }
+.catalog-guide .hint { margin: 8px 0; }
+.catalog-workspace .pokemon-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); align-items: stretch; gap: 14px; }
+.catalog-workspace .pokemon-card { max-width: 380px; padding: 16px 14px 28px; background: var(--surface-raised, #1d2631); }
+.catalog-workspace .pokemon-card.captured { background: var(--surface-raised, #1d2631); border-color: color-mix(in srgb, var(--success-text, #a4dfbd) 70%, var(--border, #34404e)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--success-text, #a4dfbd) 70%, var(--border, #34404e)); }
+.catalog-workspace .captured .catalog-capture-state { color: var(--success-text, #a4dfbd); }
+.catalog-workspace .pokemon-card h3 { font-size: 17px; margin-top: 8px; }
+.catalog-workspace .pokemon-wiki { width: 30px; height: 30px; border: 1px solid var(--border, #34404e); background: transparent; }
+.catalog-workspace .roster-wiki-arrow { display: none; }
+.catalog-workspace .roster-wiki-search { display: block; }
+.catalog-workspace .knowledge-actions { gap: 6px; margin-top: 16px; }
+.catalog-workspace .knowledge-actions button { flex-direction: column; flex-wrap: nowrap; padding: 10px 3px; min-height: 58px; background: transparent; color: var(--text, #e9eef3); font-size: 11px; }
+.catalog-workspace .knowledge-actions button svg { color: var(--text-muted, #aab6c5); }
+.catalog-workspace .knowledge-actions button:hover, .catalog-workspace .catalog-obtain-action:hover { background: var(--accent-surface, #273b36); border-color: var(--accent, #83dcb8); }
+.catalog-workspace .knowledge-actions button:hover svg { color: var(--accent-text, #a1e1c7); }
+.catalog-workspace .knowledge-action-label { position: static; width: auto; height: auto; clip-path: none; overflow: visible; white-space: normal; }
+.catalog-workspace .card-actions { gap: 10px; }
+.catalog-workspace .catalog-obtain-action { position: absolute; top: 8px; right: 44px; display: grid; place-items: center; width: 30px; height: 30px; min-height: 30px; padding: 0; border-radius: 9px; background: transparent; color: var(--text, #e9eef3); font-size: 18px; }
+.catalog-acquisition { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; padding: 9px 0; border-block: 1px solid var(--border, #34404e); }
+.catalog-acquisition .acquisition-icons { margin: 0; }
+.catalog-workspace .catalog-capture-state { margin: 0; }
+.catalog-pagination { gap: 10px; margin: 16px 0; }
+.catalog-pagination > span { text-align: center; font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) {
+  .catalog-workspace .workspace-search-controls { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .catalog-workspace .workspace-search-controls .search-row { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .catalog-workspace .search-row select { width: auto; max-width: 100%; }
+  .catalog-pagination { font-size: 11px; }
+  .catalog-pagination button { padding: 8px; font-size: 11px; }
+}
+/* Collection cards describe individuals; the team sidebar keeps its own layout. */
+.collection-workspace > div > .save-sync { margin-bottom: 12px; }
+.collection-workspace .collection-browser-toolbar { gap: 12px; align-items: center; padding-block: 12px; border-block: 1px solid var(--border, #34404e); }
+.collection-workspace .pokemon-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 14px; align-items: stretch; }
+.collection-workspace .saved-roster-card { display: grid; grid-template-columns: 80px minmax(0, 1fr); grid-template-areas: 'heading heading' 'sprite name' 'types types' 'vitals vitals' 'actions actions' 'location location'; gap: 10px; align-items: center; align-content: start; text-align: left; max-width: 400px; padding: 14px; }
+.collection-workspace .saved-roster-card:not(:has(.team-vitals)) { grid-template-areas: 'heading heading' 'sprite name' 'types types' 'actions actions' 'location location'; }
+.collection-workspace .saved-roster-card.fainted { grid-template-areas: 'heading heading' 'sprite name' 'types types' 'condition condition' 'vitals vitals' 'actions actions' 'location location'; }
+.collection-workspace .roster-card-heading { grid-area: heading; flex-wrap: wrap; gap: 6px; padding: 0; }
+.collection-workspace .roster-card-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 5px; margin-left: auto; }
+.collection-workspace .roster-card-tools > .pokemon-wiki { position: static; width: 28px; height: 28px; min-height: 28px; padding: 0; display: grid; place-items: center; border: 1px solid var(--border, #35404e); border-radius: 7px; }
+.collection-workspace .roster-wiki-arrow { display: none; }
+.collection-workspace .roster-wiki-search { display: block; }
+.collection-workspace .saved-roster-card .sprite { grid-area: sprite; width: 80px; height: 80px; }
+.collection-workspace .saved-roster-card .sprite img { width: 80px; height: 80px; }
+.collection-workspace .saved-roster-name { grid-area: name; min-height: 0; padding: 0; gap: 4px; }
+.collection-workspace .roster-name-line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px 10px; }
+.collection-workspace .roster-level { display: inline; font-size: 12px; white-space: nowrap; }
+.collection-workspace .saved-roster-name .pokemon-species-name { min-height: 0; font-size: 11px; }
+.collection-workspace .pokemon-species-name:has(> span[aria-hidden]) { display: none; }
+.collection-workspace .roster-held-item { min-height: 0; margin: 0; font-size: 11px; }
+.collection-workspace .saved-roster-card .saved-identity { display: none; }
+.collection-workspace .saved-roster-card .types { grid-area: types; justify-content: flex-start; min-height: 0; }
+.collection-workspace .roster-condition { grid-area: condition; margin: 0; min-height: 0; }
+.collection-workspace .saved-roster-card:not(.fainted) .roster-condition { display: none; }
+.collection-workspace .team-vitals { grid-area: vitals; margin: 0; padding-top: 10px; }
+.collection-workspace .knowledge-actions { grid-area: actions; margin: 0; padding-top: 6px; }
+.collection-workspace .knowledge-actions button { flex-direction: column; flex-wrap: nowrap; min-height: 56px; padding: 8px 3px; background: transparent; color: var(--text, #e9eef3); }
+.collection-workspace .knowledge-actions button svg { color: var(--text-muted, #aab6c5); }
+.collection-workspace .knowledge-actions button:hover { background: var(--accent-surface, #273b36); }
+.collection-workspace .knowledge-action-label { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+.collection-workspace .saved-roster-card > .hint { grid-area: location; margin: 0; padding-right: 30px; font-size: 11px; }
+.collection-workspace .saved-roster-card > .generation-badge { grid-area: location; position: static; justify-self: end; align-self: center; }
+.collection-workspace .saved-roster-card:has(.egg-hatching) { grid-template-areas: 'heading heading' 'sprite name' 'hatching hatching' 'location location'; }
+.collection-workspace .egg-hatching { grid-area: hatching; }
+.collection-workspace .pagination { margin: 14px 0; gap: 8px; }
+@media (max-width: 400px) {
+  .collection-workspace .pagination, .collection-workspace .pagination button { font-size: 11px; }
+  .collection-workspace .pagination button { padding: 8px; }
+}
+.collection-heading { flex-wrap: wrap; gap: 10px; align-items: center; }
+.collection-heading h2 { margin-right: auto; }
+.collection-heading .save-sync { display: contents; }
+.collection-heading .save-sync > p { flex-basis: 100%; order: 1; margin: 0; }
+.collection-heading .save-sync > button { min-height: 34px; padding: 7px 10px; font-size: 12px; }
+
+/* The workspace already provides the daycare screen surface. */
+.workspace-shell > #workspace-panel .daycare { padding: 0; border: 0; border-radius: 0; background: transparent; }

@@ -56,12 +56,13 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
       <div className="battle-small-identity">
         <h3>{pokemon ? nickname || pokemonDisplayName(pokemon.name) : t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</h3>
         {pokemon && nickname && nickname !== pokemonDisplayName(pokemon.name) && <p className="battle-small-species">{pokemonDisplayName(pokemon.name)}</p>}
+        {pokemon && <div className="battle-small-types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>}
         <p className="hint">{level}</p>
         {!pokemon && <p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p>}
         <BattleHealthBar health={shownHealth} />
       </div>
+      <BattleStatStages stages={nextStatsDisplay.stages} compact />
       {density === 'semicompact' && <>
-        <BattleStatStages stages={nextStatsDisplay.stages} compact />
         <section className="battle-small-weaknesses" aria-label={weaknessHeading}>
           <strong>{weaknessHeading}</strong>
           <div>{weaknesses ? weaknesses.length ? weaknesses.map(row => <span key={row.type}><TypeBadge type={row.type} /> <b>{row.multiplier}×</b></span>) : <span className="hint">{t('battleTypeMatchup.noWeaknesses')}</span> : <span className="hint">{t('battleTypeMatchup.waitingTypes')}</span>}</div>

@@ -45,7 +45,6 @@ export function IndividualStats({ individual, base }: { individual: RosterIndivi
       </div>)}</dl></div>
       <StatsRadar base={base} current={current} individual max={max} activeStat={active} onHoverStat={setActive} onFocusStat={setActive} />
     </div>
-    {current && <p className="hint">{t('statistics.maxHpHint')}</p>}
   </>
 }
 
@@ -58,7 +57,7 @@ export function IndividualMoves({ individual }: { individual: RosterIndividual }
   if (!moves) return <p className="notice">{t('individualDetails.movesUnavailable')}</p>
   return <><p className="hint">{t('individualDetails.ppHint')}</p>{moves.length ? <div className="table-scroll"><table className="moves-table individual-moves-table">
     <caption className="sr-only">{t('individualDetails.knownMoves')}</caption>
-    <thead><tr>{['move', 'type', 'category', 'pp', 'description'].map(key => <th scope="col" key={key}>{t(`movesDialog.table.${key}`)}</th>)}<th>{t('individualDetails.power')}</th><th>{t('individualDetails.accuracy')}</th></tr></thead>
-    <tbody>{moves.map(move => <tr key={move.slot}><th scope="row">{move.name}</th><td>{move.type ? <TypeBadge type={move.type} /> : '—'}</td><td>{categoryLabel(t, move.categoryId)}</td><td>{move.pp}</td><td>{moveDescription(t, move)}</td><td>{move.power ?? '—'}</td><td>{move.accuracy === null ? '—' : `${move.accuracy}%`}</td></tr>)}</tbody>
+    <thead><tr>{['move', 'type', 'category', 'pp'].map(key => <th scope="col" key={key}>{t(`movesDialog.table.${key}`)}</th>)}<th scope="col">{t('individualDetails.power')}</th><th scope="col">{t('individualDetails.accuracy')}</th><th scope="col">{t('movesDialog.table.description')}</th></tr></thead>
+    <tbody>{moves.map(move => <tr key={move.slot}><th scope="row" data-label={t('movesDialog.table.move')}>{move.name}</th><td data-label={t('movesDialog.table.type')}>{move.type ? <TypeBadge type={move.type} /> : '—'}</td><td data-label={t('movesDialog.table.category')}>{categoryLabel(t, move.categoryId)}</td><td data-label={t('movesDialog.table.pp')}>{move.pp}</td><td data-label={t('individualDetails.power')}>{move.power ?? '—'}</td><td data-label={t('individualDetails.accuracy')}>{move.accuracy === null ? '—' : `${move.accuracy}%`}</td><td className="move-description" data-label={t('movesDialog.table.description')}>{moveDescription(t, move)}</td></tr>)}</tbody>
   </table></div> : <p>{t('movesDialog.noMoves')}</p>}</>
 }

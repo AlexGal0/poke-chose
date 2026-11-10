@@ -1,0 +1,3 @@
+.exclusive-filter, .catalog-missing-filter { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; cursor: pointer; }
+.exclusive-filter input, .catalog-missing-filter input { flex: 0 0 auto; width: 16px; height: 16px; margin: 0; accent-color: var(--accent, #83dcb8); }
+.catalog-missing-filter:has(input:disabled) { cursor: default; }

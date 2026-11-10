@@ -1,4 +1,48 @@
 {
+  "acquisitionAvailability": {
+    "onlyExclusive": "Solo exclusivos",
+    "exclusive": "Exclusivo de {{game}}",
+    "exclusiveHint": "Se puede obtener sin ayuda externa en {{game}}, pero no en {{counterpart}}.",
+    "fossilHint": "Después de entrar en el Hall de la Fama, busca el fósil con Golpe Roca en Cueva Brillante y revívelo en el laboratorio de Pueblo Petroglifo. Su disponibilidad depende de la edición."
+  },
+  "typeChartRefresh": {
+    "filter": "Filtrar columnas por tipo defensor",
+    "all": "Todos los tipos",
+    "showing": "{{count}} de {{total}} columnas · Todos los tipos atacantes",
+    "help": "Pulsa un cruce para fijarlo. Con teclado, usa las flechas para recorrer la tabla e Intro para fijar; Esc libera la selección.",
+    "clear": "Liberar selección"
+  },
+  "balanceRefresh": {
+    "members": "Equipo analizado",
+    "membersNote": "Ejemplares incluidos en esta lectura",
+    "sharedNote": "Tipos con dos o más miembros débiles",
+    "gaps": "{{count}} tipos sin cobertura",
+    "sections": "Secciones del balance",
+    "risks": "Dónde conviene tener cuidado",
+    "riskHint": "Elige un tipo para ver quién es débil y quién puede resistirlo.",
+    "weakMembers": "Miembros débiles frente a este tipo",
+    "inspect": "Inspeccionar ataque de tipo",
+    "onlyGaps": "Mostrar solo tipos sin cobertura",
+    "noGaps": "Tu equipo tiene cobertura STAB potencial frente a todos los tipos.",
+    "defensiveHelp": "Resiste debilidades compartidas",
+    "offensiveHelp": "Añade cobertura frente a"
+  },
+  "pendingStyle": {
+    "intro": "Evoluciones por objeto o intercambio que aún faltan en tu Pokédex.",
+    "needed": "Necesarios",
+    "bag": "En bolsa",
+    "held": "Equipados",
+    "stockUnknown": "Cantidad del objeto sin confirmar",
+    "stockStale": "Objeto en la última lectura: {{count}} · Sin confirmar",
+    "stockAvailable": "Objeto en inventario: {{count}}",
+    "stockMissing": "Objeto pendiente de conseguir"
+  },
+  "catalogRedesign": {
+    "obtain": "Cómo obtener",
+    "routes": "Vías de obtención",
+    "guide": "Acerca del catálogo y la búsqueda",
+    "page": "Página {{page}} de {{pages}}"
+},
   "captureRedesign": {
     "followPaused": "Seguimiento en pausa",
     "moreData": "Más datos",

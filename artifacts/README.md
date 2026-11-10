@@ -1,5 +1,22 @@
 # Curated validation screenshots
 
+## XY exclusive filter (2026-11-10)
+
+`xy-exclusive-filter-mobile.jpg` shows the active exclusives-only filter and
+Heracross in Y Route 12 at 390×844. Separate manual session with local public
+tables; content width 375 px, no horizontal overflow. Catalog filtering, empty
+zones, reset and English label also checked; viewport and Spanish restored.
+No saves or emulator memory were modified. See [filter validation](../docs/es/acquisition-availability.md).
+
+## XY independent exclusivity (2026-11-10)
+
+`xy-exclusive-zone-x.jpg` shows Pinsir in X Route 12; `xy-exclusive-catalog-y.jpg`
+shows Heracross in Y's catalog; `xy-exclusive-catalog-mobile.jpg` verifies the Y
+badge at 390×844 (375 px content width). These checks used a separate manual
+session, local public encounter tables and PokéAPI metadata, without adding
+collection entries or writing saves/emulator memory. Safari remains available
+only in acquisition details. See [rules and current validation](../docs/es/acquisition-availability.md).
+
 ## XY zone items (2026-11-04)
 
 `xy-zone-items-desktop.png` and `xy-zone-items-mobile.png` show the compact Y guide in Shalour City, filtered to machines: MO03/MT98, corner check/source controls, Roman generation and shops separated into compact tables. Mobile includes a test obtained highlight, removed afterward. Mobile override 390×844, effective CSS width/scrollWidth 375 px; restored afterward. The guide uses public data independently of the read-only party. Independent marks for two Stardust locations, English shop text and X's mirrored shop table were checked. Spanish and Y restored. No save or emulator writes. See [scope and provenance](../docs/es/zone-items.md).
@@ -110,6 +127,10 @@ format evidence. Unrelated user captures were not included in this delivery.
 
 Alignment follow-up: `workspace-refresh-narrow.jpg` and `workspace-team-expanded-grid.jpg` show the alignment follow-up in Y using read-only live data. Compact PS/EXP share identical track edges; the four tool controls (evolution, gender, nature, Wiki) measured 28 px height with the same vertical center. These are presentation checks, not reader recovery or battle checks.
 
+## Catalog redesign (2026-11-09)
+
+`catalog-redesign-desktop.jpg` and `catalog-redesign-narrow.jpg` show Pokémon Y in Spanish, Pokémon dark, with the latter at 320 CSS px. The three knowledge actions retain visible labels; How to obtain is explicit, Wiki uses a magnifier and pagination appears above/below the list. Real previously received read-only data; reader disconnected during the checks, with stale notices visible. These are not fresh reader validation. See `docs/es/catalog-visual-redesign.md` for checks and limits. Tests: 543 passed, lint and build passed.
+
 ## Capture screen redesign (2026-11-09)
 
 `captures-colors-dark.jpg` documents the subsequent neutral-surface color adjustment in Pokémon dark. Reader unavailable: species discovery is unknown, so images remain masked. This is current visual color evidence, not fresh source data or a captured-state screenshot. Original and dark computed styles and 384 CSS px overflow were checked. Tests: 543, lint and build passed.
@@ -119,3 +140,46 @@ Alignment follow-up: `workspace-refresh-narrow.jpg` and `workspace-team-expanded
 Capture alignment follow-up: the two captures now show equal card heights per row, maximum width 360 CSS px and a top-right evolution icon. More data was removed; statistics/moves remain inside the knowledge dialog. The refreshed captures use real read-only Y data with the reader connected; the earlier stale-reader description refers to the preceding revision. The narrow capture is 320 CSS px. Tests: 543 passed, lint and build passed.
 
 captures-header-compact.jpg shows the header follow-up in Original at 400 CSS px with real read-only Y data. Identity starts 14 px below the card edge; evolution and Wiki controls form a right-hand column, measured without overlap. No horizontal content overflow. Tests: 543 passed; lint and build passed.
+
+catalog-tooltip-fixed.jpg shows the acquisition follow-up at 520 CSS px in Original: centered route buttons, ? beside Wiki and a 220 px tooltip. Real read-only Y data retained by the app. The earlier catalog-redesign captures predate this adjustment. Both route buttons and ? were verified to open Bulbasaur acquisition details; keyboard tooltip at 320 px stayed inside the viewport.
+
+catalog-pagination-wide.jpg shows five columns and three complete rows (15 species) at 2500 CSS px, Original, Y with previously received real read-only data. The adaptive page-size follow-up was also checked at 320 px and with a one-result search. 545 tests, lint and build passed.
+
+## Collection redesign (2026-11-09)
+
+collection-redesign-desktop.jpg shows Y in Pokemon dark; collection-redesign-narrow.jpg shows Box 1 at 320 CSS px in Original. Both use real read-only data, six party members and 67 collection entries. Known moves, box navigation, paging, search and visible action labels were checked. Critical/fainted/unknown HP and egg presentation were separately checked with synthetic data in an ignored local harness. See docs/es/collection-visual-redesign.md. Tests: 545 passed; lint and build passed.
+
+collection-heading-refresh.jpg shows the refresh action integrated beside the collection title and count in Original, with real read-only Y data. Checked at 320 CSS px without horizontal overflow; reading/error messages keep their own full-width row. The button was not used to force a reader refresh.
+
+## Knowledge dialog redesign (2026-11-09)
+
+knowledge-stats-redesign.jpg shows real read-only Sr. Puerro stats; knowledge-evolution-redesign.jpg shows Eevee and discovery-masked branches; knowledge-moves-narrow.jpg shows the responsive move presentation in Original, Spanish. The sticky header and both move views were checked at 320/520 CSS px, with English and Pokemon dark also checked. Bulbasaur's simple chain and species-only stats were inspected separately. See docs/es/knowledge-visual-redesign.md. 545 tests, lint and build passed.
+
+## Pending evolutions composition (2026-11-09)
+
+pending-evolutions-redesign.jpg shows Original, Spanish, Y real read-only data retained after the reader disconnected. Route quantities are explicitly unconfirmed; this is not fresh inventory validation. Amber/missing, green/sufficient, stale and unknown inventory were checked separately with synthetic data in an ignored harness. Original/dark and ES/EN checked; 320 CSS px without overflow. See docs/es/pending-evolutions-visual-redesign.md. 545 tests, lint and build passed.
+
+pending-summary-aligned.jpg documents the redundant inner panel removal and centered SVG summary motifs. Original, Spanish, Y real read-only data with reader connected. All icon centers measured at zero offset; 320 CSS px checked without overflow.
+
+## Type balance redesign (2026-11-09)
+
+balance-redesign-desktop.jpg and balance-defense-narrow.jpg show Original, Spanish, Y with retained real read-only data. The narrow capture is 320 CSS px. Shared-risk inspection, STAB gap filter, complete matrix and mobile defense details were checked. Gen V/VI, egg exclusion and fainted/empty selection were separately checked with synthetic data using the actual component in an ignored harness. See docs/es/type-balance-visual-redesign.md. 545 tests, lint and build passed.
+
+## Type chart filtering (2026-11-10)
+
+type-chart-filter-desktop.jpg and type-chart-filter-narrow.jpg show Fire/Water defending columns, retained attacking rows and pinned matchup. Original, Spanish, Y; narrow at 320 CSS px. Rules are independent of source reading; sidebar uses real read-only data. Multi-select, reset, keyboard navigation, selection clearing and sticky headings checked; EN/dark also checked. See docs/es/type-chart-visual-followup.md. 545 tests, lint and build passed.
+
+type-chart-fixed-width.jpg shows the fixed-width follow-up: 110 px attacker column and 80 px defender columns, leaving unused panel space blank. Measured with two/all columns; 320 CSS px contains horizontal scrolling within the matrix.
+
+type-chart-full-height.jpg shows the subsequent full-height matrix without an internal vertical scrollbar. Measured clientHeight=scrollHeight=745 CSS px; horizontal scrolling remains inside the matrix. Original, Spanish, Y with retained read-only sidebar data.
+
+- `type-chart-colors.jpg`: tabla de tipos en Original, cruce Agua → Fuego fijado; verificación visual del ajuste de colores del 10 de noviembre de 2026.
+
+- `battle-dashboard-narrow.jpg` y `battle-dashboard-wide.jpg`: combate sencillo con datos sintéticos, seis miembros, un debilitado y PS bajos, 10 de noviembre de 2026. Ver `docs/es/battle-visual-followup.md`.
+
+- `battle-priorities-narrow.jpg` y `battle-priorities-wide.jpg`: revisión de prioridad de los activos con datos sintéticos de combate sencillo, 10 de noviembre de 2026.
+
+- `battle-double-narrow.jpg`, `battle-double-wide.jpg`, `battle-horde-narrow.jpg` y `battle-horde-wide.jpg`: validación visual con datos sintéticos de dobles y hordas, 10 de noviembre de 2026.
+
+- `final-review-real-horde.jpg`: horda real de cinco Mareep en Pokémon Y durante la revisión final, 10 de noviembre de 2026.
+- `final-review-daycare.jpg`: guardería real vacía en tema oscuro, sin contenedor duplicado; misma revisión.

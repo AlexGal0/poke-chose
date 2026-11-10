@@ -284,3 +284,6 @@ Black and X now use the same `GameWorkspace` screens with game-specific adapters
 See the [Pokémon X closeout review](docs/es/x-closeout.md) for the final delivery scope, current validation and remaining experimental reader limits.
 
 Pokémon Y has its own Manual, Save and experimental Citra live sources, with separate collection/preferences, Gen VI rules and version-specific encounters. Configure `y-save.config.local.json` or `CITRA_Y_SAVE_PATH`; services use ports 15306/15307. Each Citra instance needs a distinct RPC port when used simultaneously (`CITRA_X_RPC_PORT` / `CITRA_Y_RPC_PORT`, default 45987). Readers verify the live edition independently of executable samples. See the [Y adapter and validation limits](docs/es/y-adapter.md).
+
+
+The shared visual refresh improves the side-window workflow, catalog/collection, knowledge dialogs, type analysis and battle layout without removing features. X/Y also show confirmed independent version exclusives and an exclusives-only filter. See the [delivery summary and accepted follow-ups](docs/es/visual-refresh-closeout.md) and [availability rules](docs/es/acquisition-availability.md).

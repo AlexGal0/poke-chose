@@ -1,0 +1,157 @@
+/* Battle information stays in normal flow: no clipped panels or inner scrolling. */
+.workspace-shell.battle-layout > .workspace-team[hidden] { display: none; }
+.panel.battle-panel { padding: 12px; position: relative; }
+.battle-panel > .section-heading { margin-bottom: 6px; padding-right: 105px; }
+.battle-panel > .section-heading h2 { font-size: 16px; }
+.battle-panel .battle-context { position: absolute; top: 15px; right: 14px; font-size: 11px; color: var(--text-muted, #a5b5c7); z-index: 4; }
+.battle-context summary { cursor: pointer; }
+.battle-context[open] { max-width: min(340px, 80%); padding: 10px; border: 1px solid var(--border, #364352); border-radius: 8px; background: var(--surface-raised, #202a36); }
+.battle-panel .battle-field { margin-top: 4px; }
+.battle-panel .battle-field-title { display: inline-block; font-size: 12px; margin: 0 12px 6px 0; }
+.battle-panel .battle-field > .battle-opponent-roster { display: inline-flex; margin-bottom: 6px; padding: 4px 8px; }
+.battle-panel .battle-field-sides { gap: 10px; }
+.battle-panel .battle-field-side > h4 { margin-bottom: 4px; font-size: 11px; }
+.battle-panel .battle-field-single .battle-field-position-label, .battle-panel .battle-field-single .battle-participant-title { display: none; }
+.battle-panel .enemy-prototype-card { margin-top: 0; }
+.battle-panel .enemy-prototype-card .pokemon-card { display: grid; grid-template-columns: 76px minmax(0, 1fr); grid-template-rows: auto auto auto auto; min-height: 0; padding: 24px 10px 7px; gap: 3px 8px; text-align: left; }
+.battle-panel .enemy-prototype-card .sprite { grid-column: 1; grid-row: 1 / 4; height: 76px; }
+.battle-panel .enemy-prototype-card .sprite img { width: 76px; height: 76px; }
+.battle-panel .enemy-prototype-card .pokemon-identity { display: block; height: auto; min-height: 0; padding-right: 30px; }
+.battle-panel .enemy-prototype-card .pokemon-identity h3 { font-size: 17px; }
+.battle-panel .enemy-prototype-card .pokemon-species-name { font-size: 10px; }
+.battle-panel .enemy-prototype-card .types { min-height: 0; justify-content: flex-start; }
+.battle-panel .enemy-prototype-card .card-actions { margin: 0; gap: 3px; align-items: stretch; }
+.battle-panel .enemy-prototype-card .card-actions > .hint { margin: 0; text-align: left; }
+.battle-panel .enemy-prototype-card .battle-health { margin-top: 0; min-height: 0; }
+.battle-panel .battle-health-label { font-size: 11px; margin-bottom: 3px; }
+.battle-panel .battle-health-bar { height: 7px; }
+.battle-panel .battle-stat-stages { margin-top: 4px; padding-top: 5px; }
+.battle-panel .battle-stat-stages caption { margin-bottom: 3px; font-size: 10px; }
+.battle-panel .battle-stat-stages th, .battle-panel .battle-stat-stages td { padding: 3px 0; }
+.battle-panel .enemy-prototype-card > .battle-held-item { top: 7px; right: 43px; width: 27px; height: 27px; }
+.battle-panel .battle-field-matchups { gap: 8px; margin-top: 8px; }
+.battle-panel .battle-type-matchup { grid-template-rows: auto; padding: 7px 8px; gap: 4px; }
+.battle-panel .battle-weakness-types { gap: 2px 4px; }
+.battle-panel .battle-damage-type { gap: 2px; padding: 1px; }
+.battle-panel .battle-damage-type .type { padding: 3px 5px; font-size: 10px; }
+.battle-panel .battle-damage-type .multiplier { min-width: 24px; padding: 2px; font-size: 10px; }
+.battle-panel .battle-team { margin-top: 8px; padding-top: 7px; }
+.battle-panel .battle-team-heading { margin-bottom: 5px; }
+.battle-panel .battle-team-heading h3 { font-size: 12px; }
+.battle-panel .battle-team-grid { gap: 6px; }
+.battle-panel .battle-team-member { grid-template-columns: 40px minmax(0, 1fr); padding: 5px; gap: 2px 4px; }
+.battle-panel .battle-team-sprite { height: 40px; }
+.battle-panel .battle-team-sprite img { width: 40px; height: 40px; }
+.battle-panel .battle-team-identity { grid-template-rows: auto auto; }
+.battle-panel .battle-team-identity h4 { font-size: 11px; }
+.battle-panel .battle-team-member .battle-health { margin-top: 2px; min-height: 0; }
+.battle-panel .battle-team-level { justify-content: flex-start; }
+.battle-panel .battle-team-matchup-legend { margin-top: 4px; }
+.battle-panel .battle-participants { grid-template-areas: 'own enemy' 'own-effect enemy-effect'; }
+@media (min-width: 461px) and (max-width: 700px) {
+  .battle-panel .battle-field-single .battle-field-sides, .battle-panel .battle-field-matchups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .battle-panel .enemy-prototype-card .pokemon-card { grid-template-columns: 48px minmax(0, 1fr); gap: 3px 5px; padding: 25px 6px 6px; }
+  .battle-panel .enemy-prototype-card .sprite, .battle-panel .enemy-prototype-card .sprite img { width: 48px; height: 56px; }
+  .battle-panel .enemy-prototype-card .pokemon-identity h3 { font-size: 14px; }
+  .battle-panel .enemy-prototype-card .pokemon-identity { padding-right: 0; }
+  .battle-panel .enemy-prototype-card .card-actions { grid-column: 1 / -1; grid-row: 3; }
+  .battle-panel .battle-team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 460px) {
+  .battle-panel .battle-participants { grid-template-columns: 1fr; grid-template-areas: 'own' 'own-effect' 'enemy' 'enemy-effect'; }
+}
+
+.battle-header.site-header { padding-top: 8px; padding-bottom: 8px; margin-bottom: 8px; }
+.workspace-shell.battle-layout { gap: 8px; }
+.battle-layout .workspace-navigation { margin-bottom: 0; padding-bottom: 6px; }
+.battle-panel .enemy-prototype-card .pokemon-card > .generation-badge { bottom: 3px; }
+@media (min-width: 461px) and (max-width: 700px) {
+  .battle-panel .enemy-prototype-card .sprite { grid-row: 1 / 3; }
+  .battle-panel .battle-weakness-types { gap: 1px; }
+  .battle-panel .battle-damage-type .type { font-size: 9px; padding: 2px 3px; }
+  .battle-panel .battle-damage-type .multiplier { min-width: 20px; font-size: 9px; }
+  .battle-panel .battle-type-matchup { padding: 6px; gap: 3px; }
+  .battle-panel .battle-strength-description { display: block; font-size: 9px; }
+  .battle-panel .battle-team-member { grid-template-columns: 30px minmax(0, 1fr); padding: 4px; }
+  .battle-panel .battle-team-sprite, .battle-panel .battle-team-sprite img { width: 30px; height: 34px; }
+  .battle-panel .battle-team-identity small { font-size: 9px; }
+  .battle-panel .battle-team-member-heading { font-size: 9px; min-height: 12px; }
+  .battle-panel .battle-team-level { min-height: 16px; }
+}
+
+.workspace-shell.battle-layout > #workspace-panel { padding: 0; }
+
+.battle-header.site-header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.battle-header .brand { font-size: 16px; }
+.battle-header .header-controls { width: auto; margin-left: auto; gap: 6px; }
+.battle-header .header-controls > button, .battle-header .header-controls select { padding: 5px; font-size: 10px; }
+.battle-header .brand-lockup { gap: 4px; }
+.battle-panel .battle-team-identity { align-content: center; }
+.battle-panel .battle-team-member > .battle-health { margin: 0; }
+.battle-panel .battle-team-member .battle-health-label { min-height: 0; line-height: 1.2; }
+@media (min-width: 461px) and (max-width: 700px) {
+  .battle-panel .battle-team-member { grid-template-rows: auto auto auto auto; }
+  .battle-panel .battle-team-identity small { line-height: 1.1; }
+  .battle-panel .battle-team-heading .count { padding: 2px 6px; }
+  .battle-panel .battle-stat-stages caption { margin-bottom: 1px; }
+  .battle-panel .battle-stat-stages th, .battle-panel .battle-stat-stages td { padding: 1px 0; }
+  .battle-panel .battle-field-title { margin-bottom: 2px; }
+}
+
+/* Single battles prioritize readable active Pokémon; reserves follow below. */
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-card {
+  grid-template-columns: 112px minmax(0, 1fr); padding: 30px 14px 12px; gap: 6px 12px;
+}
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite { grid-row: 1 / 4; width: 112px; height: 112px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite img { width: 112px; height: 112px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity h3 { font-size: 22px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-species-name { font-size: 12px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .card-actions { grid-column: 2; grid-row: 3; }
+.battle-panel :is(.battle-field-single, .battle-participants) .battle-health-label { font-size: 13px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .battle-health-bar { height: 9px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .battle-stat-stages { margin-top: 8px; padding-top: 8px; }
+.battle-panel :is(.battle-field-single, .battle-participants) .battle-stat-stages th,
+.battle-panel :is(.battle-field-single, .battle-participants) .battle-stat-stages td { padding: 4px 0; }
+.battle-panel .battle-field-single .battle-type-matchup, .battle-panel-single .battle-type-matchup { padding: 10px; gap: 6px; }
+.battle-panel .battle-field-single .battle-damage-type .type, .battle-panel-single .battle-damage-type .type { font-size: 10px; padding: 3px 5px; }
+.battle-panel .battle-field-single .battle-damage-type .multiplier, .battle-panel-single .battle-damage-type .multiplier { font-size: 11px; min-width: 24px; }
+.battle-panel .battle-team { margin-top: 20px; padding-top: 14px; }
+@media (min-width: 461px) and (max-width: 700px) {
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-card { grid-template-columns: 1fr; justify-items: center; padding: 30px 9px 10px; gap: 5px; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite { grid-column: 1; grid-row: 1; width: 96px; height: 96px; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite img { width: 96px; height: 96px; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity { grid-column: 1; grid-row: 2; text-align: center; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity h3 { font-size: 19px; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .types { grid-column: 1; grid-row: 3; justify-content: center; }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .card-actions { grid-column: 1; grid-row: 4; }
+}
+@media (max-width: 460px) {
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-card { grid-template-columns: 80px minmax(0, 1fr); }
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite,
+  .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite img { width: 80px; height: 80px; }
+}
+.workspace-shell.battle-layout > #workspace-panel { min-height: 100dvh; }
+
+/* Multiple active positions retain their own identity and equal card heights. */
+.battle-panel :is(.battle-field-double, .battle-field-horde) .battle-field-position { display: flex; flex-direction: column; }
+.battle-panel :is(.battle-field-double, .battle-field-horde) .battle-field-position > .battle-participant { flex: 1; }
+.battle-panel :is(.battle-field-double, .battle-field-horde) .battle-small-card { flex: 1; align-content: start; }
+.battle-panel .battle-small-identity { padding-right: 0; }
+.battle-panel .battle-small-card:has(> .battle-held-item) .battle-small-identity h3 { padding-right: 28px; }
+.battle-panel .battle-small-types { display: flex; flex-wrap: wrap; gap: 4px; margin: 5px 0; }
+.battle-panel .battle-small-types .type { font-size: 10px; padding: 3px 5px; }
+.battle-panel .battle-field-double .battle-small-card { grid-template-columns: 64px minmax(0, 1fr); padding: 10px; gap: 8px; }
+.battle-panel .battle-field-double .battle-small-sprite img { width: 64px; height: 64px; }
+.battle-panel .battle-field-horde .battle-field-side-player { max-width: none; }
+.battle-panel .battle-field-placeholder { flex: 1; display: grid; place-items: center; min-height: 120px; }
+@media (min-width: 461px) and (max-width: 700px) {
+  .battle-panel .battle-field-double .battle-small-card { grid-template-columns: 48px minmax(0, 1fr); padding: 8px; gap: 6px; }
+  .battle-panel .battle-field-double .battle-small-sprite img { width: 48px; height: 56px; }
+  .battle-panel .battle-field-double .battle-small-identity h3 { font-size: 15px; }
+  .battle-panel .battle-field-double .battle-small-weaknesses > div { gap: 4px 6px; }
+  .battle-panel .battle-field-horde .battle-field-side-player .battle-field-position-label { display: none; }
+}
+
+.battle-panel .battle-field-double .battle-field-sides { align-items: stretch; }
+.battle-panel .battle-field-double .battle-field-side { display: flex; flex-direction: column; }
+.battle-panel .battle-field-double .battle-field-positions { flex: 1; }

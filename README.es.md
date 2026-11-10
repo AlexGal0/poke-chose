@@ -273,3 +273,6 @@ Datos y sprites de [PokéAPI](https://pokeapi.co/docs/v2). Enlaces y referencias
 PokéChose es un proyecto independiente de apoyo a la partida. Pokémon y sus elementos pertenecen a sus respectivos titulares.
 
 La preparación del PR integra master actual, incluidos los puertos web fijos 15300/15400. Los lectores save/live de X usan ahora 15304/15305; reinicia los servicios locales tras actualizar. La integración completa pasa 404 pruebas, lint y build. La comprobación de navegador cubre ambos espacios manuales, evoluciones pendientes/álbum de Negro y detalles de conexión de X; el registro de cambios conserva la evidencia real previa de Citra.
+
+
+El rediseño compartido mejora el uso junto al emulador, catálogo/colección, fichas, análisis de tipos y combate sin eliminar funciones. X/Y incorporan exclusivos confirmados sin ayuda externa y el filtro «Solo exclusivos». Consulta el [cierre, validación y mejoras aceptadas](docs/es/visual-refresh-closeout.md) y las [reglas de disponibilidad](docs/es/acquisition-availability.md).
