@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './LoadingIndicator'
 import { itemWikiLink } from '../i18n/item-wiki'
 import type { EvolutionRequirementsService, EvolutionInventory, EvolutionRequirementItem } from '../games/core/evolution-requirements'
 import type { ReactNode } from 'react'
@@ -87,7 +88,7 @@ export function EvolutionRequirements({ collection, caught, manual, stale, servi
     {!manual && inventory.stale && <p role="status" className="notice">{t(inventory.quantities ? 'evolutionRequirements.inventoryStale' : 'evolutionRequirements.inventoryUnknown')}</p>}
     {!manual && stale && <p role="status" className="notice">{t('evolutionRequirements.collectionStale')}</p>}
     {!manual && !registered && <p className="notice">{t('evolutionRequirements.noDex')}</p>}
-    {!current && <p role="status">{t('evolutionRequirements.loading')}</p>}
+    {!current && <LoadingIndicator>{t('evolutionRequirements.loading')}</LoadingIndicator>}
     {current && (current.failed > 0 || Object.values(current.items).some(item => !item)) && <p role="alert" className="notice">{t('evolutionRequirements.partial', { count: current.failed })} <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button></p>}
     {current && registered && <>
       <div className="requirements-overview">

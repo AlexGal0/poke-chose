@@ -1,3 +1,4 @@
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { RosterIndividual, RosterDescription } from './saved-roster'
@@ -52,7 +53,7 @@ export function IndividualMoves({ individual }: { individual: RosterIndividual }
   const { t } = useTranslation()
   const description = useDescription(individual)
   if (description.error || description.value?.knownMovesError) return <p className="notice" role="alert">{t('savedRoster.detailsError')} <button onClick={description.retry}>{t('common.retry')}</button></p>
-  if (!description.value) return <p role="status">{t('savedRoster.loading')}</p>
+  if (!description.value) return <LoadingIndicator>{t('savedRoster.loading')}</LoadingIndicator>
   const moves = description.value.knownMoves
   if (!moves) return <p className="notice">{t('individualDetails.movesUnavailable')}</p>
   return <><p className="hint">{t('individualDetails.ppHint')}</p>{moves.length ? <div className="table-scroll"><table className="moves-table individual-moves-table">

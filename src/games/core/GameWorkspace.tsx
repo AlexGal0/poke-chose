@@ -1,3 +1,6 @@
+import { MegaEvolutions } from '../../components/MegaEvolutions'
+import type { MegaEvolutionService } from './mega-evolutions'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { ExclusiveFilter } from '../../components/ExclusiveFilter'
 import { matchesExclusiveSpecies } from './acquisition'
 import { ExclusiveBadge } from '../../components/ExclusiveBadge'
@@ -37,7 +40,7 @@ import { pokemonDisplayName, pokemonWikiUrl } from '../../domain/pokemon-names'
 import { LocaleSelector } from '../../components/LocaleSelector'
 import { ThemeSelector } from '../../components/ThemeSelector'
 import type { GameProfile } from '../profiles'
-import { GAME_MODULES } from '../profiles'
+import { pendingGameModules } from '../profiles'
 import type { CatalogService, ManualPokemon, SpeciesEntry } from './catalog'
 import type { ManualCollectionStorage } from './manual-storage'
 import './GameWorkspace.css'
@@ -113,7 +116,7 @@ function CatalogCard({ entry, service, collected, onAdd, readOnly = false, caugh
   if (!result.pokemon) return <article className="pokemon-card loading-card">
     <GenerationBadge speciesId={entry.id} />
     <span className="dex-number">#{entry.id}</span><h3>{pokemonDisplayName(entry.name)}</h3>
-    {result.error ? <><p role="alert">{t('catalog.card.loadError')}</p><button onClick={() => { setResult({}); setAttempt(value => value + 1) }}>{t('common.retry')}</button></> : <p role="status">{t('catalog.card.loading')}</p>}
+    {result.error ? <><p role="alert">{t('catalog.card.loadError')}</p><button onClick={() => { setResult({}); setAttempt(value => value + 1) }}>{t('common.retry')}</button></> : <LoadingIndicator>{t('catalog.card.loading')}</LoadingIndicator>}
   </article>
   const pokemon = result.pokemon
   return <ManualCard service={service} pokemon={pokemon} captured={collected || caught === true} action={acquisition ? { label: acquisitionText(t, acquisition.service.labels.open, { name: pokemonDisplayName(pokemon.name) }), onClick: acquisition.onDetails } : undefined}>{acquisition && <div className="catalog-acquisition"><ExclusiveBadge service={acquisition.service} speciesId={entry.id} /><AcquisitionIcons onDetails={acquisition.onDetails} tags={acquisition.state?.tags} error={acquisition.state?.error} onRetry={acquisition.retry} groupLabel={acquisition.service.labels.group} /></div>}{readOnly ? <p className="catalog-capture-state">{t(collected ? 'catalog.card.status.inCollection' : caught === null ? 'catalog.card.status.noPokedexData' : caught ? 'catalog.card.status.everCaught' : 'catalog.card.status.notCaught')}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>
@@ -130,14 +133,15 @@ function CatalogPagination({ page, pages, onChange }: { page: number; pages: num
   </nav>
 }
 
-const VIEWS = ['catalog', 'collection', 'analysis', 'types', 'captures', 'battle', 'daycare', 'evolutions', 'development'] as const
+const VIEWS = ['catalog', 'collection', 'analysis', 'types', 'captures', 'battle', 'daycare', 'evolutions', 'mega', 'development'] as const
 type View = typeof VIEWS[number]
 
 function WorkspaceEncounters({ data, ...props }: Omit<React.ComponentProps<typeof EncounterAtlas>, 'data'> & { data: EncounterAtlasData | EncounterAtlasService }) {
   return 'load' in data ? <EncounterLoader {...props} service={data} /> : <EncounterAtlas {...props} data={data} />
 }
 
-export function GameWorkspace({ browseEncountersInManual = false, zoneItems, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
+export function GameWorkspace({ browseEncountersInManual = false, megaEvolutions, zoneItems, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
+  megaEvolutions?: MegaEvolutionService
   zoneItems?: ZoneItemsService
   browseEncountersInManual?: boolean
   preferences?: { loadTab: () => ActiveTab; saveTab: (tab: ActiveTab) => boolean }
@@ -166,7 +170,8 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
   const editable = !captureSource || captureSource.mode === 'manual'
   const roster = !editable ? captureSource?.roster : undefined
   const analysisAvailable = editable || roster?.party != null
-  const view = (selectedView === 'evolutions' && !evolutionRequirements) || (!analysisAvailable && selectedView === 'analysis') || (selectedView === 'battle' && !captureSource?.battlePanel) || (selectedView === 'daycare' && (!game.modules.daycare || !daycare)) ? 'catalog' : selectedView
+  const pending = pendingGameModules(game)
+  const view = (selectedView === 'mega' && !megaEvolutions) || (selectedView === 'development' && pending.length === 0) || (selectedView === 'evolutions' && !evolutionRequirements) || (!analysisAvailable && selectedView === 'analysis') || (selectedView === 'battle' && !captureSource?.battlePanel) || (selectedView === 'daycare' && (!game.modules.daycare || !daycare)) ? 'catalog' : selectedView
   function persistView(next: View) {
     setSelectedView(next)
     setTabSaveFailed(!(preferences?.saveTab(next) ?? persistValue(`poke-chose:${game.id}:active-tab:v1`, JSON.stringify(next))))
@@ -238,7 +243,6 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
   const pages = Math.ceil(filtered.length / pageSize)
   const catalogPage = Math.max(0, Math.min(page, pages - 1))
   const acquisitionRoutes = useAcquisitionRoutes(acquisition, workspaceView === 'catalog' ? filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => entry.id).join(',') : '')
-  const pending = GAME_MODULES.filter(module => !game.modules[module])
 
   return <AcquisitionContext.Provider value={acquisition}><DiscoveryContext.Provider value={discovered}><KnowledgeProvider key={captureSource?.mode ?? 'manual'} service={knowledge} game={game} individuals={roster?.collection ?? roster?.party ?? []} stale={captureSource?.stale} >
     <header className={`site-header manual-header ${battleView ? 'battle-header' : ''}`}>
@@ -252,14 +256,14 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
       </div>
       {(saveFailed || tabSaveFailed || captureSource?.saveFailed) && <p className="notice" role="alert">{t('app.storageNotice')}</p>}
       <WorkspaceConnection key={sourceKey} source={sourceKey} status={connectionStatus?.data} actions={connectionStatus?.actions} controls={captureSource?.controls} />
-      <WorkspaceTabs live={Boolean(captureSource?.battlePanel)} active={view} collectionCount={editable ? state.collection.length : roster?.collection?.length ?? null} available={{ evolutions: Boolean(evolutionRequirements), development: true, daycare: game.modules.daycare && Boolean(daycare), analysis: game.modules.analysis && analysisAvailable, captures: game.modules.captures && Boolean(encounters) }} onChange={next => { if (VIEWS.some(view => view === next)) navigation.selectTab(next) }} />
+      <WorkspaceTabs live={Boolean(captureSource?.battlePanel)} active={view} collectionCount={editable ? state.collection.length : roster?.collection?.length ?? null} available={{ mega: Boolean(megaEvolutions), evolutions: Boolean(evolutionRequirements), development: pending.length > 0, daycare: game.modules.daycare && Boolean(daycare), analysis: game.modules.analysis && analysisAvailable, captures: game.modules.captures && Boolean(encounters) }} onChange={next => { if (VIEWS.some(view => view === next)) navigation.selectTab(next) }} />
       <aside hidden={battleView} className={`workspace-team ${teamExpanded ? 'is-expanded' : 'is-compact'}`} aria-label={t('games.modules.team')}>
         <div className="workspace-team-heading">
           <h2 id="manual-team-title">{t('games.modules.team')} <span>{editable || roster?.party != null ? team.length : '…'} / 6</span></h2>
           <button type="button" aria-expanded={teamExpanded} aria-controls="workspace-team-cards" onClick={() => setTeamExpanded(value => !value)}>{t(teamExpanded ? 'workspaceShell.compactTeam' : 'workspaceShell.expandTeam')}</button>
         </div>
         <section id="workspace-team-cards" aria-labelledby="manual-team-title">
-        {!editable && roster?.party == null && <p className="notice" role="status">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.partyWaiting')}{roster?.error && <button onClick={roster.retry}>{t('common.retry')}</button>}</p>}
+        {!editable && roster?.party == null && <p className="notice" role="status">{roster?.loading && !roster.error ? <LoadingIndicator>{t('savedRoster.loading')}</LoadingIndicator> : t(roster?.error ? 'savedRoster.resolveError' : 'sourceCapabilities.partyWaiting')}{roster?.error && <button onClick={roster.retry}>{t('common.retry')}</button>}</p>}
         {!editable && captureSource?.stale && roster?.party != null && <p className="notice" role="status">{t(captureSource.capabilities?.boxes === false ? 'sourceCapabilities.partyStale' : 'savedRoster.stale')}</p>}
         <ReorderGrid key={sourceKey} className="team-grid" itemKeys={!editable && roster?.party ? roster.party.map(p => `${p.personality}:${p.trainerId}`) : team.map(p => String(p.id))}>{!editable && roster?.party ? roster.party.map(pokemon => <SavedRosterCard key={pokemon.instanceKey} pokemon={pokemon} service={roster.service} compact={!teamExpanded} />) : team.map(pokemon => <ManualCard service={service} key={pokemon.id} pokemon={pokemon}>
           <button onClick={() => update(toggleTeamMember(state, pokemon.id))}>{t('app.team.removeButton')}</button>
@@ -272,9 +276,9 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
       <section className={battleView ? undefined : `panel${workspaceView === 'catalog' ? ' catalog-workspace' : workspaceView === 'collection' ? ' collection-workspace' : ''}`} id="workspace-panel" hidden={view === 'development'} role="tabpanel" aria-labelledby={`${view}-tab`}>
         {captureSource?.battlePanel && <div hidden={view !== 'battle'} key={sourceKey}>{captureSource.battlePanel(onBattleConnection)}</div>}
         <div hidden={view === 'battle'}>
-        {!editable && <div hidden={view !== 'collection'} key={`collection:${sourceKey}`}>{(!roster?.collection || captureSource?.capabilities?.boxes === false) && captureSource?.collectionControls}{(captureSource?.collectionStale || roster?.updating) && roster?.collection && <p className="notice" role="status">{t('savedRoster.stale')}</p>}{roster?.error && <p role="alert">{t('savedRoster.resolveError')} <button onClick={roster.retry}>{t('common.retry')}</button></p>}{captureSource?.capabilities?.boxes === false ? <><h2>{t('app.tabs.collection')}</h2><p className="empty" role="status">{t('sourceCapabilities.boxesUnavailable')}</p></> : roster?.collection ? <SavedRosterCollection controls={captureSource?.collectionControls} fieldMoveService={fieldMoveService} collection={roster.collection} service={roster.service} boxCount={roster.boxCount} types={service.rules.types} /> : <><h2>{t('app.tabs.collection')}</h2><p className="empty">{t(roster?.error ? 'savedRoster.resolveError' : roster?.loading ? 'savedRoster.loading' : 'sourceCapabilities.collectionWaiting')}</p></>}</div>}
+        {!editable && <div hidden={view !== 'collection'} key={`collection:${sourceKey}`}>{(!roster?.collection || captureSource?.capabilities?.boxes === false) && captureSource?.collectionControls}{(captureSource?.collectionStale || roster?.updating) && roster?.collection && <p className="notice" role="status">{t('savedRoster.stale')}</p>}{roster?.error && <p role="alert">{t('savedRoster.resolveError')} <button onClick={roster.retry}>{t('common.retry')}</button></p>}{captureSource?.capabilities?.boxes === false ? <><h2>{t('app.tabs.collection')}</h2><p className="empty" role="status">{t('sourceCapabilities.boxesUnavailable')}</p></> : roster?.collection ? <SavedRosterCollection controls={captureSource?.collectionControls} fieldMoveService={fieldMoveService} collection={roster.collection} service={roster.service} boxCount={roster.boxCount} types={service.rules.types} /> : <><h2>{t('app.tabs.collection')}</h2><p className="empty">{roster?.loading && !roster.error ? <LoadingIndicator>{t('savedRoster.loading')}</LoadingIndicator> : t(roster?.error ? 'savedRoster.resolveError' : 'sourceCapabilities.collectionWaiting')}</p></>}</div>}
         {encounters && capturesOpened && <div hidden={view !== 'captures'} key={`captures:${sourceKey}`}>{editable && !browseEncountersInManual ? <><h2>{t('app.tabs.captures')}</h2><p className="empty">{t('workspaceRules.capturesManualHint', { game: t(`games.names.${game.id}`) })}</p></> : !editable && captureSource?.capabilities?.pokedex === false ? <p className="empty" role="status">{t('sourceCapabilities.pokedexUnavailable')}</p> : <WorkspaceEncounters acquisition={acquisition} items={zoneItems} location={captureSource?.location} data={encounters} initialZoneId={initialZoneId ?? ('locations' in encounters ? encounters.locations[0]?.id ?? 0 : 0)} types={service.rules.types} speciesCatalog={entries} collectionIds={new Set([...(editable ? state.collection : roster?.collection ?? []), ...(roster?.party ?? [])].filter(p => !('isEgg' in p && p.isEgg)).map(p => p.id))} pokedex={captureSource?.pokedex ?? null} stale={captureSource?.stale} />}</div>}
-        {workspaceView === 'evolutions' ? evolutionRequirements && <WorkspaceEvolutionRequirements key={`evolutions:${sourceKey}`} collection={editable ? state.collection : roster?.collection ?? null} caught={captureSource?.pokedex ?? null} manual={editable} stale={!editable && Boolean(captureSource?.collectionStale || captureSource?.stale || roster?.updating || roster?.error)} service={evolutionRequirements} inventory={captureSource?.inventory} /> : workspaceView === 'daycare' ? daycare && <WorkspaceDaycare key={`daycare:${sourceKey}`} reading={daycare.reading} service={daycare.service} hint={t(editable ? 'daycare.manual' : !daycare.reading.available ? 'daycare.sourceUnavailable' : captureSource?.mode === 'save' ? 'daycare.saveHint' : 'daycare.liveHint')} /> : workspaceView === 'captures' || workspaceView === 'development' ? null : workspaceView === 'analysis' ? <Analysis key={`analysis:${sourceKey}`} team={analysisTeam} rules={typeRules} collection={analysisCollection} stale={!editable && (captureSource?.stale || roster?.updating)} collectionStale={!editable && captureSource?.collectionStale} /> : workspaceView === 'types' ? <TypeChart rules={typeRules} /> : workspaceView === 'collection' && !editable ? null : <>
+        {workspaceView === 'mega' ? megaEvolutions && <MegaEvolutions key={`mega:${sourceKey}`} service={megaEvolutions} inventory={captureSource?.inventory} collection={editable ? state.collection : roster?.collection ?? null} collectionStale={!editable && Boolean(captureSource?.collectionStale || roster?.updating || roster?.error)} /> : workspaceView === 'evolutions' ? evolutionRequirements && <WorkspaceEvolutionRequirements key={`evolutions:${sourceKey}`} collection={editable ? state.collection : roster?.collection ?? null} caught={captureSource?.pokedex ?? null} manual={editable} stale={!editable && Boolean(captureSource?.collectionStale || captureSource?.stale || roster?.updating || roster?.error)} service={evolutionRequirements} inventory={captureSource?.inventory} /> : workspaceView === 'daycare' ? daycare && <WorkspaceDaycare key={`daycare:${sourceKey}`} reading={daycare.reading} service={daycare.service} hint={t(editable ? 'daycare.manual' : !daycare.reading.available ? 'daycare.sourceUnavailable' : captureSource?.mode === 'save' ? 'daycare.saveHint' : 'daycare.liveHint')} /> : workspaceView === 'captures' || workspaceView === 'development' ? null : workspaceView === 'analysis' ? <Analysis key={`analysis:${sourceKey}`} team={analysisTeam} rules={typeRules} collection={analysisCollection} stale={!editable && (captureSource?.stale || roster?.updating)} collectionStale={!editable && captureSource?.collectionStale} /> : workspaceView === 'types' ? <TypeChart rules={typeRules} /> : workspaceView === 'collection' && !editable ? null : <>
         <div className="section-heading"><h2 id="manual-workspaceView-title">{t(`games.modules.${workspaceView}`)}</h2><span className="count">{t('common.speciesCount', { count: workspaceView === 'catalog' ? filtered.length : state.collection.length })}</span></div>
         <div className="workspace-search-controls"><CollectionSearch showHint={workspaceView !== 'catalog'} searchAction={workspaceView === 'collection' ? <GenerationFilter collection={state.collection} value={collectionGeneration} onChange={setCollectionGeneration} /> : undefined} collection={workspaceView === 'catalog' ? entries.map(p => ({ types: p.types ?? [] })) : state.collection} types={service.rules.types} searchLabel={workspaceView === 'catalog' ? t('catalog.searchAriaLabel') : undefined} query={query} onChange={next => { setQuery(next); setPage(0) }} />
         {workspaceView === 'collection' && <FieldMoveFilter moves={fieldMoveService.moves} selected={manualFieldMoves.selected} onChange={manualFieldMoves.setSelected} loading={manualFieldMoves.loading} error={manualFieldMoves.error} onRetry={manualFieldMoves.retry} />}<div className="search-row">
@@ -290,7 +294,7 @@ export function GameWorkspace({ browseEncountersInManual = false, zoneItems, gam
           {filterMissingCaptures && editable && <p className="hint">{t('catalog.missingCapturesManual')}</p>}
           {filterMissingCaptures && !editable && captureSource?.stale && <p className="notice">{t('catalog.missingCapturesStale')}</p>}
           {catalogError ? <p className="empty" role="alert">{t('catalog.loadError')} <button onClick={() => { setCatalogError(false); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>
-            : entries.length === 0 ? <p className="empty" role="status">{t('catalog.loadingCatalog')}</p>
+            : entries.length === 0 ? <LoadingIndicator>{t('catalog.loadingCatalog')}</LoadingIndicator>
               : filtered.length === 0 ? <p className="empty">{t('catalog.noMatches')}</p>
                 : <><CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /><div className="pokemon-grid" ref={catalogGrid}>{filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => <CatalogCard key={entry.id} entry={entry} service={service} acquisition={acquisition ? { service: acquisition, state: acquisitionRoutes.get(entry.id), retry: acquisitionRoutes.retry, onDetails: () => setAcquisitionEntry(entry) } : undefined}
                   collected={editable ? state.collection.some(p => p.id === entry.id) : roster?.collection?.some(p => !p.isEgg && p.id === entry.id) ?? false} readOnly={!editable} caught={captureSource?.pokedex?.caughtSpeciesIds.has(entry.id) ?? null} onAdd={pokemon => update(addToCollection(state, pokemon))} />)}</div>

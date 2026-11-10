@@ -7,7 +7,7 @@ import type { ZoneItemsService } from './zone-items'
 import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { GenerationBadge } from '../../components/GenerationBadge'
 import { EncounterNotice } from '../../components/EncounterNotice'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { EncounterAtlasData, EncounterZone } from './encounters'
 import { betterEncounterZones, uniqueEncounterZone, mergeEncounterSpecies } from './encounters'
@@ -50,6 +50,19 @@ export function EncounterAtlas({ acquisition, items, data: sourceData, initialZo
   const data = { ...sourceData, locations: sourceData.locations.filter(zone => zone.access !== 'external') }
   const [onlyExclusive, setOnlyExclusive] = useState(false)
   const [content, setContent] = useState<'pokemon' | 'items'>('pokemon')
+  const [itemsOpened, setItemsOpened] = useState(false)
+  const contentScroll = useRef<number | null>(null)
+  useLayoutEffect(() => {
+    if (contentScroll.current === null) return
+    window.scrollTo({ top: contentScroll.current, behavior: 'instant' })
+    contentScroll.current = null
+  }, [content])
+  function selectContent(next: 'pokemon' | 'items') {
+    if (next === content) return
+    contentScroll.current = window.scrollY
+    if (next === 'items') setItemsOpened(true)
+    setContent(next)
+  }
   const discovered = useContext(DiscoveryContext)
   const access = useRef<HTMLDetailsElement>(null)
   const storageKey = `poke-chose:${data.version}:encounter-zone:v1`
@@ -116,8 +129,9 @@ export function EncounterAtlas({ acquisition, items, data: sourceData, initialZo
     {reading.available && <>
       <p className="hint" role="status">{reading.stale ? t('captureChecklist.location.stale') : reading.zoneId !== null && data.locations.some(zone => zone.id === reading.zoneId) ? t('encounterAtlas.detectedZone', { zone: label(data.locations.find(zone => zone.id === reading.zoneId)!) }) : t('encounterAtlas.unknownZone')}</p>
     </>}
-    {items && <div className="atlas-content-switch" role="group" aria-label={t('zoneItems.viewLabel')}><button type="button" aria-pressed={content === 'pokemon'} onClick={() => setContent('pokemon')}>{t('zoneItems.pokemonView')}</button><button type="button" aria-pressed={content === 'items'} onClick={() => setContent('items')}>{t('zoneItems.itemsView')}</button></div>}
-    {content === 'items' && items && zone && <ZoneItems key={items.id} service={items} zoneId={zone.id} zoneName={label(zone)} />}
+    {items && <div className="atlas-content-switch" role="group" aria-label={t('zoneItems.viewLabel')}><button type="button" aria-pressed={content === 'pokemon'} onClick={() => selectContent('pokemon')}>{t('zoneItems.pokemonView')}</button><button type="button" aria-pressed={content === 'items'} onClick={() => selectContent('items')}>{t('zoneItems.itemsView')}</button></div>}
+    <div className={items ? 'atlas-content-body' : undefined}>
+    <div hidden={content !== 'items'}>{itemsOpened && items && zone && <ZoneItems key={items.id} service={items} zoneId={zone.id} zoneName={label(zone)} />}</div>
     <div hidden={content === 'items'}>
     <div className="atlas-overview" role="status">
       <span><strong>{accessRows.length}</strong>{t('captureRedesign.accessible')}</span>
@@ -190,6 +204,7 @@ export function EncounterAtlas({ acquisition, items, data: sourceData, initialZo
     {pokedex && <PokedexLookup pokedex={pokedex} species={speciesCatalog?.length ? speciesCatalog : data.species} />}
     <p className="hint">{t(data.retrieved ? 'encounterAtlas.source' : 'encounterAtlas.sourceUndated', { game: t(`games.names.${data.version}`), count: data.locations.length, date: new Intl.DateTimeFormat(i18n.language, { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(data.retrieved ?? 0)) })} <a href="https://pokeapi.co/docs/v2#location-areas" target="_blank" rel="noreferrer">PokéAPI</a>{data.extraSources?.map(source => <span key={source.url}> · <a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></span>)}</p>
     </details>
+    </div>
     </div>
   </div>
 }

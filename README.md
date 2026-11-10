@@ -2,6 +2,8 @@
 
 # PokéChose
 
+X and Y include **Tools → Mega Stones**: Bag and held stones, currently owned Pokémon, and a Mega Evolution preview comparing XY base stats. The per-game contract is optional; Black does not expose this screen. See [scope, data and validation](docs/es/mega-evolutions.md).
+
 Organize your collection, put together a team of up to six Pokémon, and check their strengths and weaknesses while playing **Pokémon Black or Pokémon X**. PokéChose runs in the browser with manual, read-only save and live-memory sources, depending on the game.
 
 In Black, you can use it manually, sync it with a save file, or enable live reading. That workspace uses **Black/White, Generation V** rules; in-game integration is implemented for **Pokémon Black**.

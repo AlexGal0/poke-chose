@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './LoadingIndicator'
 import { BattleHeldItem } from './BattleHeldItem'
 import type { CombatParticipant, CombatSpecies, CombatService } from '../models/combat'
 import { pokemonDisplayName } from '../domain/pokemon-names'
@@ -58,7 +59,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
         {pokemon && nickname && nickname !== pokemonDisplayName(pokemon.name) && <p className="battle-small-species">{pokemonDisplayName(pokemon.name)}</p>}
         {pokemon && <div className="battle-small-types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>}
         <p className="hint">{level}</p>
-        {!pokemon && <p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p>}
+        {!pokemon && <>{error ? <p className="hint">{t('battlePokemon.loadError')}</p> : <LoadingIndicator compact>{t('battlePokemon.loading')}</LoadingIndicator>}</>}
         <BattleHealthBar health={shownHealth} />
       </div>
       <BattleStatStages stages={nextStatsDisplay.stages} compact />
@@ -79,7 +80,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
           <p className="hint">{candidate.level === null ? t('battleAdapter.levelUnavailable') : t('app.team.level', { level: candidate.level })}</p>
           <BattleHealthBar health={shownHealth} />
         </PokemonCardFrame>
-      </DiscoveryContext.Provider> : <div className="battle-participant-empty"><strong>{t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</strong><p className="hint">{error ? t('battlePokemon.loadError') : t('battlePokemon.loading')}</p></div>}
+      </DiscoveryContext.Provider> : <div className="battle-participant-empty"><strong>{t('battlePokemon.speciesPlaceholder', { id: speciesId, level: candidate.level })}</strong><>{error ? <p className="hint">{t('battlePokemon.loadError')}</p> : <LoadingIndicator compact>{t('battlePokemon.loading')}</LoadingIndicator>}</></div>}
     </div>
   </div>
 }

@@ -42,7 +42,7 @@
     "routes": "Acquisition routes",
     "guide": "About the catalog and search",
     "page": "Page {{page}} of {{pages}}"
-},
+  },
   "captureRedesign": {
     "followPaused": "Location tracking paused",
     "moreData": "More details",
@@ -68,7 +68,6 @@
   "workspaceShell": {
     "tools": "Tools",
     "mainSections": "Main sections",
-
     "compactTeam": "Compact view",
     "expandTeam": "Expand cards",
     "connectionDetails": "Controls",
@@ -1888,5 +1887,41 @@
     "price": "Price",
     "otherShop": "Shop",
     "shopSource": "View shop sources"
+  },
+  "megaEvolutions": {
+    "title": "Mega Stones",
+    "eyebrow": "The power of your collection",
+    "intro": "Your stones and the Pokémon that can use them.",
+    "hint": "Select the stone at the bottom of a frame to reveal the Mega Evolution and compare base stats. You need both the stone and the Pokémon in your current collection.",
+    "stones": "different stones",
+    "filter": "Show",
+    "ownedStones": "My Mega Stones",
+    "allStones": "All compatible stones",
+    "loading": "Loading Mega Stones and forms…",
+    "error": "Mega Evolutions could not be loaded.",
+    "empty": "No Mega Stones are in your Bag or held by your Pokémon in the current reading.",
+    "inventoryUnknown": "No inventory reading is available. Select a save or live source to check your Mega Stones.",
+    "collectionUnknown": "Your collection is not available yet. Pokémon ownership cannot be confirmed.",
+    "stale": "The inventory is outdated. Mega previews will unlock after a current reading.",
+    "collectionStale": "The collection is outdated or incomplete. Waiting for a current reading to confirm your Pokémon.",
+    "pokemonUnknown": "Pokémon unconfirmed",
+    "pokemonMissing": "You need this Pokémon",
+    "stoneUnknown": "Stone unconfirmed",
+    "stoneMissing": "You need this stone",
+    "unconfirmed": "Waiting for a current reading",
+    "ready": "Stone and Pokémon available",
+    "hidden": "Pokémon hidden: not in your collection",
+    "open": "View {{name}}’s Mega Evolution with {{stone}}",
+    "quantities": "In Bag: {{bag}} · Held: {{held}}",
+    "megaName": "Mega {{name}}{{variant}}",
+    "close": "Close Mega Evolution comparison",
+    "stats": "Before and after",
+    "statsHint": "Species base stats for this game. Level, IVs, EVs, Nature, Abilities and battle effects are excluded.",
+    "comparison": "Base stats comparison for {{name}} and its Mega Evolution",
+    "stat": "Stat",
+    "base": "Normal",
+    "mega": "Mega",
+    "change": "Change",
+    "total": "Total"
   }
 }

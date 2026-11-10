@@ -12,6 +12,11 @@ export interface GameProfile {
   region: string
   symbol: string
   modules: Readonly<Record<GameModule, boolean>>
+  unplannedModules?: readonly GameModule[]
+}
+
+export function pendingGameModules(game: GameProfile): GameModule[] {
+  return GAME_MODULES.filter(module => !game.modules[module] && !game.unplannedModules?.includes(module))
 }
 
 // Availability is explicit: a source adapter alone does not imply game support.
@@ -26,6 +31,7 @@ export const GAME_PROFILES: readonly GameProfile[] = [
   },
   {
     id: 'x', generation: 6, region: 'kalos', symbol: 'X',
+    unplannedModules: ['repel'],
     modules: {
       team: true, catalog: true, collection: true, captures: true, analysis: true,
       types: true, evolutions: true, moves: true, statistics: true, daycare: true,
@@ -34,6 +40,7 @@ export const GAME_PROFILES: readonly GameProfile[] = [
   },
   {
     id: 'y', generation: 6, region: 'kalos', symbol: 'Y',
+    unplannedModules: ['repel'],
     modules: {
       team: true, catalog: true, collection: true, captures: true, analysis: true,
       types: true, evolutions: true, moves: true, statistics: true, daycare: true,

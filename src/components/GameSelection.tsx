@@ -5,8 +5,9 @@ import { LocaleSelector } from './LocaleSelector'
 import { ThemeSelector } from './ThemeSelector'
 import blackCover from '../assets/games/pokemon-black-cover.png'
 import xCover from '../assets/games/pokemon-x-cover.png'
+import yCover from '../assets/games/pokemon-y-cover.png'
 
-const gameCovers: Partial<Record<GameProfile['id'], string>> = { black: blackCover, x: xCover }
+const gameCovers: Partial<Record<GameProfile['id'], string>> = { black: blackCover, x: xCover, y: yCover }
 
 export function GameSelection({ onSelect }: { onSelect: (game: GameProfile) => void }) {
   const { t } = useTranslation()

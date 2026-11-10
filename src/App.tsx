@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './components/LoadingIndicator'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -42,7 +43,7 @@ function App() {
   if (!game) return <GameSelection onSelect={selectGame} />
   const Workspace = workspaces[game.id]
   return <GameGenerationContext value={game.generation}>{Workspace
-    ? <Suspense fallback={<main><p role="status">{t('games.loading')}</p></main>}><Workspace onChangeGame={() => selectGame(null)} /></Suspense>
+    ? <Suspense fallback={<main><LoadingIndicator>{t('games.loading')}</LoadingIndicator></main>}><Workspace onChangeGame={() => selectGame(null)} /></Suspense>
     : <GamePreparation game={game} onChangeGame={() => selectGame(null)} />}</GameGenerationContext>
 }
 

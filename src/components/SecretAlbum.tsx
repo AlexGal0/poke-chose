@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './LoadingIndicator'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent } from 'react'
 import { createPortal } from 'react-dom'
@@ -119,7 +120,7 @@ function Album({ owned, seen, onClose, service }: { owned: ReadonlySet<number>; 
   return createPortal(<dialog ref={dialog} className="secret-album" aria-labelledby="album-title" onCancel={event => { event.preventDefault(); if (selected) returnToGrid(); else onClose() }}>
     <h2 id="album-title" className="album-sr-only">{t('secretAlbum.title', { region: service.region })}</h2>
     <div className="album-sr-only" inert={selected !== null}>
-      {loadState === 'loading' && <span role="status">{t('secretAlbum.loading')}</span>}
+      {loadState === 'loading' && <LoadingIndicator>{t('secretAlbum.loading')}</LoadingIndicator>}
     </div>
     {loadState === 'error' && <button className="album-retry" inert={selected !== null} onClick={() => setAttempt(value => value + 1)} aria-label={`${t('secretAlbum.loadFailed')} ${t('common.retry')}`}>↻</button>}
     <div className="album-grid" style={{ '--album-columns': columns, '--album-rows': Math.ceil(regionalIds.length / columns) } as CSSProperties} inert={selected !== null} aria-hidden={selected !== null} onPointerDownCapture={event => { if (event.button === 0) { cancelClose(); closeTimer.current = setTimeout(onClose, 900) } }} onPointerUpCapture={cancelClose} onPointerCancel={cancelClose} onPointerLeave={cancelClose} onContextMenu={event => event.preventDefault()}>
@@ -141,7 +142,7 @@ function Album({ owned, seen, onClose, service }: { owned: ReadonlySet<number>; 
         <div className="album-detail-art"><AlbumArtwork key={pokemon.id} id={pokemon.id} sprite={pokemon.sprite} animatedSprite={service.animation(pokemon)} /></div>
         <h3 id="album-card-title" tabIndex={-1} ref={detailHeading}>{pokemonDisplayName(pokemon.name)}</h3>
         <div className="album-detail-types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
-        <div className="album-description"><span>{t('secretAlbum.description')}</span><p role="status">{text ? text.text ?? t('secretAlbum.noDescription') : t('secretAlbum.loadingDescription')}</p>{text?.failed && <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button>}</div>
+        <div className="album-description"><span>{t('secretAlbum.description')}</span>{text ? <p>{text.text ?? t('secretAlbum.noDescription')}</p> : <LoadingIndicator compact>{t('secretAlbum.loadingDescription')}</LoadingIndicator>}{text?.failed && <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button>}</div>
         <footer>✦ <span>{service.region}</span> ✦</footer>
       </article>}
     </div>}

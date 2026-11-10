@@ -2,6 +2,8 @@
 
 # PokéChose
 
+X e Y incluyen **Herramientas → Megapiedras**: piedras en bolsa o equipadas, Pokémon actuales y una vista de la megaevolución con comparación de estadísticas base de XY. El contrato es opcional por juego; Black no incorpora esta pantalla. Consulta [alcance, datos y validación](docs/es/mega-evolutions.md).
+
 X e Y incluyen **Capturas por zona → Objetos**, con categorías, regalos, compras, detalles de MT/MO y marcas manuales de obtenido. El contrato prepara la futura búsqueda de objeto a ubicaciones. Consulta [alcance, fuentes y validación](docs/es/zone-items.md); la cobertura puede tener omisiones y algunas notas conservan el inglés original.
 
 Las novedades de cajas, métodos de obtención, filtros persistentes, reconexión y combates de entrenadores en X están documentadas en el [registro del 26 de octubre](docs/es/changes-2026-10-26.md), con su validación y límites pendientes.

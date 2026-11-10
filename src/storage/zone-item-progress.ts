@@ -1,3 +1,5 @@
+import { persistValue } from './persist.ts'
+
 const key = (gameId: string) => `poke-chose:${gameId}:zone-item-progress:v1`
 export function loadZoneItemProgress(gameId: string): ReadonlySet<string> {
   try {
@@ -6,5 +8,5 @@ export function loadZoneItemProgress(gameId: string): ReadonlySet<string> {
   } catch { return new Set() }
 }
 export function saveZoneItemProgress(gameId: string, ids: ReadonlySet<string>): boolean {
-  try { localStorage.setItem(key(gameId), JSON.stringify([...ids])); return true } catch { return false }
+  return persistValue(key(gameId), JSON.stringify([...ids]))
 }

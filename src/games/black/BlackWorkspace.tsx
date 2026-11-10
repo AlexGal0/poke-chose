@@ -1,3 +1,4 @@
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GameWorkspace } from '../core/GameWorkspace'
@@ -47,7 +48,7 @@ function CollectionControls({ connected, loading, error, stale }: { connected: b
   }
   return <><div className="collection-refresh"><button disabled={!connected || busy} onClick={() => { void refresh() }}>{t(busy ? 'saveCollection.refresh.updating' : 'saveCollection.refresh.button')}</button>{!connected && <span>{t('saveCollection.refresh.connectHint')}</span>}</div>
     {result && <p role={result === 'success' ? 'status' : 'alert'}>{t(`saveCollection.refresh.${result}`)}</p>}
-    {loading && <p role="status">{t('saveCollection.syncingNotice')}</p>}{error && <p role="alert">{t('saveCollection.resolveErrorNotice')}</p>}{stale && <p className="notice">{t('saveCollection.staleNotice')}</p>}</>
+    {loading && <LoadingIndicator>{t('saveCollection.syncingNotice')}</LoadingIndicator>}{error && <p role="alert">{t('saveCollection.resolveErrorNotice')}</p>}{stale && <p className="notice">{t('saveCollection.staleNotice')}</p>}</>
 }
 
 export default function BlackWorkspace({ onChangeGame }: { onChangeGame: () => void }) {

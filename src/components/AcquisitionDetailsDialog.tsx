@@ -1,3 +1,5 @@
+import { LoadingIndicator } from './LoadingIndicator'
+
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { AcquisitionDetails, AcquisitionService } from '../games/core/acquisition'
@@ -35,7 +37,7 @@ export function AcquisitionDetailsDialog({ entry, service, onClose }: { entry: {
     <header><div><small>{service.gameName}</small><h2 id={titleId}>{t('acquisitionDetails.heading', { name: pokemonDisplayName(entry.name) })}</h2></div><button onClick={onClose} autoFocus aria-label={t('acquisitionDetails.close')}>✕</button></header>
     <p className="hint">{acquisitionText(t, service.labels.hint)}</p>
     {special.length > 0 && <section><h3>{t('acquisitionDetails.specialTitle')}</h3>{special.map((instruction, index) => <div key={index}><p>{acquisitionText(t, instruction.label)}</p><a href={instruction.source} target="_blank" rel="noreferrer">{t('acquisitionDetails.source')}</a></div>)}</section>}
-    {!current && !error && <p role="status">{acquisitionText(t, service.labels.loading)}</p>}
+    {!current && !error && <LoadingIndicator>{acquisitionText(t, service.labels.loading)}</LoadingIndicator>}
     {error && <p role="alert" className="notice">{t('acquisitionDetails.error')} <button onClick={() => { setFailure(null); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>}
     {current && <>
       <section><h3>{t('acquisitionDetails.routes')}</h3><ul>{current.routes.map(route => <li key={route.kind}>{route.icon} {acquisitionText(t, route.label)}</li>)}</ul></section>

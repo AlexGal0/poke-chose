@@ -24,7 +24,7 @@ export function GamePreparation({ game, onChangeGame }: { game: GameProfile; onC
         <h2 id="game-modules-title">{t('games.modulesHeading')}</h2>
         <p className="hint" id="module-unavailable">{t('games.moduleUnavailable')}</p>
         <div className="game-modules">
-          {GAME_MODULES.map(module => <button key={module} disabled={!game.modules[module]} aria-describedby="module-unavailable">
+          {GAME_MODULES.filter(module => !game.unplannedModules?.includes(module)).map(module => <button key={module} disabled={!game.modules[module]} aria-describedby="module-unavailable">
             <strong>{t(`games.modules.${module}`)}</strong>
             <span>{t('games.pending')}</span>
           </button>)}

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import type { ActiveTab } from '../storage/active-tab'
 
 const PRIMARY_TABS: readonly ActiveTab[] = ['captures', 'catalog', 'collection', 'evolutions']
-const TOOL_TABS: readonly ActiveTab[] = ['daycare', 'analysis', 'types', 'battle', 'development']
+const TOOL_TABS: readonly ActiveTab[] = ['daycare', 'analysis', 'types', 'mega', 'battle', 'development']
 const TAB_PATHS: Record<ActiveTab, string> = {
   captures: 'M12 22s8-5 8-12a8 8 0 1 0-16 0c0 7 8 12 8 12ZM9 10a3 3 0 1 0 6 0 3 3 0 1 0-6 0',
   catalog: 'M4 3h7v18H4V3Zm9 0h7v18h-7V3ZM7 7h1m8 0h1',
@@ -15,6 +15,7 @@ const TAB_PATHS: Record<ActiveTab, string> = {
   types: 'M4 4h16v16H4V4Zm0 5h16M9 4v16m6-16v16M4 15h16',
   evolutions: 'M4 18h5V6h11m-5-4 5 4-5 4M9 12h8m-4-4 4 4-4 4',
   battle: 'm4 3 16 16m-5 1 5-5M4 21 20 3M3 16l5 5',
+  mega: 'M12 2 3 9l9 13 9-13-9-7ZM3 9h18M8 9l4 13 4-13M8 9l4-7 4 7',
   development: 'm8 5-6 7 6 7m8-14 6 7-6 7m-3-17-2 20',
 }
 
@@ -40,12 +41,12 @@ export function WorkspaceTabs({ active, onChange, collectionCount, live = false,
     return () => observer.disconnect()
   }, [])
   const primary = PRIMARY_TABS.filter(tab => tab !== 'evolutions' || available.evolutions)
-  const candidates = TOOL_TABS.filter(tab => (tab !== 'battle' || live) && (tab !== 'development' || available.development))
+  const candidates = TOOL_TABS.filter(tab => (tab !== 'battle' || live) && (tab !== 'development' || available.development) && (tab !== 'mega' || available.mega))
   const promoted = promotedToolCount(width, primary.length, candidates.length)
   const visible = [...primary, ...candidates.slice(0, promoted)]
   const secondary = candidates.slice(promoted)
   const toolActive = secondary.includes(active)
-  const label = (tab: ActiveTab) => t(tab === 'evolutions' ? 'evolutionRequirements.title' : `app.tabs.${tab}`)
+  const label = (tab: ActiveTab) => t(tab === 'evolutions' ? 'evolutionRequirements.title' : tab === 'mega' ? 'megaEvolutions.title' : `app.tabs.${tab}`)
   function select(tab: ActiveTab) {
     if (tools.current) {
       tools.current.open = false

@@ -1,11 +1,14 @@
 /* Zone identity, quick filters and encounters share the theme's color tokens. */
 .encounter-atlas {
+  overflow-anchor: none;
   --atlas-card-min: 260px;
   --atlas-card-surface: var(--surface-raised, #1d2631);
   --atlas-method-surface: color-mix(in srgb, var(--surface-inset, #111923) 35%, var(--atlas-card-surface));
   --atlas-caught-text: var(--success-text, #a4dfbd);
   --atlas-caught-border: color-mix(in srgb, var(--success-text, #a4dfbd) 70%, var(--border, #34404e));
 }
+/* Keep enough scroll space while a shorter view or its loader replaces results. */
+.atlas-content-body { min-height: 100svh; }
 .atlas-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
 .atlas-header h2 { margin: 4px 0 0; font-size: clamp(23px, 3vw, 30px); }
 .atlas-follow-state { font-size: 11px; padding: 6px 9px; border: 1px solid var(--border, #35404e); border-radius: 20px; color: var(--text-muted, #aab6c5); }

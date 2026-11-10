@@ -1,3 +1,4 @@
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -44,7 +45,7 @@ function KnowledgeContent({ service, pokemon, view, locale, individual }: { indi
   }, [service, pokemon, view, locale, attempt, individual?.pokemon.baseStats])
 
   if (error) return <p className="notice" role="alert">{t('speciesKnowledge.loadError')} <button onClick={() => { setError(false); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>
-  if (!result) return <p className="empty" role="status">{t('speciesKnowledge.loading')}</p>
+  if (!result) return <LoadingIndicator>{t('speciesKnowledge.loading')}</LoadingIndicator>
   if (result.kind === 'stats' && individual) return <IndividualStats individual={individual} base={result.value} />
   if (result.kind === 'stats') return <>
     <div className="knowledge-stats-summary"><strong>{t('statistics.total')}: {totalBaseStats(result.value)}</strong><p className="hint">{t('statistics.strengthsHeading')}: {highestBaseStats(result.value).map(stat => statLabel(t, stat)).join(' · ')}</p></div>

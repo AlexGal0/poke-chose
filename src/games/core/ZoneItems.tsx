@@ -1,3 +1,4 @@
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { categoryLabel } from '../../i18n/moves'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -87,7 +88,7 @@ export function ZoneItems({ service, zoneId, zoneName }: { service: ZoneItemsSer
     <details className="zone-items-guide"><summary>{t('captureRedesign.itemHelp')}</summary><p className="hint">{t('zoneItems.hint')}</p><p className="hint">{t('zoneItems.manualHint')}</p></details>
     <div className="zone-item-filters"><label>{t('zoneItems.search')}<input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder={t('zoneItems.searchPlaceholder')} /></label><label>{t('zoneItems.category')}<select value={category} onChange={event => setCategory(event.target.value as ZoneItemCategory | 'all')}><option value="all">{t('zoneItems.allCategories')}</option>{ZONE_ITEM_CATEGORIES.map(value => <option value={value} key={value}>{t(`zoneItems.categories.${value}`)}</option>)}</select></label><label>{t('zoneItems.progress')}<select value={progress} onChange={event => setProgress(event.target.value as typeof progress)}><option value="all">{t('zoneItems.allProgress')}</option><option value="marked">{t('zoneItems.marked')}</option><option value="unmarked">{t('zoneItems.unmarked')}</option></select></label></div>
     {saveFailed && <p role="status" className="notice">{t('zoneItems.saveFailed')}</p>}
-    {!current && <p role="status">{t('zoneItems.loading')}</p>}
+    {!current && <LoadingIndicator>{t('zoneItems.loading')}</LoadingIndicator>}
     {current?.error && <p role="alert">{t('zoneItems.error')} <button onClick={() => { setResult(null); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>}
     {data && <>
       {data.coverage === 'unrecorded' && <p role="status" className="notice">{t('zoneItems.unrecorded')}</p>}

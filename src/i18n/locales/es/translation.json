@@ -42,7 +42,7 @@
     "routes": "Vías de obtención",
     "guide": "Acerca del catálogo y la búsqueda",
     "page": "Página {{page}} de {{pages}}"
-},
+  },
   "captureRedesign": {
     "followPaused": "Seguimiento en pausa",
     "moreData": "Más datos",
@@ -68,7 +68,6 @@
   "workspaceShell": {
     "tools": "Herramientas",
     "mainSections": "Secciones principales",
-
     "compactTeam": "Vista compacta",
     "expandTeam": "Ampliar fichas",
     "connectionDetails": "Controles",
@@ -1888,5 +1887,41 @@
     "price": "Precio",
     "otherShop": "Tienda",
     "shopSource": "Ver fuente de las tiendas"
+  },
+  "megaEvolutions": {
+    "title": "Megapiedras",
+    "eyebrow": "El poder de tu colección",
+    "intro": "Tus piedras y los Pokémon que pueden usarlas.",
+    "hint": "Pulsa la piedra al pie de cada marco para descubrir la megaevolución y comparar sus estadísticas base. Necesitas la piedra y el Pokémon en tu colección actual.",
+    "stones": "piedras distintas",
+    "filter": "Mostrar",
+    "ownedStones": "Mis megapiedras",
+    "allStones": "Todas las compatibles",
+    "loading": "Consultando megapiedras y formas…",
+    "error": "No se pudieron cargar las megaevoluciones.",
+    "empty": "No tienes megapiedras en la bolsa ni equipadas en la lectura actual.",
+    "inventoryUnknown": "No hay una lectura de inventario disponible. Selecciona una fuente de guardado o en vivo para consultar tus megapiedras.",
+    "collectionUnknown": "La colección aún no está disponible. No se puede confirmar qué Pokémon tienes.",
+    "stale": "El inventario está desactualizado. Las vistas mega se desbloquearán con una lectura actual.",
+    "collectionStale": "La colección está desactualizada o incompleta. Esperando una lectura actual para confirmar tus Pokémon.",
+    "pokemonUnknown": "Pokémon sin confirmar",
+    "pokemonMissing": "Te falta este Pokémon",
+    "stoneUnknown": "Piedra sin confirmar",
+    "stoneMissing": "Te falta esta piedra",
+    "unconfirmed": "Esperando una lectura actual",
+    "ready": "Piedra y Pokémon disponibles",
+    "hidden": "Pokémon oculto: no disponible en tu colección",
+    "open": "Ver la megaevolución de {{name}} con {{stone}}",
+    "quantities": "En bolsa: {{bag}} · Equipadas: {{held}}",
+    "megaName": "Mega-{{name}}{{variant}}",
+    "close": "Cerrar comparación de megaevolución",
+    "stats": "Antes y después",
+    "statsHint": "Estadísticas base de la especie para este juego. No incluyen nivel, IV, EV, naturaleza, habilidades ni efectos del combate.",
+    "comparison": "Comparación de estadísticas base de {{name}} y su megaevolución",
+    "stat": "Estadística",
+    "base": "Normal",
+    "mega": "Mega",
+    "change": "Cambio",
+    "total": "Total"
   }
 }
