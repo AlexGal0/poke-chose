@@ -2,6 +2,8 @@
 
 # PokéChose
 
+X e Y incluyen **Capturas por zona → Objetos**, con categorías, regalos, compras, detalles de MT/MO y marcas manuales de obtenido. El contrato prepara la futura búsqueda de objeto a ubicaciones. Consulta [alcance, fuentes y validación](docs/es/zone-items.md); la cobertura puede tener omisiones y algunas notas conservan el inglés original.
+
 Las novedades de cajas, métodos de obtención, filtros persistentes, reconexión y combates de entrenadores en X están documentadas en el [registro del 26 de octubre](docs/es/changes-2026-10-26.md), con su validación y límites pendientes.
 
 Organiza tu colección, prepara un equipo de hasta seis Pokémon y consulta sus fortalezas y debilidades mientras juegas **Pokémon Negro o Pokémon X**. PokéChose funciona en el navegador y ofrece fuentes manuales, de guardado y de memoria de solo lectura, según el juego.
@@ -271,3 +273,6 @@ Datos y sprites de [PokéAPI](https://pokeapi.co/docs/v2). Enlaces y referencias
 PokéChose es un proyecto independiente de apoyo a la partida. Pokémon y sus elementos pertenecen a sus respectivos titulares.
 
 La preparación del PR integra master actual, incluidos los puertos web fijos 15300/15400. Los lectores save/live de X usan ahora 15304/15305; reinicia los servicios locales tras actualizar. La integración completa pasa 404 pruebas, lint y build. La comprobación de navegador cubre ambos espacios manuales, evoluciones pendientes/álbum de Negro y detalles de conexión de X; el registro de cambios conserva la evidencia real previa de Citra.
+
+
+El rediseño compartido mejora el uso junto al emulador, catálogo/colección, fichas, análisis de tipos y combate sin eliminar funciones. X/Y incorporan exclusivos confirmados sin ayuda externa y el filtro «Solo exclusivos». Consulta el [cierre, validación y mejoras aceptadas](docs/es/visual-refresh-closeout.md) y las [reglas de disponibilidad](docs/es/acquisition-availability.md).

@@ -1,4 +1,5 @@
-import { localBreedingOnly } from '../core/acquisition.ts'
+import { localBreedingOnly, summaryAcquisitionRoutes } from '../core/acquisition.ts'
+import { xyAvailability, xyExclusiveFossils, xyExclusiveSpecies } from './availability.ts'
 import type { AcquisitionDetails, AcquisitionRoute, AcquisitionService, AcquisitionText, AcquisitionZone } from '../core/acquisition.ts'
 import type { EncounterAtlasData, NamedEncounterResource } from '../core/encounters.ts'
 import type { KnowledgeService } from '../core/knowledge.ts'
@@ -34,7 +35,7 @@ function familyNode(root: KnowledgeNode, id: number, parent: KnowledgeNode | nul
   return null
 }
 
-export function createXYAcquisitionService(gameId: 'x' | 'y', data: EncounterAtlasData, knowledge: KnowledgeService, loadMetadata = (id: number, signal?: AbortSignal) => metadata(gameId, id, signal)): AcquisitionService {
+export function createXYAcquisitionService(gameId: 'x' | 'y', data: EncounterAtlasData, knowledge: KnowledgeService, loadMetadata = (id: number, signal?: AbortSignal) => metadata(gameId, id, signal), counterpart: EncounterAtlasData): AcquisitionService {
   const prefix = `${gameId}Acquisition`
   const route = (kind: string): AcquisitionRoute => ({ kind, icon: icons[kind], label: key(`${prefix}.routes.${kind}`) })
   function validate(id: number, signal?: AbortSignal) {
@@ -50,31 +51,43 @@ export function createXYAcquisitionService(gameId: 'x' | 'y', data: EncounterAtl
     signal?.throwIfAborted()
     const found = familyNode(family.root, id)
     const kinds = new Set<string>()
-    for (const { row } of occurrences(id)) for (const detail of row.details) {
-      if (detail.method === 'gift') kinds.add(detail.instructionsKey === 'encounterAtlas.specialNotes.fossil' ? 'fossil' : 'gift')
-      else if (detail.method === 'gift-egg') kinds.add('egg')
-      else if (detail.method === 'static') kinds.add('static')
-      else if (detail.method === 'npc-trade') kinds.add('npc-trade')
-      else if (isKnownEncounterMethod(detail.method)) kinds.add('capture')
-      else kinds.add('unknown')
+    const accesses = new Map<string, 'independent' | 'external' | 'unknown'>()
+    const availability = xyAvailability(gameId, id, data, counterpart, family.root)
+    for (const { zone, row } of occurrences(id)) for (const detail of row.details) {
+      const kind = detail.method === 'gift' ? detail.instructionsKey === 'encounterAtlas.specialNotes.fossil' ? 'fossil' : 'gift'
+        : detail.method === 'gift-egg' ? 'egg'
+          : ['static', 'npc-trade'].includes(detail.method) ? detail.method
+            : isKnownEncounterMethod(detail.method) ? 'capture' : 'unknown'
+      kinds.add(kind)
+      const access = zone.name === 'friend-safari' ? 'external' : availability.independent === 'obtainable' && kind !== 'unknown' ? 'independent' : 'unknown'
+      if (accesses.get(kind) !== 'independent') accesses.set(kind, access)
     }
+    if (xyExclusiveFossils.has(id) && availability.independent === 'obtainable') { kinds.add('fossil'); accesses.set('fossil', 'independent') }
     for (const method of found?.node.methods ?? []) kinds.add(method.trigger.name === 'trade' ? 'trade-evolution' : 'evolution')
     if (family.root.id === id && ((species.is_baby === true && family.root.children.length > 0) || (species.egg_groups.length > 0 && !species.egg_groups.some(group => ['no-eggs', 'ditto'].includes(group.name))))) kinds.add('breed')
     if (!['capture', 'static', 'gift', 'egg', 'fossil', 'npc-trade'].some(kind => kinds.has(kind))) kinds.add('unknown')
-    return { family, found, routes: [...kinds].map(route) }
+    return { family, found, availability, routes: [...kinds].map(kind => ({ ...route(kind), access: accesses.get(kind) ?? (kind === 'trade-evolution' ? 'trade' as const : ['evolution', 'breed'].includes(kind) && availability.independent === 'obtainable' ? 'independent' as const : 'unknown' as const) })) }
   }
   return {
     id: gameId, gameName: `POKÉMON ${gameId.toUpperCase()}`,
+    exclusiveSpeciesIds: xyExclusiveSpecies[gameId],
+    async availability(id, signal) { validate(id, signal); return xyAvailability(gameId, id, data, counterpart) },
     labels: { group: key(`${prefix}.group`), open: key(`${prefix}.open`), hint: key(`${prefix}.hint`), loading: key(`${prefix}.loading`), noEncounters: key(`${prefix}.noEncounters`) },
     instructions(id) {
       validate(id)
       const keys = [...new Set(occurrences(id).flatMap(({ row }) => row.details.flatMap(detail => detail.instructionsKey ? [detail.instructionsKey] : [])))]
+      if (xyExclusiveFossils.has(id) && xyAvailability(gameId, id, data, counterpart).independent === 'obtainable') {
+        return [...keys.map(label => ({ label: key(label), source: 'https://pokeapi.co/docs/v2#encounters-section' })), { label: key('acquisitionAvailability.fossilHint'), source: 'https://www.serebii.net/pokearth/kalos/glitteringcave.shtml' }]
+      }
       return keys.map(label => ({ label: key(label), source: data.extraSources?.find(source => source.label.includes('Gift'))?.url ?? 'https://pokeapi.co/docs/v2#encounters-section' }))
     },
-    async breedingOnly(id, signal) { return localBreedingOnly((await load(id, 'en', signal)).routes.map(route => route.kind)) },
-    async routes(id, signal) { return (await load(id, 'en', signal)).routes },
+    async breedingOnly(id, signal) { return localBreedingOnly(summaryAcquisitionRoutes((await load(id, 'en', signal)).routes).map(route => route.kind)) },
+    async routes(id, signal) {
+      const summary = summaryAcquisitionRoutes((await load(id, 'en', signal)).routes)
+      return summary.length ? summary : [route('unknown')]
+    },
     async details(id, locale, signal): Promise<AcquisitionDetails> {
-      const { family, found, routes } = await load(id, locale, signal)
+      const { family, found, routes, availability } = await load(id, locale, signal)
       const zones: AcquisitionZone[] = []
       const trades: AcquisitionDetails['trades'][number][] = []
       for (const zone of data.locations) {
@@ -110,11 +123,11 @@ export function createXYAcquisitionService(gameId: 'x' | 'y', data: EncounterAtl
             : area.name.startsWith('friend-safari-') ? key(`types.${area.name.slice('friend-safari-'.length)}`)
             : unknownArea ? key('encounterAtlas.unconfirmedArea', { number: unknownArea[1] })
             : key(`encounterAtlas.areas.${area.name}`, { defaultValue: area.names[locale as 'es' | 'en'] ?? area.names.en ?? area.name })
-          areas.push({ id: area.name, ...(zone.areas.length > 1 || area.name.endsWith('-trades') ? { label } : {}), methods: [...new Set([...groups.values()].map(group => group.method))].map(method => ({ id: method, icon: encounterMethodIcon(method), label: isKnownEncounterMethod(method) ? key(`encounterMethods.list.${method}.label`) : key('encounterMethods.unknownLabel', { method }), encounters: [...groups.values()].filter(group => group.method === method).map(({ minLevel, maxLevel, chance, conditions }) => ({ minLevel, maxLevel, chance, conditions })) })) })
+          areas.push({ id: area.name, ...(zone.areas.length > 1 || area.name.endsWith('-trades') ? { label } : {}), methods: [...new Set([...groups.values()].map(group => group.method))].map(method => ({ id: method, access: zone.name === 'friend-safari' ? 'external' : availability.independent === 'obtainable' ? 'independent' : 'unknown', icon: encounterMethodIcon(method), label: isKnownEncounterMethod(method) ? key(`encounterMethods.list.${method}.label`) : key('encounterMethods.unknownLabel', { method }), encounters: [...groups.values()].filter(group => group.method === method).map(({ minLevel, maxLevel, chance, conditions }) => ({ minLevel, maxLevel, chance, conditions })) })) })
         }
         if (areas.length) zones.push({ id: String(zone.id), label: resourceLabel(zone, locale), areas })
       }
-      return { routes, zones, trades, evolution: found?.parent ? { from: found.parent.name, methods: found.node.methods.map(method => knowledgeEvolutionFacts(method, id, family.labels).map(fact => key(`speciesKnowledge.conditions.${fact.id}`, fact.params))) } : null }
+      return { availability, routes, zones, trades, evolution: found?.parent ? { from: found.parent.name, methods: found.node.methods.map(method => knowledgeEvolutionFacts(method, id, family.labels).map(fact => key(`speciesKnowledge.conditions.${fact.id}`, fact.params))) } : null }
     },
   }
 }

@@ -1,4 +1,83 @@
 {
+  "acquisitionAvailability": {
+    "onlyExclusive": "Exclusives only",
+    "exclusive": "Exclusive to {{game}}",
+    "exclusiveHint": "Obtainable without external help in {{game}}, but not in {{counterpart}}.",
+    "fossilHint": "After entering the Hall of Fame, find the fossil with Rock Smash in Glittering Cave and revive it at the Ambrette Town laboratory. Availability depends on the edition."
+  },
+  "typeChartRefresh": {
+    "filter": "Filter columns by defending type",
+    "all": "All types",
+    "showing": "{{count}} of {{total}} columns · All attacking types",
+    "help": "Select a matchup to pin it. Use arrow keys to explore the table and Enter to pin; Escape clears the selection.",
+    "clear": "Clear selection"
+  },
+  "balanceRefresh": {
+    "members": "Analyzed team",
+    "membersNote": "Individuals included in this reading",
+    "sharedNote": "Types with two or more weak members",
+    "gaps": "{{count}} types without coverage",
+    "sections": "Type balance sections",
+    "risks": "Where to be careful",
+    "riskHint": "Choose a type to see who is weak and who can resist it.",
+    "weakMembers": "Members weak against this type",
+    "inspect": "Inspect an attacking type",
+    "onlyGaps": "Show only types without coverage",
+    "noGaps": "Your team has potential STAB coverage against every type.",
+    "defensiveHelp": "Resists shared weaknesses",
+    "offensiveHelp": "Adds coverage against"
+  },
+  "pendingStyle": {
+    "intro": "Item and trade evolutions still missing from your Pokédex.",
+    "needed": "Needed",
+    "bag": "In bag",
+    "held": "Held",
+    "stockUnknown": "Item quantity unconfirmed",
+    "stockStale": "Item in last reading: {{count}} · Unconfirmed",
+    "stockAvailable": "Item in inventory: {{count}}",
+    "stockMissing": "Item still needed"
+  },
+  "catalogRedesign": {
+    "obtain": "How to obtain",
+    "routes": "Acquisition routes",
+    "guide": "About the catalog and search",
+    "page": "Page {{page}} of {{pages}}"
+},
+  "captureRedesign": {
+    "followPaused": "Location tracking paused",
+    "moreData": "More details",
+    "following": "Following location",
+    "browsing": "Manual browsing",
+    "accessible": "accessible",
+    "pending": "pending",
+    "caught": "caught",
+    "hiddenAccess": "need access",
+    "accessAndHelp": "Access and help",
+    "hiddenCount": "{{count}} hidden by access",
+    "results_one": "{{count}} species in the results",
+    "results_other": "{{count}} species in the results",
+    "clearFilters": "Clear filters",
+    "noAccess": "Disabled access options hide the encounters in this area. Review Surf, fishing rods or other options.",
+    "reviewAccess": "Review access",
+    "routes": "Methods, levels and chances",
+    "levelUnknown": "Level unconfirmed",
+    "reference": "Pokédex and sources",
+    "itemHelp": "Manual marks and guide",
+    "moveDetails": "Move · {{move}}"
+  },
+  "workspaceShell": {
+    "tools": "Tools",
+    "mainSections": "Main sections",
+
+    "compactTeam": "Compact view",
+    "expandTeam": "Expand cards",
+    "connectionDetails": "Controls",
+    "sources": {
+      "manual": "Manual",
+      "save": "Save file",
+      "live": "Live"
+    }
+  },
   "battleHeldItem": {
     "equipped": "Held item: {{name}}",
     "unavailable": "Held item; name unavailable"
@@ -1742,5 +1821,72 @@
     "manual": "Source: manual",
     "hint": "Collection and preferences are separate from X. Save and Live sources require a compatible Pokémon Y save and profile.",
     "atlasHint": "Public Pokémon Y atlas. Without a Pokédex reading, historical catches and progress are unknown. Manually added Pokémon only represent your manual collection."
+  },
+  "zoneItems": {
+    "viewLabel": "Zone content",
+    "pokemonView": "Pokémon",
+    "itemsView": "Items",
+    "eyebrow": "Explore every corner",
+    "title": "Items · {{zone}}",
+    "count": "{{count}} items",
+    "hint": "Items located in this area and how to obtain them, including gifts and character rewards. Check the stated requirements before searching.",
+    "manualHint": "Tick each card when you obtain it. Marks are saved per adventure and do not sync with your save.",
+    "search": "Find an item or move",
+    "searchPlaceholder": "Stone, TM, Surf…",
+    "category": "Category",
+    "allCategories": "All categories",
+    "progress": "Manual marks",
+    "allProgress": "All locations",
+    "marked": "Marked as obtained",
+    "unmarked": "Unmarked",
+    "saveFailed": "Your marks could not be saved. They remain available for this session.",
+    "loading": "Loading items in this area…",
+    "error": "Items in this area could not be loaded.",
+    "unrecorded": "The current source has no documented item table for this area. This does not prove there are no items here.",
+    "noMatches": "No items match these filters.",
+    "noRecordedItems": "The source records no obtaining locations in this area.",
+    "instructionsUnknown": "The source does not specify how to obtain this item.",
+    "markObtained": "Obtained · manual mark",
+    "source": "View source",
+    "sourceLanguage": "Note available in {{language}}",
+    "pp": "Base PP",
+    "variableValue": "Variable or unspecified value",
+    "tm": "TM{{number}}",
+    "hm": "HM{{number}}",
+    "coverageHint": "Public guide retrieved on {{date}}. It may contain omissions; source links are retained and this is not your game progress. Purchases may depend on game progress.",
+    "categories": {
+      "evolution": "Evolution items",
+      "machine": "TMs and HMs",
+      "key": "Key items",
+      "held": "Held items and Mega Stones",
+      "medicine": "Medicine and enhancements",
+      "ball": "Poké Balls",
+      "berry": "Berries",
+      "treasure": "Treasures and materials",
+      "other": "Other items"
+    },
+    "methods": {
+      "pickup": "Pick up in the area",
+      "hidden": "Hidden item",
+      "gift": "Character gift",
+      "reward": "Reward",
+      "exchange": "Item exchange",
+      "purchase": "Purchase",
+      "harvest": "Tree or field resource",
+      "unknown": "Unclassified method"
+    },
+    "markObtainedAria": "Mark obtained: {{item}} · {{place}}",
+    "count_one": "{{count}} item",
+    "count_other": "{{count}} items",
+    "moveGeneration": "Generation {{number}} move",
+    "sourceFor": "View source for {{item}} · {{place}}",
+    "requirementsSource": "View requirements source for {{item}}",
+    "obtained": "Obtained",
+    "shops": "Shops",
+    "shopHint": "Stock may depend on badges or story progress.",
+    "shopItem": "Item",
+    "price": "Price",
+    "otherShop": "Shop",
+    "shopSource": "View shop sources"
   }
 }

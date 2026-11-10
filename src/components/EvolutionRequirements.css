@@ -22,6 +22,7 @@
 .requirements-overview > div { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 5px 14px; border: 1px solid var(--border, #35404e); border-radius: 14px; padding: 20px; background: var(--surface-inset, #10151c); }
 .requirements-overview > div > span:first-child { grid-row: span 2; color: var(--accent, #83dcb8); background: var(--accent-surface, #183c31); border-radius: 12px; width: 44px; height: 44px; display: grid; place-items: center; font-size: 25px; }
 .requirements-overview strong { font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.requirements-overview > div > span:first-child svg { display: block; width: 24px; height: 24px; }
 .requirements-overview > div > span:last-child { color: var(--text-muted, #a5b5c7); font-size: 12px; line-height: 1.4; }
 .requirements-planning { border-bottom: 1px solid var(--border, #35404e); padding: 6px 0 18px; }
 .requirements-planning summary { cursor: pointer; color: var(--accent-text, #83dcb8); font-size: 13px; padding: 6px 0; }
@@ -70,3 +71,31 @@
 .requirement-item-wiki { position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 6px; color: var(--text-muted, #a5b5c7); text-decoration: none; }
 .requirement-item-wiki:hover { background: var(--surface-raised, #25303b); border-color: var(--accent, #83dcb8); }
 .requirement-item-wiki:focus-visible { outline: 2px solid var(--accent, #83dcb8); outline-offset: 3px; }
+/* Evolution planning keeps its portraits and motifs, with inventory as a distinct signal. */
+.evolution-requirements { --requirements-warm: var(--warning-text, #e8c480); --requirements-warm-border: var(--warning-border, #9d8047); }
+.requirements-routes { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+.evolution-requirements-group ul { align-items: stretch; }
+.evolution-requirements-group li { max-width: 440px; gap: 0; border-color: color-mix(in srgb, var(--accent-border, #416854) 55%, var(--border, #35404e)); background: radial-gradient(ellipse at top left, var(--accent-surface, #183c31), transparent 80%), var(--surface-inset, #10151c); }
+.evolution-requirement-heading { min-height: 18px; }
+.requirement-route-label { font-size: 10px; letter-spacing: .02em; }
+.requirement-route { padding: 24px 0; }
+.requirement-route strong { font-size: 16px; }
+.evolution-requirements-group .requirement-method { line-height: 1.65; }
+.evolution-item-summary article { gap: 14px; border-color: var(--border, #35404e); border-left-color: var(--border-strong, #465468); border-radius: 12px; }
+.evolution-item-summary .item-sufficient { border-color: var(--border, #35404e); border-left-color: var(--success-text, #85d9ba); }
+.evolution-item-summary .item-missing { border-color: var(--border, #35404e); border-left-color: var(--requirements-warm-border); }
+.evolution-item-summary .item-missing > strong { color: var(--requirements-warm); }
+.evolution-item-summary article > strong { margin-top: auto; line-height: 1.5; }
+.requirement-quantities { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; padding-block: 12px; border-block: 1px solid var(--border, #35404e); }
+.requirement-quantities dt { color: var(--text-muted, #a5b5c7); font-size: 10px; }
+.requirement-quantities dd { margin: 7px 0 0; font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.evolution-requirements-group p.requirement-stock { align-self: flex-start; margin: 0 0 16px; padding: 6px 9px; border: 1px solid var(--border, #35404e); border-radius: 6px; font-size: 11px; line-height: 1.5; }
+.requirement-stock.stock-sufficient { color: var(--success-text, #85d9ba); background: var(--success-surface, #18332b); }
+.requirement-stock.stock-missing { color: var(--requirements-warm); background: var(--warning-surface, #332b19); }
+.requirement-stock.stock-unknown { color: var(--text-muted, #a5b5c7); background: var(--surface-raised, #25303b); }
+.requirement-open { min-height: 40px; background: transparent; }
+.requirement-open:hover { background: var(--accent-surface, #183c31); }
+@media (max-width: 640px) {
+  .requirements-routes { gap: 20px; }
+  .evolution-requirements-group li { padding: 16px; }
+}

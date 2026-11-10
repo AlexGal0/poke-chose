@@ -19,7 +19,6 @@ export function YSourceSettings({ source, onChange, snapshot, live }: { source: 
         </div>
         <button disabled={live.busy} onClick={() => { void live.control(live.snapshot.enabled ? 'disconnect' : 'connect') }}>{t(live.snapshot.enabled ? 'sources.yLive.disconnect' : 'sources.yLive.connect')}</button>
         {live.error && <p role="alert">{t('sources.yLive.controlError')}</p>}
-        <p className="hint">{t('sources.yLive.hint')}</p>
       </>}
       {source === 'save' && <>
         <div className={snapshot.status === 'ready' ? 'sync-status' : 'sync-error'} role="status"><strong>{t('connectionIndicator.sourceStatus', { source: 'Citra', status: t(snapshot.status === 'ready' ? 'connectionIndicator.connected' : 'connectionIndicator.noActiveReading') })}</strong>
@@ -32,10 +31,9 @@ export function YSourceSettings({ source, onChange, snapshot, live }: { source: 
 }
 
 export function YCollectionSettings({ live }: { live: ReturnType<typeof useLivePartySource> }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   return <div className="save-sync">
-    <p role="status" className={live.snapshot.boxesStatus === 'error' ? 'notice' : 'hint'}>{t(`sources.yLive.boxStatus.${live.snapshot.boxesStatus}`)}</p>
-    {live.snapshot.boxesUpdatedAt && <p className="hint">{t('sources.yLive.boxesLastReading', { time: new Date(live.snapshot.boxesUpdatedAt).toLocaleTimeString(i18n.language) })}</p>}
+    {live.snapshot.boxesStatus !== 'ready' && <p role="status" className={live.snapshot.boxesStatus === 'error' ? 'notice' : 'hint'}>{t(`sources.yLive.boxStatus.${live.snapshot.boxesStatus}`)}</p>}
     <button disabled={live.busy || !live.snapshot.enabled || live.snapshot.boxesStatus === 'reading'} onClick={() => { void live.control('refresh') }}>{t('sources.yLive.refreshCollection')}</button>
   </div>
 }

@@ -55,8 +55,8 @@ function KnowledgeContent({ service, pokemon, view, locale, individual }: { indi
   </>
   if (result.kind === 'moves') return result.value.length ? <div className="table-scroll"><table className="moves-table">
     <caption className="sr-only">{t('speciesKnowledge.movesCaption', { name: pokemonDisplayName(pokemon.name), version })}</caption><thead><tr>{['level', 'move', 'type', 'category', 'pp', 'description'].map(key => <th scope="col" key={key}>{t(`movesDialog.table.${key}`)}</th>)}</tr></thead>
-    <tbody>{result.value.map(move => <tr key={`${move.slug}-${move.level}`}><td>{move.level === 0 ? t('movesDialog.initialLevel') : move.level}</td><th scope="row">{move.name}</th>
-      <td>{move.type ? <TypeBadge type={move.type} /> : t('movesDialog.typeUnconfirmed')}</td><td>{categoryLabel(t, move.categoryId)}</td><td>{move.pp}</td><td>{moveDescription(t, move)}</td></tr>)}</tbody>
+    <tbody>{result.value.map(move => <tr key={`${move.slug}-${move.level}`}><td data-label={t('movesDialog.table.level')}>{move.level === 0 ? t('movesDialog.initialLevel') : move.level}</td><th scope="row" data-label={t('movesDialog.table.move')}>{move.name}</th>
+      <td data-label={t('movesDialog.table.type')}>{move.type ? <TypeBadge type={move.type} /> : t('movesDialog.typeUnconfirmed')}</td><td data-label={t('movesDialog.table.category')}>{categoryLabel(t, move.categoryId)}</td><td data-label={t('movesDialog.table.pp')}>{move.pp}</td><td className="move-description" data-label={t('movesDialog.table.description')}>{moveDescription(t, move)}</td></tr>)}</tbody>
   </table></div> : <p className="empty">{t('movesDialog.noMoves')}</p>
   return <>
     <div className="family-tree-scroll" tabIndex={0} role="region" aria-label={t('evolutionDialog.heading')}><ul className="family-tree"><EvolutionFamily node={result.value.root} selectedId={pokemon.id} labels={result.value.labels} pokemon={result.value.pokemon} /></ul></div>
@@ -90,15 +90,16 @@ function KnowledgeDialog({ service, pokemon, initialView, modules, onClose, indi
     const bounds = event.currentTarget.getBoundingClientRect()
     return event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom
   }
-  return <dialog ref={dialog} className="knowledge-dialog" aria-labelledby="knowledge-title" aria-describedby="knowledge-hint" onCancel={onClose}
+  return <dialog ref={dialog} className="knowledge-dialog" aria-labelledby="knowledge-title" aria-describedby={requestedIndividual && view === 'stats' ? undefined : 'knowledge-hint'} onCancel={onClose}
     onPointerDown={event => { outsideStart.current = outside(event) }} onClick={event => { if (outsideStart.current && outside(event)) onClose(); outsideStart.current = false }}>
-    <div className="knowledge-heading"><div><span className="eyebrow">{t('games.generation', { number: service.rules.generation })} · {version}</span><h2 id="knowledge-title">{individual?.pokemon.nickname || pokemonDisplayName(pokemon.name)}</h2>{individual?.pokemon.nickname && <p className="hint">{pokemonDisplayName(pokemon.name)}</p>}</div>
+    <div className="knowledge-chrome"><div className="knowledge-heading"><div><span className="eyebrow">{t('games.generation', { number: service.rules.generation })} · {version}</span><h2 id="knowledge-title">{individual?.pokemon.nickname || pokemonDisplayName(pokemon.name)}</h2>{individual?.pokemon.nickname && <p className="hint">{pokemonDisplayName(pokemon.name)}</p>}</div>
       <button autoFocus onClick={onClose} aria-label={t('speciesKnowledge.close')}>✕</button></div>
     <div className="knowledge-switch" role="group" aria-label={t('speciesKnowledge.views')}>
       {KNOWLEDGE_ACTIONS.filter(([, module]) => modules[module]).map(([kind]) => <button key={kind} aria-pressed={view === kind} onClick={() => setView(kind)}>{t(`speciesKnowledge.actions.${kind}`)}</button>)}
     </div>
+    </div>
     {pokemon.formLabelKey && <p className="hint">{t('statistics.form', { name: t(pokemon.formLabelKey) })}</p>}
-    <p className="hint" id="knowledge-hint">{t(requestedIndividual && (view === 'stats' || view === 'moves') ? `individualDetails.${view}Hint` : `speciesKnowledge.${view}Hint`, { number: service.rules.generation, version })}</p>
+    {!(requestedIndividual && view === 'stats') && <p className="hint" id="knowledge-hint">{t(requestedIndividual && (view === 'stats' || view === 'moves') ? `individualDetails.${view}Hint` : `speciesKnowledge.${view}Hint`, { number: service.rules.generation, version })}</p>}
     {requestedIndividual && (!individual || stale) && <p className="notice" role="status">{t(individual ? 'individualDetails.stale' : 'individualDetails.missing')}</p>}
     {requestedIndividual && view === 'moves' ? <IndividualMoveTabs key={i18n.language} individual={individual}><KnowledgeContent key={`moves-${i18n.language}`} service={service} pokemon={pokemon} view="moves" locale={i18n.language} /></IndividualMoveTabs>
       : requestedIndividual && view === 'stats' && !individual ? null : <KnowledgeContent key={`${view}-${i18n.language}`} service={service} pokemon={pokemon} view={view} locale={i18n.language} individual={individual} />}

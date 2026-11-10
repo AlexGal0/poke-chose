@@ -55,7 +55,7 @@ export function createXYEncounters(snapshot: EncounterAtlasData): EncounterAtlas
     ...snapshot,
     species: [...snapshot.species, ...specialSpecies.filter(species => !snapshot.species.some(existing => existing.id === species.id))].map(species => ({ ...species, genderDistribution: species.genderRate === undefined ? null : xGenderDistribution(species.genderRate) })),
     locations: groupedLocations.map(zone => ({ ...zone,
-      ...(zone.name === 'friend-safari' ? { noticeKey: 'encounterAtlas.safariHint' } : {}),
+      ...(zone.name === 'friend-safari' ? { noticeKey: 'encounterAtlas.safariHint', access: 'external' as const } : {}),
     })),
   }
 }
