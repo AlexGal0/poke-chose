@@ -20,7 +20,7 @@ import './BattlePokemon.css'
 
 export type BattlePokemonDensity = 'detailed' | 'semicompact' | 'compact'
 
-export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, health = null, stages = null, service, rules, density = 'detailed' }: { rules: TypeRules; density?: BattlePokemonDensity; service: CombatService; candidate: CombatParticipant; pokemon?: CombatSpecies | null; error?: boolean; own?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
+export function BattlePokemon({ candidate, pokemon = null, error = false, own = false, ally = false, health = null, stages = null, service, rules, density = 'detailed' }: { rules: TypeRules; density?: BattlePokemonDensity; service: CombatService; candidate: CombatParticipant; pokemon?: CombatSpecies | null; error?: boolean; own?: boolean; ally?: boolean; health?: BattleHealth | null; stages?: StatStages | null }) {
   const { t } = useTranslation()
   const { speciesId } = candidate
   const identity = `${candidate.identity}:${candidate.form}`
@@ -47,10 +47,10 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     return () => animation?.cancel()
   }, [hit, damageFraction, identity])
   const weaknesses = density === 'semicompact' && pokemon ? battleDefenses(rules, pokemon.types).weaknesses : null
-  const weaknessHeading = t(own ? 'battleTypeMatchup.ownWeaknessesHeading' : 'battleTypeMatchup.rivalWeaknessesHeading')
+  const weaknessHeading = t(ally ? 'battleField.allyWeaknesses' : own ? 'battleTypeMatchup.ownWeaknessesHeading' : 'battleTypeMatchup.rivalWeaknessesHeading')
   const level = candidate.level === null ? t('battleAdapter.levelUnavailable') : t('app.team.level', { level: candidate.level })
   const nickname = own ? candidate.nickname : null
-  if (density !== 'detailed') return <div aria-label={own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')} className={`battle-participant battle-density-${density} ${own ? 'own-participant' : 'enemy-participant'}`}>
+  if (density !== 'detailed') return <div aria-label={ally ? t('battleField.allyPokemon') : own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')} className={`battle-participant battle-density-${density} ${own ? 'own-participant' : 'enemy-participant'}`}>
     <div ref={cardRef} className={`battle-small-card ${shownHealth?.currentHp === 0 ? 'is-fainted' : ''}`}>
       <BattleHeldItem id={candidate.heldItemId} service={service} />
       <div className="battle-small-sprite">{pokemon && <BattleSprite pokemon={pokemon} fainted={shownHealth?.currentHp === 0} />}</div>
@@ -72,7 +72,7 @@ export function BattlePokemon({ candidate, pokemon = null, error = false, own = 
     </div>
   </div>
   return <div className={`battle-participant ${own ? 'own-participant' : 'enemy-participant'}`}>
-    <h3 className="battle-participant-title">{own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
+    <h3 className="battle-participant-title">{ally ? t('battleField.allyPokemon') : own ? t('enemyPrototype.ownTitle') : t('battlePokemon.enemyTitle')}</h3>
     <div className="enemy-prototype-card" ref={cardRef}>
       <BattleHeldItem id={candidate.heldItemId} service={service} />
       {pokemon ? <DiscoveryContext.Provider value={new Set([pokemon.id])}>

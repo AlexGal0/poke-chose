@@ -6,6 +6,12 @@ import { X_BATTLE_STATE_ADDRESS } from './memory-battle.ts'
 // Local executable profile only. The current command-layout routine is a
 // discriminant, not a roster count. Unknown routines remain unconfirmed.
 export const X_BATTLE_FORMAT_SELECTOR = 0x081fb238
+// Local XY story-partner dispatcher. Its initializer maps four owners to two
+// sides; it does not use the ordinary two-team command-layout handler.
+export const XY_PARTNER_BATTLE_HANDLER = {
+  selector: 0x006bb8ec,
+  instructions: [[0x006bba2c, 0xe3a02002], [0x006bba64, 0xe3a03003], [0x006bba84, 0xe5c027ee]] as const,
+}
 export const X_BATTLE_FORMAT_HANDLERS = {
   single: { selector: 0x006ba7a4, ownInstruction: 0x006baa0c, enemyInstruction: 0x006baa24 },
   double: { selector: 0x006ba4bc, ownInstruction: 0x006ba72c, enemyInstruction: 0x006ba744 },
@@ -16,6 +22,7 @@ export interface XBattleFormatReading {
   format: GeneralCombatFormat
   // Declared field capacity, including positions whose occupant has fainted.
   positions: readonly [number, number]
+  layout?: 'partner'
 }
 
 // Caller must check the session fingerprint, as for all other X memory readers.
@@ -30,6 +37,14 @@ export async function readXMemoryBattleFormat(reader: MemoryReader): Promise<XBa
   }
   const before = await header()
   if (before.flag !== 0x40001) return null
+  if (before.selector === XY_PARTNER_BATTLE_HANDLER.selector) {
+    for (const [address, instruction] of XY_PARTNER_BATTLE_HANDLER.instructions) {
+      if (await word(address) !== instruction) throw new Error('XY partner format instructions disagree')
+    }
+    const after = await header()
+    if (before.flag !== after.flag || before.selector !== after.selector) throw new Error('XY partner format changed during read')
+    return { format: 'double', positions: GENERAL_COMBAT_POSITIONS.double, layout: 'partner' }
+  }
   const format = (Object.keys(X_BATTLE_FORMAT_HANDLERS) as GeneralCombatFormat[]).find(format => X_BATTLE_FORMAT_HANDLERS[format].selector === before.selector)
   if (!format) return null
   const handler = X_BATTLE_FORMAT_HANDLERS[format]

@@ -19,7 +19,10 @@ try {
   console.log(JSON.stringify({ readOnly: true, edition: 'y', party: live.party.map(p => ({ speciesId: p.speciesId, level: p.level, hp: p.currentHp, maxHp: p.maxHp })),
     boxes: live.boxes?.length ?? null, seen: live.pokedex.seenSpeciesIds.length, caught: live.pokedex.caughtSpeciesIds.length,
     inventoryAvailable: live.inventory !== undefined, daycareAvailable: live.daycare != null, position: live.position,
-    battle: live.battle ? { active: live.battle.active, format: live.battle.field?.format, own: live.battle.own?.speciesId, enemy: live.battle.enemy?.speciesId } : null,
+    battle: live.battle ? { active: live.battle.active, format: live.battle.field?.format, own: live.battle.own?.speciesId, enemy: live.battle.enemy?.speciesId,
+      sides: live.battle.field?.sides.map(side => ({ side: side.id, owners: side.owners, total: side.rosterTotal,
+        positions: side.positions.map(position => position.state === 'occupied' ? { position: position.id, owner: position.pokemon.ownerId, speciesId: position.pokemon.speciesId, level: position.pokemon.level, health: position.pokemon.health } : { position: position.id, state: position.state }) })),
+    } : null,
     comparison: saved && savePokemon && path ? {
       sameParty: JSON.stringify(savePokemon.party) === JSON.stringify(live.party),
       sameBoxes: JSON.stringify(savePokemon.boxes) === JSON.stringify(live.boxes),

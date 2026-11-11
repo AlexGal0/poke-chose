@@ -47,6 +47,24 @@ test('allied owners have separate parties and share the player side', () => {
   assert.equal(validCombatField(reading), false)
 })
 
+test('shared double contract represents a player and ally against two owners without game-specific formats', () => {
+  const reading = field('double')
+  reading.sides[0].owners = [{ id: 'self', control: 'player' }, { id: 'partner', control: 'ally' }]
+  reading.sides[1].owners = [{ id: 'trainer-a', control: 'opponent' }, { id: 'trainer-b', control: 'opponent' }]
+  reading.sides[0].positions = [
+    { id: 'left', state: 'occupied', pokemon: pokemon('self-active', 'self', 0) },
+    { id: 'right', state: 'occupied', pokemon: pokemon('ally-active', 'partner', 0) },
+  ]
+  reading.sides[1].positions = [
+    { id: 'left', state: 'occupied', pokemon: pokemon('rival-a', 'trainer-a', 0) },
+    { id: 'right', state: 'occupied', pokemon: pokemon('rival-b', 'trainer-b', 0) },
+  ]
+  reading.sides[0].rosterTotal = { state: 'known', value: 9 }
+  reading.sides[1].rosterTotal = { state: 'known', value: 12 }
+  assert.equal(validCombatField(reading), true)
+  assert.deepEqual(reading.format, { state: 'known', value: { kind: 'general', id: 'double' } })
+})
+
 test('roster total includes reserves without disclosing species or imposing a six-member side limit', () => {
   const reading = field('double')
   reading.sides[1].rosterTotal = { state: 'known', value: 12 }

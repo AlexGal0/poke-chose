@@ -40,7 +40,7 @@ function ItemCard({ occurrence, marked, onToggle }: { occurrence: ZoneItemOccurr
   const markLabel = t('zoneItems.markObtainedAria', { item: item.name, place })
   return <li className={`zone-item-card${marked ? ' is-obtained' : ''}`}>
     <div className="zone-item-corner"><SourceLink href={occurrence.source} label={t('zoneItems.sourceFor', { item: item.name, place })} /><label className="zone-item-check" title={markLabel}><input type="checkbox" aria-label={markLabel} checked={marked} onChange={event => onToggle(occurrence.id, event.target.checked)} /></label></div>
-    <div className="zone-item-identity"><ItemIcon item={item} /><h5>{item.machine ? t(`zoneItems.${item.machine.kind}`, { number: String(item.machine.number).padStart(2, '0') }) : item.name}</h5></div>
+    <div className="zone-item-identity"><ItemIcon item={item} /><h5>{item.machine ? `${t(`zoneItems.${item.machine.kind}`, { number: String(item.machine.number).padStart(2, '0') })} · ${item.machine.move.name}` : item.name}</h5></div>
     {!item.machine && item.description && <p lang={item.descriptionLanguage ?? undefined}>{item.description}</p>}
     <div className="zone-item-location"><span className={`zone-item-method zone-item-method-${occurrence.method}`}>{t(`zoneItems.methods.${occurrence.method}`)}</span><p lang={occurrence.instructionsLanguage ?? undefined}>{place}</p>{occurrence.instructionsLanguage && <small>{t('zoneItems.sourceLanguage', { language: occurrence.instructionsLanguage.toUpperCase() })}</small>}
       {occurrence.requirements && <div className="zone-item-requirements"><p>{occurrence.requirements}</p>{occurrence.requirementSource && <SourceLink href={occurrence.requirementSource} label={t('zoneItems.requirementsSource', { item: item.name })} />}</div>}

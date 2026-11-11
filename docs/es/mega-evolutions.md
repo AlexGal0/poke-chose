@@ -47,3 +47,17 @@ Megaaro, progreso de historia, habilidades o disponibilidad de intercambio.
   móvil de 390 × 844 sin desbordamiento horizontal (clientWidth = scrollWidth).
 - X: acceso visible y datos desconocidos explícitos sin lectura disponible.
   Black: acceso ausente. Se restauraron Y, español y fuente En vivo.
+
+## Identidad durante el combate
+
+El equipo de memoria puede conservar la forma normal mientras su copia de
+combate ya está megaevolucionada. El lector XY admite esa transición solo tras
+confirmar la identidad PK6, las dos copias del campo y la megapiedra compatible
+equipada. Las formas arbitrarias o piedras incompatibles siguen sin confirmarse.
+La sesión compartida enlaza el participante activo con el equipo por identidad,
+propietario y especie, aunque cambie de forma; no hereda estadísticas de un
+ocupante de otra forma ante una lectura incompleta.
+
+Validación real en Y: Mega-Lucario 57, 146/165 PS, frente a Meowstic 44,
+120/128 PS. El aviso de lectura parcial desapareció y se mostraron la forma
+mega y las etapas actuales. El archivo de guardado no cambió durante la lectura.

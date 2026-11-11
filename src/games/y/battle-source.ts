@@ -17,7 +17,7 @@ export function normalizeYFieldBattle(reading: BattleReading | null | undefined,
   const own = reading.field.sides[0]
   const field = { ...reading.field, sides: [{ ...own, positions: own.positions.map(position => {
     if (position.state !== 'occupied') return position
-    const member = playerTeam?.find(p => p.identity === position.pokemon.identity && p.form === position.pokemon.form)
+    const member = playerTeam?.find(p => p.identity === position.pokemon.identity)
     return { ...position, pokemon: { ...position.pokemon, nickname: member?.nickname } }
   }) }, reading.field.sides[1]] as typeof reading.field.sides }
   return { ...common, activity: status === 'ready' && reading.active ? 'active' : 'unknown', field, playerTeam }

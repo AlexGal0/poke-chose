@@ -1,3 +1,4 @@
+import { xyBattleFormMatches } from '../xy/battle-forms.ts'
 import type { MemoryReader } from './memory-party.ts'
 import { readXMemoryMember, readXMemoryParty } from './memory-party.ts'
 import type { SavedPartyMember } from '../../models/party.ts'
@@ -7,6 +8,12 @@ import { readXMemoryBattleFormat, X_BATTLE_FORMAT_SELECTOR } from './memory-batt
 import { decodeXBattleStages, X_BATTLE_STATE_ADDRESS, X_BATTLE_STAGES_OFFSET, X_BATTLE_ENEMY_PARTY_PROFILES } from './memory-battle.ts'
 
 export const X_BATTLE_FIELD_TABLES = [[0x081fb284, 0x081fb624], [0x081fb2a0, 0x081fb640]] as const
+export const XY_PARTNER_FIELD_TABLES = [
+  { owner: 'player', side: 0, control: 'player', copies: [0x081fb284, 0x081fb624] },
+  { owner: 'opponent', side: 1, control: 'opponent', copies: [0x081fb2a0, 0x081fb640] },
+  { owner: 'ally', side: 0, control: 'ally', copies: [0x081fb2bc, 0x081fb65c] },
+  { owner: 'opponent-2', side: 1, control: 'opponent', copies: [0x081fb2d8, 0x081fb678] },
+] as const
 const identity = (pokemon: SavedPartyMember) => `${pokemon.speciesId}:${pokemon.personality}:${pokemon.trainerId}`
 
 // Only the fingerprinted local executable profile. Leading battle-order entries
@@ -60,7 +67,35 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
     if (before.flag !== 0x40001) throw new Error('Unconfirmed X field activity')
     const format = await readXMemoryBattleFormat(reader)
     const result = field(format ? { state: 'known', value: { kind: 'general', id: format.format } } : { state: 'unknown' })
-    if (format) {
+    if (format?.layout === 'partner') {
+      const tables = await Promise.all(XY_PARTNER_FIELD_TABLES.map(owner => Promise.all(owner.copies.map(table))))
+      result.sides.forEach(side => { side.owners = []; side.positions = []; side.rosterTotal = { state: 'known', value: 0 } })
+      for (const [index, owner] of XY_PARTNER_FIELD_TABLES.entries()) {
+        const copies = tables[index], side = result.sides[owner.side]
+        if (copies[0].count !== copies[1].count) throw new Error('XY partner roster counts disagree')
+        side.owners = [...side.owners, { id: owner.owner, control: owner.control }]
+        if (side.rosterTotal.state === 'known') side.rosterTotal.value += copies[0].count
+        const id = String(side.positions.length)
+        const [a, b] = await Promise.all(copies.map(copy => occupant(copy.pointers[0]).catch(() => null)))
+        let position: CombatPosition = { id, state: 'unknown' }
+        if (a && b && equal({ ...a, stages: null }, { ...b, stages: null })) {
+          const matches = party.filter(member => !member.isEgg && identity(member) === a.identity && xyBattleFormMatches(member, a))
+          if (owner.control === 'player' ? matches.length === 1 : matches.length === 0) {
+            position = { id, state: 'occupied', pokemon: { heldItemId: a.heldItemId, identity: a.identity, speciesId: a.speciesId, form: a.form, level: a.level, ownerId: owner.owner,
+              partySlot: owner.control === 'player' ? matches[0].slot : null,
+              health: { currentHp: a.currentHp, maxHp: a.maxHp }, stages: equal(a.stages, b.stages) ? a.stages : null } }
+          }
+        }
+        side.positions = [...side.positions, position]
+      }
+      for (const side of result.sides) {
+        const identities = side.positions.flatMap(position => position.state === 'occupied' ? [position.pokemon.identity] : [])
+        if (new Set(identities).size !== identities.length) throw new Error('Duplicate XY partner identities')
+      }
+      for (const [index, owner] of XY_PARTNER_FIELD_TABLES.entries()) for (const [copy, address] of owner.copies.entries()) {
+        if (!equal(Array.from(tables[index][copy].bytes), Array.from((await table(address)).bytes))) throw new Error('XY partner field table changed')
+      }
+    } else if (format) {
       const tables = await Promise.all(X_BATTLE_FIELD_TABLES.map(async copies => Promise.all(copies.map(table))))
       const enemies = await Promise.all(X_BATTLE_ENEMY_PARTY_PROFILES.map(profile => readXMemoryParty(reader, profile)))
       if (!equal(enemies[0], enemies[1])) throw new Error('X opposing rosters disagree')
@@ -76,7 +111,7 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
           const samples = await Promise.all(copies.map(copy => occupant(copy.pointers[index]).catch(() => null)))
           const [a, b] = samples
           if (!a || !b || !equal({ ...a, stages: null }, { ...b, stages: null })) { positions.push({ id, state: 'unknown' }); continue }
-          const matches = roster.filter(member => !member.isEgg && identity(member) === a.identity && member.form === a.form)
+          const matches = roster.filter(member => !member.isEgg && identity(member) === a.identity && xyBattleFormMatches(member, a))
           // Unmatched own identities may belong to an ally. Do not label them
           // as controlled player Pokémon until that ownership is researched.
           if (matches.length !== 1) { positions.push({ id, state: 'unknown' }); continue }
@@ -98,7 +133,7 @@ export async function readXMemoryBattleField(reader: MemoryReader, party: readon
       ...position.pokemon.health, statStages: position.pokemon.stages,
     } : null
     return { active: true, field: result, own: legacy(result.sides[0].positions[0]), enemy: legacy(result.sides[1].positions[0]),
-      opponentRosterTotal: result.sides[1].rosterTotal.state === 'known' ? result.sides[1].rosterTotal.value : null }
+      opponentRosterTotal: result.sides[1].rosterTotal.state === 'known' && result.sides[1].rosterTotal.value <= 6 ? result.sides[1].rosterTotal.value : null }
   }
   const first = await pass(), second = await pass()
   if (!equal(first, second)) throw new Error('X field changed between passes')

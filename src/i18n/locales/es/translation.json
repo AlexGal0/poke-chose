@@ -1794,7 +1794,11 @@
     "unknownPosition": "Pokémon por confirmar",
     "emptyPosition": "Puesto vacío",
     "unknownFormat": "Formato de combate por confirmar",
-    "unsupportedFormat": "Este formato aún no tiene una vista disponible"
+    "unsupportedFormat": "Este formato aún no tiene una vista disponible",
+    "partnerDouble": "Combate doble con aliado",
+    "ally": "Aliado",
+    "allyPokemon": "Pokémon del aliado",
+    "allyWeaknesses": "Debilidades del aliado"
   },
   "yAcquisition": {
     "group": "Formas de obtención en Pokémon Y",
