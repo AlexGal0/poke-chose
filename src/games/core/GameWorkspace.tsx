@@ -7,7 +7,7 @@ import { ExclusiveBadge } from '../../components/ExclusiveBadge'
 import type { ZoneItemsService } from './zone-items'
 import { catalogPageSize } from '../../components/catalog-pagination'
 import { matchesCatalogCapture } from '../../domain/catalog-capture'
-import { SpeciesScopeBadge } from './SpeciesScopeBadge'
+import { BattleSprite } from '../../components/BattleSprite'
 import { GenderBadge } from './GenderBadge'
 import { EncounterLoader } from './EncounterLoader'
 import type { EncounterAtlasService } from './encounters'
@@ -72,16 +72,16 @@ import type { CaptureLocationReading } from '../../models/capture-location'
 import type { AlbumService } from './album'
 import { SecretAlbum } from '../../components/SecretAlbum'
 
-function ManualCard({ pokemon, children, action, service, captured = false, selected = false }: { captured?: boolean; selected?: boolean; service: CatalogService; pokemon: ManualPokemon; children?: React.ReactNode; action?: { label: string; onClick: () => void } }) {
+function ManualCard({ pokemon, children, action, service, captured = false, selected = false, showSpeciesGender = true, animated = false }: { animated?: boolean; showSpeciesGender?: boolean; captured?: boolean; selected?: boolean; service: CatalogService; pokemon: ManualPokemon; children?: React.ReactNode; action?: { label: string; onClick: () => void } }) {
   const { t } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
   const [metadata, setMetadata] = useState<{ id: number; service: CatalogService; pokemon: ManualPokemon } | null>(null)
   useEffect(() => {
-    if (pokemon.speciesGender) return
+    if (!showSpeciesGender || pokemon.speciesGender) return
     const controller = new AbortController()
     service.get(pokemon, controller.signal).then(value => { if (!controller.signal.aborted) setMetadata({ id: pokemon.id, service, pokemon: value }) }).catch(() => { /* Optional species metadata does not block manual editing. */ })
     return () => controller.abort()
-  }, [pokemon, service])
+  }, [pokemon, service, showSpeciesGender])
   const appearance = metadata?.id === pokemon.id && metadata.service === service ? metadata.pokemon : pokemon
   return <article className={`pokemon-card${captured ? ' captured' : ''}${selected ? ' selected' : ''}`}>
     <GenerationBadge speciesId={pokemon.id} />
@@ -89,16 +89,17 @@ function ManualCard({ pokemon, children, action, service, captured = false, sele
     <span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span>
     {action && <button type="button" className="catalog-obtain-action" aria-label={action.label} title={action.label} onClick={action.onClick}><span aria-hidden="true">?</span></button>}
     <div className="sprite">{discovered && pokemon.sprite
-      ? <img src={pokemon.sprite} width="96" height="96" loading="lazy" alt={pokemonDisplayName(pokemon.name)} />
+      ? animated ? <BattleSprite pokemon={{ ...pokemon, animatedSprite: service.animation?.(pokemon) }} fainted={false} /> : <img src={pokemon.sprite} width="96" height="96" loading="lazy" alt={pokemonDisplayName(pokemon.name)} />
       : <span aria-label={t(discovered ? 'pokemonCard.spriteUnavailable' : 'pokemonCard.notDiscovered')}>?</span>}</div>
     <h3>{pokemonDisplayName(pokemon.name)}</h3>
     <div className="types">{pokemon.types.map(type => <span key={type} className={`type type-${type}`}>{t(`types.${type}`)}</span>)}</div>
-    {appearance.speciesGender && <GenderBadge kind={appearance.speciesGender} species distribution={appearance.genderDistribution} />}<SpeciesScopeBadge scope={appearance.scope} /><KnowledgeActions pokemon={pokemon} />
+    {showSpeciesGender && appearance.speciesGender && <GenderBadge kind={appearance.speciesGender} species distribution={appearance.genderDistribution} />}<KnowledgeActions pokemon={pokemon} />
     <div className="card-actions">{children}</div>
   </article>
 }
 
-function CatalogCard({ entry, service, collected, onAdd, readOnly = false, caught = null, acquisition }: {
+function CatalogCard({ entry, service, collected, onAdd, readOnly = false, caught = null, acquisition, showSpeciesGender }: {
+  showSpeciesGender?: boolean
   acquisition?: { service: AcquisitionService; state?: { tags?: readonly AcquisitionRoute[]; error?: boolean }; retry: () => void; onDetails: () => void }
   entry: SpeciesEntry; service: CatalogService; collected: boolean; onAdd: (pokemon: ManualPokemon) => void
   readOnly?: boolean; caught?: boolean | null
@@ -119,7 +120,7 @@ function CatalogCard({ entry, service, collected, onAdd, readOnly = false, caugh
     {result.error ? <><p role="alert">{t('catalog.card.loadError')}</p><button onClick={() => { setResult({}); setAttempt(value => value + 1) }}>{t('common.retry')}</button></> : <LoadingIndicator>{t('catalog.card.loading')}</LoadingIndicator>}
   </article>
   const pokemon = result.pokemon
-  return <ManualCard service={service} pokemon={pokemon} captured={collected || caught === true} action={acquisition ? { label: acquisitionText(t, acquisition.service.labels.open, { name: pokemonDisplayName(pokemon.name) }), onClick: acquisition.onDetails } : undefined}>{acquisition && <div className="catalog-acquisition"><ExclusiveBadge service={acquisition.service} speciesId={entry.id} /><AcquisitionIcons onDetails={acquisition.onDetails} tags={acquisition.state?.tags} error={acquisition.state?.error} onRetry={acquisition.retry} groupLabel={acquisition.service.labels.group} /></div>}{readOnly ? <p className="catalog-capture-state">{t(collected ? 'catalog.card.status.inCollection' : caught === null ? 'catalog.card.status.noPokedexData' : caught ? 'catalog.card.status.everCaught' : 'catalog.card.status.notCaught')}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>
+  return <ManualCard showSpeciesGender={showSpeciesGender} service={service} pokemon={pokemon} captured={collected || caught === true} action={acquisition ? { label: acquisitionText(t, acquisition.service.labels.open, { name: pokemonDisplayName(pokemon.name) }), onClick: acquisition.onDetails } : undefined}>{acquisition && <div className="catalog-acquisition"><ExclusiveBadge service={acquisition.service} speciesId={entry.id} /><AcquisitionIcons onDetails={acquisition.onDetails} tags={acquisition.state?.tags} error={acquisition.state?.error} onRetry={acquisition.retry} groupLabel={acquisition.service.labels.group} /></div>}{readOnly ? <p className="catalog-capture-state">{t(collected ? 'catalog.card.status.inCollection' : caught === null ? 'catalog.card.status.noPokedexData' : caught ? 'catalog.card.status.everCaught' : 'catalog.card.status.notCaught')}</p> : <button className="primary" disabled={collected} onClick={() => onAdd(pokemon)}>
     {t(collected ? 'catalog.card.status.inCollection' : 'catalog.card.addButton')}
   </button>}</ManualCard>
 }
@@ -140,11 +141,12 @@ function WorkspaceEncounters({ data, ...props }: Omit<React.ComponentProps<typeo
   return 'load' in data ? <EncounterLoader {...props} service={data} /> : <EncounterAtlas {...props} data={data} />
 }
 
-export function GameWorkspace({ browseEncountersInManual = false, megaEvolutions, zoneItems, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
+export function GameWorkspace({ catalogSpeciesGender = true, browseEncountersInManual = false, megaEvolutions, zoneItems, game, catalog: service, storage, typeRules, knowledge, encounters, initialZoneId, captureSource, fieldMoveService, album, daycare, acquisition, evolutionRequirements, connectionStatus, onChangeGame, preferences, notifications }: {
   megaEvolutions?: MegaEvolutionService
   zoneItems?: ZoneItemsService
   browseEncountersInManual?: boolean
   preferences?: { loadTab: () => ActiveTab; saveTab: (tab: ActiveTab) => boolean }
+  catalogSpeciesGender?: boolean
   notifications?: React.ReactNode
   connectionStatus?: { actions?: ConnectionActions; data: ConnectionStatus; onOpenControls: () => void }
   daycare?: { reading: DaycareReading; service: DaycareService }
@@ -260,12 +262,18 @@ export function GameWorkspace({ browseEncountersInManual = false, megaEvolutions
       <aside hidden={battleView} className={`workspace-team ${teamExpanded ? 'is-expanded' : 'is-compact'}`} aria-label={t('games.modules.team')}>
         <div className="workspace-team-heading">
           <h2 id="manual-team-title">{t('games.modules.team')} <span>{editable || roster?.party != null ? team.length : '…'} / 6</span></h2>
-          <button type="button" aria-expanded={teamExpanded} aria-controls="workspace-team-cards" onClick={() => setTeamExpanded(value => !value)}>{t(teamExpanded ? 'workspaceShell.compactTeam' : 'workspaceShell.expandTeam')}</button>
+          <button type="button" aria-expanded={teamExpanded} aria-controls="workspace-team-cards" onClick={event => {
+            const teamPanel = event.currentTarget.closest('aside')
+            setTeamExpanded(value => !value)
+            if (!teamExpanded) requestAnimationFrame(() => {
+              if (teamPanel) window.scrollTo({ top: window.scrollY + teamPanel.getBoundingClientRect().top - (document.getElementById('workspace')?.getBoundingClientRect().height ?? 0) - 12, behavior: 'instant' })
+            })
+          }}>{t(teamExpanded ? 'workspaceShell.compactTeam' : 'workspaceShell.expandTeam')}</button>
         </div>
         <section id="workspace-team-cards" aria-labelledby="manual-team-title">
         {!editable && roster?.party == null && <p className="notice" role="status">{roster?.loading && !roster.error ? <LoadingIndicator>{t('savedRoster.loading')}</LoadingIndicator> : t(roster?.error ? 'savedRoster.resolveError' : 'sourceCapabilities.partyWaiting')}{roster?.error && <button onClick={roster.retry}>{t('common.retry')}</button>}</p>}
         {!editable && captureSource?.stale && roster?.party != null && <p className="notice" role="status">{t(captureSource.capabilities?.boxes === false ? 'sourceCapabilities.partyStale' : 'savedRoster.stale')}</p>}
-        <ReorderGrid key={sourceKey} className="team-grid" itemKeys={!editable && roster?.party ? roster.party.map(p => `${p.personality}:${p.trainerId}`) : team.map(p => String(p.id))}>{!editable && roster?.party ? roster.party.map(pokemon => <SavedRosterCard key={pokemon.instanceKey} pokemon={pokemon} service={roster.service} compact={!teamExpanded} />) : team.map(pokemon => <ManualCard service={service} key={pokemon.id} pokemon={pokemon}>
+        <ReorderGrid key={sourceKey} className="team-grid" itemKeys={!editable && roster?.party ? roster.party.map(p => `${p.personality}:${p.trainerId}`) : team.map(p => String(p.id))}>{!editable && roster?.party ? roster.party.map(pokemon => <SavedRosterCard key={pokemon.instanceKey} pokemon={pokemon} service={roster.service} compact={!teamExpanded} animated={teamExpanded} />) : team.map(pokemon => <ManualCard animated={teamExpanded} service={service} key={pokemon.id} pokemon={pokemon}>
           <button onClick={() => update(toggleTeamMember(state, pokemon.id))}>{t('app.team.removeButton')}</button>
         </ManualCard>)}{Array.from({ length: 6 - team.length }, (_, index) => <button className="empty-slot" key={index} disabled={!editable}
           onClick={() => { setView('collection'); setQuery(''); document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth' }) }}>
@@ -296,7 +304,7 @@ export function GameWorkspace({ browseEncountersInManual = false, megaEvolutions
           {catalogError ? <p className="empty" role="alert">{t('catalog.loadError')} <button onClick={() => { setCatalogError(false); setAttempt(value => value + 1) }}>{t('common.retry')}</button></p>
             : entries.length === 0 ? <LoadingIndicator>{t('catalog.loadingCatalog')}</LoadingIndicator>
               : filtered.length === 0 ? <p className="empty">{t('catalog.noMatches')}</p>
-                : <><CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /><div className="pokemon-grid" ref={catalogGrid}>{filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => <CatalogCard key={entry.id} entry={entry} service={service} acquisition={acquisition ? { service: acquisition, state: acquisitionRoutes.get(entry.id), retry: acquisitionRoutes.retry, onDetails: () => setAcquisitionEntry(entry) } : undefined}
+                : <><CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /><div className="pokemon-grid" ref={catalogGrid}>{filtered.slice(catalogPage * pageSize, (catalogPage + 1) * pageSize).map(entry => <CatalogCard showSpeciesGender={catalogSpeciesGender} key={entry.id} entry={entry} service={service} acquisition={acquisition ? { service: acquisition, state: acquisitionRoutes.get(entry.id), retry: acquisitionRoutes.retry, onDetails: () => setAcquisitionEntry(entry) } : undefined}
                   collected={editable ? state.collection.some(p => p.id === entry.id) : roster?.collection?.some(p => !p.isEgg && p.id === entry.id) ?? false} readOnly={!editable} caught={captureSource?.pokedex?.caughtSpeciesIds.has(entry.id) ?? null} onAdd={pokemon => update(addToCollection(state, pokemon))} />)}</div>
                   <CatalogPagination page={catalogPage} pages={pages} onChange={setPage} /></>}
         </> : state.collection.length === 0 ? <div className="empty"><p>{t('app.collection.emptyIntro')}</p><button onClick={() => setView('catalog')}>{t('app.collection.exploreCatalogButton')}</button></div>

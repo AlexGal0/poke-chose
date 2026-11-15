@@ -1,4 +1,3 @@
-import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EvolutionRequirements } from '../../components/EvolutionRequirements'
@@ -14,7 +13,7 @@ export function WorkspaceEvolutionRequirements({ collection, caught, manual, sta
   const knowledge = useContext(KnowledgeContext)
   const { t } = useTranslation()
   if (!collection) return <p role="status" className="empty">{t('sourceCapabilities.collectionWaiting')}</p>
-  return <EvolutionRequirements collection={collection} caught={caught} manual={manual} stale={stale} service={service} inventory={inventory} renderScopeBadge={id => <SpeciesScopeBadge scope={service.scopeInfo?.(id)} />} openEvolution={id => {
+  return <EvolutionRequirements collection={collection} caught={caught} manual={manual} stale={stale} service={service} inventory={inventory} openEvolution={id => {
     const pokemon = collection.find(row => row.id === id)
     if (pokemon) knowledge?.open(pokemon, 'evolution')
   }} />

@@ -1,4 +1,5 @@
 import { createCatalogService } from '../core/catalog.ts'
+import { animatedBattleSprite } from '../../sources/battle-sprites.ts'
 import type { CatalogRules, CatalogService } from '../core/catalog.ts'
 import regionalSpeciesIds from '../x/data/regional-dex.json' with { type: 'json' }
 
@@ -15,6 +16,7 @@ export function createXYCatalog(rules: CatalogRules): CatalogService {
   const catalog = createCatalogService(rules)
   return {
     ...catalog,
+    animation: ({ sprite }) => animatedBattleSprite(sprite),
     async list(signal) {
       const { publicRosterData } = await import('../x/roster-data.ts')
       signal?.throwIfAborted()

@@ -4,7 +4,6 @@ import { ExclusiveBadge } from '../../components/ExclusiveBadge'
 import type { AcquisitionService } from './acquisition'
 import { ZoneItems } from './ZoneItems'
 import type { ZoneItemsService } from './zone-items'
-import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { GenerationBadge } from '../../components/GenerationBadge'
 import { EncounterNotice } from '../../components/EncounterNotice'
 import { useContext, useLayoutEffect, useRef, useState } from 'react'
@@ -169,7 +168,7 @@ export function EncounterAtlas({ acquisition, items, data: sourceData, initialZo
             <a className="pokemon-wiki" href={pokemonWikiUrl(row.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(row.name) })}><ActionIcon kind="external" /></a>
             <GenerationBadge speciesId={row.speciesId} />
             <div className="capture-identity"><span className="capture-sprite-slot">{discovered.has(row.speciesId) && pokemon?.sprite ? <img src={pokemon.sprite} width="64" height="64" alt="" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</span><div><div className="capture-name-line"><strong className="species-name">{pokemonDisplayName(row.name)}</strong>{gender && <GenderBadge kind={gender.kind} species distribution={pokemon?.genderDistribution} />}</div>
-              <ExclusiveBadge service={acquisition} speciesId={row.speciesId} /><SpeciesScopeBadge scope={pokemon?.scope} /><span className="capture-state">#{row.speciesId}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
+              <ExclusiveBadge service={acquisition} speciesId={row.speciesId} /><span className="capture-state">#{row.speciesId}</span>{collectionIds.has(row.speciesId) && <small>{t('catalog.card.status.inCollection')}</small>}
               {pokedex && <span className={`capture-state${caught ? ' capture-state-caught' : ''}`}>{t(caught ? 'encounterAtlas.progressStates.caught' : pokedex.seenSpeciesIds.has(row.speciesId) ? 'encounterAtlas.progressStates.seen' : 'encounterAtlas.progressStates.unseen')}</span>}
             </div></div>
             {pokemon && <div className="types">{pokemon.types.map(type => <TypeBadge type={type} key={type} />)}</div>}

@@ -15,6 +15,7 @@ import type { FieldCombatReading } from '../games/core/combat'
 import type { CombatPresentation } from '../games/core/combat-presentation'
 import { BattleField } from './BattleField'
 import { advanceFieldCombatSession, emptyFieldCombatSession } from '../domain/field-combat-session'
+import './BattleRoomy.css'
 
 interface BattleScreenProps {
   reading: CombatReading; service: CombatService; rules: TypeRules; hint?: string; onConnectionChange?: (connection: BattleConnection) => void

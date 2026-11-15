@@ -1,4 +1,5 @@
 import { statsForm } from '../../domain/stats.ts'
+import { animatedBlackWhiteSprite } from '../../sources/black-white-sprites.ts'
 import { blackWhitePokedexScope } from '../../domain/pokedex-scope.ts'
 import type { CatalogRules, CatalogService } from '../core/catalog.ts'
 import { getCatalog, getPokemon } from '../../api/pokeapi.ts'
@@ -15,6 +16,7 @@ export function blackSpeciesScope(id: number) {
   return scope ? { id: scope, labelKey: `pokedexScope.${scope}.label`, descriptionKey: `pokedexScope.${scope}.description` } : undefined
 }
 export const blackCatalog: CatalogService = {
+  animation: ({ sprite }) => animatedBlackWhiteSprite(sprite),
   rules: blackCatalogRules,
   list: getCatalog,
   async get(entry, signal) {

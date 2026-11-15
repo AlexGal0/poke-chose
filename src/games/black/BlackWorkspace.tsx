@@ -73,7 +73,7 @@ export default function BlackWorkspace({ onChangeGame }: { onChangeGame: () => v
   const stale = !state.connected || state.error || state.partyStale
   const connection = blackConnectionStatus(source, state, { generalStatus, battleStatus: combatStatus, generalMessage, battleMessage: combatMessage,
     generalLabel: t('readerConnections.general'), battleLabel: t('readerConnections.battle'), saveLabel: t('connectionIndicator.sourceSave'), saveMessage: noticeText(t, state.message) || '', manualHint: t('connectionIndicator.manualHint') })
-  return <GameWorkspace game={game} catalog={blackCatalog} knowledge={blackKnowledge} storage={blackManualStorage} preferences={preferences}
+  return <GameWorkspace catalogSpeciesGender={false} game={game} catalog={blackCatalog} knowledge={blackKnowledge} storage={blackManualStorage} preferences={preferences}
     typeRules={generationVRules} fieldMoveService={blackCollectionMoves} encounters={blackEncounters} initialZoneId={358}
     acquisition={blackAcquisition} album={blackAlbum} daycare={{ reading: blackDaycareReading(state.daycare, state.daycareStale, source !== 'manual'), service: blackDaycareService }}
     evolutionRequirements={blackEvolutionRequirements}

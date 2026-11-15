@@ -31,8 +31,10 @@ export function BattleField({ field, service, rules, presentation, playerTeam = 
   const density = format.id === 'single' ? 'detailed' : format.id === 'double' ? 'semicompact' : 'compact'
   const allied = field.sides[0].owners.some(owner => owner.control === 'ally')
   return <div className={`battle-field battle-field-${format.id}`}>
-    <h3 className="battle-field-title">{t(allied && format.id === 'double' ? 'battleField.partnerDouble' : `battleField.formats.${format.id}`)}</h3>
-    <BattleOpponentRoster total={field.sides[1].rosterTotal.state === 'known' ? field.sides[1].rosterTotal.value : null} stale={stale} />
+    <div className="battle-field-heading">
+      <h3 className="battle-field-title">{t(allied && format.id === 'double' ? 'battleField.partnerDouble' : `battleField.formats.${format.id}`)}</h3>
+      <BattleOpponentRoster total={field.sides[1].rosterTotal.state === 'known' ? field.sides[1].rosterTotal.value : null} stale={stale} />
+    </div>
     <div className="battle-field-sides">
       {field.sides.map(side => <section className={`battle-field-side battle-field-side-${side.id}`} aria-label={t(`battleField.sides.${side.id}`)} key={side.id}>
         <h4>{t(`battleField.sides.${side.id}`)}</h4>

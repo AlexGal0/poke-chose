@@ -1,4 +1,5 @@
 import { xyPokemon as xSavedPokemon } from '../xy/pokemon.ts'
+import { animatedBattleSprite } from '../../sources/battle-sprites.ts'
 export { xyPokemon as xSavedPokemon } from '../xy/pokemon.ts'
 import type { KnownRosterMove } from '../core/saved-roster.ts'
 import { xCatalogRules } from './catalog.ts'
@@ -24,6 +25,7 @@ export async function xSavedDescription(member: SavedPokemonData, locale: string
 }
 // Entirely local: no save-derived queries or sprite URLs leave the application.
 export const xSavedRosterService: SavedRosterService = {
+  animation: ({ sprite }) => animatedBattleSprite(sprite),
   hatching: { stepsPerCycle: 257 },
   resolve: async member => xSavedPokemon(member),
   describe: async (member, locale) => xSavedDescription(member, locale),

@@ -1,4 +1,3 @@
-import { SpeciesScopeBadge } from './SpeciesScopeBadge'
 import { NatureIndicator } from '../../components/NatureIndicator'
 import { GenerationBadge } from '../../components/GenerationBadge'
 import { useContext, useEffect, useState } from 'react'
@@ -13,8 +12,9 @@ import '../../components/TeamVitals.css'
 import { KnowledgeActions } from './KnowledgeActions'
 import { RosterEvolutionProgress } from './RosterEvolutionProgress'
 import { EggHatching } from './EggHatching'
+import { BattleSprite } from '../../components/BattleSprite'
 
-export function SavedRosterCard({ pokemon, service, compact = false }: { pokemon: SavedRosterPokemon; service: SavedRosterService; compact?: boolean }) {
+export function SavedRosterCard({ pokemon, service, compact = false, animated = false }: { pokemon: SavedRosterPokemon; service: SavedRosterService; compact?: boolean; animated?: boolean }) {
   const { t, i18n } = useTranslation()
   const discovered = useContext(DiscoveryContext).has(pokemon.id)
   const detailsKey = JSON.stringify([pokemon.moveIds, pokemon.abilityId, pokemon.heldItemId, i18n.language])
@@ -35,9 +35,10 @@ export function SavedRosterCard({ pokemon, service, compact = false }: { pokemon
   const hpRatio = hpKnown ? member!.currentHp! / member!.maxHp! : 0
   const exp = member?.experience !== undefined && pokemon.experienceLevels ? experienceProgress(member.level, member.experience, pokemon.experienceLevels) : null
   return <article className={`pokemon-card saved-roster-card ${compact ? 'roster-compact' : ''} ${fainted ? 'fainted' : ''}`}>
+    {!pokemon.isEgg && <span className={`roster-pattern type-${pokemon.types[0]}`} aria-hidden="true" />}
     {!pokemon.isEgg && <GenerationBadge speciesId={pokemon.id} />}
-    <div className="roster-card-heading">{!pokemon.isEgg && <><span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span><div className="roster-card-tools"><RosterEvolutionProgress pokemon={pokemon} service={service} /><GenderBadge kind={pokemon.gender} /><NatureIndicator natureId={pokemon.natureId} /><SpeciesScopeBadge scope={pokemon.scope} />{!pokemon.isEgg && <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}><span className="roster-wiki-arrow" aria-hidden="true">↗</span><svg className="roster-wiki-search" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a>}</div></>}</div>
-    <div className="sprite">{pokemon.isEgg ? <span aria-label={t('app.team.eggLabel')}>🥚</span> : discovered && pokemon.sprite ? <img src={pokemon.sprite} alt="" width="96" height="96" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</div>
+    <div className="roster-card-heading">{!pokemon.isEgg && <><span className="dex-number">#{String(pokemon.id).padStart(3, '0')}</span><div className="roster-card-tools"><RosterEvolutionProgress pokemon={pokemon} service={service} /><GenderBadge kind={pokemon.gender} /><NatureIndicator natureId={pokemon.natureId} />{!pokemon.isEgg && <a className="pokemon-wiki" href={pokemonWikiUrl(pokemon.name)} target="_blank" rel="noopener noreferrer" aria-label={t('common.wikiSearchAria', { name: pokemonDisplayName(pokemon.name) })}><span className="roster-wiki-arrow" aria-hidden="true">↗</span><svg className="roster-wiki-search" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6" /><path d="m15 15 6 6" /></svg></a>}</div></>}</div>
+    <div className="sprite">{pokemon.isEgg ? <span aria-label={t('app.team.eggLabel')}>🥚</span> : discovered && pokemon.sprite ? animated && !compact ? <BattleSprite pokemon={{ ...pokemon, animatedSprite: service.animation?.(pokemon) }} fainted={fainted} /> : <img src={pokemon.sprite} alt="" width="96" height="96" loading="lazy" /> : <span aria-label={t('pokemonCard.notDiscovered')}>?</span>}</div>
     <div className="saved-roster-name"><div className="roster-name-line"><h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.isEgg ? t('app.team.eggLabel') : pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>{!pokemon.isEgg && <strong className="roster-level">{pokemon.level !== null ? t('saveCollection.memberLevel', { level: pokemon.level }) : t('saveCollection.levelUnavailable')}</strong>}</div>
     {!pokemon.isEgg && <p className="pokemon-species-name">{pokemon.nickname ? pokemonDisplayName(pokemon.name) : <span aria-hidden="true">&nbsp;</span>}</p>}
       {!pokemon.isEgg && <p className={`roster-held-item ${!detailsError && details && !details.item ? 'no-held-item' : ''}`} title={detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}>{detailsError ? t('individualDetails.itemUnavailable') : details ? details.item || t('heldItem.none') : t('individualDetails.itemLoading')}</p>}{detailsError && <button onClick={() => setAttempt(value => value + 1)}>{t('common.retry')}</button>}</div>

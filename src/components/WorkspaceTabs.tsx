@@ -36,7 +36,10 @@ export function WorkspaceTabs({ active, onChange, collectionCount, live = false,
   useEffect(() => {
     const element = navigation.current
     if (!element) return
-    const observer = new ResizeObserver(entries => setWidth(entries[0].contentRect.width))
+    const observer = new ResizeObserver(entries => {
+      setWidth(entries[0].contentRect.width)
+      element.closest<HTMLElement>('.workspace-shell')?.style.setProperty('--workspace-navigation-height', `${element.getBoundingClientRect().height}px`)
+    })
     observer.observe(element)
     return () => observer.disconnect()
   }, [])
