@@ -1,3 +1,7 @@
+> Documentation review: November 14, 2026. [Index](README.md) · [Current status](project-status.md) · [Current contracts](adapter-contracts.md).
+>
+> **Scope:** The original record documents the Black implementation. Current Black/X/Y species details use game-scoped knowledge services and historical statistics; Gen VI values must not be replaced by this Gen V example. Current HP is a reading, not a base-stat calculation. Reported validation was not repeated during this documentation update.
+
 # Species statistics (Black/White)
 
 > Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.

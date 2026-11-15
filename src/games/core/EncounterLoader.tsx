@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EncounterAtlas } from './EncounterAtlas'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import type { EncounterAtlasData, EncounterAtlasService } from './encounters'
 import type { ComponentProps } from 'react'
 
@@ -16,5 +17,6 @@ export function EncounterLoader({ service, ...props }: Omit<ComponentProps<typeo
   }, [service, attempt])
   const current = result?.service === service ? result : null
   if (current?.data) return <EncounterAtlas {...props} data={current.data} />
+  if (!current?.error) return <LoadingIndicator>{t('captureChecklist.loadingEncounters')}</LoadingIndicator>
   return <p role={current?.error ? 'alert' : 'status'}>{t(current?.error ? 'captureChecklist.errors.loadEncounters' : 'captureChecklist.loadingEncounters')}{current?.error && <button onClick={() => { setResult(null); setAttempt(value => value + 1) }}>{t('common.retry')}</button>}</p>
 }

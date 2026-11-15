@@ -1,0 +1,94 @@
+/* Respond to the actual combat surface, including zoom and side-by-side windows. */
+#workspace-panel:has(.battle-panel) { container: combat-workspace / inline-size; }
+@media (min-height: 640px) {
+  @container combat-workspace (min-width: 900px) {
+    .battle-panel:has(.battle-field), .battle-panel:has(.battle-participants) {
+      min-height: calc(100dvh - var(--workspace-navigation-height, 64px) - 24px);
+      display: flex;
+      flex-direction: column;
+      padding: clamp(12px, 1.2cqw, 20px);
+      --battle-portrait-size: clamp(100px, calc(80dvh - 512px), 220px);
+      --battle-gap: clamp(10px, 1cqw, 18px);
+    }
+    .battle-panel > .section-heading h2 { font-size: clamp(18px, 1.6cqw, 23px); }
+    .battle-panel .battle-field { flex: 1; display: flex; flex-direction: column; gap: var(--battle-gap); }
+    .battle-panel .battle-field-title { font-size: 14px; margin: 0; }
+    .battle-panel .battle-field-heading > .battle-opponent-roster { align-self: flex-start; margin: 0; }
+    .battle-panel .battle-field-sides { flex: 1; gap: var(--battle-gap); align-items: stretch; }
+    .battle-panel .battle-field-side { display: flex; flex-direction: column; }
+    .battle-panel .battle-field-side > h4 { font-size: 12px; margin-bottom: 6px; }
+    .battle-panel .battle-field-positions { flex: 1; gap: var(--battle-gap); grid-auto-rows: 1fr; }
+    .battle-panel .battle-field-position { display: flex; flex-direction: column; }
+    .battle-panel .battle-field-position > .battle-participant { flex: 1; }
+    .battle-panel .battle-participants { flex: 1; gap: var(--battle-gap); grid-template-rows: minmax(220px, 1fr) auto; }
+
+    /* A shared single-battle card for both the original and field protocols. */
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-card {
+      grid-template-columns: minmax(100px, .8fr) minmax(0, 1.2fr);
+      grid-template-rows: minmax(70px, 1fr) auto auto auto;
+      padding: 34px clamp(12px, 1.2cqw, 20px) 12px;
+      gap: 8px 16px;
+      min-height: 230px;
+      border-radius: 14px;
+    }
+    .battle-panel :is(.battle-field-single, .battle-participants) .own-participant .pokemon-card { border-top: 3px solid var(--success-border, #479e87); }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-participant .pokemon-card { border-top: 3px solid var(--danger-border, #a65b63); }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite {
+      grid-column: 1; grid-row: 1 / 3; align-self: center; justify-self: center;
+      width: min(100%, var(--battle-portrait-size)); height: var(--battle-portrait-size);
+    }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .sprite img { width: 100%; height: 100%; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity { grid-column: 2; grid-row: 1; align-self: end; padding-right: 0; min-height: 0; height: auto; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity h3 { font-size: clamp(22px, 2.3cqw, 34px); }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-species-name { font-size: 12px; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .types { grid-column: 2; grid-row: 2; align-self: start; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .card-actions { grid-column: 1 / -1; grid-row: 3; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; padding-top: 6px; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .card-actions > .hint { padding: 5px 8px; border-radius: 6px; background: var(--surface-inset, #111923); font-size: 12px; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .battle-health-label { font-size: clamp(13px, 1.2cqw, 18px); margin-bottom: 5px; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .battle-health-bar { height: 9px; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .battle-stat-stages { grid-row: 4; margin: 0; padding: 8px 10px; border: 0; border-radius: 8px; background: var(--surface-inset, #111923); }
+    .battle-panel .battle-stat-stages caption { font-size: 11px; margin-bottom: 5px; }
+    .battle-panel .battle-stat-stages th, .battle-panel .battle-stat-stages td { padding: 5px 2px; }
+    .battle-panel .battle-type-matchup { padding: 12px; gap: 6px; border-radius: 12px; }
+    .battle-panel .battle-field-matchups { gap: var(--battle-gap); margin: 0; }
+    .battle-panel .battle-damage-type .type { font-size: 11px; padding: 4px 6px; }
+    .battle-panel .battle-damage-type .multiplier { font-size: 11px; padding: 3px; }
+    .battle-panel .battle-strength-description { font-size: 11px; }
+    .battle-panel .battle-team { margin-top: 10px; padding-top: 10px; }
+    .battle-panel .battle-team-heading { margin-bottom: 8px; }
+    .battle-panel .battle-team-heading h3 { font-size: 14px; }
+    .battle-panel .battle-team-grid { gap: 8px; }
+    .battle-panel .battle-team-member { grid-template-columns: clamp(40px, 4cqw, 64px) minmax(0, 1fr); padding: 8px; gap: 4px 6px; }
+    .battle-panel .battle-team-sprite, .battle-panel .battle-team-sprite img { width: clamp(40px, 4cqw, 64px); height: clamp(44px, 4.5cqw, 72px); }
+    .battle-panel .battle-team-identity h4 { font-size: clamp(11px, 1cqw, 14px); }
+    .battle-panel .battle-team-identity small { font-size: 11px; }
+    .battle-panel .battle-team-member .battle-health-label { font-size: 12px; }
+    .battle-panel .battle-team-member .battle-health-bar { height: 7px; }
+    .battle-panel .battle-team-matchup-legend { font-size: 11px; }
+
+    /* Multiple participants scale to the width of their side. */
+    .battle-panel .battle-small-card { height: 100%; padding: 12px; gap: 10px; border-radius: 12px; }
+    .battle-panel .battle-field-double .battle-small-card { grid-template-columns: minmax(64px, .7fr) minmax(0, 1.3fr); grid-template-rows: minmax(120px, 1fr) auto auto; align-content: stretch; }
+    .battle-panel .battle-small-sprite, .battle-panel .battle-small-identity { align-self: center; }
+    .battle-panel .battle-field-double .battle-small-sprite img { width: min(100%, 128px); height: clamp(100px, 14dvh, 170px); }
+    .battle-panel .battle-small-identity h3 { font-size: clamp(17px, 1.6cqw, 24px); }
+    .battle-panel .battle-small-identity > .hint, .battle-panel .battle-small-species { font-size: 12px; }
+    .battle-panel .battle-small-weaknesses { gap: 8px; padding-top: 10px; min-height: 80px; align-content: start; }
+    .battle-panel .battle-small-weaknesses > strong { font-size: 12px; }
+    .battle-panel .battle-field-horde .battle-small-card { grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: minmax(100px, 1fr) auto; align-content: stretch; }
+    .battle-panel .battle-field-horde .battle-small-sprite img { width: 64px; height: 90px; }
+    .battle-panel .battle-field-horde .battle-small-identity h3 { font-size: 17px; }
+    .battle-panel .battle-field-horde .battle-field-side-player .battle-small-card { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(140px, 1fr) auto auto; text-align: center; }
+    .battle-panel .battle-field-horde .battle-field-side-player .battle-small-sprite img { width: min(100%, 160px); height: clamp(120px, 18dvh, 200px); }
+    .battle-panel .battle-field-horde .battle-field-side-player .battle-small-identity { padding: 0; }
+    .battle-panel .battle-field-horde .battle-field-side-player .battle-small-identity h3 { font-size: 24px; }
+  }
+}
+@media (min-height: 640px) {
+  @container combat-workspace (min-width: 900px) {
+    .battle-panel :is(.battle-field-single, .battle-participants) .pokemon-card-profile { display: flex; flex-direction: column; justify-content: center; gap: 12px; grid-column: 2; grid-row: 1 / 3; min-width: 0; }
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .pokemon-identity,
+    .battle-panel :is(.battle-field-single, .battle-participants) .enemy-prototype-card .types { align-self: auto; }
+    .battle-panel .battle-field-double .battle-field-sides { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}

@@ -24,3 +24,6 @@
 @media (max-width: 460px) {
   .battle-field-double .battle-field-positions, .battle-field-horde .battle-field-side-opponent .battle-field-positions { grid-template-columns: minmax(0, 1fr); }
 }
+.battle-field-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 6px; }
+.battle-panel .battle-field-heading > .battle-field-title { margin: 0; }
+.battle-panel .battle-field-heading > .battle-opponent-roster { margin: 0; padding: 4px 8px; }

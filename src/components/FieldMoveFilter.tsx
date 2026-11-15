@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './LoadingIndicator'
 import { useTranslation } from 'react-i18next'
 import { useId } from 'react'
 import type { FieldMove } from '../domain/field-moves'
@@ -20,7 +21,7 @@ export function FieldMoveFilter({ selected, onChange, loading, error, onRetry, m
         </button>
       })}
     </div>
-    {loading && <p className="hint" role="status">{t('fieldMoves.loading')}</p>}
+    {loading && <LoadingIndicator>{t('fieldMoves.loading')}</LoadingIndicator>}
     {error && <div className="notice" role="alert">{t('fieldMoves.error')} <button onClick={onRetry}>{t('fieldMoves.retry')}</button></div>}
   </div>
 }

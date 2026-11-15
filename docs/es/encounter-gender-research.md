@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Investigación: porcentaje de aparición por género
 
 25 de octubre de 2026. Registro de investigación seguido de la implementación. El estado actual muestra una barra bicolor con cálculos propios de Black y X mediante un contrato compartido; véase [Implementación de proporciones base](#implementación-de-proporciones-base) y el [resumen consolidado](changes-2026-10-25.md). Las primeras secciones conservan la investigación previa al cambio de interfaz.

@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** Black, X y Y componen `GameWorkspace` y se cargan de forma diferida desde `App`. Los servicios opcionales se inyectan en composición; no existe un `ManualWorkspace` vigente que deba recrearse. Para empezar un juego usa [nuevo adaptador](new-game-adapter.md) y [contratos](adapter-contracts.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Selección de juego y separación de versiones
 
 Estado actual: Black y X componen `GameWorkspace`; véase la [migración de Black](black-migration.md). Las referencias siguientes a `ManualWorkspace` y a la composición anterior de Black corresponden a las etapas históricas.

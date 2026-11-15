@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Álbum secreto de Kalos
 
 Adaptado del álbum de Teselia de `codex/unova-album-and-evolutions`, commit `919ab33`. Ese componente aún no estaba presente en la rama de X. Se recuperaron su presentación y gestos sin integrar los cambios ajenos de esa rama.

@@ -1,3 +1,4 @@
+import { LoadingIndicator } from './LoadingIndicator'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ExperienceLevel } from '../domain/experience'
@@ -33,7 +34,7 @@ function OccupiedSlot({ member, service, onOpenEvolution }: { member: DaycarePok
     {current?.pokemon?.sprite && <img className="daycare-sprite" src={current.pokemon.sprite} alt="" />}
     <div className="daycare-name"><h3>{member.nickname ?? current?.pokemon?.name ?? t('daycare.species', { id: member.speciesId })}</h3><GenderBadge kind={member.gender} /></div>
     {member.nickname && current?.pokemon && <p>{current.pokemon.name}</p>}
-    <strong className="daycare-level">{level != null ? t('daycare.level', { level }) : t(current ? 'daycare.levelUnavailable' : 'daycare.loading')}</strong>
+    {!current ? <LoadingIndicator compact>{t('daycare.loading')}</LoadingIndicator> : <strong className="daycare-level">{level != null ? t('daycare.level', { level }) : t('daycare.levelUnavailable')}</strong>}
     {progress && <div className="daycare-experience">
       <div className="daycare-exp-label"><span>EXP</span><span>{level === 100 ? t('daycare.maxLevel') : t('daycare.nextLevel', { level: level! + 1 })}</span></div>
       <progress className="daycare-exp-bar" aria-label={t('daycare.expAria')} aria-valuetext={level === 100 ? t('daycare.maxLevel') : t('daycare.expValue', { current: progress.value, max: progress.max })} value={progress.value} max={progress.max} />

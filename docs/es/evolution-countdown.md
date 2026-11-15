@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Contador de evolución
 
 Las tarjetas de equipo y colección con nivel conocido muestran `↗ N` para evoluciones directas por nivel sin condiciones adicionales. El número indica niveles restantes; cero significa que se alcanzó el umbral y puede requerir subir otro nivel. El botón abre la familia evolutiva. No se muestra para huevos, niveles desconocidos, datos ausentes ni métodos especiales.

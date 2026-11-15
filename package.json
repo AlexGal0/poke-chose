@@ -21,7 +21,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "bridge:live": "node --experimental-strip-types bridge/live-index.mjs",
-    "bridge:battle": "node --experimental-strip-types experiments/melonds-live/watch-enemy.mjs --battle --wait"
+    "bridge:battle": "node --experimental-strip-types experiments/melonds-live/watch-enemy.mjs --battle --wait",
+    "bridge:y": "node --experimental-strip-types bridge/y-index.ts",
+    "bridge:y-live": "node --experimental-strip-types bridge/y-live-index.ts",
+    "probe:y-memory": "node --experimental-strip-types scripts/probe-citra-y.ts"
   },
   "dependencies": {
     "i18next": "^26.4.2",

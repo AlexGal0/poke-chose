@@ -1,3 +1,7 @@
+> Documentation review: November 14, 2026. [Index](README.md) · [Current status](project-status.md) · [Current contracts](adapter-contracts.md).
+>
+> **Scope:** Binary format reference for the Black reader only. X/Y use separate `main` readers; see the README and adapter contracts. Offsets and research below are not a universal save format. Reported validation was not repeated during this documentation update.
+
 *Versión en español: [es/save-format.md](es/save-format.md)*
 
 > Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.

@@ -4,6 +4,7 @@ import type { InventoryReading } from '../../src/games/core/inventory.ts'
 import { readXMemoryBoxes } from '../../src/games/x/memory-boxes.ts'
 import type { SavedBoxPokemon } from '../../src/models/party.ts'
 import { createHash } from 'node:crypto'
+import type { CitraRpcOptions } from './rpc-reader.ts'
 import { CitraRpcReader } from './rpc-reader.ts'
 import { readXMemoryPokedex } from '../../src/games/x/memory-pokedex.ts'
 import { serializePokedex } from '../../src/models/pokedex.ts'
@@ -12,16 +13,25 @@ import { readXMemoryBattleField } from '../../src/games/x/memory-battle-field.ts
 import { readXMemoryLocation } from '../../src/games/x/memory-location.ts'
 import { readXMemoryDaycare } from '../../src/games/x/memory-daycare.ts'
 
-// Fingerprint of the locally validated X executable image, not a universal XY profile.
+// These samples match the locally tested X and Y revisions; they do not identify edition.
+// Edition is checked independently against the stable trainer-status block on every read.
 // Only hashes are retained; no ROM bytes are written to disk or exposed by the bridge.
 export const X_SESSION_FINGERPRINT = '6dc47f0bfdd12a45e7a463eb126e4343c4f156574e520e696f1e6cc1ae5421a3'
-export class XProfileMismatch extends Error {}
-export function createXSessionReader() {
-  const rpc = new CitraRpcReader()
+export class XYProfileMismatch extends Error {}
+export { XYProfileMismatch as XProfileMismatch }
+export const XY_STATUS_ADDRESS = 0x08c79c2c
+export async function checkXYEdition(reader: { read(address: number, size: number): Promise<Uint8Array> }, version: 24 | 25) {
+  const first = await reader.read(XY_STATUS_ADDRESS + 4, 1)
+  const second = await reader.read(XY_STATUS_ADDRESS + 4, 1)
+  if (first.length !== 1 || second.length !== 1 || first[0] !== version || second[0] !== version) throw new XYProfileMismatch('profileMismatch')
+}
+export function createXYSessionReader(version: 24 | 25, options: CitraRpcOptions = {}) {
+  const rpc = new CitraRpcReader(options)
   async function checkProfile() {
     const hash = createHash('sha256')
     for (const address of [0x100000, 0x110000, 0x120000]) hash.update(await rpc.read(address, 64))
-    if (hash.digest('hex') !== X_SESSION_FINGERPRINT) throw new XProfileMismatch('profileMismatch')
+    if (hash.digest('hex') !== X_SESSION_FINGERPRINT) throw new XYProfileMismatch('profileMismatch')
+    await checkXYEdition(rpc, version)
   }
   return {
     checkProfile,
@@ -46,7 +56,7 @@ export function createXSessionReader() {
           }
           await checkProfile()
         } catch (error) {
-          if (error instanceof XProfileMismatch) throw error
+          if (error instanceof XYProfileMismatch) throw error
           boxes = undefined
           inventory = undefined
         }
@@ -60,3 +70,5 @@ export function createXSessionReader() {
     close: () => rpc.close(),
   }
 }
+
+export function createXSessionReader() { return createXYSessionReader(24, { port: Number(process.env.CITRA_X_RPC_PORT ?? 45987) }) }

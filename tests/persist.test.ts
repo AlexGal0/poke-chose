@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { persistValue } from '../src/storage/persist.ts'
 import { loadEncounterZone, saveEncounterZone } from '../src/storage/encounter-zone.ts'
+import { loadZoneItemProgress, saveZoneItemProgress } from '../src/storage/zone-item-progress.ts'
 
 test('full storage frees only enough disposable cache and restores the selected zone', () => {
   const original = Object.getOwnPropertyDescriptor(globalThis, 'localStorage')
@@ -25,6 +26,9 @@ test('full storage frees only enough disposable cache and restores the selected 
     },
   } })
   try {
+    assert.equal(saveZoneItemProgress('y', new Set(['xy-item-001'])), true)
+    assert.deepEqual([...loadZoneItemProgress('y')], ['xy-item-001'])
+    assert.equal(loadZoneItemProgress('x').size, 0)
     assert.equal(saveEncounterZone(376), true)
     assert.equal(loadEncounterZone(), 376)
     assert.equal(values.has('poke-chose:cache:large'), false)
@@ -34,6 +38,8 @@ test('full storage frees only enough disposable cache and restores the selected 
     assert.equal(values.get('unrelated'), 'data')
     mode = 'blocked'
     const before = [...values]
+    assert.equal(saveZoneItemProgress('y', new Set(['another-item'])), false)
+    assert.deepEqual([...loadZoneItemProgress('y')], ['xy-item-001'])
     assert.equal(persistValue('new', 'value'), false)
     assert.deepEqual([...values], before)
     mode = 'available'

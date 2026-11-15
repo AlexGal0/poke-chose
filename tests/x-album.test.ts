@@ -56,3 +56,12 @@ test('shared album adapters retain separate regional rosters and mosaic sizes', 
   assert.equal(blackAlbum.region, 'Unova')
   assert.equal(xAlbum.region, 'Kalos')
 })
+
+test('Black album animates the game sprite instead of using the 3D battle model', () => {
+  const base = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/'
+  const pokemon = { id: 503, name: 'samurott', types: ['water'], sprite: `${base}503.png` }
+  assert.equal(blackAlbum.animation(pokemon), `${base}animated/503.gif`)
+  assert.equal(blackAlbum.animation({ ...pokemon, sprite: `${base}10001.png` }), `${base}animated/10001.gif`)
+  assert.equal(blackAlbum.animation({ ...pokemon, sprite: '/pokemon-x/503.png' }), null)
+  assert.equal(blackAlbum.animation({ ...pokemon, sprite: null }), null)
+})

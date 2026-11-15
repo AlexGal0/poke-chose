@@ -30,7 +30,7 @@ export function isBattleField(value: unknown, maxSpecies: number): value is Comb
     if (field.format.state !== 'unknown' && (field.format.state !== 'known' || field.format.value.kind !== 'general' || !['single', 'double', 'horde'].includes(field.format.value.id))) return false
     const integer = (n: unknown, min: number, max: number) => typeof n === 'number' && Number.isInteger(n) && n >= min && n <= max
     return field.sides.every(side => side.owners.length <= 6 && side.positions.length <= 6 && side.id.length <= 128 &&
-      (side.rosterTotal.state === 'unknown' || side.rosterTotal.state === 'known' && integer(side.rosterTotal.value, 1, 6)) &&
+      (side.rosterTotal.state === 'unknown' || side.rosterTotal.state === 'known' && integer(side.rosterTotal.value, 1, side.owners.length * 6)) &&
       side.owners.every(owner => owner.id.length <= 128) && side.positions.every(position => position.id.length <= 128 && (
         position.state === 'unknown' || position.state === 'empty' || position.state === 'occupied' &&
         typeof position.pokemon.identity === 'string' && /^[0-9:]+$/.test(position.pokemon.identity) && position.pokemon.identity.length <= 128 &&

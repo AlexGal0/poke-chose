@@ -1,0 +1,1054 @@
+{
+  "generation": 6,
+  "versionGroup": "x-y",
+  "source": "https://pokeapi.co/api/v2/",
+  "retrieved": "2026-11-10",
+  "entries": [
+    {
+      "id": "venusaurite",
+      "inventoryKey": "659",
+      "speciesId": 3,
+      "name": "venusaur",
+      "variant": null,
+      "stoneNames": {
+        "es": "Venusaurita",
+        "en": "Venusaurite"
+      },
+      "sprite": "/mega-evolutions/venusaur.png",
+      "megaSprite": "/mega-evolutions/venusaur-mega.png",
+      "stoneIcon": "/mega-evolutions/venusaurite.png",
+      "baseStats": {
+        "hp": 80,
+        "attack": 82,
+        "defense": 83,
+        "special-attack": 100,
+        "special-defense": 100,
+        "speed": 80
+      },
+      "megaStats": {
+        "hp": 80,
+        "attack": 100,
+        "defense": 123,
+        "special-attack": 122,
+        "special-defense": 120,
+        "speed": 80
+      },
+      "types": [
+        "grass",
+        "poison"
+      ],
+      "megaTypes": [
+        "grass",
+        "poison"
+      ]
+    },
+    {
+      "id": "charizardite-x",
+      "inventoryKey": "660",
+      "speciesId": 6,
+      "name": "charizard",
+      "variant": "X",
+      "stoneNames": {
+        "es": "Charizardita X",
+        "en": "Charizardite X"
+      },
+      "sprite": "/mega-evolutions/charizard.png",
+      "megaSprite": "/mega-evolutions/charizard-mega-x.png",
+      "stoneIcon": "/mega-evolutions/charizardite-x.png",
+      "baseStats": {
+        "hp": 78,
+        "attack": 84,
+        "defense": 78,
+        "special-attack": 109,
+        "special-defense": 85,
+        "speed": 100
+      },
+      "megaStats": {
+        "hp": 78,
+        "attack": 130,
+        "defense": 111,
+        "special-attack": 130,
+        "special-defense": 85,
+        "speed": 100
+      },
+      "types": [
+        "fire",
+        "flying"
+      ],
+      "megaTypes": [
+        "fire",
+        "dragon"
+      ]
+    },
+    {
+      "id": "charizardite-y",
+      "inventoryKey": "678",
+      "speciesId": 6,
+      "name": "charizard",
+      "variant": "Y",
+      "stoneNames": {
+        "es": "Charizardita Y",
+        "en": "Charizardite Y"
+      },
+      "sprite": "/mega-evolutions/charizard.png",
+      "megaSprite": "/mega-evolutions/charizard-mega-y.png",
+      "stoneIcon": "/mega-evolutions/charizardite-y.png",
+      "baseStats": {
+        "hp": 78,
+        "attack": 84,
+        "defense": 78,
+        "special-attack": 109,
+        "special-defense": 85,
+        "speed": 100
+      },
+      "megaStats": {
+        "hp": 78,
+        "attack": 104,
+        "defense": 78,
+        "special-attack": 159,
+        "special-defense": 115,
+        "speed": 100
+      },
+      "types": [
+        "fire",
+        "flying"
+      ],
+      "megaTypes": [
+        "fire",
+        "flying"
+      ]
+    },
+    {
+      "id": "blastoisinite",
+      "inventoryKey": "661",
+      "speciesId": 9,
+      "name": "blastoise",
+      "variant": null,
+      "stoneNames": {
+        "es": "Blastoisita",
+        "en": "Blastoisinite"
+      },
+      "sprite": "/mega-evolutions/blastoise.png",
+      "megaSprite": "/mega-evolutions/blastoise-mega.png",
+      "stoneIcon": "/mega-evolutions/blastoisinite.png",
+      "baseStats": {
+        "hp": 79,
+        "attack": 83,
+        "defense": 100,
+        "special-attack": 85,
+        "special-defense": 105,
+        "speed": 78
+      },
+      "megaStats": {
+        "hp": 79,
+        "attack": 103,
+        "defense": 120,
+        "special-attack": 135,
+        "special-defense": 115,
+        "speed": 78
+      },
+      "types": [
+        "water"
+      ],
+      "megaTypes": [
+        "water"
+      ]
+    },
+    {
+      "id": "alakazite",
+      "inventoryKey": "679",
+      "speciesId": 65,
+      "name": "alakazam",
+      "variant": null,
+      "stoneNames": {
+        "es": "Alakazamita",
+        "en": "Alakazite"
+      },
+      "sprite": "/mega-evolutions/alakazam.png",
+      "megaSprite": "/mega-evolutions/alakazam-mega.png",
+      "stoneIcon": "/mega-evolutions/alakazite.png",
+      "baseStats": {
+        "hp": 55,
+        "attack": 50,
+        "defense": 45,
+        "special-attack": 135,
+        "special-defense": 95,
+        "speed": 120
+      },
+      "megaStats": {
+        "hp": 55,
+        "attack": 50,
+        "defense": 65,
+        "special-attack": 175,
+        "special-defense": 95,
+        "speed": 150
+      },
+      "types": [
+        "psychic"
+      ],
+      "megaTypes": [
+        "psychic"
+      ]
+    },
+    {
+      "id": "gengarite",
+      "inventoryKey": "656",
+      "speciesId": 94,
+      "name": "gengar",
+      "variant": null,
+      "stoneNames": {
+        "es": "Gengarita",
+        "en": "Gengarite"
+      },
+      "sprite": "/mega-evolutions/gengar.png",
+      "megaSprite": "/mega-evolutions/gengar-mega.png",
+      "stoneIcon": "/mega-evolutions/gengarite.png",
+      "baseStats": {
+        "hp": 60,
+        "attack": 65,
+        "defense": 60,
+        "special-attack": 130,
+        "special-defense": 75,
+        "speed": 110
+      },
+      "megaStats": {
+        "hp": 60,
+        "attack": 65,
+        "defense": 80,
+        "special-attack": 170,
+        "special-defense": 95,
+        "speed": 130
+      },
+      "types": [
+        "ghost",
+        "poison"
+      ],
+      "megaTypes": [
+        "ghost",
+        "poison"
+      ]
+    },
+    {
+      "id": "kangaskhanite",
+      "inventoryKey": "675",
+      "speciesId": 115,
+      "name": "kangaskhan",
+      "variant": null,
+      "stoneNames": {
+        "es": "Kangaskhanita",
+        "en": "Kangaskhanite"
+      },
+      "sprite": "/mega-evolutions/kangaskhan.png",
+      "megaSprite": "/mega-evolutions/kangaskhan-mega.png",
+      "stoneIcon": "/mega-evolutions/kangaskhanite.png",
+      "baseStats": {
+        "hp": 105,
+        "attack": 95,
+        "defense": 80,
+        "special-attack": 40,
+        "special-defense": 80,
+        "speed": 90
+      },
+      "megaStats": {
+        "hp": 105,
+        "attack": 125,
+        "defense": 100,
+        "special-attack": 60,
+        "special-defense": 100,
+        "speed": 100
+      },
+      "types": [
+        "normal"
+      ],
+      "megaTypes": [
+        "normal"
+      ]
+    },
+    {
+      "id": "pinsirite",
+      "inventoryKey": "671",
+      "speciesId": 127,
+      "name": "pinsir",
+      "variant": null,
+      "stoneNames": {
+        "es": "Pinsirita",
+        "en": "Pinsirite"
+      },
+      "sprite": "/mega-evolutions/pinsir.png",
+      "megaSprite": "/mega-evolutions/pinsir-mega.png",
+      "stoneIcon": "/mega-evolutions/pinsirite.png",
+      "baseStats": {
+        "hp": 65,
+        "attack": 125,
+        "defense": 100,
+        "special-attack": 55,
+        "special-defense": 70,
+        "speed": 85
+      },
+      "megaStats": {
+        "hp": 65,
+        "attack": 155,
+        "defense": 120,
+        "special-attack": 65,
+        "special-defense": 90,
+        "speed": 105
+      },
+      "types": [
+        "bug"
+      ],
+      "megaTypes": [
+        "bug",
+        "flying"
+      ]
+    },
+    {
+      "id": "gyaradosite",
+      "inventoryKey": "676",
+      "speciesId": 130,
+      "name": "gyarados",
+      "variant": null,
+      "stoneNames": {
+        "es": "Gyaradosita",
+        "en": "Gyaradosite"
+      },
+      "sprite": "/mega-evolutions/gyarados.png",
+      "megaSprite": "/mega-evolutions/gyarados-mega.png",
+      "stoneIcon": "/mega-evolutions/gyaradosite.png",
+      "baseStats": {
+        "hp": 95,
+        "attack": 125,
+        "defense": 79,
+        "special-attack": 60,
+        "special-defense": 100,
+        "speed": 81
+      },
+      "megaStats": {
+        "hp": 95,
+        "attack": 155,
+        "defense": 109,
+        "special-attack": 70,
+        "special-defense": 130,
+        "speed": 81
+      },
+      "types": [
+        "water",
+        "flying"
+      ],
+      "megaTypes": [
+        "water",
+        "dark"
+      ]
+    },
+    {
+      "id": "aerodactylite",
+      "inventoryKey": "672",
+      "speciesId": 142,
+      "name": "aerodactyl",
+      "variant": null,
+      "stoneNames": {
+        "es": "Aerodactylita",
+        "en": "Aerodactylite"
+      },
+      "sprite": "/mega-evolutions/aerodactyl.png",
+      "megaSprite": "/mega-evolutions/aerodactyl-mega.png",
+      "stoneIcon": "/mega-evolutions/aerodactylite.png",
+      "baseStats": {
+        "hp": 80,
+        "attack": 105,
+        "defense": 65,
+        "special-attack": 60,
+        "special-defense": 75,
+        "speed": 130
+      },
+      "megaStats": {
+        "hp": 80,
+        "attack": 135,
+        "defense": 85,
+        "special-attack": 70,
+        "special-defense": 95,
+        "speed": 150
+      },
+      "types": [
+        "rock",
+        "flying"
+      ],
+      "megaTypes": [
+        "rock",
+        "flying"
+      ]
+    },
+    {
+      "id": "mewtwonite-x",
+      "inventoryKey": "662",
+      "speciesId": 150,
+      "name": "mewtwo",
+      "variant": "X",
+      "stoneNames": {
+        "es": "Mewtwoita X",
+        "en": "Mewtwonite X"
+      },
+      "sprite": "/mega-evolutions/mewtwo.png",
+      "megaSprite": "/mega-evolutions/mewtwo-mega-x.png",
+      "stoneIcon": "/mega-evolutions/mewtwonite-x.png",
+      "baseStats": {
+        "hp": 106,
+        "attack": 110,
+        "defense": 90,
+        "special-attack": 154,
+        "special-defense": 90,
+        "speed": 130
+      },
+      "megaStats": {
+        "hp": 106,
+        "attack": 190,
+        "defense": 100,
+        "special-attack": 154,
+        "special-defense": 100,
+        "speed": 130
+      },
+      "types": [
+        "psychic"
+      ],
+      "megaTypes": [
+        "psychic",
+        "fighting"
+      ]
+    },
+    {
+      "id": "mewtwonite-y",
+      "inventoryKey": "663",
+      "speciesId": 150,
+      "name": "mewtwo",
+      "variant": "Y",
+      "stoneNames": {
+        "es": "Mewtwoita Y",
+        "en": "Mewtwonite Y"
+      },
+      "sprite": "/mega-evolutions/mewtwo.png",
+      "megaSprite": "/mega-evolutions/mewtwo-mega-y.png",
+      "stoneIcon": "/mega-evolutions/mewtwonite-y.png",
+      "baseStats": {
+        "hp": 106,
+        "attack": 110,
+        "defense": 90,
+        "special-attack": 154,
+        "special-defense": 90,
+        "speed": 130
+      },
+      "megaStats": {
+        "hp": 106,
+        "attack": 150,
+        "defense": 70,
+        "special-attack": 194,
+        "special-defense": 120,
+        "speed": 140
+      },
+      "types": [
+        "psychic"
+      ],
+      "megaTypes": [
+        "psychic"
+      ]
+    },
+    {
+      "id": "ampharosite",
+      "inventoryKey": "658",
+      "speciesId": 181,
+      "name": "ampharos",
+      "variant": null,
+      "stoneNames": {
+        "es": "Ampharosita",
+        "en": "Ampharosite"
+      },
+      "sprite": "/mega-evolutions/ampharos.png",
+      "megaSprite": "/mega-evolutions/ampharos-mega.png",
+      "stoneIcon": "/mega-evolutions/ampharosite.png",
+      "baseStats": {
+        "hp": 90,
+        "attack": 75,
+        "defense": 85,
+        "special-attack": 115,
+        "special-defense": 90,
+        "speed": 55
+      },
+      "megaStats": {
+        "hp": 90,
+        "attack": 95,
+        "defense": 105,
+        "special-attack": 165,
+        "special-defense": 110,
+        "speed": 45
+      },
+      "types": [
+        "electric"
+      ],
+      "megaTypes": [
+        "electric",
+        "dragon"
+      ]
+    },
+    {
+      "id": "scizorite",
+      "inventoryKey": "670",
+      "speciesId": 212,
+      "name": "scizor",
+      "variant": null,
+      "stoneNames": {
+        "es": "Scizorita",
+        "en": "Scizorite"
+      },
+      "sprite": "/mega-evolutions/scizor.png",
+      "megaSprite": "/mega-evolutions/scizor-mega.png",
+      "stoneIcon": "/mega-evolutions/scizorite.png",
+      "baseStats": {
+        "hp": 70,
+        "attack": 130,
+        "defense": 100,
+        "special-attack": 55,
+        "special-defense": 80,
+        "speed": 65
+      },
+      "megaStats": {
+        "hp": 70,
+        "attack": 150,
+        "defense": 140,
+        "special-attack": 65,
+        "special-defense": 100,
+        "speed": 75
+      },
+      "types": [
+        "bug",
+        "steel"
+      ],
+      "megaTypes": [
+        "bug",
+        "steel"
+      ]
+    },
+    {
+      "id": "heracronite",
+      "inventoryKey": "680",
+      "speciesId": 214,
+      "name": "heracross",
+      "variant": null,
+      "stoneNames": {
+        "es": "Heracrossita",
+        "en": "Heracronite"
+      },
+      "sprite": "/mega-evolutions/heracross.png",
+      "megaSprite": "/mega-evolutions/heracross-mega.png",
+      "stoneIcon": "/mega-evolutions/heracronite.png",
+      "baseStats": {
+        "hp": 80,
+        "attack": 125,
+        "defense": 75,
+        "special-attack": 40,
+        "special-defense": 95,
+        "speed": 85
+      },
+      "megaStats": {
+        "hp": 80,
+        "attack": 185,
+        "defense": 115,
+        "special-attack": 40,
+        "special-defense": 105,
+        "speed": 75
+      },
+      "types": [
+        "bug",
+        "fighting"
+      ],
+      "megaTypes": [
+        "bug",
+        "fighting"
+      ]
+    },
+    {
+      "id": "houndoominite",
+      "inventoryKey": "666",
+      "speciesId": 229,
+      "name": "houndoom",
+      "variant": null,
+      "stoneNames": {
+        "es": "Houndoomita",
+        "en": "Houndoominite"
+      },
+      "sprite": "/mega-evolutions/houndoom.png",
+      "megaSprite": "/mega-evolutions/houndoom-mega.png",
+      "stoneIcon": "/mega-evolutions/houndoominite.png",
+      "baseStats": {
+        "hp": 75,
+        "attack": 90,
+        "defense": 50,
+        "special-attack": 110,
+        "special-defense": 80,
+        "speed": 95
+      },
+      "megaStats": {
+        "hp": 75,
+        "attack": 90,
+        "defense": 90,
+        "special-attack": 140,
+        "special-defense": 90,
+        "speed": 115
+      },
+      "types": [
+        "dark",
+        "fire"
+      ],
+      "megaTypes": [
+        "dark",
+        "fire"
+      ]
+    },
+    {
+      "id": "tyranitarite",
+      "inventoryKey": "669",
+      "speciesId": 248,
+      "name": "tyranitar",
+      "variant": null,
+      "stoneNames": {
+        "es": "Tyranitarita",
+        "en": "Tyranitarite"
+      },
+      "sprite": "/mega-evolutions/tyranitar.png",
+      "megaSprite": "/mega-evolutions/tyranitar-mega.png",
+      "stoneIcon": "/mega-evolutions/tyranitarite.png",
+      "baseStats": {
+        "hp": 100,
+        "attack": 134,
+        "defense": 110,
+        "special-attack": 95,
+        "special-defense": 100,
+        "speed": 61
+      },
+      "megaStats": {
+        "hp": 100,
+        "attack": 164,
+        "defense": 150,
+        "special-attack": 95,
+        "special-defense": 120,
+        "speed": 71
+      },
+      "types": [
+        "rock",
+        "dark"
+      ],
+      "megaTypes": [
+        "rock",
+        "dark"
+      ]
+    },
+    {
+      "id": "blazikenite",
+      "inventoryKey": "664",
+      "speciesId": 257,
+      "name": "blaziken",
+      "variant": null,
+      "stoneNames": {
+        "es": "Blazikenita",
+        "en": "Blazikenite"
+      },
+      "sprite": "/mega-evolutions/blaziken.png",
+      "megaSprite": "/mega-evolutions/blaziken-mega.png",
+      "stoneIcon": "/mega-evolutions/blazikenite.png",
+      "baseStats": {
+        "hp": 80,
+        "attack": 120,
+        "defense": 70,
+        "special-attack": 110,
+        "special-defense": 70,
+        "speed": 80
+      },
+      "megaStats": {
+        "hp": 80,
+        "attack": 160,
+        "defense": 80,
+        "special-attack": 130,
+        "special-defense": 80,
+        "speed": 100
+      },
+      "types": [
+        "fire",
+        "fighting"
+      ],
+      "megaTypes": [
+        "fire",
+        "fighting"
+      ]
+    },
+    {
+      "id": "gardevoirite",
+      "inventoryKey": "657",
+      "speciesId": 282,
+      "name": "gardevoir",
+      "variant": null,
+      "stoneNames": {
+        "es": "Gardevoirita",
+        "en": "Gardevoirite"
+      },
+      "sprite": "/mega-evolutions/gardevoir.png",
+      "megaSprite": "/mega-evolutions/gardevoir-mega.png",
+      "stoneIcon": "/mega-evolutions/gardevoirite.png",
+      "baseStats": {
+        "hp": 68,
+        "attack": 65,
+        "defense": 65,
+        "special-attack": 125,
+        "special-defense": 115,
+        "speed": 80
+      },
+      "megaStats": {
+        "hp": 68,
+        "attack": 85,
+        "defense": 65,
+        "special-attack": 165,
+        "special-defense": 135,
+        "speed": 100
+      },
+      "types": [
+        "psychic",
+        "fairy"
+      ],
+      "megaTypes": [
+        "psychic",
+        "fairy"
+      ]
+    },
+    {
+      "id": "mawilite",
+      "inventoryKey": "681",
+      "speciesId": 303,
+      "name": "mawile",
+      "variant": null,
+      "stoneNames": {
+        "es": "Mawilita",
+        "en": "Mawilite"
+      },
+      "sprite": "/mega-evolutions/mawile.png",
+      "megaSprite": "/mega-evolutions/mawile-mega.png",
+      "stoneIcon": "/mega-evolutions/mawilite.png",
+      "baseStats": {
+        "hp": 50,
+        "attack": 85,
+        "defense": 85,
+        "special-attack": 55,
+        "special-defense": 55,
+        "speed": 50
+      },
+      "megaStats": {
+        "hp": 50,
+        "attack": 105,
+        "defense": 125,
+        "special-attack": 55,
+        "special-defense": 95,
+        "speed": 50
+      },
+      "types": [
+        "steel",
+        "fairy"
+      ],
+      "megaTypes": [
+        "steel",
+        "fairy"
+      ]
+    },
+    {
+      "id": "aggronite",
+      "inventoryKey": "667",
+      "speciesId": 306,
+      "name": "aggron",
+      "variant": null,
+      "stoneNames": {
+        "es": "Aggronita",
+        "en": "Aggronite"
+      },
+      "sprite": "/mega-evolutions/aggron.png",
+      "megaSprite": "/mega-evolutions/aggron-mega.png",
+      "stoneIcon": "/mega-evolutions/aggronite.png",
+      "baseStats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 180,
+        "special-attack": 60,
+        "special-defense": 60,
+        "speed": 50
+      },
+      "megaStats": {
+        "hp": 70,
+        "attack": 140,
+        "defense": 230,
+        "special-attack": 60,
+        "special-defense": 80,
+        "speed": 50
+      },
+      "types": [
+        "steel",
+        "rock"
+      ],
+      "megaTypes": [
+        "steel"
+      ]
+    },
+    {
+      "id": "medichamite",
+      "inventoryKey": "665",
+      "speciesId": 308,
+      "name": "medicham",
+      "variant": null,
+      "stoneNames": {
+        "es": "Medichamita",
+        "en": "Medichamite"
+      },
+      "sprite": "/mega-evolutions/medicham.png",
+      "megaSprite": "/mega-evolutions/medicham-mega.png",
+      "stoneIcon": "/mega-evolutions/medichamite.png",
+      "baseStats": {
+        "hp": 60,
+        "attack": 60,
+        "defense": 75,
+        "special-attack": 60,
+        "special-defense": 75,
+        "speed": 80
+      },
+      "megaStats": {
+        "hp": 60,
+        "attack": 100,
+        "defense": 85,
+        "special-attack": 80,
+        "special-defense": 85,
+        "speed": 100
+      },
+      "types": [
+        "fighting",
+        "psychic"
+      ],
+      "megaTypes": [
+        "fighting",
+        "psychic"
+      ]
+    },
+    {
+      "id": "manectite",
+      "inventoryKey": "682",
+      "speciesId": 310,
+      "name": "manectric",
+      "variant": null,
+      "stoneNames": {
+        "es": "Manectricita",
+        "en": "Manectite"
+      },
+      "sprite": "/mega-evolutions/manectric.png",
+      "megaSprite": "/mega-evolutions/manectric-mega.png",
+      "stoneIcon": "/mega-evolutions/manectite.png",
+      "baseStats": {
+        "hp": 70,
+        "attack": 75,
+        "defense": 60,
+        "special-attack": 105,
+        "special-defense": 60,
+        "speed": 105
+      },
+      "megaStats": {
+        "hp": 70,
+        "attack": 75,
+        "defense": 80,
+        "special-attack": 135,
+        "special-defense": 80,
+        "speed": 135
+      },
+      "types": [
+        "electric"
+      ],
+      "megaTypes": [
+        "electric"
+      ]
+    },
+    {
+      "id": "banettite",
+      "inventoryKey": "668",
+      "speciesId": 354,
+      "name": "banette",
+      "variant": null,
+      "stoneNames": {
+        "es": "Banettita",
+        "en": "Banettite"
+      },
+      "sprite": "/mega-evolutions/banette.png",
+      "megaSprite": "/mega-evolutions/banette-mega.png",
+      "stoneIcon": "/mega-evolutions/banettite.png",
+      "baseStats": {
+        "hp": 64,
+        "attack": 115,
+        "defense": 65,
+        "special-attack": 83,
+        "special-defense": 63,
+        "speed": 65
+      },
+      "megaStats": {
+        "hp": 64,
+        "attack": 165,
+        "defense": 75,
+        "special-attack": 93,
+        "special-defense": 83,
+        "speed": 75
+      },
+      "types": [
+        "ghost"
+      ],
+      "megaTypes": [
+        "ghost"
+      ]
+    },
+    {
+      "id": "absolite",
+      "inventoryKey": "677",
+      "speciesId": 359,
+      "name": "absol",
+      "variant": null,
+      "stoneNames": {
+        "es": "Absolita",
+        "en": "Absolite"
+      },
+      "sprite": "/mega-evolutions/absol.png",
+      "megaSprite": "/mega-evolutions/absol-mega.png",
+      "stoneIcon": "/mega-evolutions/absolite.png",
+      "baseStats": {
+        "hp": 65,
+        "attack": 130,
+        "defense": 60,
+        "special-attack": 75,
+        "special-defense": 60,
+        "speed": 75
+      },
+      "megaStats": {
+        "hp": 65,
+        "attack": 150,
+        "defense": 60,
+        "special-attack": 115,
+        "special-defense": 60,
+        "speed": 115
+      },
+      "types": [
+        "dark"
+      ],
+      "megaTypes": [
+        "dark"
+      ]
+    },
+    {
+      "id": "garchompite",
+      "inventoryKey": "683",
+      "speciesId": 445,
+      "name": "garchomp",
+      "variant": null,
+      "stoneNames": {
+        "es": "Garchompita",
+        "en": "Garchompite"
+      },
+      "sprite": "/mega-evolutions/garchomp.png",
+      "megaSprite": "/mega-evolutions/garchomp-mega.png",
+      "stoneIcon": "/mega-evolutions/garchompite.png",
+      "baseStats": {
+        "hp": 108,
+        "attack": 130,
+        "defense": 95,
+        "special-attack": 80,
+        "special-defense": 85,
+        "speed": 102
+      },
+      "megaStats": {
+        "hp": 108,
+        "attack": 170,
+        "defense": 115,
+        "special-attack": 120,
+        "special-defense": 95,
+        "speed": 92
+      },
+      "types": [
+        "dragon",
+        "ground"
+      ],
+      "megaTypes": [
+        "dragon",
+        "ground"
+      ]
+    },
+    {
+      "id": "lucarionite",
+      "inventoryKey": "673",
+      "speciesId": 448,
+      "name": "lucario",
+      "variant": null,
+      "stoneNames": {
+        "es": "Lucarita",
+        "en": "Lucarionite"
+      },
+      "sprite": "/mega-evolutions/lucario.png",
+      "megaSprite": "/mega-evolutions/lucario-mega.png",
+      "stoneIcon": "/mega-evolutions/lucarionite.png",
+      "baseStats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 70,
+        "special-attack": 115,
+        "special-defense": 70,
+        "speed": 90
+      },
+      "megaStats": {
+        "hp": 70,
+        "attack": 145,
+        "defense": 88,
+        "special-attack": 140,
+        "special-defense": 70,
+        "speed": 112
+      },
+      "types": [
+        "fighting",
+        "steel"
+      ],
+      "megaTypes": [
+        "fighting",
+        "steel"
+      ]
+    },
+    {
+      "id": "abomasite",
+      "inventoryKey": "674",
+      "speciesId": 460,
+      "name": "abomasnow",
+      "variant": null,
+      "stoneNames": {
+        "es": "Abomasnowita",
+        "en": "Abomasite"
+      },
+      "sprite": "/mega-evolutions/abomasnow.png",
+      "megaSprite": "/mega-evolutions/abomasnow-mega.png",
+      "stoneIcon": "/mega-evolutions/abomasite.png",
+      "baseStats": {
+        "hp": 90,
+        "attack": 92,
+        "defense": 75,
+        "special-attack": 92,
+        "special-defense": 85,
+        "speed": 60
+      },
+      "megaStats": {
+        "hp": 90,
+        "attack": 132,
+        "defense": 105,
+        "special-attack": 132,
+        "special-defense": 105,
+        "speed": 30
+      },
+      "types": [
+        "grass",
+        "ice"
+      ],
+      "megaTypes": [
+        "grass",
+        "ice"
+      ]
+    }
+  ]
+}

@@ -7,6 +7,8 @@ const open = process.argv.includes('--open')
 const processes = []
 try {
   const services = [
+    { name: 'y-live', port: Number(process.env.Y_LIVE_BRIDGE_PORT ?? 15307), file: 'bridge/y-live-index.ts' },
+    { name: 'y-save', port: Number(process.env.Y_SAVE_BRIDGE_PORT ?? 15306), file: 'bridge/y-index.ts' },
     { name: 'x-live', port: Number(process.env.X_LIVE_BRIDGE_PORT ?? 15305), file: 'bridge/x-live-index.ts' },
     { name: 'x-save', port: Number(process.env.X_SAVE_BRIDGE_PORT ?? 15304), file: 'bridge/x-index.ts' },
     { name: 'live', port: Number(process.env.LIVE_BRIDGE_PORT ?? 15302), file: 'bridge/live-index.mjs' },

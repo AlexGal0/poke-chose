@@ -23,6 +23,18 @@ function field(format: 'single' | 'double' | 'horde' = 'double'): MutableField {
   }
 }
 const reading = (value: CombatField): FieldCombatReading => ({ status: 'ready', activity: 'active', field: value, messageCode: null })
+
+test('a confirmed battle form overlays the same controlled identity in its normal-form roster', () => {
+  const active = field('single')
+  const normal = pokemon('own0', 'p', 372)
+  const position = active.sides[0].positions[0]
+  if (position.state !== 'occupied') throw new Error('Expected occupant')
+  position.pokemon = { ...position.pokemon, form: 1, health: { currentHp: 12, maxHp: 21 } }
+  const session = advanceFieldCombatSession(emptyFieldCombatSession(), { ...reading(active), playerTeam: [normal] })
+  assert.equal(session.playerTeam?.[0].form, 1)
+  assert.equal(session.playerTeam?.[0].health?.currentHp, 12)
+  assert.equal(session.stale, false)
+})
 const start = (value = field()) => advanceFieldCombatSession(emptyFieldCombatSession(), reading(value))
 const unknown: FieldCombatReading = { status: 'ready', activity: 'unknown', field: null, messageCode: null }
 

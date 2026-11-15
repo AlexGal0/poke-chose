@@ -10,6 +10,7 @@
 .game-choice:focus-visible { outline: 3px solid var(--accent, #83dcb8); outline-offset: 5px; }
 .game-choice-caption { display: flex; flex-direction: column; width: 100%; margin-top: auto; padding-top: 80px; }
 .game-choice-x { --game-color: #65b9f4; background: radial-gradient(ellipse at 100% 0, #168cdd33, transparent 70%), var(--surface, #171e27); }
+.game-choice-y { --game-color: #ff8794; background: radial-gradient(ellipse at 100% 0, #ce244633, transparent 70%), var(--surface, #171e27); }
 .game-choice:hover:not(:disabled) { transform: translateY(-5px); border-color: var(--game-color); background: var(--surface-hover, #222e3c); }
 .game-choice .game-choice-region { font-size: 12px; color: #d2dce9; text-shadow: 0 1px 6px #000; }
 .game-choice-symbol { align-self: center; font-weight: 900; font-size: clamp(72px, 13vw, 150px); line-height: 1; color: var(--game-color); margin: auto; letter-spacing: -.08em; text-shadow: 0 8px 40px #0003; }

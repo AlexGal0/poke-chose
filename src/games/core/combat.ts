@@ -10,6 +10,8 @@ export type CombatValue<T> = { state: 'known'; value: T } | { state: 'unknown' }
 export type CombatSideId = 'player' | 'opponent'
 
 export interface CombatOwner {
+  // Owners are scoped to a side, not a game or a data source. A double may
+  // have one player + one ally versus two separate opposing trainers.
   id: string
   control: 'player' | 'ally' | 'opponent' | 'wild'
 }
@@ -28,10 +30,13 @@ export type CombatPosition = { id: string } & (
 
 export interface CombatSide {
   id: CombatSideId
+  // Several owners can share a side; the controlled player's party remains
+  // separate from allied parties. Every occupied position references an owner.
   owners: readonly CombatOwner[]
   // Stable IDs scoped to this side; retain positions after fainting or removal.
   positions: readonly CombatPosition[]
-  // Whole side's initial roster, including reserves; reveals no species.
+  // Whole side's initial roster across all owners, including reserves. This
+  // can exceed one party's size; it reveals no reserve species.
   rosterTotal: CombatValue<number>
 }
 

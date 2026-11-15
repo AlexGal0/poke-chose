@@ -21,6 +21,7 @@ export type SavedRosterPokemon = ManualPokemon & SavedPokemonData & {
   hatchCycles?: number
 }
 export interface SavedRosterService {
+  animation?(pokemon: ManualPokemon): string | null
   hatching?: { stepsPerCycle: number }
   resolve(member: SavedPokemonData, signal?: AbortSignal): Promise<ManualPokemon & { experienceLevels?: ExperienceLevel[]; baseStats?: BaseStats; hatchCycles?: number }>
   describe(member: SavedPokemonData, locale: string, signal?: AbortSignal): Promise<RosterDescription>

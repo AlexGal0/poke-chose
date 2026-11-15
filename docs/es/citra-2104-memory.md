@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Memoria de Pokémon X en Citra Nightly 2104
 
 Registro de investigación iniciado el 23 de octubre de 2026 y ampliado por etapas. La fuente En vivo ya integra equipo, Pokédex, cajas, combate y ubicación para el perfil local de X. Las primeras secciones describen el prototipo previo a esa integración. Estado consolidado: [arquitectura](architecture.md), [combate](x-battle.md) y [ubicación](x-location.md).

@@ -17,16 +17,19 @@ export function ActionIcon({ kind }: { kind: KnowledgeView | 'details' | 'extern
   </svg>
 }
 
-export function KnowledgeActions({ pokemon, individual }: { pokemon: ManualPokemon; individual?: RosterIndividual }) {
+export function KnowledgeActions({ pokemon, individual, evolutionOnly = false }: { pokemon: ManualPokemon; individual?: RosterIndividual; evolutionOnly?: boolean }) {
   const { t } = useTranslation()
   const knowledge = useContext(KnowledgeContext)
   if (!knowledge) return null
-  return <div className="knowledge-actions">
-    {KNOWLEDGE_ACTIONS.filter(([, module]) => knowledge.modules[module]).map(([view]) => {
-      const label = t(`speciesKnowledge.open.${view}`, { name: pokemonDisplayName(pokemon.name) })
-      return <button type="button" key={view} aria-label={label} title={label} onClick={() => knowledge.open(pokemon, view, individual)}>
-        <ActionIcon kind={view} /><span className="knowledge-action-label">{t(`speciesKnowledge.actions.${view}`)}</span>
-      </button>
-    })}
+  const actions = KNOWLEDGE_ACTIONS.filter(([, module]) => knowledge.modules[module])
+  function button(view: KnowledgeView) {
+    const label = t(`speciesKnowledge.open.${view}`, { name: pokemonDisplayName(pokemon.name) })
+    return <button type="button" key={view} data-knowledge-view={view} aria-label={label} title={label} onClick={() => knowledge!.open(pokemon, view, individual)}>
+      <ActionIcon kind={view} /><span className="knowledge-action-label">{t(`speciesKnowledge.actions.${view}`)}</span>
+    </button>
+  }
+  if (evolutionOnly) return <div className="knowledge-actions knowledge-actions-capture">
+    {actions.some(([view]) => view === 'evolution') && button('evolution')}
   </div>
+  return <div className="knowledge-actions">{actions.map(([view]) => button(view))}</div>
 }

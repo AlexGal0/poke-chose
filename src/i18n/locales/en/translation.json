@@ -1,5 +1,86 @@
 {
-  "battleHeldItem": {"equipped": "Held item: {{name}}", "unavailable": "Held item; name unavailable"},
+  "acquisitionAvailability": {
+    "onlyExclusive": "Exclusives only",
+    "exclusive": "Exclusive to {{game}}",
+    "exclusiveHint": "Obtainable without external help in {{game}}, but not in {{counterpart}}.",
+    "fossilHint": "After entering the Hall of Fame, find the fossil with Rock Smash in Glittering Cave and revive it at the Ambrette Town laboratory. Availability depends on the edition."
+  },
+  "typeChartRefresh": {
+    "filter": "Filter columns by defending type",
+    "all": "All types",
+    "showing": "{{count}} of {{total}} columns · All attacking types",
+    "help": "Select a matchup to pin it. Use arrow keys to explore the table and Enter to pin; Escape clears the selection.",
+    "clear": "Clear selection"
+  },
+  "balanceRefresh": {
+    "members": "Analyzed team",
+    "membersNote": "Individuals included in this reading",
+    "sharedNote": "Types with two or more weak members",
+    "gaps": "{{count}} types without coverage",
+    "sections": "Type balance sections",
+    "risks": "Where to be careful",
+    "riskHint": "Choose a type to see who is weak and who can resist it.",
+    "weakMembers": "Members weak against this type",
+    "inspect": "Inspect an attacking type",
+    "onlyGaps": "Show only types without coverage",
+    "noGaps": "Your team has potential STAB coverage against every type.",
+    "defensiveHelp": "Resists shared weaknesses",
+    "offensiveHelp": "Adds coverage against"
+  },
+  "pendingStyle": {
+    "intro": "Item and trade evolutions still missing from your Pokédex.",
+    "needed": "Needed",
+    "bag": "In bag",
+    "held": "Held",
+    "stockUnknown": "Item quantity unconfirmed",
+    "stockStale": "Item in last reading: {{count}} · Unconfirmed",
+    "stockAvailable": "Item in inventory: {{count}}",
+    "stockMissing": "Item still needed"
+  },
+  "catalogRedesign": {
+    "obtain": "How to obtain",
+    "routes": "Acquisition routes",
+    "guide": "About the catalog and search",
+    "page": "Page {{page}} of {{pages}}"
+  },
+  "captureRedesign": {
+    "followPaused": "Location tracking paused",
+    "moreData": "More details",
+    "following": "Following location",
+    "browsing": "Manual browsing",
+    "accessible": "accessible",
+    "pending": "pending",
+    "caught": "caught",
+    "hiddenAccess": "need access",
+    "accessAndHelp": "Access and help",
+    "hiddenCount": "{{count}} hidden by access",
+    "results_one": "{{count}} species in the results",
+    "results_other": "{{count}} species in the results",
+    "clearFilters": "Clear filters",
+    "noAccess": "Disabled access options hide the encounters in this area. Review Surf, fishing rods or other options.",
+    "reviewAccess": "Review access",
+    "routes": "Methods, levels and chances",
+    "levelUnknown": "Level unconfirmed",
+    "reference": "Pokédex and sources",
+    "itemHelp": "Manual marks and guide",
+    "moveDetails": "Move · {{move}}"
+  },
+  "workspaceShell": {
+    "tools": "Tools",
+    "mainSections": "Main sections",
+    "compactTeam": "Compact view",
+    "expandTeam": "Expand cards",
+    "connectionDetails": "Controls",
+    "sources": {
+      "manual": "Manual",
+      "save": "Save file",
+      "live": "Live"
+    }
+  },
+  "battleHeldItem": {
+    "equipped": "Held item: {{name}}",
+    "unavailable": "Held item; name unavailable"
+  },
   "genderRatio": {
     "summary": "Approximate base ratio: male {{male}}, female {{female}}. No encounter modifiers applied."
   },
@@ -678,6 +759,40 @@
         "ready": "Boxes synchronized with Citra memory. Checked every two minutes or when you press Refresh collection.",
         "error": "No current box reading. Keeping the last valid collection, if available; check the connection and refresh again."
       }
+    },
+    "ySave": {
+      "hint": "The save is read automatically when you save in Citra. Configure main once in y-save.config.local.json and use the launcher or npm run bridge:y. Includes Pokédex, party and all 31 boxes.",
+      "messages": {
+        "waiting": "Waiting for a valid Y save reading…",
+        "unconfigured": "Configure the path to Y’s main file.",
+        "ready": "Y Pokédex, party and boxes synchronized with the save.",
+        "missing": "main could not be found. Retrying automatically.",
+        "readError": "The save could not be validated. The last valid reading is retained while retrying.",
+        "connectionLost": "The Y bridge is disconnected. Check that the launcher is running; connection will retry automatically."
+      }
+    },
+    "yLive": {
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "controlError": "The action failed. Check that the launcher is running and retry.",
+      "hint": "Experimental party and Pokédex reading every two seconds; all 31 boxes are checked on connection and every two minutes. Use Refresh collection to check sooner. Everything is read from memory, without saving. Locally validated Y profile; other versions may not be compatible. Capture marks and images follow the Pokédex.",
+      "messages": {
+        "pressConnect": "Press Connect to start reading Citra.",
+        "connecting": "Connecting to Citra…",
+        "ready": "Party and Pokédex updated from Citra memory.",
+        "readError": "Could not read a stable party and Pokédex. Keeping the last valid reading.",
+        "profileMismatch": "The session does not match the validated Y profile. The last party is retained; no new data is accepted.",
+        "disconnected": "Reading stopped. Keeping the last valid data for reference.",
+        "connectionLost": "No connection to the Citra bridge. Check that the launcher is running."
+      },
+      "refreshCollection": "Refresh collection",
+      "boxesLastReading": "Last valid box reading: {{time}}",
+      "boxStatus": {
+        "waiting": "Waiting for the first box reading. Connect Citra live to view your collection.",
+        "reading": "Reading all 31 boxes… Keeping the last collection while the check finishes.",
+        "ready": "Boxes synchronized with Citra memory. Checked every two minutes or when you press Refresh collection.",
+        "error": "No current box reading. Keeping the last valid collection, if available; check the connection and refresh again."
+      }
     }
   },
   "encounterOpportunity": {
@@ -1239,7 +1354,8 @@
     "generation": "Generation {{number}}",
     "names": {
       "black": "Pokémon Black",
-      "x": "Pokémon X"
+      "x": "Pokémon X",
+      "y": "Pokémon Y"
     },
     "regions": {
       "unova": "Unova",
@@ -1247,12 +1363,13 @@
     },
     "status": {
       "black": "Adventure available",
-      "x": "Manual and Citra Save available"
+      "x": "Manual and Citra Save available",
+      "y": "Manual, Save and live Citra available"
     },
     "enter": "Enter",
     "change": "Change game",
     "loading": "Opening your adventure…",
-    "isolationHint": "Your Black collection is preserved. Features for X will become available as they are ready.",
+    "isolationHint": "Each game keeps its own collection, team and preferences.",
     "preparationDescription": "We are preparing this adventure to offer the same features as Black. These modules will become available as support is added.",
     "modulesHeading": "Your game workspace",
     "moduleUnavailable": "These modules are not available for this game yet. Readers and data from another adventure will not be loaded.",
@@ -1520,7 +1637,7 @@
     "stale": "Battle reading is stopped or disconnected. The last session is preserved as a reference.",
     "unconfirmed": "No confirmed battle reading is available yet.",
     "inactive": "Outside battle. Enter a single battle to see the participants.",
-    "multiScope": "Experimental single, double and horde reading for the local Pokémon X profile. Unconfirmed positions remain partial readings."
+    "multiScope": "Experimental single, double and horde reading for the local {{game}} profile. Unconfirmed positions remain partial readings."
   },
   "battleOpponentRoster": {
     "heading": "Opponent's team",
@@ -1677,6 +1794,138 @@
     "unknownPosition": "Pokémon unconfirmed",
     "emptyPosition": "Empty position",
     "unknownFormat": "Battle format unconfirmed",
-    "unsupportedFormat": "This format has no available view yet"
+    "unsupportedFormat": "This format has no available view yet",
+    "partnerDouble": "Double battle with an ally",
+    "ally": "Ally",
+    "allyPokemon": "Ally Pokémon",
+    "allyWeaknesses": "Ally weaknesses"
+  },
+  "yAcquisition": {
+    "group": "Ways to obtain in Pokémon Y",
+    "open": "View how to obtain {{name}} in Pokémon Y",
+    "hint": "Pokémon Y data: Kalos encounters and Generation VI evolutions. Gifts and NPC trades may depend on progress or earlier choices.",
+    "loading": "Loading Pokémon Y acquisition details…",
+    "noEncounters": "No direct Y encounters are recorded for this species. This does not prove it is unobtainable.",
+    "anyPokemon": "any Pokémon accepted for this trade",
+    "routes": {
+      "capture": "Catchable in Pokémon Y. Check locations, methods and conditions.",
+      "static": "Static encounter in Pokémon Y; may depend on progress or your chosen starter.",
+      "gift": "Gift in Pokémon Y; may depend on a choice or story progress.",
+      "egg": "Gift Egg recorded in Pokémon Y.",
+      "fossil": "Revive a fossil in Pokémon Y. Check instructions and fossil choices.",
+      "npc-trade": "Trade with a character in Pokémon Y. Check their request and conditions.",
+      "evolution": "Evolution supported in Generation VI. Obtain its pre-evolution and meet the requirements.",
+      "trade-evolution": "Trade evolution in Generation VI; may require an item or a particular species.",
+      "breed": "Breed compatible parents. Some species require additional conditions or Incense.",
+      "unknown": "Acquisition unconfirmed: these sources do not cover every route. Missing encounters do not imply that transfer is required."
+    }
+  },
+  "yWorkspace": {
+    "manual": "Source: manual",
+    "hint": "Collection and preferences are separate from X. Save and Live sources require a compatible Pokémon Y save and profile.",
+    "atlasHint": "Public Pokémon Y atlas. Without a Pokédex reading, historical catches and progress are unknown. Manually added Pokémon only represent your manual collection."
+  },
+  "zoneItems": {
+    "viewLabel": "Zone content",
+    "pokemonView": "Pokémon",
+    "itemsView": "Items",
+    "eyebrow": "Explore every corner",
+    "title": "Items · {{zone}}",
+    "count": "{{count}} items",
+    "hint": "Items located in this area and how to obtain them, including gifts and character rewards. Check the stated requirements before searching.",
+    "manualHint": "Tick each card when you obtain it. Marks are saved per adventure and do not sync with your save.",
+    "search": "Find an item or move",
+    "searchPlaceholder": "Stone, TM, Surf…",
+    "category": "Category",
+    "allCategories": "All categories",
+    "progress": "Manual marks",
+    "allProgress": "All locations",
+    "marked": "Marked as obtained",
+    "unmarked": "Unmarked",
+    "saveFailed": "Your marks could not be saved. They remain available for this session.",
+    "loading": "Loading items in this area…",
+    "error": "Items in this area could not be loaded.",
+    "unrecorded": "The current source has no documented item table for this area. This does not prove there are no items here.",
+    "noMatches": "No items match these filters.",
+    "noRecordedItems": "The source records no obtaining locations in this area.",
+    "instructionsUnknown": "The source does not specify how to obtain this item.",
+    "markObtained": "Obtained · manual mark",
+    "source": "View source",
+    "sourceLanguage": "Note available in {{language}}",
+    "pp": "Base PP",
+    "variableValue": "Variable or unspecified value",
+    "tm": "TM{{number}}",
+    "hm": "HM{{number}}",
+    "coverageHint": "Public guide retrieved on {{date}}. It may contain omissions; source links are retained and this is not your game progress. Purchases may depend on game progress.",
+    "categories": {
+      "evolution": "Evolution items",
+      "machine": "TMs and HMs",
+      "key": "Key items",
+      "held": "Held items and Mega Stones",
+      "medicine": "Medicine and enhancements",
+      "ball": "Poké Balls",
+      "berry": "Berries",
+      "treasure": "Treasures and materials",
+      "other": "Other items"
+    },
+    "methods": {
+      "pickup": "Pick up in the area",
+      "hidden": "Hidden item",
+      "gift": "Character gift",
+      "reward": "Reward",
+      "exchange": "Item exchange",
+      "purchase": "Purchase",
+      "harvest": "Tree or field resource",
+      "unknown": "Unclassified method"
+    },
+    "markObtainedAria": "Mark obtained: {{item}} · {{place}}",
+    "count_one": "{{count}} item",
+    "count_other": "{{count}} items",
+    "moveGeneration": "Generation {{number}} move",
+    "sourceFor": "View source for {{item}} · {{place}}",
+    "requirementsSource": "View requirements source for {{item}}",
+    "obtained": "Obtained",
+    "shops": "Shops",
+    "shopHint": "Stock may depend on badges or story progress.",
+    "shopItem": "Item",
+    "price": "Price",
+    "otherShop": "Shop",
+    "shopSource": "View shop sources"
+  },
+  "megaEvolutions": {
+    "title": "Mega Stones",
+    "eyebrow": "The power of your collection",
+    "intro": "Your stones and the Pokémon that can use them.",
+    "hint": "Select the stone at the bottom of a frame to reveal the Mega Evolution and compare base stats. You need both the stone and the Pokémon in your current collection.",
+    "stones": "different stones",
+    "filter": "Show",
+    "ownedStones": "My Mega Stones",
+    "allStones": "All compatible stones",
+    "loading": "Loading Mega Stones and forms…",
+    "error": "Mega Evolutions could not be loaded.",
+    "empty": "No Mega Stones are in your Bag or held by your Pokémon in the current reading.",
+    "inventoryUnknown": "No inventory reading is available. Select a save or live source to check your Mega Stones.",
+    "collectionUnknown": "Your collection is not available yet. Pokémon ownership cannot be confirmed.",
+    "stale": "The inventory is outdated. Mega previews will unlock after a current reading.",
+    "collectionStale": "The collection is outdated or incomplete. Waiting for a current reading to confirm your Pokémon.",
+    "pokemonUnknown": "Pokémon unconfirmed",
+    "pokemonMissing": "You need this Pokémon",
+    "stoneUnknown": "Stone unconfirmed",
+    "stoneMissing": "You need this stone",
+    "unconfirmed": "Waiting for a current reading",
+    "ready": "Stone and Pokémon available",
+    "hidden": "Pokémon hidden: not in your collection",
+    "open": "View {{name}}’s Mega Evolution with {{stone}}",
+    "quantities": "In Bag: {{bag}} · Held: {{held}}",
+    "megaName": "Mega {{name}}{{variant}}",
+    "close": "Close Mega Evolution comparison",
+    "stats": "Before and after",
+    "statsHint": "Species base stats for this game. Level, IVs, EVs, Nature, Abilities and battle effects are excluded.",
+    "comparison": "Base stats comparison for {{name}} and its Mega Evolution",
+    "stat": "Stat",
+    "base": "Normal",
+    "mega": "Mega",
+    "change": "Change",
+    "total": "Total"
   }
 }

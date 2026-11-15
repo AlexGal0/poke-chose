@@ -1,3 +1,28 @@
+# Live reading: Black, X and Y
+
+Current baseline: November 14, 2026. [Español](es/live-reading.md) · [Index](README.md) · [Connections](reader-connections.md).
+
+All services are local and read-only. Manual and Save remain separate. Memory readers support validated profiles; matching generations or similar addresses does not establish compatibility.
+
+| Edition | Service | HTTP port / proxy | Emulator transport |
+| --- | --- | --- | --- |
+| Black general | `npm run bridge:live` | 15302 / `/live-api` | melonDS GDB; private `live.config.local.json` |
+| Black battle | `npm run bridge:battle` | 15303 / `/enemy-api` | Independent ARM9 reader |
+| X | `npm run bridge:x-live` | 15305 / `/x-live-api` | Citra RPC; `CITRA_X_RPC_PORT` |
+| Y | `npm run bridge:y-live` | 15307 / `/y-live-api` | Citra RPC; `CITRA_Y_RPC_PORT` |
+
+`npm start` starts Vite and all seven bridges and opens the browser. `npm run dev:save` starts the stack without opening it. Alternatively run only the required bridge alongside `npm run dev`. Save services use separate ports: Black 15301, X 15304, Y 15306. See the [README](../README.md) for all ports and HTTP overrides.
+
+Citra uses RPC, not GDB. Its default RPC port is 45987, separate from the HTTP ports above. Enable RPC, select the right edition and connect in the app. Edition-specific variables must match each instance. Two simultaneous Citra instances need different RPC ports. Closing one does not force another instance that failed to bind its socket to recover automatically; save before restarting an emulator if necessary.
+
+Controls distinguish connecting, waiting, pause/disconnection and errors. An accepted request does not prove a valid reading arrived. Party, boxes and battle can differ in freshness; partial samples retain confirmed data with a notice. Changing editions must not relabel the previous edition's retained samples. See [sources](data-sources.md), [battles](multi-battle.md) and [status](project-status.md).
+
+The launcher may reuse existing services. After changing bridge code/protocol, stop and restart the stack to avoid combining a new frontend with old services. The launcher manages its own children; another launch does not guarantee replacing existing processes.
+
+## Earlier technical reference: melonDS / Black
+
+The following preserves Black reader research and validation. Its GDB settings, intervals and addresses do not apply to Citra or define a contract for other games. Reported checks were not repeated during this documentation update.
+
 *Versión en español: [es/live-reading.md](es/live-reading.md)*
 
 # Live reading: configuration and behavior

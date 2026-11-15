@@ -49,6 +49,7 @@ export function adaptSpecies(data: SpeciesResponse, entry: SpeciesEntry, rules: 
 }
 
 export interface CatalogService {
+  animation?(pokemon: ManualPokemon): string | null
   rules: CatalogRules
   list(signal?: AbortSignal): Promise<SpeciesEntry[]>
   get(entry: SpeciesEntry, signal?: AbortSignal): Promise<ManualPokemon>

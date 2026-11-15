@@ -15,7 +15,11 @@ export function emptyFieldCombatSession(): FieldCombatSession {
 }
 
 function samePokemon(a: FieldPokemon, b: FieldPokemon) {
-  return a.ownerId === b.ownerId && a.identity === b.identity && a.speciesId === b.speciesId && a.form === b.form
+  return sameIndividual(a, b) && a.form === b.form
+}
+
+function sameIndividual(a: FieldPokemon, b: FieldPokemon) {
+  return a.ownerId === b.ownerId && a.identity === b.identity && a.speciesId === b.speciesId
 }
 
 function sameFormat(a: CombatFormat, b: CombatFormat) {
@@ -32,7 +36,7 @@ function mergeTeam(previous: readonly FieldPokemon[] | null, next: readonly Fiel
   const controlled = field.sides[0].owners.filter(owner => owner.control === 'player').map(owner => owner.id)
   const active = field.sides[0].positions.flatMap(position => position.state === 'occupied' ? [position.pokemon] : [])
   return team.filter(pokemon => controlled.includes(pokemon.ownerId)).map(pokemon => {
-    const current = active.find(candidate => samePokemon(candidate, pokemon))
+    const current = active.find(candidate => sameIndividual(candidate, pokemon))
     return current ? retainPokemon(pokemon, current) : pokemon
   })
 }

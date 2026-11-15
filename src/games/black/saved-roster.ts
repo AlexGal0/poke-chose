@@ -1,4 +1,5 @@
 import { blackSpeciesScope } from './catalog.ts'
+import { animatedBlackWhiteSprite } from '../../sources/black-white-sprites.ts'
 import type { SavedRosterService, KnownRosterMove } from '../core/saved-roster.ts'
 import { getSavePokemon, localizedName, request } from '../../api/pokeapi.ts'
 import { getBaseStats } from '../../api/stats.ts'
@@ -10,6 +11,7 @@ import { statsForm, statsResource } from '../../domain/stats.ts'
 import { readCache, writeCache } from '../../storage/local.ts'
 
 export const blackSavedRosterService: SavedRosterService = {
+  animation: ({ sprite }) => animatedBlackWhiteSprite(sprite),
   async resolve(member, signal) {
     const [pokemon, experienceLevels, baseStats] = await Promise.all([
       getSavePokemon(member.speciesId, member.form, signal),

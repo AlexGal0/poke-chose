@@ -22,14 +22,14 @@ export function AnalysisAlternatives({ rules, team, collection, discovered, incl
     <p className="hint">{t('teamAnalysis.alternativesHint')}</p>
     {stale && <p className="notice" role="status">{t('teamAnalysis.collectionStale')}</p>}
     {collection === null ? <p className="empty">{t('teamAnalysis.collectionUnavailable')}</p> : <>
-      <CollectionSearch collection={options.map(row => row.pokemon)} types={rules.types} query={query} onChange={setQuery} searchLabel={t('teamAnalysis.search')} />
+      <CollectionSearch showHint={false} collection={options.map(row => row.pokemon)} types={rules.types} query={query} onChange={setQuery} searchLabel={t('teamAnalysis.search')} />
       <p className="hint">{t('teamAnalysis.results', { count: filtered.length })}</p>
       {filtered.length ? <ul className="analysis-options">{filtered.slice(0, 6).map(({ pokemon, resists, coverage }) => <li key={pokemon.instanceKey ?? pokemon.id}>
         <GenerationBadge speciesId={pokemon.id} />
         <div className="analysis-option-heading">{pokemon.sprite && <img src={pokemon.sprite} alt="" width="48" height="48" loading="lazy" />}<div><strong>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</strong>{pokemon.nickname && <small>{pokemonDisplayName(pokemon.name)}</small>}<div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div></div></div>
         {pokemon.location === 'box' && pokemon.box != null && pokemon.slot !== undefined && <p className="hint">{t('saveCollection.memberBoxSlot', { box: pokemon.box + 1, slot: pokemon.slot + 1 })}</p>}
-        {resists.length > 0 && <p>{t('teamAnalysis.resists', { types: resists.map(type => typeLabel(t, type)).join(', ') })}</p>}
-        {coverage.length > 0 && <p>{t('teamAnalysis.addsCoverage', { types: coverage.map(type => typeLabel(t, type)).join(', ') })}</p>}
+        {resists.length > 0 && <div className="balance-option-benefit"><span>{t('balanceRefresh.defensiveHelp')}</span><div className="types">{resists.map(type => <TypeBadge type={type} key={type} />)}</div></div>}
+        {coverage.length > 0 && <div className="balance-option-benefit"><span>{t('balanceRefresh.offensiveHelp')}</span><div className="types">{coverage.map(type => <TypeBadge type={type} key={type} />)}</div></div>}
       </li>)}</ul> : <p className="empty">{t(query ? 'teamAnalysis.noMatches' : 'teamAnalysis.noAlternatives')}</p>}
       {filtered.length > 6 && <p className="hint">{t('teamAnalysis.limit')}</p>}
     </>}

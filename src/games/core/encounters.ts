@@ -4,6 +4,7 @@ import { encounterChances } from '../../domain/encounter-chances.ts'
 import type { KnowledgeNode } from '../../domain/species-knowledge.ts'
 import { filterCaptureMethods } from '../../domain/capture-browser.ts'
 import type { GenderDistribution } from '../../models/gender-distribution.ts'
+import type { AcquisitionAccess } from './acquisition.ts'
 
 export { filterCaptureProgress } from '../../domain/capture-browser.ts'
 export type { CaptureFilter } from '../../domain/capture-browser.ts'
@@ -13,7 +14,7 @@ export interface EncounterArea extends NamedEncounterResource {
   labelIsComplete?: boolean
   rows: (Omit<EncounterSpecies, 'details'> & { variety: string; details: (EncounterDetail & { pokemonDetails?: { never_shiny: boolean } })[] })[]
 }
-export interface EncounterZone extends NamedEncounterResource { id: number; areas: EncounterArea[]; stage?: NamedEncounterResource; noticeKey?: string }
+export interface EncounterZone extends NamedEncounterResource { id: number; areas: EncounterArea[]; stage?: NamedEncounterResource; noticeKey?: string; access?: AcquisitionAccess }
 export interface EncounterAtlasData {
   equipmentStorage?: { load: () => Record<string, boolean>; save: (equipment: Record<string, boolean>) => boolean }
   equipmentGroups?: readonly { method: string; members: readonly string[] }[]

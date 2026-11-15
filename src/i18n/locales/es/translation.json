@@ -1,5 +1,86 @@
 {
-  "battleHeldItem": {"equipped": "Objeto equipado: {{name}}", "unavailable": "Objeto equipado; nombre no disponible"},
+  "acquisitionAvailability": {
+    "onlyExclusive": "Solo exclusivos",
+    "exclusive": "Exclusivo de {{game}}",
+    "exclusiveHint": "Se puede obtener sin ayuda externa en {{game}}, pero no en {{counterpart}}.",
+    "fossilHint": "Después de entrar en el Hall de la Fama, busca el fósil con Golpe Roca en Cueva Brillante y revívelo en el laboratorio de Pueblo Petroglifo. Su disponibilidad depende de la edición."
+  },
+  "typeChartRefresh": {
+    "filter": "Filtrar columnas por tipo defensor",
+    "all": "Todos los tipos",
+    "showing": "{{count}} de {{total}} columnas · Todos los tipos atacantes",
+    "help": "Pulsa un cruce para fijarlo. Con teclado, usa las flechas para recorrer la tabla e Intro para fijar; Esc libera la selección.",
+    "clear": "Liberar selección"
+  },
+  "balanceRefresh": {
+    "members": "Equipo analizado",
+    "membersNote": "Ejemplares incluidos en esta lectura",
+    "sharedNote": "Tipos con dos o más miembros débiles",
+    "gaps": "{{count}} tipos sin cobertura",
+    "sections": "Secciones del balance",
+    "risks": "Dónde conviene tener cuidado",
+    "riskHint": "Elige un tipo para ver quién es débil y quién puede resistirlo.",
+    "weakMembers": "Miembros débiles frente a este tipo",
+    "inspect": "Inspeccionar ataque de tipo",
+    "onlyGaps": "Mostrar solo tipos sin cobertura",
+    "noGaps": "Tu equipo tiene cobertura STAB potencial frente a todos los tipos.",
+    "defensiveHelp": "Resiste debilidades compartidas",
+    "offensiveHelp": "Añade cobertura frente a"
+  },
+  "pendingStyle": {
+    "intro": "Evoluciones por objeto o intercambio que aún faltan en tu Pokédex.",
+    "needed": "Necesarios",
+    "bag": "En bolsa",
+    "held": "Equipados",
+    "stockUnknown": "Cantidad del objeto sin confirmar",
+    "stockStale": "Objeto en la última lectura: {{count}} · Sin confirmar",
+    "stockAvailable": "Objeto en inventario: {{count}}",
+    "stockMissing": "Objeto pendiente de conseguir"
+  },
+  "catalogRedesign": {
+    "obtain": "Cómo obtener",
+    "routes": "Vías de obtención",
+    "guide": "Acerca del catálogo y la búsqueda",
+    "page": "Página {{page}} de {{pages}}"
+  },
+  "captureRedesign": {
+    "followPaused": "Seguimiento en pausa",
+    "moreData": "Más datos",
+    "following": "Siguiendo ubicación",
+    "browsing": "Consulta manual",
+    "accessible": "accesibles",
+    "pending": "pendientes",
+    "caught": "capturadas",
+    "hiddenAccess": "por acceso",
+    "accessAndHelp": "Accesos y ayuda",
+    "hiddenCount": "{{count}} ocultas por acceso",
+    "results_one": "{{count}} especie en los resultados",
+    "results_other": "{{count}} especies en los resultados",
+    "clearFilters": "Limpiar filtros",
+    "noAccess": "Los accesos desactivados ocultan los encuentros de esta zona. Revisa Surf, las cañas u otras opciones.",
+    "reviewAccess": "Revisar accesos",
+    "routes": "Métodos, niveles y probabilidades",
+    "levelUnknown": "Nivel sin confirmar",
+    "reference": "Pokédex y fuentes",
+    "itemHelp": "Marcas manuales y guía",
+    "moveDetails": "Movimiento · {{move}}"
+  },
+  "workspaceShell": {
+    "tools": "Herramientas",
+    "mainSections": "Secciones principales",
+    "compactTeam": "Vista compacta",
+    "expandTeam": "Ampliar fichas",
+    "connectionDetails": "Controles",
+    "sources": {
+      "manual": "Manual",
+      "save": "Partida guardada",
+      "live": "En vivo"
+    }
+  },
+  "battleHeldItem": {
+    "equipped": "Objeto equipado: {{name}}",
+    "unavailable": "Objeto equipado; nombre no disponible"
+  },
   "genderRatio": {
     "summary": "Proporción base aproximada: macho {{male}}, hembra {{female}}. Sin modificadores de encuentro."
   },
@@ -678,6 +759,40 @@
         "ready": "Cajas sincronizadas con la memoria de Citra. Se revisan cada dos minutos o al pulsar Actualizar colección.",
         "error": "No hay una lectura actual de las cajas. Se conserva la última colección válida, si existe; comprueba la conexión y vuelve a actualizar."
       }
+    },
+    "ySave": {
+      "hint": "El guardado se lee automáticamente al guardar en Citra. Configura main una sola vez en y-save.config.local.json y usa el iniciador habitual o npm run bridge:y. Incluye Pokédex, equipo y las 31 cajas.",
+      "messages": {
+        "waiting": "Esperando una lectura válida del guardado de Y…",
+        "unconfigured": "Falta configurar la ruta del archivo main de Y.",
+        "ready": "Pokédex, equipo y cajas de Y sincronizados con el guardado.",
+        "missing": "No se encuentra main. Se reintentará automáticamente.",
+        "readError": "No se pudo validar el guardado. Se conserva la última lectura válida y se reintentará.",
+        "connectionLost": "No hay conexión con el puente de Y. Comprueba que el iniciador esté abierto; la conexión se reintentará automáticamente."
+      }
+    },
+    "yLive": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "controlError": "No se pudo completar la acción. Comprueba que el iniciador esté abierto y reintenta.",
+      "hint": "Lectura experimental de equipo y Pokédex cada dos segundos; las 31 cajas se revisan al conectar y cada dos minutos. Puedes adelantar su lectura con Actualizar colección. Todo se lee de memoria, sin guardar. Perfil de Y validado localmente; otras versiones pueden no ser compatibles. Las marcas de captura y las imágenes respetan la Pokédex.",
+      "messages": {
+        "pressConnect": "Pulsa Conectar para iniciar la lectura de Citra.",
+        "connecting": "Conectando con Citra…",
+        "ready": "Equipo y Pokédex actualizados desde la memoria de Citra.",
+        "readError": "No se pudo obtener una lectura estable de equipo y Pokédex. Se conserva la última lectura válida.",
+        "profileMismatch": "La sesión no coincide con el perfil de Y validado. Se conserva el último equipo, sin aceptar datos nuevos.",
+        "disconnected": "Lectura detenida. Se conservan los últimos datos válidos como referencia.",
+        "connectionLost": "Sin conexión con el puente de Citra. Comprueba que el iniciador esté abierto."
+      },
+      "refreshCollection": "Actualizar colección",
+      "boxesLastReading": "Última lectura válida de cajas: {{time}}",
+      "boxStatus": {
+        "waiting": "Esperando la primera lectura de las cajas. Conecta Citra en vivo para consultar tu colección.",
+        "reading": "Leyendo las 31 cajas… Se conserva la última colección mientras termina.",
+        "ready": "Cajas sincronizadas con la memoria de Citra. Se revisan cada dos minutos o al pulsar Actualizar colección.",
+        "error": "No hay una lectura actual de las cajas. Se conserva la última colección válida, si existe; comprueba la conexión y vuelve a actualizar."
+      }
     }
   },
   "encounterOpportunity": {
@@ -1239,7 +1354,8 @@
     "generation": "Generación {{number}}",
     "names": {
       "black": "Pokémon Black",
-      "x": "Pokémon X"
+      "x": "Pokémon X",
+      "y": "Pokémon Y"
     },
     "regions": {
       "unova": "Teselia",
@@ -1247,12 +1363,13 @@
     },
     "status": {
       "black": "Aventura disponible",
-      "x": "Manual y Save de Citra disponibles"
+      "x": "Manual y Save de Citra disponibles",
+      "y": "Manual, Save y Citra en vivo disponibles"
     },
     "enter": "Entrar",
     "change": "Cambiar juego",
     "loading": "Abriendo tu aventura…",
-    "isolationHint": "Tu colección de Black se conserva. Las funciones de X se habilitarán a medida que estén listas.",
+    "isolationHint": "Cada juego conserva su propia colección, equipo y preferencias.",
     "preparationDescription": "Estamos preparando esta aventura para ofrecer las mismas funciones que en Black. Aquí puedes ver los módulos que se irán habilitando.",
     "modulesHeading": "Tu espacio de juego",
     "moduleUnavailable": "Estos módulos todavía no están disponibles para este juego. No se conectarán lectores ni se cargarán datos de otra aventura.",
@@ -1520,7 +1637,7 @@
     "stale": "La lectura de combate está detenida o desconectada. Se conserva la última sesión como referencia.",
     "unconfirmed": "Todavía no hay una lectura de combate confirmada.",
     "inactive": "Fuera de combate. Entra en una pelea individual para ver los participantes.",
-    "multiScope": "Lectura experimental de sencillos, dobles y hordas para el perfil local de Pokémon X. Los puestos no confirmados se conservan como lectura parcial."
+    "multiScope": "Lectura experimental de sencillos, dobles y hordas para el perfil local de {{game}}. Los puestos no confirmados se conservan como lectura parcial."
   },
   "battleOpponentRoster": {
     "heading": "Equipo rival",
@@ -1677,6 +1794,138 @@
     "unknownPosition": "Pokémon por confirmar",
     "emptyPosition": "Puesto vacío",
     "unknownFormat": "Formato de combate por confirmar",
-    "unsupportedFormat": "Este formato aún no tiene una vista disponible"
+    "unsupportedFormat": "Este formato aún no tiene una vista disponible",
+    "partnerDouble": "Combate doble con aliado",
+    "ally": "Aliado",
+    "allyPokemon": "Pokémon del aliado",
+    "allyWeaknesses": "Debilidades del aliado"
+  },
+  "yAcquisition": {
+    "group": "Formas de obtención en Pokémon Y",
+    "open": "Ver cómo obtener {{name}} en Pokémon Y",
+    "hint": "Datos de Pokémon Y: encuentros de Kalos y evoluciones de Generación VI. Los regalos y los intercambios pueden requerir progreso o elecciones previas.",
+    "loading": "Consultando obtención en Pokémon Y…",
+    "noEncounters": "No hay encuentros directos de Y registrados para esta especie. Esto no demuestra que sea imposible obtenerla.",
+    "anyPokemon": "cualquier Pokémon compatible con este intercambio",
+    "routes": {
+      "capture": "Capturable en Pokémon Y. Consulta zonas, métodos y condiciones.",
+      "static": "Encuentro fijo en Pokémon Y; puede depender del progreso o del Pokémon inicial elegido.",
+      "gift": "Regalo en Pokémon Y; puede depender de una elección o del progreso.",
+      "egg": "Huevo de regalo registrado en Pokémon Y.",
+      "fossil": "Revivir un fósil en Pokémon Y. Consulta las instrucciones y la elección de fósil.",
+      "npc-trade": "Intercambio con un personaje de Pokémon Y. Consulta lo que solicita y sus condiciones.",
+      "evolution": "Evolución compatible con Generación VI. Necesitas su preevolución y cumplir los requisitos.",
+      "trade-evolution": "Evolución por intercambio en Generación VI; puede requerir un objeto o una especie concreta.",
+      "breed": "Cría con padres compatibles. Algunas especies requieren condiciones adicionales o incienso.",
+      "unknown": "Obtención sin confirmar: las fuentes no cubren todas las vías. La ausencia de encuentros no implica que requiera transferencia."
+    }
+  },
+  "yWorkspace": {
+    "manual": "Origen: manual",
+    "hint": "Colección y preferencias independientes de X. Las fuentes Save y En vivo requieren una partida y un perfil compatibles de Pokémon Y.",
+    "atlasHint": "Atlas público de Pokémon Y. Sin lectura de Pokédex: las capturas históricas y el progreso son desconocidos. Los ejemplares añadidos a mano solo indican tu colección manual."
+  },
+  "zoneItems": {
+    "viewLabel": "Contenido de la zona",
+    "pokemonView": "Pokémon",
+    "itemsView": "Objetos",
+    "eyebrow": "Explora cada rincón",
+    "title": "Objetos · {{zone}}",
+    "count": "{{count}} objetos",
+    "hint": "Objetos localizados en esta zona y cómo conseguirlos, incluidos regalos y recompensas de personajes. Conserva los requisitos indicados antes de ir a buscarlos.",
+    "manualHint": "Marca el recuadro de cada tarjeta al conseguirlo. Se guarda por aventura y no se sincroniza con la partida.",
+    "search": "Buscar objeto o movimiento",
+    "searchPlaceholder": "Piedra, MT, Surf…",
+    "category": "Categoría",
+    "allCategories": "Todas las categorías",
+    "progress": "Marcas manuales",
+    "allProgress": "Todos los puntos",
+    "marked": "Marcados como obtenidos",
+    "unmarked": "Sin marcar",
+    "saveFailed": "No se pudieron guardar tus marcas. Se mantienen durante esta sesión.",
+    "loading": "Consultando objetos de la zona…",
+    "error": "No se pudieron cargar los objetos de esta zona.",
+    "unrecorded": "No hay una tabla de objetos documentada para esta zona en la fuente actual. Esto no demuestra que no haya objetos.",
+    "noMatches": "Ningún objeto coincide con estos filtros.",
+    "noRecordedItems": "La fuente no registra puntos de obtención en esta zona.",
+    "instructionsUnknown": "La fuente no precisa cómo conseguirlo.",
+    "markObtained": "Obtenido · marca manual",
+    "source": "Ver fuente",
+    "sourceLanguage": "Nota disponible en {{language}}",
+    "pp": "PP base",
+    "variableValue": "Valor no fijo o no indicado",
+    "tm": "MT{{number}}",
+    "hm": "MO{{number}}",
+    "coverageHint": "Guía pública consultada el {{date}}. Puede contener omisiones; conserva la fuente y no representa tu progreso. Las compras pueden depender del progreso.",
+    "categories": {
+      "evolution": "Objetos evolutivos",
+      "machine": "MT y MO",
+      "key": "Objetos importantes",
+      "held": "Objetos equipables y megapiedras",
+      "medicine": "Medicina y mejoras",
+      "ball": "Poké Balls",
+      "berry": "Bayas",
+      "treasure": "Tesoros y materiales",
+      "other": "Otros objetos"
+    },
+    "methods": {
+      "pickup": "Recoger en la zona",
+      "hidden": "Objeto oculto",
+      "gift": "Entrega de un personaje",
+      "reward": "Recompensa",
+      "exchange": "Intercambio de objetos",
+      "purchase": "Compra",
+      "harvest": "Árbol o recurso de campo",
+      "unknown": "Método sin clasificar"
+    },
+    "markObtainedAria": "Marcar obtenido: {{item}} · {{place}}",
+    "count_one": "{{count}} objeto",
+    "count_other": "{{count}} objetos",
+    "moveGeneration": "Movimiento de generación {{number}}",
+    "sourceFor": "Ver fuente de {{item}} · {{place}}",
+    "requirementsSource": "Ver fuente de los requisitos de {{item}}",
+    "obtained": "Obtenido",
+    "shops": "Tiendas",
+    "shopHint": "La oferta puede depender de las medallas o del progreso.",
+    "shopItem": "Objeto",
+    "price": "Precio",
+    "otherShop": "Tienda",
+    "shopSource": "Ver fuente de las tiendas"
+  },
+  "megaEvolutions": {
+    "title": "Megapiedras",
+    "eyebrow": "El poder de tu colección",
+    "intro": "Tus piedras y los Pokémon que pueden usarlas.",
+    "hint": "Pulsa la piedra al pie de cada marco para descubrir la megaevolución y comparar sus estadísticas base. Necesitas la piedra y el Pokémon en tu colección actual.",
+    "stones": "piedras distintas",
+    "filter": "Mostrar",
+    "ownedStones": "Mis megapiedras",
+    "allStones": "Todas las compatibles",
+    "loading": "Consultando megapiedras y formas…",
+    "error": "No se pudieron cargar las megaevoluciones.",
+    "empty": "No tienes megapiedras en la bolsa ni equipadas en la lectura actual.",
+    "inventoryUnknown": "No hay una lectura de inventario disponible. Selecciona una fuente de guardado o en vivo para consultar tus megapiedras.",
+    "collectionUnknown": "La colección aún no está disponible. No se puede confirmar qué Pokémon tienes.",
+    "stale": "El inventario está desactualizado. Las vistas mega se desbloquearán con una lectura actual.",
+    "collectionStale": "La colección está desactualizada o incompleta. Esperando una lectura actual para confirmar tus Pokémon.",
+    "pokemonUnknown": "Pokémon sin confirmar",
+    "pokemonMissing": "Te falta este Pokémon",
+    "stoneUnknown": "Piedra sin confirmar",
+    "stoneMissing": "Te falta esta piedra",
+    "unconfirmed": "Esperando una lectura actual",
+    "ready": "Piedra y Pokémon disponibles",
+    "hidden": "Pokémon oculto: no disponible en tu colección",
+    "open": "Ver la megaevolución de {{name}} con {{stone}}",
+    "quantities": "En bolsa: {{bag}} · Equipadas: {{held}}",
+    "megaName": "Mega-{{name}}{{variant}}",
+    "close": "Cerrar comparación de megaevolución",
+    "stats": "Antes y después",
+    "statsHint": "Estadísticas base de la especie para este juego. No incluyen nivel, IV, EV, naturaleza, habilidades ni efectos del combate.",
+    "comparison": "Comparación de estadísticas base de {{name}} y su megaevolución",
+    "stat": "Estadística",
+    "base": "Normal",
+    "mega": "Mega",
+    "change": "Cambio",
+    "total": "Total"
   }
 }

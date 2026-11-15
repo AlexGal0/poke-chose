@@ -20,7 +20,7 @@ export interface LivePartySnapshot {
   daycareStale?: boolean
   battle?: BattleReading | null
   position?: PlayerPosition | null
-  sourceId: 'x-live'
+  sourceId: 'x-live' | 'y-live'
   enabled: boolean
   status: 'waiting' | 'ready' | 'error'
   message: typeof LIVE_PARTY_MESSAGES[number]
@@ -32,7 +32,7 @@ export interface LivePartySnapshot {
   pokedex: PokedexSnapshot | null
   updatedAt: string | null
 }
-export const emptyLivePartySnapshot = (): LivePartySnapshot => ({ protocol: 3, sourceId: 'x-live', enabled: false, status: 'waiting', message: 'pressConnect', capabilities: { party: true, boxes: true, pokedex: true, battle: true, location: true, daycare: true, inventory: true }, inventory: null, inventoryStale: true, daycare: null, daycareStale: true, position: null, boxes: null, boxesStatus: 'waiting', boxesUpdatedAt: null, party: null, pokedex: null, updatedAt: null })
+export const emptyLivePartySnapshot = (sourceId: 'x-live' | 'y-live' = 'x-live'): LivePartySnapshot => ({ protocol: 3, sourceId, enabled: false, status: 'waiting', message: 'pressConnect', capabilities: { party: true, boxes: true, pokedex: true, battle: true, location: true, daycare: true, inventory: true }, inventory: null, inventoryStale: true, daycare: null, daycareStale: true, position: null, boxes: null, boxesStatus: 'waiting', boxesUpdatedAt: null, party: null, pokedex: null, updatedAt: null })
 export function isLivePartySnapshot(value: unknown): value is LivePartySnapshot {
   if (!value || typeof value !== 'object') return false
   const s = value as LivePartySnapshot
@@ -48,7 +48,7 @@ export function isLivePartySnapshot(value: unknown): value is LivePartySnapshot 
   if (s.position != null && (s.capabilities?.location !== true || !isPlayerPosition(s.position) || s.position.mapId > 0xffff)) return false
   if (s.capabilities?.battle !== undefined && s.capabilities.battle !== true) return false
   if (s.battle != null && !isBattleReading(s.battle, 721)) return false
-  if (s.protocol !== 3 || s.sourceId !== 'x-live' || typeof s.enabled !== 'boolean' || !LIVE_PARTY_MESSAGES.includes(s.message) || s.capabilities?.party !== true || s.capabilities.boxes !== true || s.capabilities.pokedex !== true) return false
+  if (s.protocol !== 3 || !['x-live', 'y-live'].includes(s.sourceId) || typeof s.enabled !== 'boolean' || !LIVE_PARTY_MESSAGES.includes(s.message) || s.capabilities?.party !== true || s.capabilities.boxes !== true || s.capabilities.pokedex !== true) return false
   if (!['waiting', 'reading', 'ready', 'error'].includes(s.boxesStatus)) return false
   if (s.boxes !== null && !isSavedBoxes(s.boxes, { maxSpecies: 721, boxCount: 31, nicknameLength: 12 })) return false
   if (s.boxes === null ? s.boxesUpdatedAt !== null : typeof s.boxesUpdatedAt !== 'string' || !Number.isFinite(Date.parse(s.boxesUpdatedAt))) return false

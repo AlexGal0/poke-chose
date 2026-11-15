@@ -21,8 +21,10 @@ export function PokemonCardFrame({ pokemon, tools, children, footer, sprite, onS
     {selected && <span className="in-team">{t('pokemonCard.inTeam')}</span>}
     {fainted && <span className="fainted-status">{t('pokemonCard.fainted')}</span>}
     {onSpriteClick ? <button type="button" className={`sprite sprite-button ${discovered ? '' : 'undiscovered'}`} onClick={onSpriteClick} aria-label={spriteActionLabel ?? pokemonDisplayName(pokemon.name)}>{discovered && pokemon.sprite ? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span>?</span>}</button> : <div className={`sprite ${discovered ? '' : 'undiscovered'}`}>{discovered && pokemon.sprite ? sprite ?? <img src={pokemon.sprite} alt={pokemonDisplayName(pokemon.name)} width="96" height="96" loading="lazy" /> : <span aria-label={discovered ? t('pokemonCard.spriteUnavailable') : t('pokemonCard.notDiscovered')}>?</span>}</div>}
-    <div className="pokemon-identity"><h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>{pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}</div>
-    <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
+    <div className="pokemon-card-profile">
+      <div className="pokemon-identity"><h3 className={pokemon.nickname ? 'pokemon-nickname' : undefined}>{pokemon.nickname || pokemonDisplayName(pokemon.name)}</h3>{pokemon.nickname && <p className="pokemon-species-name">{pokemonDisplayName(pokemon.name)}</p>}</div>
+      <div className="types">{pokemon.types.map(type => <TypeBadge key={type} type={type} />)}</div>
+    </div>
     <div className="card-actions">{children}</div>{footer}
   </article>
 }

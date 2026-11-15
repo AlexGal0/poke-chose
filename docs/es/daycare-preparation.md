@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Preparación de la guardería compartida
 
 Registro de la preparación inicial. La implementación posterior habilitó la guardería de X y añadió géneros, avisos de huevo y eclosión. Para el estado actual, consulta el [resumen consolidado](changes-2026-10-25.md) y la [guardería de X](x-daycare.md). La disponibilidad y el recuento de pruebas descritos debajo corresponden a esta primera etapa.

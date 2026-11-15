@@ -2,9 +2,9 @@
 
 ## Project Structure & Module Organization
 
-PokéChose is a React and TypeScript application powered by Vite, with React Compiler enabled. It organizes Pokémon collections and teams and analyzes type effectiveness using Generation V rules. It supports browser-only manual mode, a read-only local save bridge, and experimental live and battle readers for Pokémon Black.
+PokéChose is a React and TypeScript application powered by Vite, with React Compiler enabled. It organizes Pokémon collections and teams and analyzes type effectiveness using game-specific Generation V (Black) and Generation VI (X/Y) rules. It supports browser-only manual mode, read-only local save bridges, and experimental live and battle readers for Pokémon Black, X and Y.
 
-- `src/main.tsx` mounts the application with theme and localization setup; `src/App.tsx` selects game workspaces. `src/games/core/GameWorkspace.tsx` composes shared screens; Black and X inject their services, rules, capabilities and sources.
+- `src/main.tsx` mounts the application with theme and localization setup; `src/App.tsx` selects game workspaces. `src/games/core/GameWorkspace.tsx` composes shared screens; Black, X and Y inject their services, rules, capabilities and sources.
 - `src/components/` contains the catalog, Pokémon cards, collection search, save synchronization, capture checklist, evolution dialog, and team analysis.
 - `src/models/` defines Pokémon, party, Pokédex, encounter, and evolution models.
 - `src/api/` fetches and adapts PokéAPI data for Black/White; `src/domain/` contains type effectiveness, collection rules, search, encounter access, zone ordering, and evolution logic.
@@ -40,16 +40,16 @@ Run commands from the project root. The README and Windows launcher require Node
 
 - Configure the save path in `save.config.local.json`, using `save.config.example.json` as a template, or through `MELONDS_SAVE_PATH`, which takes precedence. `.gitignore` excludes the local configuration and `*.sav` files.
 - The bridge binds to `127.0.0.1`, defaults to port 15301, and accepts `SAVE_BRIDGE_PORT`. Vite proxies `/save-api` in development and preview; use the same bridge port for both processes.
-- The supported save format is Pokémon Black RAW `.sav`, 512 KiB. Preserve read-only access: the application must not modify the user's save.
+- The Black save reader supports Pokémon Black RAW `.sav`, 512 KiB; X/Y have separate edition-specific `main` readers and configuration (see README). Preserve read-only access: the application must not modify the user's save.
 - Manual collection and team data persist in localStorage under `poke-chose:bw:v1`. Save mode reads the party, the 24 PC boxes, and Pokédex flags; manual data remains separate.
 - Capture checklists use Pokédex caught flags, not seen flags or current party/box contents. Surf and Super Rod access filters are configured separately in localStorage.
-- Keep Generation V rules: 17 types, no Fairy, and Steel resists Ghost and Dark. Current analysis uses defensive types and potential offensive STAB coverage; it does not simulate moves, abilities, or held-item effects. Eggs are excluded from analysis.
+- For Black, keep Generation V rules: 17 types, no Fairy, and Steel resists Ghost and Dark. X/Y use Generation VI: 18 types including Fairy, and Steel no longer resists Ghost or Dark. Current analysis uses defensive types and potential offensive STAB coverage; it does not simulate moves, abilities, or held-item effects. Eggs are excluded from analysis.
 
 ## Game Adapters & Incremental Decoupling
 
 Favor reusable screens that can consume another game's adapter without changes to their presentation logic. Apply this direction incrementally to the feature being developed; it is not a requirement to migrate existing screens or redesign the application before delivering a focused change.
 
-- Read `docs/es/black-migration.md` for the current shared-screen composition and compatibility boundaries. Black and X both use `GameWorkspace`; do not recreate retired screen providers when adding a game.
+- Start with `docs/adapter-contracts.md` and `docs/new-game-adapter.md` for current contracts and onboarding; `docs/es/black-migration.md` preserves the Black migration record. Black, X and Y use `GameWorkspace`; do not recreate retired screen providers when adding a game.
 - Use `src/games/core/` contracts and shared domain models when they fit. Shared screens should receive normalized data, services, rules and capabilities through props or context. Keep concrete adapter selection in game workspaces or other composition boundaries.
 - Keep game-specific species limits, type rules, version groups, forms, map identifiers, encounter ordering and save formats in game rules or adapters. Existing Black/Generation V requirements apply to Black; do not extend those assumptions to other games through shared models or validators.
 - Distinguish a game adapter from a data source: switching between manual input, a save file and emulator memory does not by itself switch game rules. Keep normalization, validation and species resolution consistent with the selected game throughout the data flow.

@@ -10,7 +10,7 @@ import type { DaycareData } from '../../src/games/core/daycare.ts'
 
 export interface PartyReader { read(includeBoxes?: boolean): Promise<{ inventory?: InventoryReading; party: SavedPartyMember[]; pokedex: PokedexSnapshot; boxes?: SavedBoxPokemon[]; battle?: BattleReading | null; position?: PlayerPosition | null; daycare?: DaycareData | null }>; close(): void }
 export class LivePartyController {
-  snapshot = emptyLivePartySnapshot()
+  snapshot: LivePartySnapshot
   private nextBoxesAt = 0
   private readonly boxesPollMs: number
   private timer: ReturnType<typeof setTimeout> | undefined
@@ -19,7 +19,8 @@ export class LivePartyController {
   private readonly notify: (snapshot: LivePartySnapshot) => void
   private readonly factory: () => PartyReader
   private readonly pollMs: number
-  constructor(notify: (snapshot: LivePartySnapshot) => void, factory: () => PartyReader = createXSessionReader, pollMs = 2000, boxesPollMs = 120000) {
+  constructor(notify: (snapshot: LivePartySnapshot) => void, factory: () => PartyReader = createXSessionReader, pollMs = 2000, boxesPollMs = 120000, sourceId: 'x-live' | 'y-live' = 'x-live') {
+    this.snapshot = emptyLivePartySnapshot(sourceId)
     if (!Number.isInteger(boxesPollMs) || boxesPollMs < 10 || boxesPollMs > 600000) throw new Error('Invalid boxes interval')
     this.boxesPollMs = boxesPollMs
     if (!Number.isInteger(pollMs) || pollMs < 10 || pollMs > 60000) throw new Error('Invalid live poll interval')
