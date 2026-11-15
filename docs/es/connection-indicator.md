@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Indicador compartido de conexión
 
 El botón flotante de estado funciona en Black y X mediante `ConnectionStatus` (`src/models/connection-status.ts`). Recibe modo manual, una lista de lecturas declaradas, sus etiquetas/mensajes localizados, estado y fecha de última lectura. La acción para abrir controles se inyecta como callback.

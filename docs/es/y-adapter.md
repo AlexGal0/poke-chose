@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** Y ya compone las pantallas y servicios compartidos con datos y fuentes propios, incluidos objetos de zona, megapiedras y combate con aliado. Este documento conserva el alcance de su entrega original; [estado actual](project-status.md) recoge los cambios posteriores y [contratos](adapter-contracts.md) guía nuevas integraciones.
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Pokémon Y: adaptador y fuentes
 
 ## Integración

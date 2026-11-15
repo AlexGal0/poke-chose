@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Capturas: motor compartido y preparación del seguimiento
 
 Registro de preparación del 24 de octubre de 2026. Se comparte el comportamiento de navegación y filtrado de capturas entre Black y X. En esta etapa el seguimiento real de X seguía deshabilitado; se habilitó después en la entrega de [ubicación de X](x-location.md). Black conserva su seguimiento previo.

@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** Black, X y Y inyectan `EvolutionRequirementsService`; es opcional y distinto de `KnowledgeService.evolution`, usado por la ficha individual. El inventario conserva cantidades desconocidas/vacías y vigencia. Consulta [contratos](adapter-contracts.md#pantallas-y-extensiones-opcionales) antes de copiar un servicio histórico.
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Contrato de evoluciones pendientes: Black y X
 
 `EvolutionRequirements` recibe un `EvolutionRequirementsService`, inventario normalizado, acción de apertura de detalle y badge opcional. El contrato está en `src/games/core/evolution-requirements.ts`. Las familias devuelven `{ root, labels?, sprites? }` con especies y métodos ya filtrados por juego. La presentación no elige adaptador ni abre conexiones.

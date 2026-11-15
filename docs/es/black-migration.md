@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** La migración ya está integrada: Black, X y Y comparten `GameWorkspace`. Este registro explica la extracción de Black y sus excepciones. La referencia vigente para otra integración está en [arquitectura](architecture.md), [contratos](adapter-contracts.md) y [nuevo adaptador](new-game-adapter.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Migración de Black al workspace compartido
 
 ## Alcance y paridad

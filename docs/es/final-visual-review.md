@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Revisión visual final
 
 10 de noviembre de 2026. Aplicación local Vite, Pokémon Y con lector real conectado, colección de 70 y equipo de seis. Se observaron capturas (Ruta 12 y estado sin acceso de Ciudad Yantra), objetos de zona, catálogo, colección filtrada, fichas de estadísticas/movimientos/evoluciones, evoluciones pendientes, guardería vacía, balance, tabla de tipos, desarrollo y combate. La sesión mostró una horda real de Lucario contra cinco Mareep: participantes visibles antes de la reserva y sin desbordamiento horizontal a 1280 × 720. No se presenta como validación real de dobles.

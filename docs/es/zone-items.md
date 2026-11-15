@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** La guía X/Y sigue siendo opcional mediante `ZoneItemsService`. Los títulos MT/MO incluyen el movimiento. Las marcas manuales se guardan por ocurrencia y edición; ante cuota se intenta liberar caché desechable y reintentar, pero borrar datos del sitio elimina también las marcas. La consulta inversa existe en el contrato, sin pantalla global implementada. Véanse [contratos](adapter-contracts.md) y [fuentes](data-sources.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Objetos por zona en X/Y
 
 En **Capturas por zona → Objetos**, Y y X muestran una guía por localidad: recogidas, objetos ocultos, regalos, recompensas, intercambios y compras. Las categorías separan evolutivos, MT/MO, importantes, equipables y megapiedras, medicina, Poké Balls, bayas y materiales. La búsqueda local admite nombres de objetos o movimientos.

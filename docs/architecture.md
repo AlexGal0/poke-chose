@@ -1,66 +1,51 @@
-# PokéChose architecture and design decisions
+# Architecture and integration boundaries
 
-Consolidated state as of October 25, 2026. The [Spanish architecture guide](es/architecture.md) provides the detailed module inventory and links to each delivery's evidence. The [October 25 summary](changes-2026-10-25.md) covers Day Care, Eggs, gender ratios and connection status. Older delivery notes retain the scope and validation counts from their own dates.
+Current baseline: November 14, 2026. [Español](es/architecture.md) · [Index](README.md) · [Contracts](adapter-contracts.md).
 
-## Functional contract
+PokéChose has three game workspaces: Black, X and Y. They compose the same `GameWorkspace` with edition-specific data, services, sources and rules. Manual, Save and Live are data sources; switching source does not change the selected game's rules.
 
-Changing games should preserve a feature's behavior. Layout, colors and visual controls may differ; filters, information and lifecycle transitions should remain available. Black supplies the initial functional reference, while X supplies its own rules and data.
-
-Extraction is incremental. There is no universal game adapter or requirement to rewrite all screens. Shared screens receive normalized models, services, rules and capabilities. Game workspaces select concrete adapters. Memory addresses, save formats, species limits, forms and encounter ordering belong to the game-specific boundaries.
-
-## Layers
+## Composition and ownership
 
 | Boundary | Responsibility |
 | --- | --- |
-| `App`, game profiles and workspaces | Adventure selection, module availability and service composition |
-| `games/core`, shared models | Catalog, knowledge, saved roster, combat and location contracts |
-| `domain` | Pure collection filters, type analysis, combat lifecycle and zone selection |
-| Shared hooks and components | Navigation, retained view state, controls and presentation |
-| Game adapters and existing Black APIs | Version-correct species, forms, moves, encounters, rules and maps |
-| Sources and local bridges | Read, validate and publish manual/save/memory data |
-| Storage and i18n | Isolated local state, caches and translated presentation |
+| `src/App.tsx`, profiles, game workspaces | Selection, lazy loading, composition and module availability |
+| `src/games/core/` | Shared workspace, services, rules and normalized contracts |
+| Game adapters | Version groups, species/forms, inventory indices, maps, encounter ordering and source normalization |
+| `src/components/` | Shared presentation and interaction, without selecting an emulator or ROM |
+| `src/domain/` | Locale-free collection, effectiveness, acquisition and evolution logic |
+| `src/sources/`, hooks | Subscription, transport validation, hydration and retained-state lifecycle |
+| `bridge/` | Read-only save and memory access; local HTTP/SSE services |
+| `src/storage/` | Durable manual state/preferences and disposable caches |
+| `src/i18n/` | ES/EN resources and presentation mappings for domain/message identifiers |
 
-The data flow is emulator/save → specific reader and validation → local snapshot → source/hook → normalized adapter → domain/screen. Presentation does not parse save bytes or select bridge endpoints.
+Black uses Generation V rules; X/Y use Generation VI. Steel's Ghost/Dark resistances and Fairy support follow the selected rule set. Species limits, form resolution and historical stats are adapter concerns. Type analysis describes defensive effectiveness and potential STAB coverage, excluding Eggs; it is not a damage simulator.
 
-Game and source are independent. Black uses Gen V (649 species, 17 types and Steel resisting Ghost/Dark); X uses Gen VI (721 species, 18 types). Switching Manual/Save/Live does not switch rules. Module availability and a source's data capabilities are explicit. X Day Care supports saves and the locally validated memory profile; Repel remains disabled. See [X Day Care](es/x-daycare.md). Current location and battle require live memory. The validated Citra Nightly 2104 X profile does not establish Y or other revision support.
+## Feature composition
 
-## Shared behavior and visual decisions
+The minimum workspace supplies a profile, catalog, manual storage, type rules, knowledge and field-move services, and game-change callback. Encounters, acquisition, pending evolutions, zone items, Mega Evolutions, Day Care, album and synchronized sources are optional integrations. A service can be required by a particular screen without being required of every game.
 
-- **Battle:** Black retains the individual `BattleScreen`/`CombatReading`/`advanceCombatSession` route; X uses `FieldBattleScreen`/`FieldCombatReading`/`advanceFieldCombatSession` for singles, doubles and hordes. Both share cards, HP, stages, type analysis and team components, with species services and V/VI rules injected at game boundaries. Fields model sides, owners, stable identities and occupied/empty/unknown positions. Read gaps retain data; confirmed replacements cannot inherit another Pokémon’s values; confirmed exit clears the session. Detailed, semicompact and compact cards share team health. Double and horde views have no comparison panel or target selectors; singles retain their type analysis. Poké Balls show initial totals without revealing reserves. Navigation preserves automatic entry, prior tabs, filters and scroll. Special presentation registers by game/format independently of reader capabilities; Black doubles, special readers, transformations and other-trainer allies remain pending. See the [battle guide](multi-battle.md), [contract](es/combat-contract.md) and [validation](es/multi-battle-validation.md). This is type/STAB guidance, not a damage simulator.
-- **Collection/team:** shared filtering, read-roster pagination, counts, type tags and injected field-move compatibility. Black's 24 boxes and X's 31 are parameters. Duplicate specimens and their original order remain distinct. Knowing a TM/HM compatibility does not mean the move is learned or its machine owned. Reorder animations follow identity and do not replay for HP updates. Collection layouts/cards still have separate compositions. Individual statistics/nature and moves have dedicated details; held items sit below the name. Roman generation badges highlight only the selected game's generation.
-- **Captures:** common access/progress filtering, level/subarea grouping, itinerary navigation and zone state. Caught flags alone complete captures; seen/caught controls image discovery. A zone change clears species search and method, preserving progress. Manual selection pauses following. Stale/unknown reads retain the last confirmed zone in the same source scope. X resolves 360 maps to 63 atlas zones, grouping interiors with parent areas; its atlas contains 66 destinations because Berry Fields shares Route 7's map and roaming/hotel options are aggregates. Opportunity hints and card rendering still have game-specific implementations.
-- **Catalog/knowledge:** X offers Kalos regional (457 IDs across its three Pokédexes) and National (721) scopes, including earlier generations. Regional membership does not imply wild availability. Version-correct knowledge services provide historical statistics, moves and evolutions; X does not fall back to Black data. Species IDs and form-resource IDs are not interchangeable.
+Profiles declare modules. Services provide behavior; source capabilities describe available readings. These are separate checks. Mega Evolutions, for example, is enabled by its optional service, not a mandatory `GameModule` member. Special-format battle rendering does not grant a reader the ability to detect that format.
 
-## Day Care, hatching, gender and connection contracts
+See the [contract catalog](adapter-contracts.md) for signatures and the [adapter starter](new-game-adapter.md) for implementation order. Do not recreate the retired `ManualWorkspace` or duplicate a complete game workspace to add a shared screen.
 
-`DaycareReading`/`DaycareData` carry normalized slots, individual gender, current total EXP, availability and stale state; `DaycareService` injects appearance, growth and evolution services. Black and X share presentation while their PK5/PK6 readers remain separate. Optional X Day Care failures preserve stale readings without invalidating the core roster or merging Save and Live.
+## Data lifecycle
 
-The global Egg notification requires a current reading and is independent of evolution metadata. X Egg cards also use individual remaining cycles and species baseline/cycle-length metadata from the saved-roster adapter to show hatching progress. Step ranges exclude bonuses and the unknown within-cycle phase. Black does not yet expose this counter. See [X Day Care and hatching](es/x-daycare.md).
+Manual collection and team remain independent from synchronized specimens. Save/Live preserve specimen identity, duplicate species, party order, Pokédex flags and reading provenance. `null` is unknown/unavailable; an empty collection is a confirmed empty reading. `seen`, `caught` and current ownership are different facts.
 
-`GenderDistribution` carries already calculated male/female percentages. **The contract and renderer are shared; calculations belong to each game adapter.** Black and X use their historical rules. Shared presentation rounds/localizes the labels and draws one blue/pink bar, hides zero-percent entries and retains the genderless symbol. These are base species ratios, not combined encounter/capture probabilities or Cute Charm results. See [gender calculations and presentation](es/encounter-gender-research.md).
+Readers validate complete samples before publishing. Partial failures retain the last confirmed state and expose staleness; they do not clear the team or invent healthy data. Box freshness can differ from party freshness. A battle field identifies owners and positions, so a story ally never becomes part of the player's persistent team.
 
-`ConnectionStatus` contains Manual mode and a declared list of readers with localized labels/messages, state and timestamp. The floating indicator receives that contract and a controls callback, without source/endpoint imports. Readers with `affectsSummary: false` remain informative: X boxes never affect the connection color. Black retains independent general/battle readers. The controls action opens nested panels and focuses the source selector. See [connection contract and validation](es/connection-indicator.md).
+The legacy Black snapshot pipeline remains behind its workspace. X/Y use their own save/live models and validators. Their live transport is currently tied to X/Y; it is not a generic transport for a future generation. Some shared XY data is located under X. These are deliberate remaining boundaries, not requirements for new games.
 
-## State, localization and recovery
+## Presentation and persistence
 
-Adventure selection persists with the device's local date: reloads and browser restarts restore it during that day; a different date shows selection again. This is a daily session, not `sessionStorage` or a rolling 24-hour expiry. Switching games clears selection until another is chosen.
+The team is sticky only when compact and in the right-hand column. Expanded mode uses the available width and height, with type motifs, fainted grayscale and edition-appropriate animation. Battle layouts respond to the actual container width, including individual, double and horde densities. Reduced-motion preferences and static sprite fallbacks remain supported.
 
-Manual data remains isolated by game and from external readings; historical Black keys remain intact. Relevant sections stay mounted across tabs/battle to retain filters. Storage belongs to the browser origin/profile.
+Locale and theme changes are immediate and persisted. Domain identifiers and bridge message codes remain language-independent; ES/EN presentation resources stay mirrored. Locale-dependent API caches include the locale in their key.
 
-Domain identifiers stay locale-free. Presentation helpers map them through mirrored Spanish/English resources; localized caches include locale. Bridges emit stable message codes translated by the frontend. Protocol changes require restarting the affected service after updating both sides.
+Durable writes can evict disposable `poke-chose:cache:` entries and retry after quota errors. This reduces competition with cached data; it cannot guarantee unlimited storage or survive clearing site data. Failed durable writes must remain visible to the user.
 
-Readers are local and read-only. No save/memory writes or gameplay commands are issued. X save uses port 15304 and live uses 15305 behind Vite's proxy. Live connection is explicit; party/Pokédex polling is two seconds, boxes on connection/every two minutes/on refresh. Profile checks, stable reads and snapshot validation guard against transient or incompatible memory. Partial battle/location failures do not block other data; retained data is marked stale. Local configuration, saves, ROMs and dumps remain outside version control.
+## Operation and evidence
 
-## Black shared-screen migration
+All bridges bind locally and read only. Per-edition ports, configuration and commands are in the [README](../README.md), [live guide](live-reading.md) and [connection guide](reader-connections.md). No private configuration, save, ROM or memory dump belongs in Git.
 
-Black and X now compose `src/games/core/GameWorkspace.tsx`, using the same catalog, manual collection, saved roster, encounter atlas, knowledge dialogs, daycare, pending evolutions and analysis screens. Black supplies game-specific services and raw source normalization. Unused legacy screen providers were retired; historical APIs remain internal adapter implementations. See the [migration and validation record](es/black-migration.md). The earlier extraction boundaries below describe the state before this migration.
-
-## Remaining boundaries and evidence
-
-The [October 30 contract follow-up](es/architecture.md#cierre-de-excepciones-de-contratos-30-de-octubre-de-2026) records the shared evolution-requirements contract used by Black and X, adapter-provided sprites, the domain-owned `ExperienceLevel` type and Black's integration with collection alternatives in shared analysis. Legacy Gen V models remain compatibility boundaries, not contracts for new games. Reader controls remain injected and source-specific. This follow-up passed 495 tests, lint and build; its Spanish record distinguishes browser checks from untested modes.
-
-Battle shares contracts and components; Black retains the individual route while X uses multi-participant fields. Collection shares its engine/controls but retains distinct cards and details. Captures shares navigation/state/filtering while opportunities, family resolution and renderers retain specific implementations. Some historical Black APIs/providers remain Gen V coupled; extract them when a concrete feature needs the boundary. A visual variant must not remove functionality, and a memory transport alone does not justify enabling a module.
-
-Step 9 battle validation passed **481 tests, lint and build**; the [validation matrix](es/multi-battle-validation.md) separates current and earlier checks. This documentation closure does not repeat those checks. The [October 25 summary](changes-2026-10-25.md) separates real emulator/save evidence, fixtures and pending checks for the new features. Historical location checks covered aquarium, Ambrette exterior and Route 8; all 360 maps were not physically visited. Earlier counts belong to their original deliveries. This documentation consolidation does not repeat the checks or create a commit.
-
-Detailed records: [battle](es/x-battle.md), [collection](es/collection-functional-parity.md), [capture preparation](es/capture-zone-preparation.md), [live location](es/x-location.md), [Citra research](es/citra-2104-memory.md), [save reader](es/x-save-pokedex.md), [sprites/catalog](es/battle-artwork-and-regional-catalog.md), and [initial adapter research](es/pokemon-xy-adapters-research.md).
+Current support and limits are in [project status](project-status.md). Older design and validation records retain their original dates and counts; they are indexed separately and do not override current contracts. No full plugin framework or mandatory migration of unrelated legacy code is required.

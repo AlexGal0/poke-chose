@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** Black, X y Y usan el servicio de obtención de su edición. Disponibilidad independiente, externa y desconocida son distintas; los exclusivos requieren confirmación propia y ausencia confirmada en la contraparte. La firma vigente está en [contratos](adapter-contracts.md#pantallas-y-extensiones-opcionales); consulta también [disponibilidad](acquisition-availability.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Contrato de obtención
 
 `src/games/core/acquisition.ts` define `AcquisitionService`: rutas resumidas, instrucciones especiales y detalles por especie. Los resultados normalizados incluyen zonas, áreas, métodos, niveles, probabilidades opcionales, condiciones, intercambios y requisitos de evolución. No exponen respuestas de PokéAPI, árboles de Negro ni acceso al bridge.

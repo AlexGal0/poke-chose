@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** La disponibilidad se evalúa por edición para Black/X/Y. No se deduce exclusividad solo por faltar en un atlas ni disponibilidad inmediata por existir una ruta. La guía actual está en [contratos](adapter-contracts.md); los resultados y conteos siguientes conservan el alcance de su entrega.
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Contrato de obtención sin ayuda externa
 
 `src/games/core/acquisition.ts` permite a los adaptadores declarar disponibilidad

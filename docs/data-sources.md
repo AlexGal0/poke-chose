@@ -1,25 +1,39 @@
-*Versión en español: [es/data-sources.md](es/data-sources.md)*
+# Data sources and snapshot semantics
 
-# Data sources
+Current baseline: November 14, 2026. [Español](es/data-sources.md) · [Index](README.md) · [Contracts](adapter-contracts.md).
 
-Manual mode keeps its own collection, editing, and local persistence. `manualTeam` keeps adapting its selections as-is; it never invents specimen identities or Pokédex records to turn manual data into a save/live-style game session.
+A source supplies readings; a game adapter supplies rules and normalization. Manual, Save and Live never change the selected game's generation. Keep source instances stable across renders and unsubscribe/cancel pending hydration when they are replaced.
 
-For external sources, implement `PokemonDataSource` in `src/sources/data-source.ts`. Each instance declares an id, a label, team/boxes/Pokédex capabilities, and a subscription that returns its cleanup function. It may offer `reconnect`, used by the live-reader button. Instances must stay stable across renders.
+## Existing pipelines
 
-Emit connection events and snapshots with team, boxes, Pokédex, status, message, and date. `PokemonSnapshot` reuses the existing bridge's validated format. `null` means the data isn't available; an empty list means a valid read with no specimens. `backup` indicates use of a fallback copy; readers with no such concept should use `false`.
+| Source | Integration boundary |
+| --- | --- |
+| Manual | Per-edition collection/team storage; no invented specimen identities or Pokédex |
+| Black Save/Live | Legacy `PokemonDataSource` / `PokemonSnapshot`, `subscribeTeamSource`, `useTeamSource` |
+| X/Y Save | `SavePokedexReader`, validated bridge snapshots and `createPokedexSource` |
+| X/Y Live | `LivePartySnapshot`, `createLivePartySource`, edition-specific memory adapters |
+| Battle | Separate combat reading/service and reader capabilities; not inferred from a party snapshot |
 
-`subscribeTeamSource` validates snapshots, resolves species and forms through PokéAPI, keeps the last valid data on errors, and cancels requests when the subscription closes. A collection requires team and boxes to be available in the same sample; it never mixes sources. The Pokédex is independent: it is never inferred from the team or PC contents.
+The Black pipeline is not the mandatory source contract for new games. The X/Y Live factory and its validation are also edition-specific. Choose the smallest existing boundary that fits, then explicitly extend it when actual data requires it. Exact source entry points and types are listed in [contracts](adapter-contracts.md).
 
-`saveDataSource` contains exclusively the save's SSE transport. `subscribeSaveTeam` and `useSaveTeam` are kept as compatible interfaces. `useTeamSource` lets you choose another provider and keeps previous data separated per instance; switching providers never presents the previous provider's state as belonging to the new one.
+## What a reading means
 
-`liveDataSource` provides team, boxes, and Pokédex over SSE from the local `bridge/live-server.mjs` service. `reconnect` requests an explicit GDB connection or resumes the existing one. The interface allows pausing polling while keeping TCP open, to avoid the stub reconnection failure observed in melonDS. The service keeps the last sample on errors and never reconnects GDB automatically. The shared reading modules live in `bridge/live`; the research commands in `experiments/melonds-live` reuse them. Manual and Save remain available.
+- `null` means unavailable or unknown. `[]` means a valid empty read.
+- Preserve the last confirmed sample on temporary failure and mark it stale. HTTP/SSE connectivity does not establish a healthy emulator reading.
+- Keep party, boxes, Pokédex, inventory, Day Care and location availability explicit. A snapshot timestamp does not prove all retained sections were freshly polled.
+- `seen` reveals discovery; `caught` drives capture checklists; party/boxes establish current ownership. Do not substitute one for another.
+- Preserve specimen identity, forms, duplicates and order. Do not build a collection by mixing unrelated sources or incoherent samples.
+- HP, experience and held items must come from validated data. Missing HP is not maximum HP; boxes do not provide current battle HP.
+- Inventory quantities include the represented bag/held-item scope and staleness. Unknown inventory must not unlock requirements as if quantities were confirmed.
 
-The service polls team and Pokédex every `fastPollMs` (3000 ms by default), and reuses the boxes for up to `boxesPollMs` (30000 ms). Fast snapshots include the stored boxes: the snapshot's date does not indicate a fresh PC read. If team member identities or caught-species flags change, a fresh box read is required before publishing. The first connection and every resume also re-check the boxes. GDB operations are sequential; a box check can delay the next fast cycle. `pollMs` is kept for compatibility as a shared value when the new intervals aren't specified.
+Subscriptions handle transport errors separately from species/metadata hydration errors. A name or sprite lookup failure must not disconnect an otherwise healthy reader. Retained state from a previous source must not appear as a fresh sample of the next one.
 
-Snapshot events may report `connected: false` when the transported data is the last retained sample and the reader is stopped. The adapter distinguishes HTTP channel availability from an actual read; it does not use provider names to determine this condition.
+## Live and battle lifecycle
 
-`SavedPartyMember` accepts `currentHp`, `maxHp`, and `experience` as optional fields to keep compatibility with older providers. When HP is present, both fields must be integers between 0 and 65535 and current HP cannot exceed the maximum; experience is a uint32. `partiesEqual` compares these fields so changes propagate to the UI. HP is never invented from base stats nor extracted from boxes. The team UI resolves experience progress using the species' growth table; this metadata never blocks receiving the team.
+Black general and battle readers have separate services/connections. X/Y use per-edition Citra RPC services. Controls expose connection attempts, waiting, pause/disconnect and explicit retry; backend acknowledgement can precede the first valid reading. See [operation](live-reading.md) and [troubleshooting](reader-connections.md).
 
-Held item names are resolved in the UI with `getHeldItemName`: Gen V in-game index → PokéAPI ID → localized name, falling back to the resource's technical name when a translation is missing. Results are cached and simultaneous requests for the same item are shared. A failure allows retrying without disconnecting the reader. Ability and moves remain in the data, even though they're no longer shown as raw IDs on the cards.
+Battle contracts distinguish inactive, unknown and active fields. Owners distinguish player, story ally, opponent and wild participants; positions preserve unknown/empty slots. Reader capabilities describe validated formats independently of formats that exist in the game. See [battle guide](multi-battle.md).
 
-The battle capability does not exist in the contract yet. Its possible addition is described in [battle feasibility](es/battle-feasibility.md) *(Spanish, historical record)*; current behavior and interval limits are detailed in [live reading](live-reading.md).
+## Local persistence
+
+Manual state and object checklist marks are durable, per-edition data. API metadata is disposable cache, with locale-aware keys where needed. Quota recovery may evict cache entries before retrying a durable write; failures still propagate. Clearing browser site data removes durable state too. The application does not write the user's save or emulator RAM.

@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** El contrato de campo admite propietarios jugador/aliado/rival/salvaje; X/Y implementan el doble con compañero de historia para los perfiles validados. Conservar sesión ante muestras parciales y separar el equipo del aliado del equipo persistente del usuario siguen siendo requisitos. Véanse [contratos](adapter-contracts.md#combate) y [combate](multi-battle.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Combates dobles con aliado
 
 ## Contrato compartido

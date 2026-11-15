@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Orden del equipo y avisos compactos
 
 `ReorderGrid` comparte la transición de posición entre el equipo de Black, el de X y las reservas de combate. Compara la identidad de cada ejemplar entre lecturas y anima solo los desplazamientos de miembros existentes durante 420 ms. La primera lectura y las actualizaciones de PS sin cambio de orden no inician movimientos. Las identidades duplicadas se omiten para evitar atribuir una tarjeta al ejemplar equivocado. Se respeta movimiento reducido y se cancelan animaciones al ocultar o desmontar la cuadrícula.

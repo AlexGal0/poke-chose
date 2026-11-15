@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Animaciones y alcance del catálogo
 
 Los participantes de combate comparten `BattleSprite`: animación frontal local, ejemplar propio reflejado horizontalmente y rival sin reflejar. Las reservas, colección y catálogo conservan sus imágenes estáticas. Al debilitarse un participante se usa su imagen estática y el estilo de debilitado. La preferencia `prefers-reduced-motion` selecciona también la imagen estática. Si una animación falla al cargar, se utiliza la imagen estática disponible.

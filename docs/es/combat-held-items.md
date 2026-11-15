@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Objetos equipados en combate
 
 El contrato compartido `CombatParticipant.heldItemId` lleva un índice de objeto del adaptador: cero confirma ausencia; null o campo ausente significa lectura desconocida. `CombatService.resolveHeldItem` convierte un índice confirmado en `{ name, icon }` para el idioma solicitado. La presentación no interpreta índices ni selecciona juegos. El servicio es opcional para consumidores anteriores.

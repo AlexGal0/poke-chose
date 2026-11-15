@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Rediseño de Mi colección
 
 La colección conserva búsqueda por etiquetas, generación, tipos, cajas y movimientos de campo. Se retiran el texto informativo de sincronización normal, la hora de última lectura y la ayuda genérica de búsqueda. Actualizar colección y los estados de espera, lectura, error o datos antiguos permanecen disponibles. Los cambios de sincronización se aplican a los controles existentes de X e Y.

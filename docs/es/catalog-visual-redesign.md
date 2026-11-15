@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Rediseño de Explorar catálogo
 
 El catálogo conserva Estadísticas, Movimientos y Evoluciones como tres botones visibles con texto, incluso en una ventana estrecha. Sus superficies son neutras; hover y foco utilizan el acento del tema. La acción Wiki muestra una lupa. El sprite sigue abriendo la obtención y ahora existe además el botón explícito Cómo obtener. Las vías conservan sus iconos y ayudas y se agrupan con una etiqueta propia.

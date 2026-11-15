@@ -1,3 +1,17 @@
+# Documentation coverage and language policy
+
+Reviewed November 14, 2026. [Documentation index](README.md) · [Índice español](es/README.md).
+
+The current README, architecture, sources, Live operation, connection troubleshooting, battle guide, project status, adapter contracts and adapter onboarding are maintained in English and Spanish. Each current pair links to its counterpart. English lives under `docs/`; Spanish under `docs/es/`. The root README follows the same convention.
+
+Specialist implementation/research records remain in their original language, mostly Spanish. They are explicitly indexed as records, with scope notes and links to current guidance. A historical translation does not become a current normative guide just because it has an English counterpart. Existing binary research and validation provenance are preserved; test counts and screenshots are not presented as new checks.
+
+New contributor-facing contracts or operational instructions should update both current language versions. Historical records may remain untranslated if their scope/language is clearly listed. The index is generated from the actual documentation inventory during this review, so every Markdown page has an entry.
+
+## Earlier translation audit
+
+The following preserves the earlier prioritization and issue context. Its category names and coverage counts refer to that audit, not a promise that all records were rewritten or translated in November.
+
 # Documentation translation audit
 
 Tracks which `docs/` and `experiments/melonds-live/` files have an English version and which remain Spanish-only historical records, per [issue #3](https://github.com/AlexGal0/poke-chose/issues/3). This file itself is English-only; it documents a decision, it isn't user-facing content that needs a Spanish mirror.
@@ -36,7 +50,7 @@ These are point-in-time development logs, feasibility assessments, or maintainer
 
 ## Maintaining this audit
 
-When a new `docs/*.md` file is added, write it in English at `docs/<name>.md` by default. If it documents current, implemented behavior where a Spanish version is also worth keeping, add it at `docs/es/<name>.md` and cross-link both files at the top (`*Versión en español: [es/<file>.md](es/<file>.md)*` in the English file / `*English version: [../<file>.md](../<file>.md)*` in the Spanish one), then add a row to the translated table above. If it's a dated session log, feasibility note, or maintainer-only procedure that will only ever be written in Spanish, put it directly under `docs/es/` and add it to the historical table instead with a one-line reason — don't leave Spanish-only content at the `docs/` root.
+When a new `docs/*.md` file is added, write it in English at `docs/<name>.md` by default. If it documents current, implemented behavior where a Spanish version is also worth keeping, add it at `docs/es/<name>.md` and cross-link both files at the top (`*Versión en español: es/<file>.md*` in the English file / `*English version: ../<file>.md*` in the Spanish one), then add a row to the translated table above. If it's a dated session log, feasibility note, or maintainer-only procedure that will only ever be written in Spanish, put it directly under `docs/es/` and add it to the historical table instead with a one-line reason — don't leave Spanish-only content at the `docs/` root.
 
 ## Documentation inventory update — 2026-10-17
 

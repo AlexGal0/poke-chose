@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** Black mantiene el lector individual; X/Y publican campos individuales, dobles, hordas y dobles con aliado de historia. El aliado tiene propietario propio y no entra al equipo del jugador. Capacidades del juego, capacidades del lector y presentación son contratos separados. La referencia normativa vigente está en [contratos de adaptadores](adapter-contracts.md#combate) y la operación en [combate](multi-battle.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Contrato de combate con varios participantes
 
 Estado consolidado: X ya publica el campo para sencillo, doble y horda. Black

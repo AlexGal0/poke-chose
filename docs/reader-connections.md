@@ -1,3 +1,24 @@
+# Reader connections and troubleshooting
+
+Current baseline: November 14, 2026. [Español](es/reader-connections.md) · [Index](README.md) · [Live setup](live-reading.md).
+
+A bridge being reachable is different from an emulator being connected or a sample being valid. The UI tracks readers separately and can report partial connection. Black general/battle use independent GDB readers; X/Y use per-edition Citra RPC. A reader can be connected with no active battle.
+
+## Diagnose in order
+
+1. Select the correct edition and source. X and Y validate the game being read; one edition's reader cannot be reused as the other without its own matching connection.
+2. Confirm the required HTTP service is running on the port in the [README](../README.md). These ports are not Citra RPC ports or melonDS GDB ports.
+3. For Citra, enable RPC and match `CITRA_X_RPC_PORT` / `CITRA_Y_RPC_PORT` to the emulator. Both default to 45987. Running two instances requires distinct RPC ports. A second instance can fail to bind while the first owns that port; closing the first may not make the second retry. Save progress and restart the affected instance when necessary.
+4. For Black, check the private GDB configuration and the correct validated ROM/profile. General ARM7 and battle ARM9 are separate readers. The general pause control is not a universal battle pause endpoint.
+5. Connect/reconnect explicitly and wait for a validated sample. Backend acknowledgement alone is not success. Read the per-reader message rather than inferring health from a retained team.
+6. After bridge updates, restart the running stack. The launcher may reuse an older compatible HTTP service; frontend reload alone does not update it.
+
+A temporary incomplete-reading notice preserves the session and last confirmed information. If the condition persists, inspect the reader's status/profile. An unavailable sprite, translation or PokéAPI lookup is a metadata problem and should not be treated as emulator disconnection. See [source semantics](data-sources.md) and [battle behavior](multi-battle.md).
+
+Never solve connection issues by editing the user's save or emulator memory. Private config, dumps and game files stay out of Git. Historical successes/failures below are evidence for their own session only.
+
+## Historical Black connection-control delivery
+
 # Shared reader connection control
 
 > Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.

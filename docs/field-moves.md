@@ -1,3 +1,7 @@
+> Documentation review: November 14, 2026. [Index](README.md) · [Current status](project-status.md) · [Current contracts](adapter-contracts.md).
+>
+> **Scope:** The original record below describes Black. The current shared collection filter receives `FieldMoveService` from Black/X/Y; its move set and version compatibility belong to the adapter. X/Y do not inherit the Black/White list by default. Compatibility does not establish learned moves, owned machines or story access. Reported validation was not repeated during this documentation update.
+
 # Collection field move filter
 
 > Artifact retention (2026-10-17): intermediate screenshots and browser harnesses mentioned in this session record were removed. Filenames and commands below are historical provenance, not available downloads or runnable checks. See the curated set in `artifacts/README.md`; checks were not repeated during cleanup.

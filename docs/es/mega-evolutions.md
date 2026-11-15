@@ -1,3 +1,11 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Alcance actualizado:** La pantalla está implementada para X/Y y es opcional por servicio, sin obligación para otros juegos ni flag nuevo en `GameModule`. Usa inventario confirmado y propiedad actual; falta de Pokémon mantiene identidad oculta y bloquea la mega. Los fondos conocidos siguen el tipo principal y los desconocidos conservan el fondo neutro. Véanse [contratos](adapter-contracts.md) y [estado actual](project-status.md).
+>
+> El contenido de la entrega original se conserva abajo. Sus pasos, pruebas, capturas y decisiones pendientes corresponden a esa fecha; no sustituyen el estado actual ni son comprobaciones repetidas en esta revisión.
+
+## Registro de implementación y evidencia original
+
 # Megapiedras
 
 En X e Y, **Herramientas → Megapiedras** relaciona las piedras de la bolsa y las

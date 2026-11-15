@@ -1,3 +1,7 @@
+> Revisión documental: 14 de noviembre de 2026. [Índice](README.md) · [Estado actual](project-status.md) · [Contratos vigentes](adapter-contracts.md).
+>
+> **Registro técnico o histórico:** se conserva la investigación, implementación o validación original. Las afirmaciones de soporte, tareas pendientes, conteos y capturas describen ese momento; consulta el estado actual para cambios posteriores. Esta revisión no repite las pruebas ni amplía compatibilidad de ROM/emulador.
+
 # Viabilidad de lectura de combate
 
 Estado: evaluación técnica; no hay lector de combate, direcciones validadas ni interfaz de combate implementados. El lector actual ofrece equipo, cajas y Pokédex. Las barras de PS actuales leen la estructura del equipo; aún no se comprobó si cambia durante cada turno o al finalizar el combate.

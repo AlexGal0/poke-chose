@@ -1,3 +1,28 @@
+# Lectura en vivo: Black, X y Y
+
+Referencia vigente: 14 de noviembre de 2026. [English](../live-reading.md) · [Índice](README.md) · [Conexiones](reader-connections.md).
+
+Todos los servicios son locales y de solo lectura. Manual y Save permanecen independientes. El lector solo soporta perfiles de memoria validados; no se deduce compatibilidad por generación o por direcciones parecidas.
+
+| Edición | Servicio | Puerto HTTP / proxy | Transporte del emulador |
+| --- | --- | --- | --- |
+| Black general | `npm run bridge:live` | 15302 / `/live-api` | melonDS GDB; configuración privada `live.config.local.json` |
+| Black combate | `npm run bridge:battle` | 15303 / `/enemy-api` | Lector ARM9 independiente |
+| X | `npm run bridge:x-live` | 15305 / `/x-live-api` | Citra RPC; `CITRA_X_RPC_PORT` |
+| Y | `npm run bridge:y-live` | 15307 / `/y-live-api` | Citra RPC; `CITRA_Y_RPC_PORT` |
+
+`npm start` arranca Vite y los siete bridges y abre el navegador. `npm run dev:save` inicia el conjunto sin abrirlo; también puedes ejecutar solo el bridge necesario y `npm run dev`. Los servicios Save son otros puertos: Black 15301, X 15304, Y 15306. La tabla completa y las variables HTTP están en [README](../../README.es.md).
+
+Citra usa RPC, no GDB. El puerto RPC predeterminado es 45987, distinto de los HTTP de arriba. Activa RPC en Citra, selecciona la edición correcta y conecta desde la app. Las variables X/Y deben coincidir con el puerto de su instancia. Dos Citra simultáneos necesitan RPC distintos; cerrar uno no obliga a otro que falló al enlazar el socket a recuperarse solo. Guarda tu partida antes de reiniciar el emulador si hace falta liberar el puerto.
+
+Los controles distinguen conexión, espera de datos, pausa/desconexión y errores. Una petición aceptada no prueba que llegó una lectura válida. El equipo, las cajas y el campo pueden tener distinta frescura; una muestra parcial conserva el último dato confirmado con aviso. Cambiar de edición no debe presentar muestras retenidas de la anterior. Véanse [fuentes](data-sources.md), [combates](multi-battle.md) y [estado actual](project-status.md).
+
+Los procesos ya abiertos pueden ser reutilizados por el lanzador. Tras cambiar el código/protocolo del bridge, detén y reinicia el conjunto para no mezclar un frontend nuevo con servicios viejos. El lanzador solo administra procesos propios; arrancarlo otra vez no garantiza reemplazar servicios existentes.
+
+## Referencia técnica anterior: melonDS / Black
+
+El contenido siguiente conserva la investigación y las validaciones del lector Black. Sus ajustes GDB, intervalos y direcciones no se aplican a Citra ni constituyen un contrato para otros juegos. Los resultados indicados no se volvieron a ejecutar durante esta actualización documental.
+
 *English version: [../live-reading.md](../live-reading.md)*
 
 # Lectura en vivo: configuración y funcionamiento
